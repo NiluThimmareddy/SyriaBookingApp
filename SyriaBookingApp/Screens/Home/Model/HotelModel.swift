@@ -29,7 +29,8 @@ struct Hotel: Codable {
     let coverImageURL: String?
     let facilities: String
     let landmarkDescription: String?
-    let averageRating, reviewCount: String
+    let averageRating : Double
+    let reviewCount: String
     let minRoomPrice: MinRoomPrice
     let amenities: String
     let coverImageSignedURL: String?
