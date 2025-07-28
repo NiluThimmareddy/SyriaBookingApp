@@ -8,6 +8,7 @@
 import Foundation
 class HotelViewModel{
     var Hotels: HotelResponse?
+    var filteredHotels: [Hotel] = []
     var onDataLoaded: (() -> Void)?
     var onError: ((Error) -> Void)?
     
@@ -21,6 +22,8 @@ class HotelViewModel{
             switch result {
             case .success(let response):
                 self?.Hotels = response
+                self?.filteredHotels = response.data
+                HotelDataMaganer.shared.allHotels = response.data
                 self?.onDataLoaded?()
             case .failure(let error):
                 self?.onError?(error)
