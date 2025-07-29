@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var dealsview: UIView!
     @IBOutlet weak var dealOfferLabel: UILabel!
     @IBOutlet weak var findDealButton: UIButton!
+    @IBOutlet weak var promotionsCollectionView: UICollectionView!
     
     var viewModel = HotelViewModel()
     
@@ -75,28 +76,50 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return min(4, viewModel.filteredHotels.count)
+        if collectionView == topHotelsCollectionView {
+            return min(10, viewModel.filteredHotels.count)
+        } else {
+            return min(10, viewModel.filteredHotels.count)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
-        let hotel = viewModel.filteredHotels[indexPath.row]
-        cell.configuration(with: hotel)
-        return cell
+        if collectionView == topHotelsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
+            let hotel = viewModel.filteredHotels[indexPath.row]
+            cell.configuration(with: hotel)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
+            let images = viewModel.filteredHotels[indexPath.row]
+            cell.configuration(with: images)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let layout = collectionViewLayout as! UICollectionViewFlowLayout
-        let numberOfItemsPerRow: CGFloat = 2
-        let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+        if collectionView == topHotelsCollectionView {
+            let layout = collectionViewLayout as! UICollectionViewFlowLayout
+            
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            
+            let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
+            let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
 
-        let availableWidth = collectionView.bounds.width - spacing
-        let widthPerItem = availableWidth / numberOfItemsPerRow
+            let availableWidth = collectionView.bounds.width - spacing
+            let widthPerItem = availableWidth / numberOfItemsPerRow
+            
+            let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
 
-        return CGSize(width: widthPerItem, height: widthPerItem * 1.4)
+            return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
+        } else {
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let widthMultiplier: CGFloat = isIpad ? 0.49 : 0.9
+            return CGSize(width: collectionView.frame.width * widthMultiplier, height: collectionView.frame.height)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -111,25 +134,29 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 extension HomeViewController {
     func setupUI() {
         viewModel.onDataLoaded = { [weak self]  in
-            print("Hotels loaded: ", self?.viewModel.Hotels ?? [])
             DispatchQueue.main.async{
                 self?.hideLoader()
                 self?.topHotelsCollectionView.reloadData()
+                self?.promotionsCollectionView.reloadData()
             }
         }
         
         viewModel.onError = { [weak self] error in
-            print("Error fetching hotels: \(error.localizedDescription)")
             DispatchQueue.main.async{
                 self?.hideLoader()
             }
         }
         
         topHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
-        
-        if let layout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.estimatedItemSize = .zero
+        if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            topHotelsLayout.estimatedItemSize = .zero
         }
+        
+        promotionsCollectionView.register(UINib(nibName: "PromotionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PromotionsCollectionViewCell")
+        if let promotionsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            promotionsLayout.estimatedItemSize = .zero
+        }
+        
         
         stackView.clipsToBounds = true
         stackView.layer.cornerRadius = 20

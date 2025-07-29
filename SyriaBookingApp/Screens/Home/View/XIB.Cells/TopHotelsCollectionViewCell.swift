@@ -27,6 +27,8 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
+        reviewsView.applyCardStyle()
+        reviewsView.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 15
         hotelImgView.clipsToBounds = true
         hotelImgView.layer.cornerRadius = 20
         hotelImgView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -36,13 +38,24 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
     }
     
     func configuration(with model: Hotel) {
-        hotelImgView.loadImage(from: model.coverImageURL)
-        offerLabel.text = model.discountText
+        if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
+            hotelImgView.loadImage(from: firstImageURL)
+        } else {
+                hotelImgView.loadImage(from: model.coverImageURL)
+        }
+        
+        if let discount = model.discountText, !discount.isEmpty {
+            offerLabel.text = "\(discount) Off"
+            offerView.isHidden = false
+        } else {
+            offerLabel.text = ""
+            offerView.isHidden = true
+        }
         hotelNameLabel.text = model.name
         cityNameLabel.text = model.city.rawValue
         distanceLabel.text = model.landmarkDescription
-        starRatingView.rating = Double(model.averageRating)
-        priceLabel.text = "\(model.minRoomPrice) / night"
-        reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews"
+        starRatingView.rating = Double(model.averageRating) ?? 0.0
+        priceLabel.text = "\(model.minRoomPrice.rawValue) / night"
+        reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
     }
 }

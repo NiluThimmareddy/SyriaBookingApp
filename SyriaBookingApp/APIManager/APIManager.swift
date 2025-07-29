@@ -23,31 +23,32 @@ class APIManager{
     
     func fetchData<T : Decodable>(from url:URL, modeltType:T.Type, completion: @escaping (Result<T, Error>) -> Void){
         
-//        guard let url = URL(string: urlString) else{
+//        guard let url = URL(string: urlString) else {
 //            completion(.failure(APIError.invalidURL))
 //            return
 //        }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error{
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let data = data else{
+            guard let data = data else {
                 completion(.failure(APIError.noData))
                 return
             }
             
-            do{
+            do {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(decodedData))
-            }catch{
+            } catch {
                 completion(.failure(APIError.decodingFailed))
             }
-            
         }
         task.resume()
-        
     }
 }

@@ -6,7 +6,8 @@
 //
 
 import Foundation
-class HotelViewModel{
+
+class HotelViewModel {
     var Hotels: HotelResponse?
     var filteredHotels: [Hotel] = []
     var onDataLoaded: (() -> Void)?
