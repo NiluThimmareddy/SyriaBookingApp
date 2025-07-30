@@ -41,9 +41,9 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             hotelImgView.loadImage(from: firstImageURL)
         } else {
-                hotelImgView.loadImage(from: model.coverImageURL)
+            hotelImgView.loadImage(from: model.coverImageURL)
         }
-        
+
         if let discount = model.discountText, !discount.isEmpty {
             offerLabel.text = "\(discount) Off"
             offerView.isHidden = false
@@ -51,11 +51,33 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
             offerLabel.text = ""
             offerView.isHidden = true
         }
-        hotelNameLabel.text = model.name
+
+        let ratingValue = model.starRating
+        let intRating = Int(ratingValue)
+
+        let hotelNameAttributed = NSMutableAttributedString(
+            string: "\(model.name) ",
+            attributes: [.foregroundColor: UIColor.label]
+        )
+
+        if intRating > 0 && intRating <= 5 {
+            let stars = String(repeating: "★", count: intRating)
+            let starAttributed = NSAttributedString(
+                string: stars,
+                attributes: [.foregroundColor: UIColor.black]
+            )
+            hotelNameAttributed.append(starAttributed)
+        }
+
+        hotelNameLabel.attributedText = hotelNameAttributed
+
         cityNameLabel.text = model.city.rawValue
         distanceLabel.text = model.landmarkDescription
-        starRatingView.rating = Double(model.averageRating) ?? 0.0
-        priceLabel.text = "\(model.minRoomPrice.rawValue) / night"
+        starRatingView.rating = Double(ratingValue)
+        priceLabel.text = "\(model.minRoomPrice) / night"
         reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
     }
+    
+   
+
 }

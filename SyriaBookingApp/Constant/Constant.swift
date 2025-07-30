@@ -9,7 +9,6 @@ import Foundation
 
 enum APIURL{
    
-    
     case HotelURL
     
    

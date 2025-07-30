@@ -52,13 +52,12 @@ extension UIView {
         get { return layer.cornerRadius }
         set {
             layer.cornerRadius = newValue
-            layer.masksToBounds = newValue > 0
         }
     }
     
     func applyCardStyle(shadowOffset: CGSize = CGSize(width: 0, height: 2),
-                        shadowRadius: CGFloat = 4,
-                        shadowOpacity: Float = 0.3,
+                        shadowRadius: CGFloat = 2,
+                        shadowOpacity: Float = 0.4,
                         shadowColor: UIColor = .black) {
         self.layer.shadowOffset = shadowOffset
         self.layer.shadowRadius = shadowRadius
@@ -99,20 +98,37 @@ extension UIView {
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+//    func applyVerticalGradient() {
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.colors = [
+//            UIColor(red: 0.0/255, green: 128.0/255, blue: 0.0/255, alpha: 1.0).cgColor,
+//            UIColor(red: 144.0/255, green: 238.0/255, blue: 144.0/255, alpha: 1.0).cgColor 
+//        ]
+//        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
+//        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
+//        gradientLayer.frame = self.bounds
+//        gradientLayer.cornerRadius = self.layer.cornerRadius
+//        self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
+//        self.layer.insertSublayer(gradientLayer, at: 0)
+//    }
+    
     func applyVerticalGradient() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
-            UIColor(red: 48.0/255, green: 105.0/255, blue: 178.0/255, alpha: 1.0).cgColor,
-            UIColor(red: 0.0/255, green: 59.0/255, blue: 149.0/255, alpha: 1.0).cgColor
+            UIColor(red: 85.0/255, green: 170.0/255, blue: 85.0/255, alpha: 1.0).cgColor,
+            UIColor(red: 144.0/255, green: 238.0/255, blue: 144.0/255, alpha: 1.0).cgColor  
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.frame = self.bounds
-
+        gradientLayer.cornerRadius = self.layer.cornerRadius
         self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    
+    
+
     func applyGradient() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [

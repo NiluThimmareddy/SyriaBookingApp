@@ -27,10 +27,8 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     func configuration(with model: Hotel) {
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             promotionHotelImageView.loadImage(from: firstImageURL)
-        } else if let coverImageURL = model.coverImageURL, !coverImageURL.isEmpty {
-            promotionHotelImageView.loadImage(from: coverImageURL)
         } else {
-            promotionHotelImageView.image = UIImage(named: "placeholder")
+            promotionHotelImageView.loadImage(from: model.coverImageURL)
         }
     }
 }

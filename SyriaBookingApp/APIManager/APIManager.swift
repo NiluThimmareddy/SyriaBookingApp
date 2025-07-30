@@ -22,16 +22,12 @@ class APIManager{
     }
     
     func fetchData<T : Decodable>(from url:URL, modeltType:T.Type, completion: @escaping (Result<T, Error>) -> Void){
-        
-//        guard let url = URL(string: urlString) else {
-//            completion(.failure(APIError.invalidURL))
-//            return
-//        }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
             if let error = error {
                 completion(.failure(error))
                 return
@@ -41,7 +37,7 @@ class APIManager{
                 completion(.failure(APIError.noData))
                 return
             }
-            
+
             do {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(decodedData))
