@@ -98,20 +98,6 @@ extension UIView {
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
     
-//    func applyVerticalGradient() {
-//        let gradientLayer = CAGradientLayer()
-//        gradientLayer.colors = [
-//            UIColor(red: 0.0/255, green: 128.0/255, blue: 0.0/255, alpha: 1.0).cgColor,
-//            UIColor(red: 144.0/255, green: 238.0/255, blue: 144.0/255, alpha: 1.0).cgColor 
-//        ]
-//        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
-//        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
-//        gradientLayer.frame = self.bounds
-//        gradientLayer.cornerRadius = self.layer.cornerRadius
-//        self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
-//        self.layer.insertSublayer(gradientLayer, at: 0)
-//    }
-    
     func applyVerticalGradient() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
@@ -125,9 +111,6 @@ extension UIView {
         self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
-    
-    
 
     func applyGradient() {
         let gradientLayer = CAGradientLayer()
@@ -143,3 +126,4 @@ extension UIView {
     }
     
 }
+

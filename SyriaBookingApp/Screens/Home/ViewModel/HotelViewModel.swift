@@ -20,7 +20,7 @@ class HotelViewModel {
             return
         }
         
-        APIManager.shared.fetchData(from: url, modeltType: HotelResponse.self) { [weak self] result in
+        APIManager.shared.fetchData(from: url, modelType: HotelResponse.self) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.Hotels = response

@@ -1,40 +1,33 @@
 //
-//  TopHotelsCollectionViewCell.swift
+//  HotelListTVC.swift
 //  SyriaBookingApp
 //
-//  Created by toqsoft on 28/07/25.
+//  Created by toqsoft on 30/07/25.
 //
 
 import UIKit
 
-class TopHotelsCollectionViewCell: UICollectionViewCell {
+class HotelListTVC : UITableViewCell {
 
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImgView: UIImageView!
-    @IBOutlet weak var offerLabel: UILabel!
-    @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var reviewsView: UIView!
-    @IBOutlet weak var reviewsLabel: UILabel!
+    @IBOutlet weak var rightView: UIView!
+    @IBOutlet weak var averageView: UIView!
+    @IBOutlet weak var offerPercentLabel: UILabel!
     @IBOutlet weak var hotelNameLabel: UILabel!
-    @IBOutlet weak var cityNameLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var starRatingView: CosmosView!
-    @IBOutlet weak var bookNowButton: UIButton!
-    @IBOutlet weak var offerView: UIView!
-    
+    @IBOutlet weak var seeAvailabilityButton: UIButton!
+    @IBOutlet weak var reviewLabel: UILabel!
+    @IBOutlet weak var bookMarkImageView: UIImageView!
+    @IBOutlet weak var distanceLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
-        reviewsView.applyCardStyle()
-        reviewsView.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 15
-        hotelImgView.clipsToBounds = true
-        hotelImgView.layer.cornerRadius = 20
-        hotelImgView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
-
-    @IBAction func bookNowButtonAction(_ sender: Any) {
+    
+    @IBAction func seeAvailabilityButtonAction(_ sender: Any) {
     }
     
     func configuration(with model: Hotel) {
@@ -45,11 +38,13 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         }
 
         if let discount = model.discountText, !discount.isEmpty {
-            offerLabel.text = "\(discount) Off"
-            offerView.isHidden = false
+            offerPercentLabel.text = discount
+            offerPercentLabel.isHidden = false
+            bookMarkImageView.isHidden = false
         } else {
-            offerLabel.text = ""
-            offerView.isHidden = true
+            offerPercentLabel.text = ""
+            offerPercentLabel.isHidden = true
+            bookMarkImageView.isHidden = true
         }
 
         let ratingValue = model.starRating
@@ -70,14 +65,20 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         }
 
         hotelNameLabel.attributedText = hotelNameAttributed
-
-        cityNameLabel.text = model.city
         distanceLabel.text = model.landmarkDescription
-        starRatingView.rating = Double(ratingValue)
-        priceLabel.text = "\(model.minRoomPrice) / night"
-        reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        cityLabel.text = model.city
+        let price = model.minRoomPrice
+        let fullText = "From \(price) / night"
+
+        priceLabel.setHighlightedText(
+            fullText: fullText,
+            highlightText: price,
+            normalFont: .systemFont(ofSize: 14),
+            highlightFont: .boldSystemFont(ofSize: 18),
+            normalColor: .darkGray,
+            highlightColor: .label
+        )
+        reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
     }
     
-   
-
 }

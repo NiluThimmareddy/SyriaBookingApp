@@ -31,6 +31,11 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var topView: UIView!
     
     var viewModel = HotelViewModel()
+    var datePickerContainerView: UIView!
+    var datePicker: UIDatePicker!
+    var activeButton: UIButton?
+    var isDatePickerShown = false
+    var promotionScrollTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +50,7 @@ class HomeViewController: UIViewController {
         gradientView.applyCardStyle()
         topView.addTopShadow()
     }
-
+    
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
     }
     
@@ -59,12 +64,17 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func checkInButtonAction(_ sender: Any) {
+        toggleDatePicker(for: checkInButton)
     }
     
     @IBAction func checkOutButtonAction(_ sender: Any) {
+        toggleDatePicker(for: checkOutButton)
     }
     
     @IBAction func searchButtonAction(_ sender: Any) {
+        let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+        storyboard.viewModel = self.viewModel
+        self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
     @IBAction func viewAllButtonAction(_ sender: Any) {
@@ -140,9 +150,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let itemHeight = collectionView.frame.height
             return CGSize(width: itemWidth, height: itemHeight)
         } else {
-            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-            let widthMultiplier: CGFloat = isIpad ? 0.49 : 0.9
-            return CGSize(width: collectionView.frame.width * widthMultiplier, height: collectionView.frame.height)
+//            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+//            let widthMultiplier: CGFloat = isIpad ? 0.49 : 0.9
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
         
     }
@@ -154,7 +164,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return 0
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -162,13 +172,23 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 
 extension HomeViewController {
     func setupUI() {
-        viewModel.onDataLoaded = { [weak self]  in
-            DispatchQueue.main.async{
-                self?.hideLoader()
-                self?.topHotelsCollectionView.reloadData()
-                self?.promotionsCollectionView.reloadData()
-                self?.recentlyCollectionView.reloadData()
-                self?.propertyTypeCollectionView.reloadData()
+        viewModel.onDataLoaded = { [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.hideLoader()
+                self.topHotelsCollectionView.reloadData()
+                self.promotionsCollectionView.reloadData()
+                self.recentlyCollectionView.reloadData()
+                self.propertyTypeCollectionView.reloadData()
+                
+                var seen = Set<String>()
+                let cities = self.viewModel.Hotels?.data.compactMap { $0.city }
+                    .filter { seen.insert($0).inserted } ?? ["No cities found"]
+                
+                if let cityButton = self.selectCityButton {
+                    self.configureDropdownMenu(for: cityButton, options: cities)
+                }
             }
         }
         
@@ -180,6 +200,7 @@ extension HomeViewController {
         
         topHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
         if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            
             topHotelsLayout.estimatedItemSize = .zero
         }
         recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")
@@ -194,6 +215,7 @@ extension HomeViewController {
         
         promotionsCollectionView.register(UINib(nibName: "PromotionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PromotionsCollectionViewCell")
         if let promotionsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            promotionsLayout.scrollDirection = .horizontal
             promotionsLayout.estimatedItemSize = .zero
         }
         
@@ -202,12 +224,14 @@ extension HomeViewController {
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         updateGreetingMessage()
+        setupDatePickerUI()
+        startPromotionAutoScroll()
     }
     
     func updateGreetingMessage(with userName: String? = nil) {
         let hour = Calendar.current.component(.hour, from: Date())
         let greeting: String
-
+        
         switch hour {
         case 5..<12:
             greeting = "Good Morning"
@@ -218,9 +242,101 @@ extension HomeViewController {
         default:
             greeting = "Good Night"
         }
-
+        
         let nameToShow = (userName?.isEmpty == false) ? userName! : "User"
         messageLabel.text = "\(greeting) \(nameToShow)!"
     }
-
+    
+    func setupDatePickerUI() {
+        datePickerContainerView = UIView()
+        datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+        
+        datePickerContainerView.backgroundColor = .systemBackground
+        datePickerContainerView.layer.cornerRadius = 8
+        datePickerContainerView.layer.borderWidth = 1
+        datePickerContainerView.layer.borderColor = UIColor.lightGray.cgColor
+        datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        
+        datePickerContainerView.addSubview(datePicker)
+        view.addSubview(datePickerContainerView)
+        
+        NSLayoutConstraint.activate([
+            datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+            datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
+            datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor),
+            
+            datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            datePickerContainerView.widthAnchor.constraint(equalToConstant: 320),
+            datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
+        ])
+        
+        datePickerContainerView.isHidden = true
+    }
+    
+    func toggleDatePicker(for button: UIButton) {
+        activeButton = button
+        
+        if button.superview != nil {
+            let buttonFrame = button.convert(button.bounds, to: view)
+            let topAnchor = datePickerContainerView.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 8)
+            NSLayoutConstraint.deactivate(datePickerContainerView.constraints)
+            NSLayoutConstraint.activate([
+                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
+                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor),
+                datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                topAnchor,
+                datePickerContainerView.widthAnchor.constraint(equalToConstant: 320),
+                datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
+            ])
+        }
+        
+        datePickerContainerView.isHidden.toggle()
+    }
+    
+    @objc private func dateChanged(_ sender: UIDatePicker) {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        let selectedDate = formatter.string(from: sender.date)
+        activeButton?.setTitle(selectedDate, for: .normal)
+        datePickerContainerView.isHidden = true
+    }
+    
+    func configureDropdownMenu(for button: UIButton, options: [String]) {
+        let actions = options.map { option in
+            UIAction(title: option, handler: { [weak button] _ in
+                button?.setTitle(option, for: .normal)
+            })
+        }
+        
+        let menu = UIMenu(title: "Select City", options: .displayInline, children: actions)
+        
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+    }
+    
+    func startPromotionAutoScroll() {
+        promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            guard let self = self,
+                  let collectionView = self.promotionsCollectionView else { return }
+            
+            let currentOffset = collectionView.contentOffset.x
+            let contentWidth = collectionView.contentSize.width
+            let frameWidth = collectionView.frame.size.width
+            let nextOffset = currentOffset + frameWidth
+            
+            if nextOffset >= contentWidth {
+                collectionView.setContentOffset(.zero, animated: false)
+            } else {
+                let newOffset = CGPoint(x: nextOffset, y: 0)
+                collectionView.setContentOffset(newOffset, animated: true)
+            }
+        }
+    }
 }

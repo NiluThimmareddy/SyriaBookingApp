@@ -205,7 +205,7 @@ struct HotelResponse: Codable {
 
 struct Hotel: Codable {
     let id, name: String
-    let city: City
+    let city: String
     let shortDescription, description: String?
     let type: HotelType
     let starRating: Int
