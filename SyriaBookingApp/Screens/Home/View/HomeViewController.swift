@@ -74,6 +74,10 @@ class HomeViewController: UIViewController {
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
+        storyboard.navigationItem.title = "Hotel List"
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
         self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
@@ -200,7 +204,6 @@ extension HomeViewController {
         
         topHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
         if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            
             topHotelsLayout.estimatedItemSize = .zero
         }
         recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")

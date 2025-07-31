@@ -10,12 +10,38 @@ import UIKit
 class HotelListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var viewModel = HotelViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+    }
+    
+    @IBAction func filterButtonAction(_ sender: Any) {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "FilterOptionsViewController") as? FilterOptionsViewController else { return }
+
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [
+                .custom { context in
+                    return context.maximumDetentValue * 0.83
+                }
+            ]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                sheet.largestUndimmedDetentIdentifier = .medium
+                controller.preferredContentSize = CGSize(
+                    width: UIScreen.main.bounds.width,
+                    height: UIScreen.main.bounds.height * 0.6
+                )
+            }
+        }
+
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
     }
     
 }
