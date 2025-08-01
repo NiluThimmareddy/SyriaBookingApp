@@ -52,12 +52,49 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
+
+        sender.isEnabled = false
+        let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
+        let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+//        menuVC.btnMenu = sender
+        
+        self.view.addSubview(menuVC.view)
+        self.addChild(menuVC)
+        self.navigationController?.navigationBar.isHidden = true
+        menuVC.view.layoutIfNeeded()
+        menuVC.view.frame=CGRect(x: 0 - UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            menuVC.view.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
+            sender.isEnabled = true
+        }, completion:nil)
     }
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
     }
     
     @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
+        
+            let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
+            if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
+                controller.modalPresentationStyle = .popover
+                controller.navnController = self.navigationController
+                controller.contentSize = CGSize(width: 230.0, height: (58.0 * Double((controller.menuArray.count))))
+                controller.sourceView = self.view
+                controller.barbuttonItem = sender
+                
+                if let popoverPresentationController = controller.popoverPresentationController {
+                            popoverPresentationController.delegate = controller
+                            popoverPresentationController.barButtonItem = sender
+                            popoverPresentationController.permittedArrowDirections = .any
+                            popoverPresentationController.sourceView = self.view
+                            controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
+                        }
+                
+                DispatchQueue.main.async {
+                    self.present(controller,animated: true, completion: nil)
+                }
+            }
+        
     }
     
     @IBAction func selectCityButtonAction(_ sender: Any) {
