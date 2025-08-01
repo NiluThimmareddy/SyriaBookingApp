@@ -28,7 +28,11 @@ class LeftMenuViewController: UIViewController {
                 self.view.removeFromSuperview()
                 self.removeFromParent()
             })
+        self.navigationController?.navigationBar.isHidden = false
         }
+    
+    
+  
  
 }
 

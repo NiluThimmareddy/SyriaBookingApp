@@ -97,8 +97,7 @@ class HomeViewController: UIViewController {
         
     }
     
-    @IBAction func selectCityButtonAction(_ sender: Any) {
-    }
+   
     
     @IBAction func checkInButtonAction(_ sender: Any) {
         toggleDatePicker(for: checkInButton)
@@ -111,6 +110,7 @@ class HomeViewController: UIViewController {
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
+        storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
         let backItem = UIBarButtonItem()
         backItem.title = ""
@@ -159,8 +159,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
-            let images = viewModel.filteredHotels[indexPath.row]
-            cell.configuration(with: images)
+//            let images = viewModel.filteredHotels[indexPath.row]
+//            cell.configuration(with: images)
             return cell
         }
     }

@@ -13,15 +13,35 @@ class HotelListViewController: UIViewController {
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var viewModel = HotelViewModel()
+    var selectedCity = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        
+        
+    }
+    
+    
+    func applyFilterOnHotels(){
+        guard let hotels = viewModel.Hotels else {
+            print("No Data")
+            return
+        }
+        
+        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City"{
+            viewModel.filteredHotels = hotels.data.filter { $0.city == selectedCity }
+            
+        } else {
+            viewModel.filteredHotels = hotels.data
+            
+        }
+        tableView.reloadData()
     }
     
     @IBAction func filterButtonAction(_ sender: Any) {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: "FilterOptionsViewController") as? FilterOptionsViewController else { return }
-
+        
         if let sheet = controller.sheetPresentationController {
             sheet.detents = [
                 .custom { context in
@@ -30,7 +50,7 @@ class HotelListViewController: UIViewController {
             ]
             sheet.prefersGrabberVisible = true
             sheet.preferredCornerRadius = 20
-
+            
             if UIDevice.current.userInterfaceIdiom == .pad {
                 sheet.largestUndimmedDetentIdentifier = .medium
                 controller.preferredContentSize = CGSize(
@@ -39,7 +59,7 @@ class HotelListViewController: UIViewController {
                 )
             }
         }
-
+        
         controller.modalPresentationStyle = .pageSheet
         present(controller, animated: true)
     }
@@ -62,26 +82,15 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 250
     }
-
+    
 }
 
 extension HotelListViewController {
     func setUpUI() {
         
         tableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
-        
-        viewModel.onDataLoaded = { [weak self]  in
-            DispatchQueue.main.async {
-                self?.hideLoader()
-                self?.tableView.reloadData()
-            }
-        }
-        
-        viewModel.onError = { [weak self] error in
-            DispatchQueue.main.async {
-                self?.hideLoader()
-            }
-        }
-        viewModel.fetchHotels()
+           
+                self.applyFilterOnHotels()
+
     }
 }
