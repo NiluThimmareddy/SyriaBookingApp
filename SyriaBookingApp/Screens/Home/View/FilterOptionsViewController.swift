@@ -5,6 +5,9 @@
 //  Created by ToqSoft on 17/06/25.
 //
 
+protocol ApplyFilterDelegate {
+    func applyFilter(filterdHotels : [Hotel])
+}
 
 import UIKit
 
@@ -20,6 +23,11 @@ class FilterOptionsViewController : UIViewController {
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var seeResultButton: UIButton!
     
+    var hotelType : [String]?
+    var starRating : [String]?
+    var reviewScore : [String]?
+   // var FilterHotelCompletion : [Hotel] -> () = { _ in }
+    var delegate : ApplyFilterDelegate?
     
     var selectedOptionsList : [String] = []
     
@@ -37,6 +45,14 @@ class FilterOptionsViewController : UIViewController {
     }
     
     @IBAction func seeResultButtonAction(_ sender: Any) {
+        applyFilter { result in
+            if let delegate = self.delegate {
+                delegate.applyFilter(filterdHotels: result)
+            }
+            
+            self.dismiss(animated: true)
+        }
+    
     }
     
     @IBAction func hotelTypeButtonAction(_ sender: UIButton) {
@@ -65,12 +81,20 @@ class FilterOptionsViewController : UIViewController {
         
         if let title = sender.titleLabel?.text {
             if sender.isSelected {
+                if title == "All"{
+                    for button in hotelTypesButton {
+                        button.isSelected = true
+                        button.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+                    }
+                }
                 selectedOptionsList.append(title)
             } else {
                 selectedOptionsList.removeAll { $0 == title }
             }
         }
         
+       
+        self.hotelType = selectedOptionsList
         print("Selected options: \(selectedOptionsList)")
     }
     
@@ -98,13 +122,15 @@ class FilterOptionsViewController : UIViewController {
             )
         }
         
-        if let title = sender.titleLabel?.text {
+      
             if sender.isSelected {
-                selectedOptionsList.append(title)
+                selectedOptionsList.append("\(sender.tag)")
             } else {
                 selectedOptionsList.removeAll { $0 == title }
             }
-        }
+        
+         
+        starRating = selectedOptionsList
         
         print("Selected options: \(selectedOptionsList)")
     }
@@ -133,15 +159,41 @@ class FilterOptionsViewController : UIViewController {
             )
         }
         
-        if let title = sender.titleLabel?.text {
+       
             if sender.isSelected {
-                selectedOptionsList.append(title)
+                selectedOptionsList.append("\(sender.tag)")
             } else {
                 selectedOptionsList.removeAll { $0 == title }
             }
-        }
+        
+        
+        reviewScore = selectedOptionsList
         print("Selected options: \(selectedOptionsList)")
     }
+    
+   
+
+    func applyFilter(completion: @escaping ([Hotel]) -> Void) {
+        let filteredHotels = HotelDataMaganer.shared.allHotels.filter { hotel in
+            let type = hotel.type.rawValue.lowercased()
+            let star = String(hotel.starRating)
+            let review = String(hotel.reviewCount)
+
+            
+            let typeMatch = hotelType?.isEmpty == false ? hotelType!.contains(type) : true
+            let starMatch = starRating?.isEmpty == false ? starRating!.contains(star) : true
+            let reviewMatch = reviewScore?.isEmpty == false ? reviewScore!.contains(review) : true
+
+            return typeMatch && starMatch && reviewMatch
+        }
+
+        print("Filtered \(filteredHotels.count) hotels out of \(HotelDataMaganer.shared.allHotels.count)")
+        completion(filteredHotels)
+    }
+
+
+
+
     
 }
 

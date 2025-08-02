@@ -7,7 +7,9 @@
 
 import UIKit
 
-class HotelListViewController: UIViewController {
+class HotelListViewController: UIViewController, ApplyFilterDelegate {
+    
+    
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
@@ -17,6 +19,7 @@ class HotelListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         setUpUI()
         
         
@@ -24,19 +27,28 @@ class HotelListViewController: UIViewController {
     
     
     func applyFilterOnHotels(){
-        guard let hotels = viewModel.Hotels else {
+        guard let hotels = viewModel.Hotels?.data else {
             print("No Data")
             return
         }
         
         if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City"{
-            viewModel.filteredHotels = hotels.data.filter { $0.city == selectedCity }
+            viewModel.filteredHotels = hotels.filter { $0.city == selectedCity }
             
         } else {
-            viewModel.filteredHotels = hotels.data
+            viewModel.filteredHotels = hotels
             
         }
+        
         tableView.reloadData()
+    }
+    
+    func applyFilter(filterdHotels: [Hotel]) {
+        viewModel.filteredHotels = filterdHotels
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+
+        }
     }
     
     @IBAction func filterButtonAction(_ sender: Any) {
@@ -59,7 +71,7 @@ class HotelListViewController: UIViewController {
                 )
             }
         }
-        
+        controller.delegate  = self
         controller.modalPresentationStyle = .pageSheet
         present(controller, animated: true)
     }
@@ -87,7 +99,7 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
 
 extension HotelListViewController {
     func setUpUI() {
-        
+        viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
         tableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
            
                 self.applyFilterOnHotels()
