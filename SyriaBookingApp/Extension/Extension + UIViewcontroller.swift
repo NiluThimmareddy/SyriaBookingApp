@@ -48,6 +48,14 @@ extension UIViewController {
         self.view.viewWithTag(9999)?.removeFromSuperview()
         defaultActivityIndicator = nil
     }
+    
+    func hideNavigationBar(animated: Bool = true) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    func showNavigationBar(animated: Bool = true) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
 }
 
 //import Foundation

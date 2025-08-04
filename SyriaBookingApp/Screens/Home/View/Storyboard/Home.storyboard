@@ -2273,7 +2273,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GCL-51-GfG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7255.7251908396947" y="638.73239436619724"/>
+            <point key="canvasLocation" x="6034" y="687"/>
         </scene>
         <!--Custom Tab Bar Controller-->
         <scene sceneID="nSh-Ln-Nai">
@@ -2298,22 +2298,6 @@
             </objects>
             <point key="canvasLocation" x="1104.5801526717557" y="-35.211267605633807"/>
         </scene>
-        <!--Profile Page View Controller-->
-        <scene sceneID="4mu-2M-xSH">
-            <objects>
-                <viewController storyboardIdentifier="ProfilePageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2Uv-cn-XrP" customClass="ProfilePageViewController" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="1WY-8D-fFA">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="fVe-MF-CFI"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="szp-xp-Lj7"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JYf-Gg-ufI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5232.8244274809158" y="686.61971830985919"/>
-        </scene>
         <!--Bookings-->
         <scene sceneID="zYU-HX-Tnz">
             <objects>
@@ -2331,7 +2315,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pqa-TQ-zg0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="689" y="687"/>
+            <point key="canvasLocation" x="691" y="687"/>
         </scene>
         <!--Search-->
         <scene sceneID="V3t-je-g85">
@@ -2364,12 +2348,28 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="2Uv-cn-XrP" kind="relationship" relationship="rootViewController" id="mJ8-x7-iiq"/>
+                        <segue destination="J40-Vq-vKO" kind="relationship" relationship="rootViewController" id="kkn-pa-HEI"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jQY-Gb-Pzm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4306.1068702290077" y="686.61971830985919"/>
+        </scene>
+        <!--Profile Page View Controller-->
+        <scene sceneID="UzU-W2-qrG">
+            <objects>
+                <viewController storyboardIdentifier="ProfilePageViewController" id="J40-Vq-vKO" customClass="ProfilePageViewController" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4wP-oz-sJ9">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="jDq-cM-rtb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hRH-nT-Ie1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pA9-IU-UC2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5144" y="687"/>
         </scene>
         <!--My Bookings View Controller-->
         <scene sceneID="hWc-h7-5x0">
@@ -2379,7 +2379,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_home_image1" translatesAutoresizingMaskIntoConstraints="NO" id="Lj1-PC-FTy">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_home_image1" translatesAutoresizingMaskIntoConstraints="NO" id="Lj1-PC-FTy">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="XOb-6e-Uin">
@@ -2412,7 +2412,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Bookings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7b-Gt-8Vc">
-                                        <rect key="frame" x="65" y="2.6666666666666714" width="298" height="37.333333333333336"/>
+                                        <rect key="frame" x="65" y="2.6666666666666714" width="268" height="37.333333333333336"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2450,7 +2450,7 @@
                                     <constraint firstItem="V7b-Gt-8Vc" firstAttribute="top" secondItem="pyT-vD-Cf9" secondAttribute="top" constant="-5" id="fTg-tQ-AjD"/>
                                     <constraint firstAttribute="bottom" secondItem="V7b-Gt-8Vc" secondAttribute="bottom" constant="10" id="ntM-sF-S3n"/>
                                     <constraint firstItem="pyT-vD-Cf9" firstAttribute="leading" secondItem="tcV-Dy-ztE" secondAttribute="leading" constant="20" id="uXg-N0-UWb"/>
-                                    <constraint firstAttribute="trailing" secondItem="V7b-Gt-8Vc" secondAttribute="trailing" constant="30" id="vcV-nx-loQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="V7b-Gt-8Vc" secondAttribute="trailing" constant="60" id="vcV-nx-loQ"/>
                                     <constraint firstItem="u3l-Hl-vOp" firstAttribute="leading" secondItem="V7b-Gt-8Vc" secondAttribute="trailing" constant="10" id="yhv-TY-6rI"/>
                                 </constraints>
                                 <variation key="default">
@@ -2463,7 +2463,7 @@
                                 <rect key="frame" x="0.0" y="300" width="393" height="552"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JTD-if-doo">
-                                        <rect key="frame" x="20" y="50" width="353" height="502"/>
+                                        <rect key="frame" x="20" y="50" width="353" height="422"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
@@ -2474,7 +2474,7 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="JTD-if-doo" secondAttribute="bottom" id="5FU-U0-aH8"/>
+                                    <constraint firstAttribute="bottom" secondItem="JTD-if-doo" secondAttribute="bottom" constant="80" id="5FU-U0-aH8"/>
                                     <constraint firstItem="JTD-if-doo" firstAttribute="top" secondItem="9Ly-AC-UJN" secondAttribute="top" constant="50" id="aWt-pG-mSJ"/>
                                     <constraint firstItem="JTD-if-doo" firstAttribute="leading" secondItem="9Ly-AC-UJN" secondAttribute="leading" constant="20" id="jB3-IN-Zyk"/>
                                     <constraint firstAttribute="trailing" secondItem="JTD-if-doo" secondAttribute="trailing" constant="20" id="rs3-ci-aSd"/>

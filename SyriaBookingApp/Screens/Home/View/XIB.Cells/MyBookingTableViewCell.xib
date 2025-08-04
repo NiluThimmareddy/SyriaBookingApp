@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w2O-Ck-1jq">
-                        <rect key="frame" x="4" y="8" width="232.33333333333334" height="190"/>
+                        <rect key="frame" x="4.0000000000000142" y="8" width="248.33333333333337" height="190"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hotel_3" translatesAutoresizingMaskIntoConstraints="NO" id="SYX-tX-vOv">
                                 <rect key="frame" x="10" y="50" width="104" height="80"/>
@@ -33,7 +32,7 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotel Paradise" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MX9-mQ-iuS">
-                                <rect key="frame" x="124" y="50" width="98.333333333333314" height="17"/>
+                                <rect key="frame" x="124" y="50" width="114.33333333333331" height="17"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -41,19 +40,17 @@
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uzc-GF-ORA">
-                                <rect key="frame" x="127.33333333333334" y="12.666666666666668" width="85" height="25.000000000000004"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uzc-GF-ORA">
+                                <rect key="frame" x="138.33333333333334" y="12.666666666666668" width="90" height="25.000000000000004"/>
                                 <color key="backgroundColor" red="0.89019607840000003" green="0.94901960780000005" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="3lC-ik-yAh"/>
+                                    <constraint firstAttribute="width" constant="90" id="Taz-oE-NG8"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                 <color key="tintColor" red="0.074509803920000006" green="0.60086409559999998" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Active"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Confirmed">
-                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="12"/>
-                                </buttonConfiguration>
+                                <state key="normal" title="Confirmed"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="12.5"/>
@@ -64,7 +61,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Manali hills" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-bI-MKO">
-                                <rect key="frame" x="124" y="77" width="98.333333333333314" height="28.666666666666671"/>
+                                <rect key="frame" x="124" y="77" width="114.33333333333331" height="28.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -73,9 +70,8 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="$120" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufl-51-og1">
-                                <rect key="frame" x="124" y="115.66666666666667" width="98.333333333333314" height="14.333333333333329"/>
+                                <rect key="frame" x="124" y="115.66666666666667" width="114.33333333333331" height="14.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
-                                <color key="textColor" name="defaultColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
@@ -94,14 +90,14 @@
                                 </variation>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jf9-uT-q0j">
-                                <rect key="frame" x="0.0" y="140" width="232.33333333333334" height="1"/>
+                                <rect key="frame" x="0.0" y="140" width="248.33333333333334" height="1"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="HBI-lx-7Cl"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9sa-Qr-JXp">
-                                <rect key="frame" x="4" y="146" width="224.33333333333334" height="39"/>
+                                <rect key="frame" x="4" y="146" width="240.33333333333334" height="39"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chek-in : 03 Jul" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCo-c8-yKd">
                                         <rect key="frame" x="6" y="10" width="385" height="19"/>
@@ -139,6 +135,7 @@
                             <constraint firstAttribute="trailing" secondItem="9sa-Qr-JXp" secondAttribute="trailing" constant="4" id="WCs-Wk-Zuh"/>
                             <constraint firstAttribute="trailing" secondItem="Jf9-uT-q0j" secondAttribute="trailing" id="X8I-Pg-rLa"/>
                             <constraint firstItem="49J-Bc-leF" firstAttribute="top" secondItem="w2O-Ck-1jq" secondAttribute="top" constant="10" id="XfK-zm-8b5"/>
+                            <constraint firstItem="Uzc-GF-ORA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="49J-Bc-leF" secondAttribute="trailing" constant="10" id="ava-dy-0Gl"/>
                             <constraint firstItem="ufl-51-og1" firstAttribute="bottom" secondItem="SYX-tX-vOv" secondAttribute="bottom" id="fAK-RR-8Qv"/>
                             <constraint firstItem="wjw-1P-DfR" firstAttribute="trailing" secondItem="ufl-51-og1" secondAttribute="trailing" id="fhD-q3-la5"/>
                             <constraint firstAttribute="trailing" secondItem="Uzc-GF-ORA" secondAttribute="trailing" constant="20" id="gBM-NE-DBh"/>
@@ -185,9 +182,6 @@
     </objects>
     <resources>
         <image name="hotel_3" width="1000" height="667"/>
-        <namedColor name="defaultColor">
-            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

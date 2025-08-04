@@ -36,7 +36,6 @@ extension UILabel {
     }
 }
 
-
 extension UIColor {
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -54,5 +53,3 @@ extension UIColor {
         self.init(red: r, green: g, blue: b, alpha: a)
     }
 }
-
-
