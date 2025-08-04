@@ -23,7 +23,7 @@ class RightMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        rightMenuTableView.applyCardStyle()
     }
   
 

@@ -6,9 +6,8 @@
 //
 import Foundation
 import UIKit
+
 extension UIView {
-    
-    
     
     @IBInspectable var borderWidth: CGFloat {
         get { return layer.borderWidth }
@@ -43,9 +42,9 @@ extension UIView {
     func addTopShadow() {
         self.layer.masksToBounds = false
         self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.2
+        self.layer.shadowOpacity = 0.1
         self.layer.shadowOffset = CGSize(width: 0, height: -3)
-        self.layer.shadowRadius = 4
+        self.layer.shadowRadius = 3
     }
     
     func addBottomShadow() {
@@ -99,21 +98,13 @@ extension UIView {
     
     func applyTopRightLightGreenGradient() {
         let gradientLayer = CAGradientLayer()
-        
-        let size: CGFloat = 40
-        gradientLayer.frame = CGRect(x: self.bounds.width - size, y: 0, width: size, height: 10)
-        
+        gradientLayer.frame = self.bounds
         gradientLayer.colors = [
-            UIColor.white.cgColor,
-            UIColor(red: 0.87, green: 1.0, blue: 0.88, alpha: 1).cgColor
-            
+            UIColor(red: 0.87, green: 1.0, blue: 0.88, alpha: 1).cgColor,
+            UIColor.white.cgColor
         ]
-        //        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.1)
-        //        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
-        
-        
-        gradientLayer.startPoint = CGPoint(x : 1, y : 0)  // left-center
-        gradientLayer.endPoint = CGPoint(x: 0, y : 1)    // right-center
+        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         gradientLayer.cornerRadius = self.layer.cornerRadius
         self.layer.masksToBounds = true
         self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })

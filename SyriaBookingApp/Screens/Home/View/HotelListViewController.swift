@@ -101,8 +101,7 @@ extension HotelListViewController {
     func setUpUI() {
         viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
         tableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
-           
-                self.applyFilterOnHotels()
-
+        tableView.addTopShadow()
+        self.applyFilterOnHotels()
     }
 }
