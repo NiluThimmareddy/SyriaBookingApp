@@ -95,6 +95,17 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
         return 250
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+        let selectedHotel = viewModel.filteredHotels[indexPath.row]
+        vc.selectedHotel = selectedHotel
+        vc.navigationItem.title = "Hotel Details"
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
 extension HotelListViewController {

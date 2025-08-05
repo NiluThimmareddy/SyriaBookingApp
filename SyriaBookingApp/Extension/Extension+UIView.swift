@@ -130,4 +130,48 @@ extension UIView {
         }
         layer.addSublayer(border)
     }
+    
+    func startPulseShimmerr() {
+        let pulse = CABasicAnimation(keyPath: "opacity")
+        pulse.duration = 0.8
+        pulse.fromValue = 0.5
+        pulse.toValue = 1
+        pulse.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        pulse.autoreverses = true
+        pulse.repeatCount = .infinity
+        self.layer.add(pulse, forKey: "pulseShimmer")
+    }
+    
+    func stopPulseShimmer() {
+        self.layer.removeAnimation(forKey: "pulseShimmer")
+    }
+    
+    func startPulseShimmer() {
+        stopShimmering()
+        
+        let lightGray = UIColor.systemGray4.cgColor
+        let white = UIColor.white.withAlphaComponent(0.6).cgColor
+        
+        let gradient = CAGradientLayer()
+        gradient.colors = [lightGray, white, lightGray]
+        gradient.locations = [0, 0.5, 1]
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        gradient.frame = self.bounds
+        gradient.name = "pulseShimmerLayer"
+        
+        let animation = CABasicAnimation(keyPath: "locations")
+        animation.fromValue = [-1, -0.2, 0.2]
+        animation.toValue = [0.8, 1.2, 2]
+        animation.duration = 0.8 // faster pulse
+        animation.repeatCount = .infinity
+        
+        gradient.add(animation, forKey: "pulseShimmer")
+        self.layer.mask = gradient
+    }
+    
+    func stopShimmering() {
+        self.layer.mask = nil
+        self.layer.sublayers?.removeAll { $0.name == "pulseShimmerLayer" }
+    }
 }

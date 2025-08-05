@@ -133,6 +133,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         datePicker.preferredDatePickerStyle = .inline
         datePicker.maximumDate = Date()
         datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+        datePicker.backgroundColor = .white
         
         let calendarButton = UIButton(type: .system)
         calendarButton.setImage(UIImage(systemName: "calendar"), for: .normal)
