@@ -24,6 +24,11 @@ class HotelDetailsViewController : UIViewController {
     @IBOutlet weak var verticalStackview: UIStackView!
     @IBOutlet weak var horizontalStackView: UIStackView!
     @IBOutlet weak var facilitiesViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var availabilityRoomsView: UIView!
+    @IBOutlet weak var availabilityButton: UIButton!
+    @IBOutlet weak var roomsAvailabilityCollectionView: UICollectionView!
+    @IBOutlet weak var availabilityRoomsViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var roomsCollectionViewHeightConstraint: NSLayoutConstraint!
     
     var selectedHotel: Hotel?
     let imageCache = NSCache<NSString, UIImage>()
@@ -64,6 +69,9 @@ class HotelDetailsViewController : UIViewController {
         }
     }
 
+    @IBAction func availabilityButtonAction(_ sender: Any) {
+    }
+    
 }
 
 extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -209,7 +217,7 @@ extension HotelDetailsViewController {
         
         for amenity in amenitiesArray {
             let label = createAmenityLabel(title: amenity)
-            let labelWidth = label.intrinsicContentSize.width + 20 
+            let labelWidth = label.intrinsicContentSize.width + 20
             
             if currentRowWidth + labelWidth > maxRowWidth {
                 currentRow = createHorizontalStack()

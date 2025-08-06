@@ -174,4 +174,49 @@ extension UIView {
         self.layer.mask = nil
         self.layer.sublayers?.removeAll { $0.name == "pulseShimmerLayer" }
     }
+    
+    var firstResponder: UIView? {
+        if self.isFirstResponder { return self }
+        for subview in self.subviews {
+            if let responder = subview.firstResponder {
+                return responder
+            }
+        }
+        return nil
+    }
+    
+    func BackViewShadow(){
+        self.layer.shadowOpacity = 0.0
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 0
+        self.layer.cornerRadius = 10
+        self.layer.shadowColor = UIColor.darkGray.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.layer.shadowRadius = 4
+        self.layer.masksToBounds = false
+    }
+    
+    func backViewBlackShadow(backgroundColor: UIColor = .white,
+                             shadowColor: UIColor = .black,
+                             shadowOpacity: Float = 0.5,
+                             shadowOffset: CGSize = CGSize(width: 0, height: 1),
+                             shadowRadius: CGFloat = 3) {
+        self.backgroundColor = backgroundColor
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = shadowColor.cgColor
+        self.layer.shadowOpacity = shadowOpacity
+        self.layer.shadowOffset = shadowOffset
+        self.layer.shadowRadius = shadowRadius
+    }
+    
+    func BackViewShadowAppyManually(cornerRadius: CGFloat) {
+        self.layer.cornerRadius = cornerRadius
+        self.layer.shadowColor = UIColor.darkGray.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.layer.shadowRadius = 4
+        self.layer.masksToBounds = false
+    }
+    
 }
