@@ -2162,7 +2162,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fyh-Dz-Tbg">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1178.6666666666667"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Urb-GJ-cc5">
                                                 <rect key="frame" x="5" y="5" width="383" height="250"/>
@@ -2341,7 +2341,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4HZ-RH-lhi">
-                                                <rect key="frame" x="20" y="584" width="353" height="59"/>
+                                                <rect key="frame" x="20" y="584" width="353" height="444.66666666666674"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availability" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sW-V9-2b7">
                                                         <rect key="frame" x="10" y="10" width="77.333333333333329" height="18"/>
@@ -2365,10 +2365,10 @@
                                                         </connections>
                                                     </button>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bt8-hj-xNW">
-                                                        <rect key="frame" x="10" y="36.666666666666629" width="333" height="17.333333333333329"/>
+                                                        <rect key="frame" x="10" y="36.666666666666629" width="333" height="403"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="Dxy-4p-9WU"/>
+                                                            <constraint firstAttribute="height" constant="403" id="Dxy-4p-9WU"/>
                                                         </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eR0-3N-Jg7">
                                                             <size key="itemSize" width="128" height="128"/>
@@ -2377,6 +2377,10 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells/>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="lz0-W5-8PM" id="dj7-Ip-UqT"/>
+                                                            <outlet property="delegate" destination="lz0-W5-8PM" id="dTP-N1-lYD"/>
+                                                        </connections>
                                                     </collectionView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>

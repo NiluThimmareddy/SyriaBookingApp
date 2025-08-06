@@ -76,68 +76,83 @@ class HotelDetailsViewController : UIViewController {
 
 extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let hotel = selectedHotel else { return 0 }
-        let imageCount = hotel.images.count
-        return Int(ceil(Double(imageCount) / 5.0))
+        if collectionView == hotelImagesCollectionView {
+            guard let hotel = selectedHotel else { return 0 }
+            let imageCount = hotel.images.count
+            return Int(ceil(Double(imageCount) / 5.0))
+        } else {
+            return selectedHotel?.rooms.count ?? 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsPageHotelImagesCVC", for: indexPath) as! DetailsPageHotelImagesCVC
+        if collectionView == hotelImagesCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsPageHotelImagesCVC", for: indexPath) as! DetailsPageHotelImagesCVC
 
-        guard let hotel = selectedHotel else { return cell }
-        let images = hotel.images
-        let startIndex = indexPath.row * 5
-        let endIndex = min(startIndex + 5, images.count)
-        let imagesToShow = Array(images[startIndex..<endIndex])
+            guard let hotel = selectedHotel else { return cell }
+            let images = hotel.images
+            let startIndex = indexPath.row * 5
+            let endIndex = min(startIndex + 5, images.count)
+            let imagesToShow = Array(images[startIndex..<endIndex])
 
-        let imageViews = [
-            cell.hotelImageOne,
-            cell.hotelImageTwo,
-            cell.hotelImageThree,
-            cell.hotelImageFour,
-            cell.hotelImageFive
-        ]
+            let imageViews = [
+                cell.hotelImageOne,
+                cell.hotelImageTwo,
+                cell.hotelImageThree,
+                cell.hotelImageFour,
+                cell.hotelImageFive
+            ]
 
-        for imageView in imageViews {
-            imageView?.image = nil
-            imageView?.stopShimmering()
-        }
+            for imageView in imageViews {
+                imageView?.image = nil
+                imageView?.stopShimmering()
+            }
 
-        cell.countLabel.isHidden = true
-        cell.shadowView.isHidden = imagesToShow.count < 5
-        cell.shadowViewButton.isHidden = imagesToShow.count < 5
+            cell.countLabel.isHidden = true
+            cell.shadowView.isHidden = imagesToShow.count < 5
+            cell.shadowViewButton.isHidden = imagesToShow.count < 5
 
-        for (i, imageView) in imageViews.enumerated() {
-            if i < imagesToShow.count {
-                let imageUrl = imagesToShow[i]
-                if let cachedImage = imageCache.object(forKey: imageUrl as NSString) {
-                    imageView?.image = cachedImage
-                } else {
-                    imageView?.image = nil
-                    imageView?.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
-                    imageView?.startPulseShimmer()
-                    loadImage(from: imageUrl, into: imageView!) {
-                        imageView?.stopShimmering()
-                        imageView?.backgroundColor = .clear
+            for (i, imageView) in imageViews.enumerated() {
+                if i < imagesToShow.count {
+                    let imageUrl = imagesToShow[i]
+                    if let cachedImage = imageCache.object(forKey: imageUrl as NSString) {
+                        imageView?.image = cachedImage
+                    } else {
+                        imageView?.image = nil
+                        imageView?.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+                        imageView?.startPulseShimmer()
+                        loadImage(from: imageUrl, into: imageView!) {
+                            imageView?.stopShimmering()
+                            imageView?.backgroundColor = .clear
+                        }
                     }
                 }
             }
-        }
 
-        if imagesToShow.count == 5 {
-            let remaining = images.count - (startIndex + 5)
-            if remaining > 0 {
-                cell.countLabel.isHidden = false
-                cell.countLabel.text = "+\(remaining)"
+            if imagesToShow.count == 5 {
+                let remaining = images.count - (startIndex + 5)
+                if remaining > 0 {
+                    cell.countLabel.isHidden = false
+                    cell.countLabel.text = "+\(remaining)"
+                }
             }
-        }
 
-        return cell
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
+            let rooms = (selectedHotel?.rooms[indexPath.row])!
+            cell.configure(with: rooms)
+            return cell
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let totalWidth = collectionView.bounds.width
-        return CGSize(width: totalWidth, height: totalWidth * 0.75)
+        if collectionView == hotelImagesCollectionView {
+            let totalWidth = collectionView.bounds.width
+            return CGSize(width: totalWidth, height: totalWidth * 0.75)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        }
     }
     
     func loadImage(from urlString: String, into imageView: UIImageView, completion: @escaping () -> Void) {
@@ -165,6 +180,12 @@ extension HotelDetailsViewController {
     func setUpUI() {
         hotelImagesCollectionView.register(UINib(nibName: "DetailsPageHotelImagesCVC", bundle: nil), forCellWithReuseIdentifier: "DetailsPageHotelImagesCVC")
         hotelImagesCollectionView.reloadData()
+        
+        roomsAvailabilityCollectionView.register(UINib(nibName: "AvailabilityRoomsCVC", bundle: nil), forCellWithReuseIdentifier: "AvailabilityRoomsCVC")
+        if let layouts = roomsAvailabilityCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layouts.estimatedItemSize = .zero
+        }
+        roomsAvailabilityCollectionView.reloadData()
 
         guard let hotel = selectedHotel else { return }
 
