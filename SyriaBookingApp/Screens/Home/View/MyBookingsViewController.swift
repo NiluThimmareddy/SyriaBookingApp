@@ -26,18 +26,16 @@ class MyBookingsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        hideNavigationBar()
+        hideNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        showNavigationBar()
+        showNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let topColor = UIColor(hex: "#B4C6DF")
-        let bottomColor = UIColor.white
-        gradientView.applyVerticalGradient(fromColor: topColor, toColor: bottomColor)
+        gradientView.applyTopRightLightGreenGradient()
     }
     
     @IBAction func backButtonAction(_ sender: Any) {
@@ -62,9 +60,7 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
         let hotel = viewModel.filteredHotels[indexPath.row]
-//        let rooms = viewModel.allRooms.filter { $0.hotelId == hotel.HotelId }
-//        let cheapestRoom = rooms.min(by: { $0.basePrice < $1.basePrice })
-//        cell.configure(with: hotel, room: cheapestRoom)
+        cell.configure(with: hotel)
         
         switch selectedSegmentIndex {
         case 1:
@@ -103,12 +99,12 @@ extension MyBookingsViewController {
         segmentControl.setTitleTextAttributes(normalAttributes, for: .normal)
         segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
         segmentControl.layer.backgroundColor = UIColor.white.cgColor
+        segmentControl.selectedSegmentTintColor = UIColor.black
         segmentControl.addBottomShadow()
         
-//        viewModel.fetchHotels {
-//            DispatchQueue.main.async {
-//                self.HistoryTableView.reloadData()
-//            }
-//        }
+        viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
+        DispatchQueue.main.async {
+            self.HistoryTableView.reloadData()
+        }
     }
 }

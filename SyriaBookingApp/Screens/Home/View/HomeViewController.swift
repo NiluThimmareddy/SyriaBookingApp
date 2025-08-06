@@ -50,16 +50,17 @@ class HomeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         searchView.applyCardStyle()
+        gradientView.applyTopRightLightGreenGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
     }
     
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
-
+        
         sender.isEnabled = false
         let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
         let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
-//        menuVC.btnMenu = sender
+        //        menuVC.btnMenu = sender
         
         self.view.addSubview(menuVC.view)
         self.addChild(menuVC)
@@ -73,34 +74,56 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
+        let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+        
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [
+                .custom { context in context.maximumDetentValue * 0.3 },
+                .large()
+            ]
+            sheet.selectedDetentIdentifier = .medium
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                sheet.largestUndimmedDetentIdentifier = .medium
+                controller.preferredContentSize = CGSize(
+                    width: UIScreen.main.bounds.width,
+                    height: UIScreen.main.bounds.height * 0.6
+                )
+            }
+        }
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
     }
     
     @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
         
-            let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
-                controller.modalPresentationStyle = .popover
-                controller.navnController = self.navigationController
-                controller.contentSize = CGSize(width: 230.0, height: (51.0 * Double((controller.menuArray.count))))
-                controller.sourceView = self.view
-                controller.barbuttonItem = sender
-                
-                if let popoverPresentationController = controller.popoverPresentationController {
-                            popoverPresentationController.delegate = controller
-                            popoverPresentationController.barButtonItem = sender
-                            popoverPresentationController.permittedArrowDirections = .any
-                            popoverPresentationController.sourceView = self.view
-                            controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
-                        }
-                
-                DispatchQueue.main.async {
-                    self.present(controller,animated: true, completion: nil)
-                }
+        let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
+            controller.modalPresentationStyle = .popover
+            controller.navnController = self.navigationController
+            controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
+            controller.sourceView = self.view
+            controller.barbuttonItem = sender
+            
+            if let popoverPresentationController = controller.popoverPresentationController {
+                popoverPresentationController.delegate = controller
+                popoverPresentationController.barButtonItem = sender
+                popoverPresentationController.permittedArrowDirections = .any
+                popoverPresentationController.sourceView = self.view
+                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
             }
+            
+            DispatchQueue.main.async {
+                self.present(controller,animated: true, completion: nil)
+            }
+        }
         
     }
     
-   
+    
     
     @IBAction func checkInButtonAction(_ sender: Any) {
         toggleDatePicker(for: checkInButton)
@@ -162,77 +185,51 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
-//            let images = viewModel.filteredHotels[indexPath.row]
-//            cell.configuration(with: images)
+            //            let images = viewModel.filteredHotels[indexPath.row]
+            //            cell.configuration(with: images)
             return cell
         }
     }
-//    
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        
-//        if collectionView == topHotelsCollectionView {
-//            let layout = collectionViewLayout as! UICollectionViewFlowLayout
-//            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-//            let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
-//            let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
-//            let availableWidth = collectionView.bounds.width - spacing
-//            let widthPerItem = availableWidth / numberOfItemsPerRow
-//            let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
-//            return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
-//        } else if collectionView == recentlyCollectionView {
-//            let itemWidth = collectionView.frame.width * 0.3
-//            let itemHeight = collectionView.frame.height
-//            return CGSize(width: itemWidth, height: itemHeight)
-//        } else if collectionView == propertyTypeCollectionView {
-//            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-//            let itemsPerRow: CGFloat = isIpad ? 5 : (1 / 0.35)
-//            let spacing: CGFloat = 10
-//            let totalSpacing = spacing * (itemsPerRow - 1)
-//            let itemWidth = (collectionView.frame.width - totalSpacing) / itemsPerRow
-//            let itemHeight = collectionView.frame.height
-//            return CGSize(width: itemWidth, height: itemHeight)
-//        } else {
-////            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-////            let widthMultiplier: CGFloat = isIpad ? 0.49 : 0.9
-//            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-//        }
-//        
-//    }
     
     func collectionView(_ collectionView: UICollectionView,
-                            layout collectionViewLayout: UICollectionViewLayout,
-                            sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if collectionView == topHotelsCollectionView {
+            let layout = collectionViewLayout as! UICollectionViewFlowLayout
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
+            let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+            let availableWidth = collectionView.bounds.width - spacing
+            let widthPerItem = availableWidth / numberOfItemsPerRow
+            let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
+            return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
+        } else if collectionView == recentlyCollectionView {
+            let itemWidth = collectionView.frame.width * 0.3
+            let itemHeight = collectionView.frame.height
+            return CGSize(width: itemWidth, height: itemHeight)
+        } else if collectionView == propertyTypeCollectionView {
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let itemsPerRow: CGFloat = isIpad ? 5 : (1 / 0.35)
+            let spacing: CGFloat = 10
+            let totalSpacing = spacing * (itemsPerRow - 1)
+            let itemWidth = (collectionView.frame.width - totalSpacing) / itemsPerRow
+            let itemHeight = collectionView.frame.height
+            return CGSize(width: itemWidth, height: itemHeight)
+        } else if collectionView == promotionsCollectionView {
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let fullWidth = collectionView.bounds.width
+            let fullHeight = collectionView.bounds.height
             
-            if collectionView == topHotelsCollectionView {
-                let layout = collectionViewLayout as! UICollectionViewFlowLayout
-                let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-                let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
-                let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
-                let availableWidth = collectionView.bounds.width - spacing
-                let widthPerItem = availableWidth / numberOfItemsPerRow
-                let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
-                return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
-            } else if collectionView == recentlyCollectionView {
-                let itemWidth = collectionView.frame.width * 0.3
-                let itemHeight = collectionView.frame.height
-                return CGSize(width: itemWidth, height: itemHeight)
-            } else if collectionView == propertyTypeCollectionView {
-                let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-                let itemsPerRow: CGFloat = isIpad ? 5 : (1 / 0.35)
-                let spacing: CGFloat = 10
-                let totalSpacing = spacing * (itemsPerRow - 1)
-                let itemWidth = (collectionView.frame.width - totalSpacing) / itemsPerRow
-                let itemHeight = collectionView.frame.height
-                return CGSize(width: itemWidth, height: itemHeight)
-            } else {
-    //            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
-    //            let widthMultiplier: CGFloat = isIpad ? 0.49 : 0.9
-                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-            }
+            let width = isIpad ? (fullWidth / 2) : fullWidth
+            let height = fullHeight
             
+            return CGSize(width: width, height: height)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
+        
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == propertyTypeCollectionView {
@@ -292,7 +289,7 @@ extension HomeViewController {
         }
         
         promotionsCollectionView.register(UINib(nibName: "PromotionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PromotionsCollectionViewCell")
-        if let promotionsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let promotionsLayout = promotionsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             promotionsLayout.scrollDirection = .horizontal
             promotionsLayout.estimatedItemSize = .zero
         }

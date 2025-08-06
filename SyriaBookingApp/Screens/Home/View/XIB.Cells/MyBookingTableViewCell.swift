@@ -33,32 +33,37 @@ class MyBookingTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(with hotel : Hotel) {
-//        let Intrating = Int(hotel.StarRating ?? 0.0)
-//        
-//        let hotelNameAttribute = NSMutableAttributedString(
-//            string: "\(hotel.HotelName + " ")",
-//            attributes: [.foregroundColor: UIColor.label]
-//        )
-//        
-//        if Intrating > 0 && Intrating <= 5{
-//            let stars = String(repeating: "★", count: Intrating)
-//            let starAttributedString = NSAttributedString(
-//                string : stars,
-//                attributes: [.foregroundColor: UIColor.systemYellow]
-//            )
-//            
-//            hotelNameAttribute.append(starAttributedString)
-//        }
-//        hotelNameLabel.attributedText = hotelNameAttribute
-//        
-//        if let room = room {
-//            priceLabel.text = "$\(room.basePrice)"
-//        } else {
-//            priceLabel.text = "N/A"
-//        }
+    func configure(with hotel: Hotel) {
+        
+        if let firstImageURL = hotel.images.first, !firstImageURL.isEmpty {
+            hotelImageView.loadImage(from: firstImageURL)
+        } else {
+            hotelImageView.loadImage(from: hotel.coverImageURL)
+        }
+        
+        if let intrating = Int(hotel.averageRating), intrating > 0, intrating <= 5 {
+            let hotelNameAttribute = NSMutableAttributedString(
+                string: "\(hotel.name) ",
+                attributes: [.foregroundColor: UIColor.label]
+            )
+            
+            let stars = String(repeating: "★", count: intrating)
+            let starAttributedString = NSAttributedString(
+                string: stars,
+                attributes: [.foregroundColor: UIColor.systemYellow]
+            )
+            
+            hotelNameAttribute.append(starAttributedString)
+            hotelNameLabel.attributedText = hotelNameAttribute
+        } else {
+            hotelNameLabel.text = hotel.name
+        }
+        priceLabel.text = "$\(hotel.minRoomPrice)"
+        orderIdLabel.text = hotel.id
+        hotelAddressLabel.text = hotel.city
     }
-//    
+
+ 
     @IBAction func statusButtonAction(_ sender: Any) {
     }
 }
