@@ -6,6 +6,8 @@
 //
 
 import UIKit
+//import Reachability
+
 
 class HomeViewController: UIViewController {
     
@@ -247,6 +249,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 
 extension HomeViewController {
     func setupUI() {
+     
+        rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
