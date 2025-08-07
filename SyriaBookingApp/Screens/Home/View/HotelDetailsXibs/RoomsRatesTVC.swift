@@ -24,7 +24,7 @@ class RoomsRatesTVC : UITableViewCell {
     
     func configure(with rooms: Rate) {
         let notes = rooms.notes ?? "No notes"
-        roomPriceLabel.text = "\(rooms.price): \(notes)"
+        roomPriceLabel.text = "$\(rooms.price): \(notes)"
     }
 
 }

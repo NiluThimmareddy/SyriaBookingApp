@@ -19,6 +19,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
     @IBOutlet weak var amenitiesLabel: UILabel!
     @IBOutlet weak var roomRatesTableview: UITableView!
     @IBOutlet weak var bookNowButton: UIButton!
+    @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
     
     var selectedRoom: RoomElement?
     
@@ -44,7 +45,6 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: roomRate)
         return cell
     }
-
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
@@ -54,11 +54,17 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
 extension AvailabilityRoomsCVC {
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
+        roomImageView.applyCardStyle()
     }
     
     func configure(with rooms: RoomElement) {
         self.selectedRoom = rooms
         roomRatesTableview.reloadData()
+        
+        let rateCount = rooms.rates.count
+        let rowHeight: CGFloat = 40
+        roomRatesTableviewheightConstraint.constant = CGFloat(rateCount) * rowHeight
+        self.layoutIfNeeded()
 
         if let imageUrlString = rooms.coverImage, !imageUrlString.isEmpty {
             roomImageView.loadImage(from: imageUrlString)
