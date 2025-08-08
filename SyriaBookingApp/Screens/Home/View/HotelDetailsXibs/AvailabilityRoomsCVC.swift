@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol AvailabilityRoomsCVCDelegate: AnyObject {
+    func didTapBookNow(for room: RoomElement)
+}
+
 class AvailabilityRoomsCVC : UICollectionViewCell {
 
     @IBOutlet weak var backView: UIView!
@@ -22,6 +26,8 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
     @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
     
     var selectedRoom: RoomElement?
+    weak var delegate: AvailabilityRoomsCVCDelegate?
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,7 +35,10 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
     }
 
     @IBAction func bookNowButtonAction(_ sender: Any) {
+        guard let room = selectedRoom else { return }
+        delegate?.didTapBookNow(for: room)
     }
+
 }
 
 extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {

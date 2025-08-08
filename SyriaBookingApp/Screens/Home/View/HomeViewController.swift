@@ -92,28 +92,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-        
-        if let sheet = controller.sheetPresentationController {
-            sheet.detents = [
-                .custom { context in context.maximumDetentValue * 0.3 },
-                .large()
-            ]
-            sheet.selectedDetentIdentifier = .medium
-            sheet.prefersGrabberVisible = true
-            sheet.preferredCornerRadius = 20
-            
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                sheet.largestUndimmedDetentIdentifier = .medium
-                controller.preferredContentSize = CGSize(
-                    width: UIScreen.main.bounds.width,
-                    height: UIScreen.main.bounds.height * 0.6
-                )
-            }
-        }
-        controller.modalPresentationStyle = .pageSheet
-        present(controller, animated: true)
+    
     }
     
     @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
@@ -122,7 +101,11 @@ class HomeViewController: UIViewController {
         if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
             controller.modalPresentationStyle = .popover
             controller.navnController = self.navigationController
-            controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double((controller.menuArray.count))))
+            } else {
+                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
+            }
             controller.sourceView = self.view
             controller.barbuttonItem = sender
             
@@ -138,10 +121,7 @@ class HomeViewController: UIViewController {
                 self.present(controller,animated: true, completion: nil)
             }
         }
-        
     }
-    
-    
     
     @IBAction func checkInButtonAction(_ sender: Any) {
         currentDatePickerMode = .checkIn
@@ -259,15 +239,12 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let isIpad = UIDevice.current.userInterfaceIdiom == .pad
             let fullWidth = collectionView.bounds.width
             let fullHeight = collectionView.bounds.height
-            
             let width = isIpad ? (fullWidth / 2) : fullWidth
             let height = fullHeight
-            
             return CGSize(width: width, height: height)
         } else {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -285,7 +262,13 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 
 extension HomeViewController {
     func setupUI() {
-      rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        let todayDate = formatter.string(from: Date())
+        checkInButton.setTitle(todayDate, for: .normal)
+        
+        rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -314,14 +297,11 @@ extension HomeViewController {
                 self.WhereToNextCityList = self.viewModel.hotels?.data.compactMap { hotel -> WhereToNextList? in
                     let city = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
                     
-                    // Ensure city is not empty and not already added (case-insensitive)
                     guard !city.isEmpty, seenCities.insert(city.lowercased()).inserted else {
                         return nil
                     }
 
-                    // Optional image trimming
                     let imageUrl = hotel.images.first?.trimmingCharacters(in: .whitespacesAndNewlines)
-
                     return WhereToNextList(image: imageUrl ?? "", City: city)
                 } ?? []
                 print("where to next Hotels List.... \(self.WhereToNextCityList)")
@@ -362,6 +342,8 @@ extension HomeViewController {
         updateGreetingMessage()
         setupDatePickerUI()
         startPromotionAutoScroll()
+        
+        
     }
     
     func updateGreetingMessage(with userName: String? = nil) {

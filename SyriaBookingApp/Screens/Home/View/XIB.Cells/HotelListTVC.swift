@@ -22,12 +22,15 @@ class HotelListTVC : UITableViewCell {
     @IBOutlet weak var bookMarkImageView: UIImageView!
     @IBOutlet weak var distanceLabel: UILabel!
     
+    var seeAvailabilityAction: (() -> Void)?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
     }
     
     @IBAction func seeAvailabilityButtonAction(_ sender: Any) {
+        seeAvailabilityAction?()
     }
     
     func configuration(with model: Hotel) {

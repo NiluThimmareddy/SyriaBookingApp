@@ -8,7 +8,7 @@
  
  import UIKit
 
- class HotelDetailsViewController : UIViewController {
+class HotelDetailsViewController : UIViewController {
 
      @IBOutlet weak var scrollView: UIScrollView!
      @IBOutlet weak var backView: UIView!
@@ -190,6 +190,7 @@
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
              let rooms = (selectedHotel?.rooms[indexPath.row])!
              cell.configure(with: rooms)
+             cell.delegate = self
              return cell
          }
      }
@@ -245,7 +246,33 @@
      }
  }
 
- extension HotelDetailsViewController {
+extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
+     
+     func didTapBookNow(for room: RoomElement) {
+         let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
+         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+         
+         if let sheet = controller.sheetPresentationController {
+             sheet.detents = [
+                 .custom { context in context.maximumDetentValue * 0.25 },
+                 .large()
+             ]
+             sheet.selectedDetentIdentifier = .medium
+             sheet.prefersGrabberVisible = true
+             sheet.preferredCornerRadius = 20
+             
+             if UIDevice.current.userInterfaceIdiom == .pad {
+                 sheet.largestUndimmedDetentIdentifier = .medium
+                 controller.preferredContentSize = CGSize(
+                     width: UIScreen.main.bounds.width,
+                     height: UIScreen.main.bounds.height * 0.6
+                 )
+             }
+         }
+         controller.modalPresentationStyle = .pageSheet
+         controller.selectedRoom = room
+         present(controller, animated: true)
+     }
      func setUpUI() {
          
          rateAndReviewsTableview.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")

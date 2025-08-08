@@ -34,6 +34,8 @@ class RegisterMobileNumberVC : UIViewController {
     var activeButton: UIButton?
     var isDatePickerShown = false
 
+    var selectedRoom: RoomElement?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

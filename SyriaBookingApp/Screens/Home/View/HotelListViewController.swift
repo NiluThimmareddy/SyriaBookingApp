@@ -33,7 +33,6 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate {
             
         } else {
             viewModel.filteredHotels = hotels
-            
         }
         
         tableView.reloadData()
@@ -84,27 +83,27 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "HotelListTVC") as! HotelListTVC
         let data = viewModel.filteredHotels[indexPath.row]
         cell.configuration(with: data)
+        cell.seeAvailabilityAction = { [weak self] in
+            guard let self = self else { return }
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            let selectedHotel = data
+            
+            UserDefaults.standard.set(selectedHotel.id, forKey: "HotelID")
+            HotelDataMaganer.shared.RecentlyViewdHotelIds.append(UserDefaults.standard)
+            
+            vc.selectedHotel = selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+            
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 250
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-        let selectedHotel = viewModel.filteredHotels[indexPath.row]
-        let hId = UserDefaults()
-            
-        hId.set(selectedHotel.id, forKey: "HotelID")
-        
-        HotelDataMaganer.shared.RecentlyViewdHotelIds.append(hId)
-        vc.selectedHotel = selectedHotel
-        vc.navigationItem.title = "Hotel Details"
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }
