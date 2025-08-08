@@ -83,15 +83,14 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
         cell.configuration(with: data)
         cell.seeAvailabilityAction = { [weak self] in
             guard let self = self else { return }
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-            let selectedHotel = data
+            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
             
-            UserDefaults.standard.set(selectedHotel.id, forKey: "HotelID")
-            HotelDataMaganer.shared.RecentlyViewdHotelIds.append(UserDefaults.standard)
+            let selectedHotel = viewModel.filteredHotels[indexPath.row]
             
+            HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+            delegate?.reladRecentlyViewedData()
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
-            
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -103,22 +102,7 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 250
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-        
-        let selectedHotel = viewModel.filteredHotels[indexPath.row]
-        
-        HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
-        delegate?.reladRecentlyViewedData()
-        vc.selectedHotel = selectedHotel
-        vc.navigationItem.title = "Hotel Details"
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
+   
 }
 
 extension HotelListViewController {
