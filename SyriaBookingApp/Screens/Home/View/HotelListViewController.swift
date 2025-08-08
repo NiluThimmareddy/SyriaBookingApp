@@ -9,8 +9,6 @@ import UIKit
 
 class HotelListViewController: UIViewController, ApplyFilterDelegate {
     
-    
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
@@ -19,15 +17,13 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         setUpUI()
-        
         
     }
     
     
     func applyFilterOnHotels(){
-        guard let hotels = viewModel.Hotels?.data else {
+        guard let hotels = viewModel.hotels?.data else {
             print("No Data")
             return
         }
@@ -98,6 +94,11 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
         let selectedHotel = viewModel.filteredHotels[indexPath.row]
+        let hId = UserDefaults()
+            
+        hId.set(selectedHotel.id, forKey: "HotelID")
+        
+        HotelDataMaganer.shared.RecentlyViewdHotelIds.append(hId)
         vc.selectedHotel = selectedHotel
         vc.navigationItem.title = "Hotel Details"
         let backItem = UIBarButtonItem()

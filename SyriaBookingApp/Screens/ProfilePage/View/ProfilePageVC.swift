@@ -83,7 +83,7 @@ class ProfilePageVC: UIViewController {
         mixedText()
         navigationProcess()
         userName.text = "Hi,\("Ram")"
-        userEmail.text = "\("ramJohn@gmail.com")"
+        userEmail.text = "\("Usermail@gmail.com")"
         navigationItem.titleView = topNameLbl
     }
     override func viewDidLayoutSubviews() {
@@ -120,6 +120,7 @@ class ProfilePageVC: UIViewController {
         )
         signOutButton.setAttributedTitle(signOut, for: .normal)
     }
+    
     func updateProfileTableViewHeight() {
         if UIDevice.current.userInterfaceIdiom == .pad{
             var totalTableHeight: CGFloat = 0

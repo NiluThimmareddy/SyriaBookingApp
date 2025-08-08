@@ -8,6 +8,20 @@
 import UIKit
 //import Reachability
 
+enum DatePickerMode {
+    case checkIn
+    case checkOut
+}
+
+struct WhereToNextList{
+    var image : String
+    var City : String
+    
+    init( image: String, City: String) {
+        self.image = image
+        self.City = City
+    }
+}
 
 class HomeViewController: UIViewController {
     
@@ -37,13 +51,18 @@ class HomeViewController: UIViewController {
     var datePickerContainerView: UIView!
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
+    var currentDatePickerMode: DatePickerMode = .checkIn
+    var selectedCheckInDate: Date?
+    
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
     
+    var cities = [String]()
+    var WhereToNextCityList = [WhereToNextList]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         showLoader()
+        setupUI()
         viewModel.fetchHotels()
     }
     
@@ -56,7 +75,6 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
-        
         sender.isEnabled = false
         let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
         let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
@@ -126,16 +144,23 @@ class HomeViewController: UIViewController {
     
     
     @IBAction func checkInButtonAction(_ sender: Any) {
+        currentDatePickerMode = .checkIn
+        updateDatePickerLimits()
         toggleDatePicker(for: checkInButton)
     }
     
     @IBAction func checkOutButtonAction(_ sender: Any) {
+        currentDatePickerMode = .checkOut
+        updateDatePickerLimits()
         toggleDatePicker(for: checkOutButton)
     }
+
+    
     
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
+        
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
         let backItem = UIBarButtonItem()
@@ -159,9 +184,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         if collectionView == topHotelsCollectionView {
             return min(10, viewModel.filteredHotels.count)
         } else if collectionView == recentlyCollectionView {
-            return min(5, viewModel.filteredHotels.count)
+            return min(5, viewModel.recentlyViewdHotels.count)
         } else if collectionView == propertyTypeCollectionView {
-            return min(5, viewModel.filteredHotels.count)
+            return  WhereToNextCityList.count
         } else {
             return min(10, viewModel.filteredHotels.count)
         }
@@ -175,12 +200,12 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return cell
         } else if collectionView == recentlyCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentlyViewedCVC", for: indexPath) as! RecentlyViewedCVC
-            let item = viewModel.filteredHotels[indexPath.row]
+            let item = viewModel.recentlyViewdHotels[indexPath.row]
             cell.configure(with: item)
             return cell
         } else if collectionView == propertyTypeCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WhereToNextCVC", for: indexPath) as! WhereToNextCVC
-            let item = viewModel.filteredHotels[indexPath.row]
+            let item = WhereToNextCityList[indexPath.row]
             cell.configure(with: item)
             return cell
         } else {
@@ -188,6 +213,20 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             //            let images = viewModel.filteredHotels[indexPath.row]
             //            cell.configuration(with: images)
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == propertyTypeCollectionView{
+            let HotelCity = WhereToNextCityList[indexPath.row].City
+            let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            storyboard.viewModel = self.viewModel
+            storyboard.selectedCity = HotelCity
+            storyboard.navigationItem.title = "Hotel List"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(storyboard, animated: true)
         }
     }
     
@@ -246,31 +285,53 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 
 extension HomeViewController {
     func setupUI() {
-     
-        rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
+      rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
+                self.viewModel.fetchRecentlyVieeHotels{
+                    self.recentlyCollectionView.reloadData()
+                }
+                
                 self.hideLoader()
+                
                 self.topHotelsCollectionView.reloadData()
                 self.promotionsCollectionView.reloadData()
-                self.recentlyCollectionView.reloadData()
+                
                 self.propertyTypeCollectionView.reloadData()
                 
                 var seen = Set<String>()
-                let cities = self.viewModel.Hotels?.data.compactMap { $0.city }
+                self.cities = self.viewModel.hotels?.data.compactMap { $0.city }
                     .filter { seen.insert($0).inserted } ?? ["No cities found"]
                 
                 if let cityButton = self.selectCityButton {
-                    self.configureDropdownMenu(for: cityButton, options: cities)
+                    self.configureDropdownMenu(for: cityButton, options: self.cities)
                 }
+                
+                var seenCities = Set<String>()
+
+                self.WhereToNextCityList = self.viewModel.hotels?.data.compactMap { hotel -> WhereToNextList? in
+                    let city = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    // Ensure city is not empty and not already added (case-insensitive)
+                    guard !city.isEmpty, seenCities.insert(city.lowercased()).inserted else {
+                        return nil
+                    }
+
+                    // Optional image trimming
+                    let imageUrl = hotel.images.first?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                    return WhereToNextList(image: imageUrl ?? "", City: city)
+                } ?? []
+                print("where to next Hotels List.... \(self.WhereToNextCityList)")
             }
         }
         
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async{
                 self?.hideLoader()
+                self?.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
         
@@ -326,9 +387,11 @@ extension HomeViewController {
         datePickerContainerView = UIView()
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+       
         datePicker.preferredDatePickerStyle = .inline
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
+        updateDatePickerLimits()
         datePickerContainerView.backgroundColor = .systemBackground
         datePickerContainerView.layer.cornerRadius = 8
         datePickerContainerView.layer.borderWidth = 1
@@ -375,7 +438,38 @@ extension HomeViewController {
         datePickerContainerView.isHidden.toggle()
     }
     
+    
+    func updateDatePickerLimits() {
+        let now = Date()
+        switch currentDatePickerMode {
+        case .checkIn:
+           
+            datePicker.minimumDate = now
+            datePicker.date = now
+
+        case .checkOut:
+            guard let checkIn = selectedCheckInDate else {
+               
+                datePicker.minimumDate = now
+                datePicker.date = now
+                return
+            }
+            // Allow same-day checkout
+            datePicker.minimumDate = checkIn
+            datePicker.date = checkIn
+        }
+    }
+
+
     @objc private func dateChanged(_ sender: UIDatePicker) {
+        switch currentDatePickerMode {
+        case .checkIn:
+            selectedCheckInDate = sender.date
+            checkOutButton.setTitle("check out", for: .normal)
+        case .checkOut :
+           break
+        }
+        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let selectedDate = formatter.string(from: sender.date)
@@ -414,4 +508,5 @@ extension HomeViewController {
             }
         }
     }
+    
 }
