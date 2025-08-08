@@ -13,6 +13,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        guard #available(iOS 18, *), UIDevice.current.userInterfaceIdiom == .pad else {
+//            return
+//        }
+//        
+//        traitOverrides.horizontalSizeClass = .compact
+         
 //        self.delegate = self
     }
     
