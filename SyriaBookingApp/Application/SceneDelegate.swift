@@ -10,12 +10,31 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var hasShownAlert = false
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+//        guard let windowScene = (scene as? UIWindowScene) else { return }
+//        window = UIWindow(windowScene: windowScene)
+//           window?.rootViewController = CustomTabBarController()// or your initial VC
+//           window?.makeKeyAndVisible()
+//        
+
+        NetworkMonitor.shared.onStatusChange = {[weak self]  isConnected  in
+            DispatchQueue.main.async {
+                            guard let self = self else { return }
+                            if !isConnected && !self.hasShownAlert {
+                                self.hasShownAlert = true
+                                UIApplication.showNetworkLostAlert()
+                            } else if isConnected {
+                                self.hasShownAlert = false
+                            }
+                        }
+        }
+
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
@@ -53,3 +72,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+// UIApplication+TopViewController.swift
+
+
+extension UIApplication {
+    static func topViewController(base: UIViewController? = UIApplication.shared.connectedScenes
+        .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+        .first?.rootViewController) -> UIViewController? {
+
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            return topViewController(base: tab.selectedViewController)
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        return base
+    }
+
+    static func showNetworkLostAlert() {
+        guard let topVC = topViewController() else { return }
+
+        let alert = UIAlertController(
+            title: "No Internet Connection",
+            message: "Please check your internet connection.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        topVC.present(alert, animated: true, completion: nil)
+    }
+}

@@ -156,6 +156,7 @@ class FilterOptionsViewController: UIViewController {
             let typeMatch = selectedHotelTypes.isEmpty ? true : selectedHotelTypes.contains(type)
             let starMatch = selectedStarRatings.isEmpty ? true : selectedStarRatings.contains(star)
 
+            
             let reviewMatch: Bool
             if selectedReviewScores.isEmpty {
                 reviewMatch = true
@@ -165,6 +166,8 @@ class FilterOptionsViewController: UIViewController {
                     let lowerBound = Float(score)
                     let upperBound = lowerBound + 1.0
                     return averageRating >= lowerBound && averageRating < upperBound
+                    
+                    
                 }
             }
 

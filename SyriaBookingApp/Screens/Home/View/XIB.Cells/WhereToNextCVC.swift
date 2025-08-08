@@ -13,14 +13,9 @@ class WhereToNextCVC : UICollectionViewCell {
         hotelImageView.clipsToBounds = true
     }
     
-    func configure(with hotel: Hotel) {
-        popularPlaceLabel.text = "\(hotel.city)"
-
-        if let firstImageURL = hotel.images.first, !firstImageURL.isEmpty {
-            hotelImageView.loadImage(from: firstImageURL)
-        } else {
-            hotelImageView.loadImage(from: hotel.coverImageURL)
-        }
+    func configure(with hotel: WhereToNextList) {
+        popularPlaceLabel.text = "\(hotel.City)"
+        hotelImageView.loadImage(from: hotel.image)
     }
     
 }

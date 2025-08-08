@@ -62,12 +62,15 @@ enum APIError: Error {
 class APIManager {
     static let shared = APIManager()
     
+   
+    
     private init() {}
     
     func fetchData<T: Decodable>(from url: URL,modelType: T.Type,completion: @escaping (Result<T, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
+       
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let error = error {
