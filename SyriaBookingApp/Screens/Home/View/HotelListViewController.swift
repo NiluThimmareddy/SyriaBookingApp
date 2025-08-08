@@ -12,13 +12,13 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
+    var delegate : recentlyViewdHotelsProtocol?
     var viewModel = HotelViewModel()
     var selectedCity = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
-        
     }
     
     
@@ -30,11 +30,9 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate {
         
         if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City"{
             viewModel.filteredHotels = hotels.filter { $0.city == selectedCity }
-            
         } else {
             viewModel.filteredHotels = hotels
         }
-        
         tableView.reloadData()
     }
     
@@ -104,6 +102,21 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 250
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+        
+        let selectedHotel = viewModel.filteredHotels[indexPath.row]
+        
+        HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+        delegate?.reladRecentlyViewedData()
+        vc.selectedHotel = selectedHotel
+        vc.navigationItem.title = "Hotel Details"
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

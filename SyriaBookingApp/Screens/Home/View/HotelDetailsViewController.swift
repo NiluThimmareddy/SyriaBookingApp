@@ -44,6 +44,7 @@ class HotelDetailsViewController : UIViewController {
      @IBOutlet weak var rateAndReviewsTableviewHeightConstraint: NSLayoutConstraint!
      
      var selectedHotel: Hotel?
+     
      let imageCache = NSCache<NSString, UIImage>()
      
      var isDescriptionVisible = true
