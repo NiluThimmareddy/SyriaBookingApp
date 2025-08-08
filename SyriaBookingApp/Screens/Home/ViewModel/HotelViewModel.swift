@@ -45,22 +45,43 @@ class HotelViewModel {
         
     }
     
-    func fetchRecentlyVieeHotels(completion : () -> Void){
-        var ids = [String]()
-      
-        for  i in HotelDataMaganer.shared.RecentlyViewdHotelIds{
-            let id = i.object(forKey: "HotelId") as? String
-            if let id = id {
-                ids.append(id)
-            }
-            
+    
+    func fetchRecentlyViewedHotels(completion: () -> Void) {
+        var ids = HotelDataMaganer.shared.recentlyViewedHotelIds
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+        
+        guard let allHotels = self.hotels?.data else {
+            self.recentlyViewdHotels = []
+            completion()
+            return
         }
         
-        self.recentlyViewdHotels = self.hotels?.data.filter({ hotel in
-             return ids.contains(hotel.id)
-        }) ?? []
+        // Match hotels in order
+        self.recentlyViewdHotels = ids.compactMap { id in
+            allHotels.first {
+                $0.id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == id
+            }
+        }
         
-    print("Recently viewd Hotels....: \(recentlyViewdHotels)")
+        // Remove missing hotels
+        let validIDs = self.recentlyViewdHotels.map {
+            $0.id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
+        ids = ids.filter { validIDs.contains($0) }
+        
+        // Enforce max 10
+        if ids.count > 10 {
+            ids = Array(ids.prefix(10))
+            self.recentlyViewdHotels = Array(self.recentlyViewdHotels.prefix(10))
+        }
+        
+        // Save cleaned IDs
+        HotelDataMaganer.shared.recentlyViewedHotelIds = ids
+        UserDefaults.standard.set(ids, forKey: "RecentlyViewedHotelIDs")
+        
         completion()
     }
+
+
+
 }

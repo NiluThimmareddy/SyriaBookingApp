@@ -23,6 +23,10 @@ struct WhereToNextList{
     }
 }
 
+protocol recentlyViewdHotelsProtocol{
+    func reladRecentlyViewedData()
+}
+
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
@@ -46,6 +50,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var propertyTypeCollectionView: UICollectionView!
     @IBOutlet weak var topView: UIView!
     
+   
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -64,7 +69,9 @@ class HomeViewController: UIViewController {
         showLoader()
         setupUI()
         viewModel.fetchHotels()
+        
     }
+  
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -160,7 +167,7 @@ class HomeViewController: UIViewController {
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
-        
+        storyboard.delegate = self
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
         let backItem = UIBarButtonItem()
@@ -227,6 +234,17 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(storyboard, animated: true)
+        } else if collectionView == recentlyCollectionView {
+            
+                let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+                let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
+                vc.selectedHotel = selectedHotel
+                vc.navigationItem.title = "Hotel Details"
+                let backItem = UIBarButtonItem()
+                backItem.title = ""
+                self.navigationItem.backBarButtonItem = backItem
+                self.navigationController?.pushViewController(vc, animated: true)
+            
         }
     }
     
@@ -290,7 +308,9 @@ extension HomeViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
-                self.viewModel.fetchRecentlyVieeHotels{
+                self.viewModel.fetchRecentlyViewedHotels {
+                    
+                
                     self.recentlyCollectionView.reloadData()
                 }
                 
@@ -508,5 +528,17 @@ extension HomeViewController {
             }
         }
     }
+    
+}
+
+
+extension HomeViewController : recentlyViewdHotelsProtocol {
+    func reladRecentlyViewedData() {
+        viewModel.fetchRecentlyViewedHotels {
+       
+            recentlyCollectionView.reloadData()
+        }
+    }
+    
     
 }

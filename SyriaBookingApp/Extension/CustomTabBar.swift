@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class CustomTabBar: UITabBar {
-    
+class CustomTabBar: UITabBar {    
     private var shapeLayer: CALayer?
 
     override func draw(_ rect: CGRect) {

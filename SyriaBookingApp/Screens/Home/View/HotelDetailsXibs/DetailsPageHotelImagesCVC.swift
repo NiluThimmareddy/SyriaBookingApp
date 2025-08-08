@@ -36,8 +36,6 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
         roundCornersOfImageThreeBackViewContainer()
     }
 
-
-
     private func roundCornersOfImageOneContainer() {
         let maskPath = UIBezierPath(
             roundedRect: hotelImageOne.bounds,
