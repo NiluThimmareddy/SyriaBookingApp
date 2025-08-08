@@ -131,11 +131,15 @@
                                                             <constraint firstItem="XjG-ym-8B7" firstAttribute="top" secondItem="Am0-X1-TQe" secondAttribute="top" constant="5" id="DuL-vO-DDc"/>
                                                             <constraint firstItem="NSv-Mj-ws7" firstAttribute="leading" secondItem="XjG-ym-8B7" secondAttribute="leading" id="Ebw-nU-I5Z"/>
                                                             <constraint firstItem="NSv-Mj-ws7" firstAttribute="trailing" secondItem="XjG-ym-8B7" secondAttribute="trailing" id="EpS-yB-vom"/>
-                                                            <constraint firstAttribute="height" constant="80" id="HdP-CP-eSs"/>
+                                                            <constraint firstAttribute="height" constant="80" id="HdP-CP-eSs">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                                                            </constraint>
                                                             <constraint firstItem="XjG-ym-8B7" firstAttribute="leading" secondItem="Am0-X1-TQe" secondAttribute="trailing" constant="5" id="Ix9-wz-MYq"/>
                                                             <constraint firstItem="NSv-Mj-ws7" firstAttribute="bottom" secondItem="Am0-X1-TQe" secondAttribute="bottom" id="JC9-1h-Bk4"/>
                                                             <constraint firstAttribute="trailing" secondItem="XjG-ym-8B7" secondAttribute="trailing" constant="5" id="iv2-u5-805"/>
-                                                            <constraint firstAttribute="width" constant="350" id="tCV-q6-3V0"/>
+                                                            <constraint firstAttribute="width" constant="350" id="tCV-q6-3V0">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="550"/>
+                                                            </constraint>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -147,7 +151,7 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="4gr-6O-kyG">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="320"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="150"/>
                                                     </constraint>
                                                     <constraint firstItem="Tx0-HE-7bk" firstAttribute="centerX" secondItem="JKs-jv-tUD" secondAttribute="centerX" id="Nfd-bJ-8xy"/>
                                                     <constraint firstItem="Tx0-HE-7bk" firstAttribute="centerY" secondItem="JKs-jv-tUD" secondAttribute="centerY" id="TaN-pt-nCx"/>
@@ -351,7 +355,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="170" id="2h7-3H-qgT">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="200"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="210"/>
                                                     </constraint>
                                                 </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5TQ-0t-8Of">
@@ -465,6 +469,11 @@
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_dealsImg" translatesAutoresizingMaskIntoConstraints="NO" id="xuy-qV-227">
                                                         <rect key="frame" x="0.0" y="0.0" width="373" height="200"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Year, New Adventures" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfY-yp-HEQ">
                                                         <rect key="frame" x="10" y="25" width="353" height="26.333333333333329"/>
@@ -520,7 +529,7 @@
                                                     <constraint firstItem="dfY-yp-HEQ" firstAttribute="leading" secondItem="jTB-in-AAv" secondAttribute="leading" constant="10" id="8PU-14-5yk"/>
                                                     <constraint firstItem="mhQ-oA-01H" firstAttribute="top" secondItem="dfY-yp-HEQ" secondAttribute="bottom" constant="10" id="8vk-Rk-QwO"/>
                                                     <constraint firstAttribute="height" constant="200" id="CnV-hm-TFv">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="300"/>
                                                     </constraint>
                                                     <constraint firstItem="mhQ-oA-01H" firstAttribute="leading" secondItem="dfY-yp-HEQ" secondAttribute="leading" constant="50" id="Q1l-NP-9cc"/>
                                                     <constraint firstAttribute="trailing" secondItem="xuy-qV-227" secondAttribute="trailing" id="U0R-LG-cXG"/>
@@ -2224,6 +2233,9 @@
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9y-q3-USZ">
                                                 <rect key="frame" x="20" y="346.66666666666669" width="353" height="56"/>
@@ -2233,6 +2245,9 @@
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
+                                                        <variation key="heightClass=regular-widthClass=regular">
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                        </variation>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="odp-hi-e2k">
                                                         <rect key="frame" x="318" y="6.6666666666666288" width="25" height="25"/>
@@ -2254,6 +2269,9 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
+                                                        <variation key="heightClass=regular-widthClass=regular">
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        </variation>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2757,28 +2775,28 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
