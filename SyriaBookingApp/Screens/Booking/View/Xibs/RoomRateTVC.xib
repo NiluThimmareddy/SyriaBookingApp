@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="RoomRateTVC" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eor-fn-8yv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Yo3-JS-Vsz">
+                                <rect key="frame" x="5" y="0.0" width="315" height="44"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDh-qO-wAy">
+                                        <rect key="frame" x="0.0" y="0.0" width="47.333333333333336" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Adults,, 2 Child (Extra Bed)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="el7-1O-ds0">
+                                        <rect key="frame" x="47.333333333333329" y="0.0" width="173.33333333333337" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctC-Ka-v8U">
+                                        <rect key="frame" x="220.66666666666666" y="0.0" width="31.333333333333343" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghk-cg-4IK">
+                                        <rect key="frame" x="252" y="0.0" width="63" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Ghk-cg-4IK" firstAttribute="width" secondItem="Yo3-JS-Vsz" secondAttribute="width" multiplier="0.2" id="5Cp-bS-U1C"/>
+                                    <constraint firstItem="vDh-qO-wAy" firstAttribute="width" secondItem="Yo3-JS-Vsz" secondAttribute="width" multiplier="0.15" id="JQd-oW-Kck"/>
+                                    <constraint firstItem="ctC-Ka-v8U" firstAttribute="width" secondItem="Yo3-JS-Vsz" secondAttribute="width" multiplier="0.1" id="uEb-Rm-abg"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Yo3-JS-Vsz" firstAttribute="top" secondItem="eor-fn-8yv" secondAttribute="top" id="EwT-hY-PKJ"/>
+                            <constraint firstAttribute="trailing" secondItem="Yo3-JS-Vsz" secondAttribute="trailing" id="QbM-og-x6K"/>
+                            <constraint firstItem="Yo3-JS-Vsz" firstAttribute="leading" secondItem="eor-fn-8yv" secondAttribute="leading" constant="5" id="Y5B-Ql-9ov"/>
+                            <constraint firstAttribute="bottom" secondItem="Yo3-JS-Vsz" secondAttribute="bottom" id="zv1-Ry-wjd"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="eor-fn-8yv" secondAttribute="trailing" id="8C5-qz-arI"/>
+                    <constraint firstItem="eor-fn-8yv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Ivb-bY-yo2"/>
+                    <constraint firstItem="eor-fn-8yv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="P1V-HN-qRW"/>
+                    <constraint firstAttribute="bottom" secondItem="eor-fn-8yv" secondAttribute="bottom" id="xZx-hy-uYY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="amountLabel" destination="Ghk-cg-4IK" id="nOf-Mp-pVS"/>
+                <outlet property="backView" destination="eor-fn-8yv" id="d9q-h5-8dx"/>
+                <outlet property="descriptionLabel" destination="el7-1O-ds0" id="IkW-Qw-tWe"/>
+                <outlet property="qtyLabel" destination="ctC-Ka-v8U" id="3Bq-eR-AlO"/>
+                <outlet property="rateLabel" destination="vDh-qO-wAy" id="rYq-wZ-TgI"/>
+            </connections>
+            <point key="canvasLocation" x="56" y="-11"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

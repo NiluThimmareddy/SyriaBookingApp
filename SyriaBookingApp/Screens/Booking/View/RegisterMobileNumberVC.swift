@@ -51,16 +51,67 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-        
+
         if isMobileNumberRegistered(mobileNumber) {
-            proceedWithRegisteredUser()
+            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+                showAlert("Please enter a mobile number.")
+                return
+            }
+            
+            if isMobileNumberRegistered(mobileNumber) {
+                let name = enterNameTF.text ?? ""
+                let email = enterEmailTF.text ?? ""
+                
+                let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                controller.mobileNumber = mobileNumber
+                controller.guestName = name
+                controller.guestEmail = email
+                present(controller, animated: true)
+            } else {
+                presentSelfAsFullScreenWithBottomView()
+                bottomView.isHidden = false
+            }
         } else {
             presentSelfAsFullScreenWithBottomView()
+            bottomView.isHidden = false
         }
-        bottomView.isHidden = false
     }
-    
+
     @IBAction func registerButtonAction(_ sender: Any) {
+        guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert("Please enter your name.")
+            return
+        }
+        
+        guard let email = enterEmailTF.text, !email.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert("Please enter the email.")
+            return
+        }
+        
+        guard let address = enterAddressTF.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert("Please enter your address.")
+            return
+        }
+        
+        guard let gender = selectGenderButton.title(for: .normal), gender != "Select Gender" else {
+            showAlert("Please select your gender.")
+            return
+        }
+        
+        guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert("Please enter your country.")
+            return
+        }
+        
+        guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert("Please enter your date of birth.")
+            return
+        }
+        let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+        controller.mobileNumber = mobileNumberTF.text
+        controller.guestName = name
+        controller.guestEmail = email
+        present(controller, animated: true)
     }
     
 }
@@ -91,7 +142,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let enteredNumber = enterMobileNumberTF.text ?? ""
 
         self.dismiss(animated: true) {
-            let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
+            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
             guard let fullScreenVC = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
 
             fullScreenVC.modalPresentationStyle = .overFullScreen
@@ -101,12 +152,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         }
     }
 
-    func showAlert(_ message: String) {
-        let alert = UIAlertController(title: "Notice", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
-    }
-    
     func setupGenderPullDownMenu() {
         let male = UIAction(title: "Male") { _ in
             self.selectGenderButton.setTitle("Male", for: .normal)

@@ -163,7 +163,7 @@ class HotelDetailsViewController : UIViewController {
              ]
 
              for imageView in imageViews {
-                 imageView?.image = nil
+                 imageView?.image = UIImage(named: "HotelPlaceholder")
                  imageView?.stopShimmering()
              }
 
@@ -259,32 +259,39 @@ class HotelDetailsViewController : UIViewController {
 
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
      
-     func didTapBookNow(for room: RoomElement) {
-         let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
-         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-         
-         if let sheet = controller.sheetPresentationController {
-             sheet.detents = [
-                 .custom { context in context.maximumDetentValue * 0.25 },
-                 .large()
-             ]
-             sheet.selectedDetentIdentifier = .medium
-             sheet.prefersGrabberVisible = true
-             sheet.preferredCornerRadius = 20
-             
-             if UIDevice.current.userInterfaceIdiom == .pad {
-                 sheet.largestUndimmedDetentIdentifier = .medium
-                 controller.preferredContentSize = CGSize(
-                     width: UIScreen.main.bounds.width,
-                     height: UIScreen.main.bounds.height * 0.6
-                 )
-             }
-         }
-         controller.modalPresentationStyle = .pageSheet
-         controller.selectedRoom = room
-         present(controller, animated: true)
-     }
-     func setUpUI() {
+    func didTapBookNow(for room: RoomElement) {
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+        
+        if let sheet = controller.sheetPresentationController {
+            let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.25 : 0.3
+            
+            let customDetent = UISheetPresentationController.Detent.custom(identifier: .medium) { context in
+                return context.maximumDetentValue * customDetentHeight
+            }
+            
+            sheet.detents = [
+                customDetent,
+                .large()
+            ]
+            sheet.selectedDetentIdentifier = .medium
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                sheet.largestUndimmedDetentIdentifier = .medium
+                controller.preferredContentSize = CGSize(
+                    width: UIScreen.main.bounds.width,
+                    height: UIScreen.main.bounds.height * 0.6
+                )
+            }
+        }
+        
+        controller.modalPresentationStyle = .pageSheet
+        controller.selectedRoom = room
+        present(controller, animated: true)
+    }
+    func setUpUI() {
          
          rateAndReviewsTableview.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
          hotelImagesCollectionView.register(UINib(nibName: "DetailsPageHotelImagesCVC", bundle: nil), forCellWithReuseIdentifier: "DetailsPageHotelImagesCVC")

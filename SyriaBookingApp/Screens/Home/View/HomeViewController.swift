@@ -50,20 +50,17 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var propertyTypeCollectionView: UICollectionView!
     @IBOutlet weak var topView: UIView!
     
-   
-    
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
     var selectedCheckInDate: Date?
-    
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
-    
     var cities = [String]()
     var WhereToNextCityList = [WhereToNextList]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
@@ -373,9 +370,9 @@ extension HomeViewController {
         switch hour {
         case 5..<12:
             greeting = "Good Morning"
-        case 12..<17:
+        case 12..<16:
             greeting = "Good Afternoon"
-        case 17..<22:
+        case 16..<24:
             greeting = "Good Evening"
         default:
             greeting = ""
