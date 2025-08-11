@@ -29,6 +29,9 @@ class BookingConfirmationVC : UIViewController {
     }
     
     @IBAction func viewBookingConfirmationButtonAction(_ sender: Any) {
+        let storyboard = storyboard?.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as! ViewBookingConfirmationVC
+        storyboard.modalPresentationStyle = .fullScreen
+        present(storyboard, animated: true)
     }
     
     

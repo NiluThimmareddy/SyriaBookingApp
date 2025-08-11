@@ -51,15 +51,32 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-        
+
         if isMobileNumberRegistered(mobileNumber) {
-            proceedWithRegisteredUser()
+            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+                showAlert("Please enter a mobile number.")
+                return
+            }
+            
+            if isMobileNumberRegistered(mobileNumber) {
+                let name = enterNameTF.text ?? ""
+                let email = enterEmailTF.text ?? ""
+                
+                let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                controller.mobileNumber = mobileNumber
+                controller.guestName = name
+                controller.guestEmail = email
+                present(controller, animated: true)
+            } else {
+                presentSelfAsFullScreenWithBottomView()
+                bottomView.isHidden = false
+            }
         } else {
             presentSelfAsFullScreenWithBottomView()
+            bottomView.isHidden = false
         }
-        bottomView.isHidden = false
     }
-    
+
     @IBAction func registerButtonAction(_ sender: Any) {
         guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert("Please enter your name.")
