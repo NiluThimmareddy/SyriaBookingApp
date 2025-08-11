@@ -100,7 +100,7 @@
                                                 <rect key="frame" x="0.0" y="2" width="393" height="100"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tx0-HE-7bk">
-                                                        <rect key="frame" x="21.666666666666657" y="10" width="350" height="80"/>
+                                                        <rect key="frame" x="15" y="10" width="363" height="80"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-X1-TQe">
                                                                 <rect key="frame" x="10" y="10.666666666666668" width="60" height="58.666666666666657"/>
@@ -111,13 +111,13 @@
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning User!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjG-ym-8B7">
-                                                                <rect key="frame" x="75" y="15.000000000000002" width="270" height="21.666666666666671"/>
+                                                                <rect key="frame" x="75" y="15.000000000000002" width="283" height="21.666666666666671"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Your Gateway to Discover Syria" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NSv-Mj-ws7">
-                                                                <rect key="frame" x="75" y="41.666666666666657" width="270" height="28.333333333333329"/>
+                                                                <rect key="frame" x="75" y="41.666666666666657" width="283" height="28.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -137,9 +137,6 @@
                                                             <constraint firstItem="XjG-ym-8B7" firstAttribute="leading" secondItem="Am0-X1-TQe" secondAttribute="trailing" constant="5" id="Ix9-wz-MYq"/>
                                                             <constraint firstItem="NSv-Mj-ws7" firstAttribute="bottom" secondItem="Am0-X1-TQe" secondAttribute="bottom" id="JC9-1h-Bk4"/>
                                                             <constraint firstAttribute="trailing" secondItem="XjG-ym-8B7" secondAttribute="trailing" constant="5" id="iv2-u5-805"/>
-                                                            <constraint firstAttribute="width" constant="350" id="tCV-q6-3V0">
-                                                                <variation key="heightClass=regular-widthClass=regular" constant="550"/>
-                                                            </constraint>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -155,6 +152,8 @@
                                                     </constraint>
                                                     <constraint firstItem="Tx0-HE-7bk" firstAttribute="centerX" secondItem="JKs-jv-tUD" secondAttribute="centerX" id="Nfd-bJ-8xy"/>
                                                     <constraint firstItem="Tx0-HE-7bk" firstAttribute="centerY" secondItem="JKs-jv-tUD" secondAttribute="centerY" id="TaN-pt-nCx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Tx0-HE-7bk" secondAttribute="trailing" constant="15" id="UHa-hI-hB5"/>
+                                                    <constraint firstItem="Tx0-HE-7bk" firstAttribute="leading" secondItem="JKs-jv-tUD" secondAttribute="leading" constant="15" id="f34-9B-Il5"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5GF-34-sSX">

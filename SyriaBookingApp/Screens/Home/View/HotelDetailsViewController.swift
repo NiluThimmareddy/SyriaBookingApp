@@ -153,7 +153,7 @@ class HotelDetailsViewController : UIViewController {
              ]
 
              for imageView in imageViews {
-                 imageView?.image = nil
+                 imageView?.image = UIImage(named: "HotelPlaceholder")
                  imageView?.stopShimmering()
              }
 
@@ -250,7 +250,7 @@ class HotelDetailsViewController : UIViewController {
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
      
      func didTapBookNow(for room: RoomElement) {
-         let storyboard = UIStoryboard(name: "Rooms", bundle: nil)
+         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
          guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
          
          if let sheet = controller.sheetPresentationController {

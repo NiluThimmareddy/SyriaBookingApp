@@ -50,4 +50,11 @@ extension UIViewController{
         }
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func showAlert(_ message: String) {
+        let alert = UIAlertController(title: "Notice", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
 }
