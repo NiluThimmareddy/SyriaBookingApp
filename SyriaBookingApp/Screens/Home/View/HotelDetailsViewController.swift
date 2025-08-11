@@ -51,7 +51,7 @@ class HotelDetailsViewController : UIViewController {
      var isFacilitiesVisible = false
      var isAvailabilityVisible = false
      var isAddReviewVisible = true
-
+    var isRateAndReviewVisible = true
      var currentHorizontalStack: UIStackView?
      
      override func viewDidLoad() {
@@ -108,7 +108,7 @@ class HotelDetailsViewController : UIViewController {
      @IBAction func addReviewImgButtonAction(_ sender: Any) {
          isAddReviewVisible.toggle()
          
-         addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
+        addReviewViewHeightConstraint.constant = isAddReviewVisible ? rateAndReviewsTableview.contentSize.height : 40
          
          UIView.animate(withDuration: 0.3) {
              self.view.layoutIfNeeded()
@@ -119,8 +119,18 @@ class HotelDetailsViewController : UIViewController {
      }
      
      @IBAction func rateAndReviewsDownButtonAction(_ sender: Any) {
+         isRateAndReviewVisible.toggle()
+         if isRateAndReviewVisible {
+            
+             rateAndReviewsTableviewHeightConstraint.constant = rateAndReviewsTableview.contentSize.height
+         }else{
+             rateAndReviewsTableviewHeightConstraint.constant = 0
+         }
+         
+         UIView.animate(withDuration: 0.3) {
+             self.view.layoutIfNeeded()
+         }
      }
-     
  }
 
  extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -292,7 +302,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
          isAvailabilityVisible = false
          availabilityRoomsViewHeightConstraint.constant = 40
          isAddReviewVisible = true
-         addReviewViewHeightConstraint.constant = 450
+         isRateAndReviewVisible = true
+//         addReviewViewHeightConstraint.constant = 450
 
          guard let hotel = selectedHotel else { return }
          let ratingValue = hotel.starRating

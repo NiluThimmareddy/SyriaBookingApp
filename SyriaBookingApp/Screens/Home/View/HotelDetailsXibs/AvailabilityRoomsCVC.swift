@@ -51,8 +51,27 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         guard let roomRate = selectedRoom?.rates[indexPath.row] else {
             return cell
         }
+        
+        cell.checkMarkButton.tag = indexPath.row
+        cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
+        cell.selectRoomsButton.tag =  indexPath.row
+        
         cell.configure(with: roomRate)
+        
         return cell
+    }
+    
+    
+    
+    @objc func checkMarkTapped(_ sender: UIButton) {
+        let row = sender.tag
+        selectedRoom?.rates[row].isSelected?.toggle()        
+        roomRatesTableview.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedRoom?.rates[indexPath.row].isSelected?.toggle()
+        roomRatesTableview.reloadRows(at: [indexPath], with: .none)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -64,6 +83,11 @@ extension AvailabilityRoomsCVC {
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         roomImageView.applyCardStyle()
+        
+       
+            
+        
+        
     }
     
     func configure(with rooms: RoomElement) {
@@ -89,14 +113,68 @@ extension AvailabilityRoomsCVC {
         let breakfastIncluded = rooms.room.breakfastIncluded
         let amenities = rooms.room.amenities ?? "N/A"
         let refundPolicy = rooms.room.refundPolicy ?? "N/A"
+        
+        let roomsizeText = "Size: \(roomSize)"
+        let guestText = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
+        let refundPolicyText = "Refund Policy: \(refundPolicy)"
+        let aminitiesText = "Amenities: \(amenities)"
+        let breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
 
         roomNameLabel.text = "\(roomType) (\(bedType))"
-        roomSizeLabel.text = "Size: \(roomSize)"
-        maxGuestsLabel.text = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
-        breakfastLabel.text = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
-        amenitiesLabel.text = "Amenities: \(amenities)"
-        refundPolicyLabel.text = "Refund Policy: \(refundPolicy)"
+        roomSizeLabel.text = roomsizeText
+        maxGuestsLabel.text = guestText
+        breakfastLabel.text = breakfastText
+        amenitiesLabel.text = aminitiesText
+        refundPolicyLabel.text = refundPolicyText
+        
+        roomSizeLabel.setHighlightedText(
+            fullText: roomsizeText,
+            highlightText: "Size:",
+            normalFont: .systemFont(ofSize: 12),
+            highlightFont: .boldSystemFont(ofSize: 13),
+            normalColor: .darkGray,
+            highlightColor: .label
+        )
+        
+        maxGuestsLabel.setHighlightedText(
+            fullText: guestText,
+            highlightText: "Max Guests:",
+            normalFont: .systemFont(ofSize: 12),
+            highlightFont: .boldSystemFont(ofSize: 13),
+            normalColor: .darkGray,
+            highlightColor: .label
+        )
+        
+        refundPolicyLabel.setHighlightedText(
+            fullText: refundPolicyText,
+            highlightText: "Refund Policy:",
+            normalFont: .systemFont(ofSize: 12),
+            highlightFont: .boldSystemFont(ofSize: 13),
+            normalColor: .darkGray,
+            highlightColor: .label
+        )
+        
+        amenitiesLabel.setHighlightedText(
+            fullText: aminitiesText,
+            highlightText: "Amenities:",
+            normalFont: .systemFont(ofSize: 12),
+            highlightFont: .boldSystemFont(ofSize: 13),
+            normalColor: .systemBlue,
+            highlightColor: .label
+        )
+        
+        breakfastLabel.setHighlightedText(
+            fullText: breakfastText,
+            highlightText: "Breakfast Included:",
+            normalFont: .systemFont(ofSize: 12),
+            highlightFont: .boldSystemFont(ofSize: 13),
+            normalColor: .darkGray,
+            highlightColor: .label
+        )
     }
 
+    
+
 }
+
 

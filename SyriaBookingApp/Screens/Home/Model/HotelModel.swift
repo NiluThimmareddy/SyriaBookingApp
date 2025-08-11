@@ -143,13 +143,17 @@ struct Review: Codable {
 struct RoomElement: Codable {
     let room: RoomDetails
     let coverImage: String?
-    let rates: [Rate]
+    var rates: [Rate]
+    
+    
 }
 
 struct Rate: Codable {
     let id, roomID, effectiveDate: String
     let price: Int
     let notes: String?
+    
+    var isSelected: Bool? = false
     
     enum CodingKeys: String, CodingKey {
         case id

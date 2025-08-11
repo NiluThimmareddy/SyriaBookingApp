@@ -8,7 +8,7 @@
 import UIKit
 
 class RoomsRatesTVC : UITableViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var checkMarkButton: UIButton!
     @IBOutlet weak var roomPriceLabel: UILabel!
@@ -16,15 +16,27 @@ class RoomsRatesTVC : UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-       
-    }
-
-    @IBAction func checkMarkButtonAction(_ sender: Any) {
     }
     
+   
     func configure(with rooms: Rate) {
         let notes = rooms.notes ?? "No notes"
         roomPriceLabel.text = "$\(rooms.price): \(notes)"
+        let imageName = rooms.isSelected ?? false ? "checkmark.square.fill" : "square"
+        checkMarkButton.setImage(UIImage(systemName: imageName), for: .normal)
+        configureQtyDropdown(for: selectRoomsButton, options: ["1","2","3","4","5"])
     }
-
+    
+    
+    func configureQtyDropdown(for button:UIButton, options:[String]){
+        let actions = options.map { option in
+            UIAction(title: option, handler: { [weak button] _ in
+                button?.setTitle(option, for: .normal)
+            })
+        }
+        
+        let menu = UIMenu(title: "select quantity", options: .displayInline, children: actions)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+    }
 }
