@@ -1407,7 +1407,7 @@ You can now view and print your booking confirmation by clicking the button belo
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E1v-DP-5G8">
-                                <rect key="frame" x="0.0" y="59" width="393" height="793.00000000000023"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GFl-Ip-NKl">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1764.3333333333333"/>
@@ -1909,6 +1909,7 @@ You can now view and print your booking confirmation by clicking the button belo
                         <outlet property="checkInLabel" destination="9Yv-Fw-RuR" id="aAG-K4-Zoj"/>
                         <outlet property="checkMarkImgView" destination="aNX-Sz-elx" id="WFS-lP-tR1"/>
                         <outlet property="checkOutLabel" destination="5G7-OF-IP1" id="3p9-2Z-x9i"/>
+                        <outlet property="contactEmailLabel" destination="baE-53-CcL" id="5Ua-wm-Hik"/>
                         <outlet property="guestEmailLabel" destination="upz-y6-bz7" id="faJ-QF-wfO"/>
                         <outlet property="guestLabel" destination="EGh-Vj-KXk" id="LPu-HP-R5a"/>
                         <outlet property="guestPhoneNoLabel" destination="OLA-md-lkx" id="x9g-NY-Nx8"/>
@@ -1920,10 +1921,12 @@ You can now view and print your booking confirmation by clicking the button belo
                         <outlet property="hotelPhoneNumberLabel" destination="rXz-Sw-r50" id="Nfa-qb-Uvz"/>
                         <outlet property="languagesSpokenLabel" destination="rJi-hB-QTi" id="PiJ-3g-4tA"/>
                         <outlet property="numberOfGuestsLabel" destination="21Y-du-F0D" id="2Aj-xh-a9z"/>
+                        <outlet property="paymentMethodLabel" destination="qtc-gA-EYD" id="Lgx-K5-F6k"/>
                         <outlet property="roomRateDetailsTableview" destination="KP3-YI-deH" id="a8s-cj-q5x"/>
                         <outlet property="roomTypeLabel" destination="Y0Z-wu-QJ0" id="rm6-9h-0Sb"/>
                         <outlet property="statusLabel" destination="qAk-qW-ias" id="k65-df-gf0"/>
                         <outlet property="totalNightsLabel" destination="SDq-bp-bmX" id="8xr-9U-aQV"/>
+                        <outlet property="totalPriceLabel" destination="NAn-tP-pix" id="f4C-AM-IUC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sOS-GB-qAi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1948,10 +1951,10 @@ You can now view and print your booking confirmation by clicking the button belo
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

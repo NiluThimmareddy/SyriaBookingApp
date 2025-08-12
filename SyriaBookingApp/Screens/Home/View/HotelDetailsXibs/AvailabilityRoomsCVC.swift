@@ -61,8 +61,6 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
-    
     @objc func checkMarkTapped(_ sender: UIButton) {
         let row = sender.tag
         selectedRoom?.rates[row].isSelected?.toggle()        
@@ -83,11 +81,6 @@ extension AvailabilityRoomsCVC {
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         roomImageView.applyCardStyle()
-        
-       
-            
-        
-        
     }
     
     func configure(with rooms: RoomElement) {
@@ -127,54 +120,23 @@ extension AvailabilityRoomsCVC {
         amenitiesLabel.text = aminitiesText
         refundPolicyLabel.text = refundPolicyText
         
-        roomSizeLabel.setHighlightedText(
-            fullText: roomsizeText,
-            highlightText: "Size:",
-            normalFont: .systemFont(ofSize: 12),
-            highlightFont: .boldSystemFont(ofSize: 13),
-            normalColor: .darkGray,
-            highlightColor: .label
-        )
+        let labelConfigs: [(UILabel, String, String, UIColor)] = [
+            (roomSizeLabel, roomsizeText, "Size:", .darkGray),
+            (maxGuestsLabel, guestText, "Max Guests:", .darkGray),
+            (refundPolicyLabel, refundPolicyText, "Refund Policy:", .darkGray),
+            (amenitiesLabel, aminitiesText, "Amenities:", .systemBlue),
+            (breakfastLabel, breakfastText, "Breakfast Included:", .darkGray)
+        ]
         
-        maxGuestsLabel.setHighlightedText(
-            fullText: guestText,
-            highlightText: "Max Guests:",
-            normalFont: .systemFont(ofSize: 12),
-            highlightFont: .boldSystemFont(ofSize: 13),
-            normalColor: .darkGray,
-            highlightColor: .label
-        )
-        
-        refundPolicyLabel.setHighlightedText(
-            fullText: refundPolicyText,
-            highlightText: "Refund Policy:",
-            normalFont: .systemFont(ofSize: 12),
-            highlightFont: .boldSystemFont(ofSize: 13),
-            normalColor: .darkGray,
-            highlightColor: .label
-        )
-        
-        amenitiesLabel.setHighlightedText(
-            fullText: aminitiesText,
-            highlightText: "Amenities:",
-            normalFont: .systemFont(ofSize: 12),
-            highlightFont: .boldSystemFont(ofSize: 13),
-            normalColor: .systemBlue,
-            highlightColor: .label
-        )
-        
-        breakfastLabel.setHighlightedText(
-            fullText: breakfastText,
-            highlightText: "Breakfast Included:",
-            normalFont: .systemFont(ofSize: 12),
-            highlightFont: .boldSystemFont(ofSize: 13),
-            normalColor: .darkGray,
-            highlightColor: .label
-        )
+        labelConfigs.forEach { label, fullText, highlightText, normalColor in
+            label.setHighlightedText(
+                fullText: fullText,
+                highlightText: highlightText,
+                normalFont: .systemFont(ofSize: 12),
+                highlightFont: .boldSystemFont(ofSize: 13),
+                normalColor: normalColor,
+                highlightColor: .label
+            )
+        }
     }
-
-    
-
 }
-
-

@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewBookingConfirmationVC : UIViewController {
-
+    
     @IBOutlet weak var checkMarkImgView: UIImageView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var bookingReferenceLabel: UILabel!
@@ -31,14 +31,33 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var acceptedCurrenciesLabel: UILabel!
     @IBOutlet weak var languagesSpokenLabel: UILabel!
     @IBOutlet weak var roomRateDetailsTableview: UITableView!
+    @IBOutlet weak var totalPriceLabel: UILabel!
+    @IBOutlet weak var paymentMethodLabel: UILabel!
+    @IBOutlet weak var contactEmailLabel: UILabel!
     
+    var selectedHotel: Hotel?
+    var selectedRoom: RoomElement?
+    
+    var bookingReference: String = UUID().uuidString.prefix(8).uppercased()
+    var bookingDate: String?
+    var checkInDate: String?
+    var checkOutDate: String?
+    var totalNights: Int?
+    var status: String = "Confirmed"
+    var guestName: String?
+    var guestEmail: String?
+    var guestPhone: String?
+    var numberOfGuests: String?
+    var roomType: String?
+    var totalPrice: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUpUI()
 
-        roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
     }
-
+    
 }
 
 extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource {
@@ -53,5 +72,46 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
+    }
+}
+
+extension ViewBookingConfirmationVC {
+    func setUpUI() {
+        roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
+        
+        let bookingLabelConfigs: [(UILabel, String, String)] = [
+            (bookingReferenceLabel, "Booking Reference: \(bookingReference)", "Booking Reference:"),
+            (bookingDateLabel, "Booking Date: \(bookingDate ?? "")", "Booking Date:"),
+            (checkInLabel, "Check-In: \(checkInDate ?? "")", "Check-In:"),
+            (checkOutLabel, "Check-Out: \(checkOutDate ?? "")", "Check-Out:"),
+            (totalNightsLabel, "Total Nights: \(totalNights ?? 0)", "Total Nights:"),
+            (statusLabel, "Status: \(status)", "Status:"),
+            (guestLabel, "Guest: \(guestName ?? "")", "Guest:"),
+            (guestEmailLabel, "Email: \(guestEmail ?? "")", "Email:"),
+            (guestPhoneNoLabel, "Phone: \(guestPhone ?? "")", "Phone:"),
+            (numberOfGuestsLabel, "N of Guests: \(numberOfGuests ?? "")", "No. of Guests:"),
+            (hotelNameLabel, "Hotel Name: \(selectedHotel?.name ?? "No Hotel name")", "Hotel Name:"),
+            (hotelAddressLabel, "Address: \(selectedHotel?.addressLine1 ?? "No Address")", "Address:"),
+            (hotelPhoneNumberLabel, "Phone: \(selectedHotel?.primaryPhone ?? "No Phone Number")", "Phone:"),
+            (hotelEmailLabel, "Email: \(selectedHotel?.email ?? "No Email")", "Email:"),
+            (hotelCheckInTimeLabel, "Check-In Time: \(selectedHotel?.checkInTime ?? "No CheckIn")", "Check-In Time:"),
+            (hotelCheckOutTimeLabel, "Check-Out Time: \(selectedHotel?.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
+            (roomTypeLabel, "Room Type: \(selectedRoom?.room.roomType ?? "Not Room type")", "Room Type:"),
+            (acceptedCurrenciesLabel, "Accepted Currencies: \(selectedHotel?.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
+            (languagesSpokenLabel, "Languages Spoken: \(selectedHotel?.languagesSpoken)", "Languages Spoken:"),
+            (totalPriceLabel, "Total Price: \(totalPrice ?? "0")", "Total Price:"),
+            (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
+        ]
+        
+        bookingLabelConfigs.forEach { label, fullText, highlightText in
+            label.setHighlightedText(
+                fullText: fullText,
+                highlightText: highlightText,
+                normalFont: .systemFont(ofSize: 13),
+                highlightFont: .boldSystemFont(ofSize: 14),
+                normalColor: .darkGray,
+                highlightColor: .label
+            )
+        }
     }
 }

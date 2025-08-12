@@ -26,6 +26,9 @@ class ConfirmYourBookingVC : UIViewController {
     var currentDatePickerMode: DatePickerMode = .checkIn
     var selectedCheckInDate: Date?
     var isDatePickerShown = false
+    
+    var selectedHotel: Hotel?
+    var selectedRoom: RoomElement?
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +53,20 @@ class ConfirmYourBookingVC : UIViewController {
     }
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
-        let storyboard = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
-        storyboard.guestName = guestName
-        present(storyboard, animated: true)
+        let confirmationVC = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
+        confirmationVC.guestName = guestName
+        confirmationVC.guestEmail = guestEmail
+        confirmationVC.guestPhone = guestMobileNumber
+        confirmationVC.checkInDate = checkInTF.text
+        confirmationVC.checkOutDate = checkOutTF.text
+        confirmationVC.numberOfGuests = numberOfGuestsTF.text
+        confirmationVC.totalPrice = totalAmountLabel.text
+        confirmationVC.roomType = selectedRoomAndRatesLabel.text
+        
+        confirmationVC.selectedHotel = selectedHotel
+        confirmationVC.selectedRoom = selectedRoom
+        
+        present(confirmationVC, animated: true)
     }
     
 }

@@ -35,6 +35,12 @@ class RegisterMobileNumberVC : UIViewController {
     var isDatePickerShown = false
 
     var selectedRoom: RoomElement?
+    var selectedHotel: Hotel?
+    
+    let registeredUsers: [String: (name: String, email: String)] = [
+        "8374926518": (name: "John Doe", email: "john@example.com"),
+        "6300121212": (name: "Jane Smith", email: "jane@example.com")
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,26 +57,18 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-
-        if isMobileNumberRegistered(mobileNumber) {
-            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
-                showAlert("Please enter a mobile number.")
-                return
-            }
+        
+        if let userDetails = getRegisteredUserDetails(for: mobileNumber) {
+            enterNameTF.text = userDetails.name
+            enterEmailTF.text = userDetails.email
             
-            if isMobileNumberRegistered(mobileNumber) {
-                let name = enterNameTF.text ?? ""
-                let email = enterEmailTF.text ?? ""
-                
-                let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-                controller.mobileNumber = mobileNumber
-                controller.guestName = name
-                controller.guestEmail = email
-                present(controller, animated: true)
-            } else {
-                presentSelfAsFullScreenWithBottomView()
-                bottomView.isHidden = false
-            }
+            let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+            controller.mobileNumber = mobileNumber
+            controller.guestName = userDetails.name
+            controller.guestEmail = userDetails.email
+            controller.selectedHotel = selectedHotel
+            controller.selectedRoom = selectedRoom
+            present(controller, animated: true)
         } else {
             presentSelfAsFullScreenWithBottomView()
             bottomView.isHidden = false
@@ -111,6 +109,8 @@ class RegisterMobileNumberVC : UIViewController {
         controller.mobileNumber = mobileNumberTF.text
         controller.guestName = name
         controller.guestEmail = email
+        controller.selectedHotel = selectedHotel
+        controller.selectedRoom = selectedRoom
         present(controller, animated: true)
     }
     
@@ -127,15 +127,10 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         setupDateOfBirthTextField()
     }
     
-    func isMobileNumberRegistered(_ number: String) -> Bool {
-        let registeredNumbers = ["8374926518", "6300121212"]
-        return registeredNumbers.contains(number)
+    func getRegisteredUserDetails(for number: String) -> (name: String, email: String)? {
+        return registeredUsers[number]
     }
     
-    func proceedWithRegisteredUser() {
-        showAlert("Mobile number already registered. Proceeding to login or verification.")
-    }
-
     func presentSelfAsFullScreenWithBottomView() {
         guard let presentingVC = self.presentingViewController else { return }
 
