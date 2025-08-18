@@ -37,6 +37,7 @@ class ViewBookingConfirmationVC : UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
+    var selectedRate: Rate?
     
     var bookingReference: String = UUID().uuidString.prefix(8).uppercased()
     var bookingDate: String?
@@ -50,6 +51,8 @@ class ViewBookingConfirmationVC : UIViewController {
     var numberOfGuests: String?
     var roomType: String?
     var totalPrice: String?
+    
+    let quantity = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +70,15 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomRateTVC") as! RoomRateTVC
+        if let rate = selectedRate {
+            let price = rate.price
+            let description = rate.notes ?? "No description available"
+            let quantity = rate.selectedQuantity
+            cell.rateLabel.text = "\(price)"
+            cell.descriptionLabel.text = description
+            cell.qtyLabel.text = "\(quantity)"
+            cell.amountLabel.text = String(format: "$%.2f", Double(price * quantity))
+        }
         return cell
     }
     
@@ -79,6 +91,16 @@ extension ViewBookingConfirmationVC {
     func setUpUI() {
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
+        let calculatedTotal: String
+        if let rate = selectedRate {
+            let totalAmount = Double(rate.price * rate.selectedQuantity)
+            calculatedTotal = String(format: "%.2f", totalAmount)
+            totalPrice = calculatedTotal
+        } else {
+            calculatedTotal = "0.00"
+            totalPrice = "0.00"
+        }
+        
         let bookingLabelConfigs: [(UILabel, String, String)] = [
             (bookingReferenceLabel, "Booking Reference: \(bookingReference)", "Booking Reference:"),
             (bookingDateLabel, "Booking Date: \(bookingDate ?? "")", "Booking Date:"),
@@ -89,7 +111,7 @@ extension ViewBookingConfirmationVC {
             (guestLabel, "Guest: \(guestName ?? "")", "Guest:"),
             (guestEmailLabel, "Email: \(guestEmail ?? "")", "Email:"),
             (guestPhoneNoLabel, "Phone: \(guestPhone ?? "")", "Phone:"),
-            (numberOfGuestsLabel, "N of Guests: \(numberOfGuests ?? "")", "No. of Guests:"),
+            (numberOfGuestsLabel, "No. of Guests: \(numberOfGuests ?? "")", "No. of Guests:"),
             (hotelNameLabel, "Hotel Name: \(selectedHotel?.name ?? "No Hotel name")", "Hotel Name:"),
             (hotelAddressLabel, "Address: \(selectedHotel?.addressLine1 ?? "No Address")", "Address:"),
             (hotelPhoneNumberLabel, "Phone: \(selectedHotel?.primaryPhone ?? "No Phone Number")", "Phone:"),
@@ -98,9 +120,10 @@ extension ViewBookingConfirmationVC {
             (hotelCheckOutTimeLabel, "Check-Out Time: \(selectedHotel?.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
             (roomTypeLabel, "Room Type: \(selectedRoom?.room.roomType ?? "Not Room type")", "Room Type:"),
             (acceptedCurrenciesLabel, "Accepted Currencies: \(selectedHotel?.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
-            (languagesSpokenLabel, "Languages Spoken: \(selectedHotel?.languagesSpoken)", "Languages Spoken:"),
-            (totalPriceLabel, "Total Price: \(totalPrice ?? "0")", "Total Price:"),
+            (languagesSpokenLabel, "Languages Spoken: \(selectedHotel?.languagesSpoken.rawValue ?? "Not specified")", "Languages Spoken:"),
+            (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
             (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
+            (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
         ]
         
         bookingLabelConfigs.forEach { label, fullText, highlightText in

@@ -42,6 +42,7 @@ class HotelDetailsViewController : UIViewController {
     @IBOutlet weak var rateAndReviewsDownButton: UIButton!
     @IBOutlet weak var rateAndReviewsTableview: UITableView!
     @IBOutlet weak var rateAndReviewsTableviewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rateAndReviewsContainerHeightConstraint: NSLayoutConstraint!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -109,7 +110,7 @@ class HotelDetailsViewController : UIViewController {
     @IBAction func addReviewImgButtonAction(_ sender: Any) {
         isAddReviewVisible.toggle()
         
-        addReviewViewHeightConstraint.constant = isAddReviewVisible ? rateAndReviewsTableview.contentSize.height : 40
+        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -121,16 +122,31 @@ class HotelDetailsViewController : UIViewController {
     
     @IBAction func rateAndReviewsDownButtonAction(_ sender: Any) {
         isRateAndReviewVisible.toggle()
-        if isRateAndReviewVisible {
-            
-            rateAndReviewsTableviewHeightConstraint.constant = rateAndReviewsTableview.contentSize.height
-        }else{
-            rateAndReviewsTableviewHeightConstraint.constant = 0
-        }
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
+          
+          if isRateAndReviewVisible {
+              rateAndReviewsTableview.isHidden = false
+              
+              let labelHeight: CGFloat = 18
+              let buttonHeight: CGFloat = 25
+              let padding: CGFloat = 10
+              
+              let tableHeight = rateAndReviewsTableview.contentSize.height
+              let totalHeight = labelHeight + buttonHeight + padding + tableHeight
+              rateAndReviewsContainerHeightConstraint.constant = totalHeight
+              
+          } else {
+              let labelHeight: CGFloat = 18
+              let buttonHeight: CGFloat = 25
+              let padding: CGFloat = 10
+              
+              let totalHeight = labelHeight + buttonHeight + padding
+              rateAndReviewsContainerHeightConstraint.constant = totalHeight
+              rateAndReviewsTableview.isHidden = true
+          }
+          
+          UIView.animate(withDuration: 0.3) {
+              self.view.layoutIfNeeded()
+          }
     }
 }
 
@@ -260,10 +276,12 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
     
-    func didTapBookNow(for room: RoomElement) {
+    func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-        
+        controller.selectedHotel = selectedHotel
+        controller.selectedRoom = room
+        controller.selectedRate = selectedRate
         if let sheet = controller.sheetPresentationController {
             let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.25 : 0.3
             
@@ -313,7 +331,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         availabilityRoomsViewHeightConstraint.constant = 40
         isAddReviewVisible = true
         isRateAndReviewVisible = true
-        //         addReviewViewHeightConstraint.constant = 450
         
         guard let hotel = selectedHotel else { return }
         let ratingValue = hotel.starRating
@@ -348,7 +365,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         rateAndReviewsTableview.rowHeight = UITableView.automaticDimension
         rateAndReviewsTableview.estimatedRowHeight = 100
         rateAndReviewsTableview.reloadData()
+        DispatchQueue.main.async {
+            self.updateRateAndReviewsTableHeight()
+            self.updateRateAndReviewsContainerHeight()
+        }
         
+        setupRatingDropdownMenu()
+
     }
     
     func setupAmenities(_ amenitiesString: String?) {
@@ -441,15 +464,48 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
     
     func updateRateAndReviewsTableHeight() {
         rateAndReviewsTableview.layoutIfNeeded()
-        rateAndReviewsTableviewHeightConstraint.constant = rateAndReviewsTableview.contentSize.height
+        let contentHeight = rateAndReviewsTableview.contentSize.height
+        rateAndReviewsTableviewHeightConstraint.constant = contentHeight
+    }
+
+    func updateRateAndReviewsContainerHeight() {
+        let labelHeight: CGFloat = 18
+        let buttonHeight: CGFloat = 25
+        let padding: CGFloat = 20
+        
+        rateAndReviewsTableview.layoutIfNeeded()
+        let tableHeight = rateAndReviewsTableview.contentSize.height
+        let totalHeight = labelHeight + buttonHeight + padding + tableHeight
+        
+        rateAndReviewsContainerHeightConstraint.constant = totalHeight
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
+    
+    func setupRatingDropdownMenu() {
+        let starOptions: [(Int, String)] = [
+            (5, "★★★★★ (5 - Excellent)"),
+            (4, "★★★★ (4 - Good)"),
+            (3, "★★★ (3 - Average)"),
+            (2, "★★ (2 - Poor)"),
+            (1, "★ (1 - Terrible)")
+        ]
+        
+        var actions: [UIAction] = []
+        
+        for (rating, title) in starOptions {
+            let action = UIAction(title: title, handler: { [weak self] _ in
+                self?.selectratingButton.setTitle(title, for: .normal)
+                self?.selectratingButton.tag = rating
+            })
+            actions.append(action)
+        }
+
+        let menu = UIMenu(title: "Select Rating", children: actions)
+        
+        selectratingButton.showsMenuAsPrimaryAction = true
+        selectratingButton.menu = menu
+    }
 }
-
-
-
-
-

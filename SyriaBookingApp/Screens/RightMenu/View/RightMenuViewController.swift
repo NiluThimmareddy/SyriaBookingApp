@@ -47,23 +47,24 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         
         switch indexPath.row {
         case 0 :
-            // Move to FAQ
-            break
+            let controller = storyboard?.instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
+            controller.modalPresentationStyle = .fullScreen
+//            let backItem = UIBarButtonItem()
+//            backItem.title = ""
+//            self.navigationItem.backBarButtonItem = backItem
+            present(controller, animated: true)
         case 1 :
-            //Move to Privacy Policy
-            break
+            let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
+            present(controller, animated: true)
         case 2:
-            
-            //Move to Terms and Condition
-            break
+            let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
+            present(controller, animated: true)
         case 3:
-            //About us
-            break
+            let controller = storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
+            present(controller, animated: true)
         case 4 :
-                // Contact us
-            break
-       
-            
+            let controller = storyboard?.instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
+            present(controller, animated: true)
         default :
             break
         }

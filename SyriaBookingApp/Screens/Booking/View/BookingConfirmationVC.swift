@@ -20,17 +20,27 @@ class BookingConfirmationVC : UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
+    var selectedRate: Rate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if let name = guestName {
-            confirmationMessageTextView.text = """
-                   Dear \(name),
-                   Thank you for choosing to book with us. Your reservation has been successfully completed.
-                   We're delighted to have you as our guest and look forward to providing you with a comfortable and memorable stay.
-                   You can now view and print your booking confirmation by clicking the button below.
-                   """
+            let message = """
+            Dear \(name),
+            Thank you for choosing to book with us. Your reservation has been successfully completed.
+            We're delighted to have you as our guest and look forward to providing you with a comfortable and memorable stay.
+            You can now view and print your booking confirmation by clicking the button below.
+            """
+
+            confirmationMessageTextView.setHighlightedText(
+                fullText: message,
+                highlightText: name,
+                normalFont: .systemFont(ofSize: 14),
+                highlightFont: .boldSystemFont(ofSize: 15),
+                normalColor: .black,
+                highlightColor: .black
+            )
         }
     }
 
@@ -45,7 +55,8 @@ class BookingConfirmationVC : UIViewController {
 
         viewBookingConfirmationVC.selectedHotel = selectedHotel
         viewBookingConfirmationVC.selectedRoom = selectedRoom
-
+        viewBookingConfirmationVC.selectedRate = selectedRate
+        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         viewBookingConfirmationVC.bookingDate = formatter.string(from: Date())
@@ -58,7 +69,7 @@ class BookingConfirmationVC : UIViewController {
         viewBookingConfirmationVC.guestPhone = guestPhone
         viewBookingConfirmationVC.numberOfGuests = numberOfGuests
         viewBookingConfirmationVC.totalPrice = totalPrice
-
+        viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
     }
     

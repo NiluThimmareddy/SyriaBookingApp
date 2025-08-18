@@ -152,7 +152,7 @@ struct Rate: Codable {
     let id, roomID, effectiveDate: String
     let price: Int
     let notes: String?
-    
+    var selectedQuantity: Int = 1
     var isSelected: Bool? = false
     
     enum CodingKeys: String, CodingKey {

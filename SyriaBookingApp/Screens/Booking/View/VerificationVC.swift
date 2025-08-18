@@ -15,6 +15,7 @@ class VerificationVC : UIViewController {
 
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
+    var selectedRate: Rate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,7 @@ class VerificationVC : UIViewController {
         controller.guestMobileNumber = mobileNumber
         controller.selectedHotel = selectedHotel
         controller.selectedRoom = selectedRoom
+        controller.selectedRate = selectedRate
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true)
     }

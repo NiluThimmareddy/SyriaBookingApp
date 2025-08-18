@@ -36,6 +36,34 @@ extension UILabel {
     }
 }
 
+extension UITextView {
+    func setHighlightedText(
+        fullText: String,
+        highlightText: String,
+        normalFont: UIFont = UIFont.systemFont(ofSize: 14),
+        highlightFont: UIFont = UIFont.boldSystemFont(ofSize: 18),
+        normalColor: UIColor = UIColor.darkGray,
+        highlightColor: UIColor = UIColor.black
+    ) {
+        let attributedString = NSMutableAttributedString(string: fullText)
+
+        attributedString.addAttributes([
+            .font: normalFont,
+            .foregroundColor: normalColor
+        ], range: NSRange(location: 0, length: attributedString.length))
+
+        if let range = fullText.range(of: highlightText) {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttributes([
+                .font: highlightFont,
+                .foregroundColor: highlightColor
+            ], range: nsRange)
+        }
+
+        self.attributedText = attributedString
+    }
+}
+
 extension UIColor {
     convenience init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)

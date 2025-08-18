@@ -36,6 +36,7 @@ class RegisterMobileNumberVC : UIViewController {
 
     var selectedRoom: RoomElement?
     var selectedHotel: Hotel?
+    var selectedRate: Rate?
     
     let registeredUsers: [String: (name: String, email: String)] = [
         "8374926518": (name: "John Doe", email: "john@example.com"),
@@ -68,6 +69,7 @@ class RegisterMobileNumberVC : UIViewController {
             controller.guestEmail = userDetails.email
             controller.selectedHotel = selectedHotel
             controller.selectedRoom = selectedRoom
+            controller.selectedRate = selectedRate
             present(controller, animated: true)
         } else {
             presentSelfAsFullScreenWithBottomView()
@@ -111,6 +113,7 @@ class RegisterMobileNumberVC : UIViewController {
         controller.guestEmail = email
         controller.selectedHotel = selectedHotel
         controller.selectedRoom = selectedRoom
+        controller.selectedRate = selectedRate
         present(controller, animated: true)
     }
     

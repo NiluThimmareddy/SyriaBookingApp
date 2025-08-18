@@ -83,10 +83,12 @@ class HomeViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
         let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
         //        menuVC.btnMenu = sender
-        
         self.view.addSubview(menuVC.view)
         self.addChild(menuVC)
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = false
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
         menuVC.view.layoutIfNeeded()
         menuVC.view.frame=CGRect(x: 0 - UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
         UIView.animate(withDuration: 0.3, animations: { () -> Void in

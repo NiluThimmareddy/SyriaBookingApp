@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AvailabilityRoomsCVCDelegate: AnyObject {
-    func didTapBookNow(for room: RoomElement)
+    func didTapBookNow(for room: RoomElement, selectedRate: Rate)
 }
 
 class AvailabilityRoomsCVC : UICollectionViewCell {
@@ -36,7 +36,12 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
 
     @IBAction func bookNowButtonAction(_ sender: Any) {
         guard let room = selectedRoom else { return }
-        delegate?.didTapBookNow(for: room)
+        
+        if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
+            delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
+        } else {
+            print("No rate selected")
+        }
     }
 
 }
@@ -56,7 +61,10 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
         cell.selectRoomsButton.tag =  indexPath.row
         
-        cell.configure(with: roomRate)
+        cell.configure(with: roomRate) { [weak self] selectedQty in
+            guard let self = self else { return }
+            self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
+        }
         
         return cell
     }

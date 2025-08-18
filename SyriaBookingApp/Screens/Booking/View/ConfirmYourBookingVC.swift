@@ -29,6 +29,7 @@ class ConfirmYourBookingVC : UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
+    var selectedRate: Rate?
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +66,7 @@ class ConfirmYourBookingVC : UIViewController {
         
         confirmationVC.selectedHotel = selectedHotel
         confirmationVC.selectedRoom = selectedRoom
-        
+        confirmationVC.selectedRate = selectedRate
         present(confirmationVC, animated: true)
     }
     
@@ -81,6 +82,19 @@ extension ConfirmYourBookingVC {
         formatter.dateStyle = .medium
         let todayDate = formatter.string(from: Date())
         checkInTF.text = todayDate
+        
+        if let selectedRoom = selectedRoom, let selectedRate = selectedRate {
+            let price = selectedRate.price
+            let quantity = selectedRate.selectedQuantity
+            let guestNotes = selectedRate.notes ?? "Details Unavailable"
+            let total = Double(price * quantity)
+            let formattedTotal = String(format: "$%.2f", total)
+            selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+            totalAmountLabel.text = formattedTotal
+        } else {
+            selectedRoomAndRatesLabel.text = "N/A"
+            totalAmountLabel.text = "N/A"
+        }
         
         setupDatePickerUI()
     }

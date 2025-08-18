@@ -19,11 +19,14 @@ class LeftMenuViewController: UIViewController {
         ("Careers", "briefcase.fill"),
         ("How it works", "questionmark.circle.fill"),
         ("Your Booking", "calendar.badge.checkmark"),
-        ("Recently viewed", "clock.fill")
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        
         [backView,topView].forEach { shadow in
             shadow?.applyCardStyle()
             shadow?.layer.cornerRadius = 20
@@ -32,6 +35,12 @@ class LeftMenuViewController: UIViewController {
         LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationItem.backButtonTitle = ""
+    }
+    
     @IBAction func DismissButtonAction(_ sender: UIButton) {
         
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
@@ -65,4 +74,26 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         return 50
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let indexPath = tableView.indexPathForSelectedRow
+        
+        guard let indexPath = indexPath else { return }
+       
+        switch indexPath.row {
+        case 0 :
+            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 1 :
+            let controller = storyboard?.instantiateViewController(withIdentifier: "CareersVC") as! CareersVC
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 2:
+            let controller = storyboard?.instantiateViewController(withIdentifier: "HowItsWorkVC") as! HowItsWorkVC
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 3:
+            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
+            self.navigationController?.pushViewController(controller, animated: true)
+        default :
+            break
+        }
+    }
 }
