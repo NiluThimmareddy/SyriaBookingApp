@@ -371,7 +371,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         }
         
         setupRatingDropdownMenu()
-
+        scrollView.addTopShadow()
     }
     
     func setupAmenities(_ amenitiesString: String?) {

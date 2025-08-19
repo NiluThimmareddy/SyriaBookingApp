@@ -13,39 +13,29 @@ class YourNotificationVC: UIViewController {
     
     var notificationData = [
         NotificationData(
-            date: "09 Jul 2025",
+            date: "09 Aug 2025",
             viewYourBooking: "View your confirmation for Ocean View Hotel",
             bookingConfirmation: "Booking Confirmed",
-            hotelImage: "1"
+            hotelImage: UIImage(named: "HotelPlaceholder") ?? UIImage()
         ),
         NotificationData(
-            date: "08 Jul 2025",
+            date: "08 Aug 2025",
             viewYourBooking: "View your cancellation for Sunrise Inn",
             bookingConfirmation: "Booking Cancelled",
-            hotelImage: "2"
+            hotelImage: UIImage(named: "HotelPlaceholder") ?? UIImage()
         ),
         NotificationData(
-            date: "07 Jul 2025",
+            date: "07 Aug 2025",
             viewYourBooking: "View your confirmation for Hilltop Resort",
             bookingConfirmation: "Booking Confirmed",
-            hotelImage: "3"
+            hotelImage: UIImage(named: "HotelPlaceholder") ?? UIImage()
         )
     ]
-
-    let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.text = "Your Notifications"
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
         yourNotificationTV.register(UINib(nibName: "YourNotificationTVC", bundle: nil), forCellReuseIdentifier: "YourNotificationTVC")
-        navigationItem.titleView = topNameLbl
         let backItem = UIBarButtonItem()
         backItem.title = ""
         navigationItem.backBarButtonItem = backItem
@@ -53,9 +43,6 @@ class YourNotificationVC: UIViewController {
         yourNotificationTV.estimatedRowHeight = 120
 
     }
-   
-    
-   
 
 }
 
@@ -69,7 +56,7 @@ extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource{
         let data = notificationData[indexPath.row]
         cell.dateLbl.text = data.date
         cell.bookingConfirmationLbl.text = data.bookingConfirmation
-        cell.hotelImage.image = UIImage(named: data.hotelImage)
+        cell.hotelImage.image = data.hotelImage
         cell.viewYourBookingLbl.text = data.viewYourBooking
         return cell
     }

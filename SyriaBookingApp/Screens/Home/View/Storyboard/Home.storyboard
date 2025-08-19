@@ -674,7 +674,7 @@
                     <navigationItem key="navigationItem" title="SyriaBooking" id="QP6-l1-nwY">
                         <barButtonItem key="leftBarButtonItem" id="ms0-8R-01k">
                             <imageReference key="image" image="line.horizontal.3" catalog="system" symbolScale="large"/>
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" systemColor="labelColor"/>
                             <connections>
                                 <action selector="leftMenuBarButtonAction:" destination="kUU-0B-zZQ" id="N3r-ia-udX"/>
                             </connections>
@@ -682,14 +682,14 @@
                         <rightBarButtonItems>
                             <barButtonItem title="Item" id="pJG-Lw-bTb">
                                 <imageReference key="image" image="ellipsis" catalog="system" symbolScale="large"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <connections>
                                     <action selector="rightMenuBarButtonAction:" destination="kUU-0B-zZQ" id="fLU-Rb-66t"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem id="aEi-i8-S1R">
                                 <imageReference key="image" image="bell.fill" catalog="system" symbolScale="large"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <connections>
                                     <action selector="notificationBarButtonAction:" destination="kUU-0B-zZQ" id="n4R-0m-n0c"/>
                                 </connections>
@@ -2771,6 +2771,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wqr-TZ-0r3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3203.8167938931297" y="1407.7464788732395"/>
+        </scene>
+        <!--Your NotificationVC-->
+        <scene sceneID="Ipv-Mu-bBU">
+            <objects>
+                <viewController storyboardIdentifier="YourNotificationVC" modalPresentationStyle="fullScreen" id="UR9-cg-dnU" customClass="YourNotificationVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Vuq-vs-Wf0">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kuz-Vr-LlU">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="It1-R3-5GH">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="759"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="UR9-cg-dnU" id="BzG-sb-rjD"/>
+                                            <outlet property="delegate" destination="UR9-cg-dnU" id="PGn-6H-0kh"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="It1-R3-5GH" secondAttribute="bottom" id="QUY-4R-adj"/>
+                                    <constraint firstItem="It1-R3-5GH" firstAttribute="top" secondItem="Kuz-Vr-LlU" secondAttribute="top" id="bR3-Sk-Heo"/>
+                                    <constraint firstAttribute="trailing" secondItem="It1-R3-5GH" secondAttribute="trailing" id="ndk-VV-hY0"/>
+                                    <constraint firstItem="It1-R3-5GH" firstAttribute="leading" secondItem="Kuz-Vr-LlU" secondAttribute="leading" id="v5s-hN-8aR"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eJb-ZH-lxH">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="59"/>
+                                <color key="backgroundColor" name="defaultColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="b6X-pW-RdA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="eJb-ZH-lxH" firstAttribute="leading" secondItem="Vuq-vs-Wf0" secondAttribute="leading" id="AyJ-Bw-Jco"/>
+                            <constraint firstItem="Kuz-Vr-LlU" firstAttribute="top" secondItem="eJb-ZH-lxH" secondAttribute="bottom" id="HGB-Sj-S7C"/>
+                            <constraint firstItem="Kuz-Vr-LlU" firstAttribute="leading" secondItem="b6X-pW-RdA" secondAttribute="leading" id="WNo-al-2FH"/>
+                            <constraint firstItem="Kuz-Vr-LlU" firstAttribute="top" secondItem="b6X-pW-RdA" secondAttribute="top" id="a2M-pZ-TMv"/>
+                            <constraint firstItem="b6X-pW-RdA" firstAttribute="trailing" secondItem="Kuz-Vr-LlU" secondAttribute="trailing" id="bSh-JP-XKF"/>
+                            <constraint firstAttribute="trailing" secondItem="eJb-ZH-lxH" secondAttribute="trailing" id="eCR-f2-h2b"/>
+                            <constraint firstItem="eJb-ZH-lxH" firstAttribute="top" secondItem="Vuq-vs-Wf0" secondAttribute="top" id="gaE-wx-a7U"/>
+                            <constraint firstItem="b6X-pW-RdA" firstAttribute="bottom" secondItem="Kuz-Vr-LlU" secondAttribute="bottom" id="toK-Wm-VwL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="yourNotificationTV" destination="It1-R3-5GH" id="PIE-RF-8bv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UyA-Ae-Yid" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3967" y="686"/>
         </scene>
     </scenes>
     <resources>

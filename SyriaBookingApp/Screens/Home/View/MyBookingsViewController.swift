@@ -33,10 +33,10 @@ class MyBookingsViewController: UIViewController {
         showNavigationBar()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        gradientView.applyTopRightLightGreenGradient()
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        gradientView.applyTopRightLightGreenGradient()
+//    }
     
     @IBAction func backButtonAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)

@@ -20,14 +20,10 @@ class FrequentlyAskedTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        imageUIView.layer.cornerRadius = 5
-//        designView.applyCornerRadiusAndShadow()
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
     }
     
 }

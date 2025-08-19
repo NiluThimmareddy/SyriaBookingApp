@@ -111,6 +111,21 @@ extension UIView {
         self.layer.insertSublayer(gradientLayer, at: 0)
     }
     
+    func applyTopRightLightGreyGradient() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.bounds
+        gradientLayer.colors = [
+            UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1).cgColor, // light grey
+            UIColor.white.cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 1, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.cornerRadius = self.layer.cornerRadius
+        self.layer.masksToBounds = true
+        self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
+        self.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
     
     func addBorder(edge: UIRectEdge, color: UIColor, thickness: CGFloat) {
         let border = CALayer()

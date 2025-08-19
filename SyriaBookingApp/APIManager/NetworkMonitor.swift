@@ -8,28 +8,40 @@
 import Network
 import Foundation
 
+
+import Network
+
 class NetworkMonitor {
-    static let shared = NetworkMonitor()
-    
-    private let monitor: NWPathMonitor
-    private let queue = DispatchQueue.global(qos: .background)
-    
-    private(set) var isConnected: Bool = false
-    var onStatusChange: ((Bool) -> Void)?
-    
-    private init() {
-        monitor = NWPathMonitor()
-        monitor.pathUpdateHandler = { [weak self] path in
-            guard let self = self else { return }
-            let connected = path.status == .satisfied
-            self.isConnected = connected
-            self.onStatusChange?(connected)
-        }
-        monitor.start(queue: queue)
-    }
-
-    func isReachable() -> Bool {
-        return isConnected
-    }
+   static let shared = NetworkMonitor()
+   
+   private let monitor = NWPathMonitor()
+   private let queue = DispatchQueue(label: "NetworkMonitorQueue")
+   private var observers: [String: (Bool) -> Void] = [:]
+   
+   var isConnected: Bool = true
+   
+   private init() {
+       monitor.pathUpdateHandler = { [weak self] path in
+           guard let self = self else { return }
+           let connected = path.status == .satisfied
+           self.isConnected = connected
+           
+           // Notify all observers on main thread
+           DispatchQueue.main.async {
+               for callback in self.observers.values {
+                   callback(connected)
+               }
+           }
+       }
+       monitor.start(queue: queue)
+   }
+   
+   func addStatusObserver(_ key: String, callback: @escaping (Bool) -> Void) {
+       observers[key] = callback
+       callback(isConnected)
+   }
+   
+   func removeStatusObserver(_ key: String) {
+       observers.removeValue(forKey: key)
+   }
 }
-

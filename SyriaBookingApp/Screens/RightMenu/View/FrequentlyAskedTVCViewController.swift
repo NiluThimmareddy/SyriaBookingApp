@@ -9,6 +9,7 @@ import UIKit
 
 class FrequentlyAskedTVCViewController : UIViewController {
     
+    @IBOutlet weak var topView: UIView!
     @IBOutlet weak var frequentlyAskedTVC: UITableView!
     
     var selectedIndexPath: IndexPath?
@@ -43,11 +44,22 @@ extension FrequentlyAskedTVCViewController: UITableViewDelegate, UITableViewData
         cell.headLineLabel.text = faqQuestion[indexPath.row]
         cell.descriptionLabel.text = faqAnswers[indexPath.row]
 
+        if selectedIndexPath == indexPath {
+            cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.15)
+            cell.contentView.layer.cornerRadius = 10
+        } else {
+            cell.contentView.backgroundColor = UIColor.white
+        }
+        
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (selectedIndexPath == indexPath) ? 200 : 61
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return (selectedIndexPath == indexPath) ? 140 : 61
+        } else {
+            return (selectedIndexPath == indexPath) ? 170 : 61
+        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -76,5 +88,7 @@ extension FrequentlyAskedTVCViewController {
         frequentlyAskedTVC.register(UINib(nibName: "FrequentlyAskedTVC", bundle: .main), forCellReuseIdentifier: "FrequentlyAskedTVC")
          frequentlyAskedTVC.dataSource = self
          frequentlyAskedTVC.delegate = self
+        
+        topView.addBottomShadow()
     }
 }

@@ -49,21 +49,43 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         case 0 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
             controller.modalPresentationStyle = .fullScreen
-//            let backItem = UIBarButtonItem()
-//            backItem.title = ""
-//            self.navigationItem.backBarButtonItem = backItem
             present(controller, animated: true)
         case 1 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
             present(controller, animated: true)
         case 2:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
+            let controller = storyboard?.instantiateViewController(withIdentifier: "TermsAndConditionsVC") as! TermsAndConditionsVC
             present(controller, animated: true)
         case 3:
             let controller = storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
             present(controller, animated: true)
         case 4 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "ContactUSVC") as! ContactUSVC
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "ContactUSVC") as? ContactUSVC else { return }
+            if let sheet = controller.sheetPresentationController {
+                let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.25 : 0.4
+                
+                let customDetent = UISheetPresentationController.Detent.custom(identifier: .medium) { context in
+                    return context.maximumDetentValue * customDetentHeight
+                }
+                
+                sheet.detents = [
+                    customDetent,
+                    .large()
+                ]
+                sheet.selectedDetentIdentifier = .medium
+                sheet.prefersGrabberVisible = true
+                sheet.preferredCornerRadius = 20
+                
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    sheet.largestUndimmedDetentIdentifier = .medium
+                    controller.preferredContentSize = CGSize(
+                        width: UIScreen.main.bounds.width,
+                        height: UIScreen.main.bounds.height * 0.6
+                    )
+                }
+            }
+            
+            controller.modalPresentationStyle = .pageSheet
             present(controller, animated: true)
         default :
             break

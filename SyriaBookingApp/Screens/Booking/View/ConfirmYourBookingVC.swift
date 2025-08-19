@@ -86,7 +86,7 @@ extension ConfirmYourBookingVC {
         if let selectedRoom = selectedRoom, let selectedRate = selectedRate {
             let price = selectedRate.price
             let quantity = selectedRate.selectedQuantity
-            let guestNotes = selectedRate.notes ?? "Details Unavailable"
+            let guestNotes = selectedRate.notes ?? "Details Unavailable"            
             let total = Double(price * quantity)
             let formattedTotal = String(format: "$%.2f", total)
             selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
@@ -150,10 +150,8 @@ extension ConfirmYourBookingVC {
                 datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
             ])
         }
-        
         datePickerContainerView.isHidden.toggle()
     }
-    
     
     func updateDatePickerLimits() {
         let now = Date()
@@ -175,12 +173,10 @@ extension ConfirmYourBookingVC {
         }
     }
 
-
     @objc private func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let selectedDate = formatter.string(from: sender.date)
-
         switch currentDatePickerMode {
         case .checkIn:
             selectedCheckInDate = sender.date
@@ -189,7 +185,6 @@ extension ConfirmYourBookingVC {
         case .checkOut:
             checkOutTF.text = selectedDate
         }
-
         datePickerContainerView.isHidden = true
     }
 }

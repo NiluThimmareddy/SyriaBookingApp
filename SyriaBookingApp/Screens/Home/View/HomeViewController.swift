@@ -69,11 +69,17 @@ class HomeViewController: UIViewController {
         
     }
   
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if HotelDataMaganer.shared.allHotels.isEmpty{
+            viewModel.fetchHotels()
+        }
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         searchView.applyCardStyle()
-        gradientView.applyTopRightLightGreenGradient()
+        gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
     }
@@ -98,7 +104,15 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
-    
+        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+                return
+            }
+            notificationVC.title = "Notification"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            navigationItem.backBarButtonItem = backItem
+            navigationController?.navigationBar.tintColor = .black
+            navigationController?.pushViewController(notificationVC, animated: true)
     }
     
     @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
@@ -140,8 +154,6 @@ class HomeViewController: UIViewController {
         updateDatePickerLimits()
         toggleDatePicker(for: checkOutButton)
     }
-
-    
     
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
@@ -152,6 +164,7 @@ class HomeViewController: UIViewController {
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
+        self.navigationController?.navigationBar.tintColor = .black
         self.navigationController?.pushViewController(storyboard, animated: true)
     }
     

@@ -16,6 +16,7 @@ class YourNotificationTVC: UITableViewCell {
     @IBOutlet weak var hotelImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         hotelImage.layer.cornerRadius = hotelImage.frame.size.height / 2
         dateLbl.font = UIFont.poppinsMedium(14)
         viewYourBookingLbl.font = UIFont.poppinsMedium(14)

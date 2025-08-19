@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct ProfileOption {
     let listData: String
@@ -59,7 +60,7 @@ struct NotificationData{
     var date: String
     var viewYourBooking: String
     var bookingConfirmation: String
-    var hotelImage: String
+    var hotelImage: UIImage
 }
 
 enum chooseOptions{

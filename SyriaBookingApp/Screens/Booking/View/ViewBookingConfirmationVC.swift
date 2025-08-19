@@ -58,7 +58,6 @@ class ViewBookingConfirmationVC : UIViewController {
         super.viewDidLoad()
         
         setUpUI()
-
     }
     
 }
