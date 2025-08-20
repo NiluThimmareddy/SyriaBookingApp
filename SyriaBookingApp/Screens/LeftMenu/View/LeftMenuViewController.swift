@@ -19,6 +19,9 @@ class LeftMenuViewController: UIViewController {
         ("Careers", "briefcase.fill"),
         ("How it works", "questionmark.circle.fill"),
         ("Your Booking", "calendar.badge.checkmark"),
+        ("COVID-19 – FAQs", "checkmark.shield.fill"),
+        ("Sustainability", "leaf.circle.fill"),
+        ("Safety Resource Center", "shield.lefthalf.filled.badge.checkmark")
     ]
     
     override func viewDidLoad() {
@@ -82,15 +85,38 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         switch indexPath.row {
         case 0 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         case 1 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "CareersVC") as! CareersVC
+            controller.title = "Careers at SyriaBooking.sy"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         case 2:
             let controller = storyboard?.instantiateViewController(withIdentifier: "HowItsWorkVC") as! HowItsWorkVC
+            controller.title = "How It Works"
+            controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         case 3:
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
+            controller.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 4:
+            let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsVC") as! Covid19FAQsVC
+            controller.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 5:
+            let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityVC") as! SustainabilityVC
+            controller.title = "Sustainability at SyriaBooking.sy"
+            controller.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 6:
+            let controller = storyboard?.instantiateViewController(withIdentifier: "SafetyResourceCenterVC") as! SafetyResourceCenterVC
+            controller.title = "Safety Resource Center"
+            controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         default :
             break

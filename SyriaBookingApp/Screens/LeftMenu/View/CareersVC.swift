@@ -8,6 +8,8 @@
 import UIKit
 
 class CareersVC : UIViewController {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var mailButton: UIButton!
     
     override func viewDidLoad() {
@@ -17,9 +19,6 @@ class CareersVC : UIViewController {
     }
     
     @IBAction func mailButtonAction(_ sender: Any) {
-//        let popupVC = MailProviderSelectionVC()
-//        popupVC.modalPresentationStyle = .overFullScreen
-//        popupVC.modalTransitionStyle = .crossDissolve
-//        present(popupVC, animated: true, completion: nil)
+
     }
 }

@@ -34,6 +34,8 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var totalPriceLabel: UILabel!
     @IBOutlet weak var paymentMethodLabel: UILabel!
     @IBOutlet weak var contactEmailLabel: UILabel!
+    @IBOutlet weak var printButton: UIButton!
+    @IBOutlet weak var goToHomeButton: UIButton!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -58,6 +60,15 @@ class ViewBookingConfirmationVC : UIViewController {
         super.viewDidLoad()
         
         setUpUI()
+    }
+    
+    @IBAction func printButtonAction(_ sender: Any) {
+    }
+    
+    @IBAction func goToHomeButtonAction(_ sender: Any) {
+//        let storyboard = UIStoryboard.init(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+//        storyboard.modalPresentationStyle = .fullScreen
+//        present(storyboard, animated: true)
     }
     
 }

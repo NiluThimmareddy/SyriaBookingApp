@@ -15,6 +15,8 @@ class ConfirmYourBookingVC : UIViewController {
     @IBOutlet weak var submitBookingButton: UIButton!
     @IBOutlet weak var checkInButton: UIButton!
     @IBOutlet weak var checkOutButton: UIButton!
+    @IBOutlet weak var increaseNoButton: UIButton!
+    @IBOutlet weak var decreaseNoButton: UIButton!
     
     var guestName: String?
     var guestEmail: String?
@@ -70,6 +72,20 @@ class ConfirmYourBookingVC : UIViewController {
         present(confirmationVC, animated: true)
     }
     
+    @IBAction func increaseNoButtonAction(_ sender: Any) {
+        let currentValue = Int(numberOfGuestsTF.text ?? "") ?? 0
+        if currentValue < 10 {
+            numberOfGuestsTF.text = String(currentValue + 1)
+        }
+    }
+    
+    @IBAction func decreaseNoButtonAction(_ sender: Any) {
+        let currentValue = Int(numberOfGuestsTF.text ?? "") ?? 0
+        if currentValue > 0 {
+            numberOfGuestsTF.text = String(currentValue - 1)
+        }
+    }
+    
 }
 
 extension ConfirmYourBookingVC {
@@ -97,6 +113,14 @@ extension ConfirmYourBookingVC {
         }
         
         setupDatePickerUI()
+        
+        increaseNoButton.layer.cornerRadius = 10
+        increaseNoButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        increaseNoButton.clipsToBounds = true
+        
+        decreaseNoButton.layer.cornerRadius = 10
+        decreaseNoButton.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        decreaseNoButton.clipsToBounds = true
     }
     
     func setupDatePickerUI() {

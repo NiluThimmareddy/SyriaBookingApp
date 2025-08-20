@@ -277,6 +277,7 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
+        
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
         controller.selectedHotel = selectedHotel
@@ -310,6 +311,10 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         controller.selectedRoom = room
         controller.selectedHotel = self.selectedHotel
         present(controller, animated: true)
+    }
+    
+    func showAlertForRateSelection() {
+        showAlert("Please select a rate and ensure hotel/room data is present.")
     }
     
     func setUpUI() {

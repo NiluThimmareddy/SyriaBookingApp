@@ -88,10 +88,10 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-        guard let address = enterAddressTF.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
-            showAlert("Please enter your address.")
-            return
-        }
+//        guard let address = enterAddressTF.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
+//            showAlert("Please enter your address.")
+//            return
+//        }
         
         guard let gender = selectGenderButton.title(for: .normal), gender != "Select Gender" else {
             showAlert("Please select your gender.")

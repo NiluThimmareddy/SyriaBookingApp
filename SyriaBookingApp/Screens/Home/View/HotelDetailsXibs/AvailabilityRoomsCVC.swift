@@ -9,6 +9,7 @@ import UIKit
 
 protocol AvailabilityRoomsCVCDelegate: AnyObject {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate)
+    func showAlertForRateSelection()
 }
 
 class AvailabilityRoomsCVC : UICollectionViewCell {
@@ -40,7 +41,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
         if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
             delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
         } else {
-            print("No rate selected")
+            delegate?.showAlertForRateSelection() 
         }
     }
 

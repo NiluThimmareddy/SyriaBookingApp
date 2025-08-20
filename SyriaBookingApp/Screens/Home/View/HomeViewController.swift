@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import Reachability
 
 enum DatePickerMode {
     case checkIn
@@ -61,6 +60,9 @@ class HomeViewController: UIViewController {
     var cities = [String]()
     var WhereToNextCityList = [WhereToNextList]()
     
+    var leftMenuVC: LeftMenuViewController?
+    var isLeftMenuVisible = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
@@ -86,22 +88,51 @@ class HomeViewController: UIViewController {
     
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
         sender.isEnabled = false
-        let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
-        let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
-        //        menuVC.btnMenu = sender
-        self.view.addSubview(menuVC.view)
-        self.addChild(menuVC)
-        self.navigationController?.navigationBar.isHidden = false
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        menuVC.view.layoutIfNeeded()
-        menuVC.view.frame=CGRect(x: 0 - UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            menuVC.view.frame=CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height);
-            sender.isEnabled = true
-        }, completion:nil)
+        
+        if isLeftMenuVisible {
+            guard let menuVC = leftMenuVC else {
+                sender.isEnabled = true
+                return
+            }
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                menuVC.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            }) { _ in
+                menuVC.view.removeFromSuperview()
+                menuVC.removeFromParent()
+                self.leftMenuVC = nil
+                self.isLeftMenuVisible = false
+                sender.title = nil
+                sender.image = UIImage(systemName: "line.horizontal.3")
+                sender.isEnabled = true
+            }
+            
+        } else {
+            let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
+            let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+            self.leftMenuVC = menuVC
+            
+            self.addChild(menuVC)
+            self.view.addSubview(menuVC.view)
+            menuVC.didMove(toParent: self)
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.navigationBar.tintColor = .black
+            menuVC.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                menuVC.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            }) { _ in
+                self.isLeftMenuVisible = true
+                sender.title = ""
+                let config = UIImage.SymbolConfiguration(scale: .medium)
+                sender.image = UIImage(systemName: "xmark", withConfiguration: config)
+                sender.isEnabled = true
+            }
+        }
     }
+
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
         guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
@@ -161,6 +192,7 @@ class HomeViewController: UIViewController {
         storyboard.delegate = self
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
+        storyboard.hidesBottomBarWhenPushed = true
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
@@ -171,6 +203,7 @@ class HomeViewController: UIViewController {
     @IBAction func viewAllButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         controller.viewModel = self.viewModel
+        controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -216,20 +249,20 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == propertyTypeCollectionView{
+        if collectionView == propertyTypeCollectionView {
             let HotelCity = WhereToNextCityList[indexPath.row].City
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
             storyboard.viewModel = self.viewModel
             storyboard.selectedCity = HotelCity
             storyboard.navigationItem.title = "Hotel List"
+            storyboard.hidesBottomBarWhenPushed = true
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else if collectionView == recentlyCollectionView {
-            
                 let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-                let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
+            let selectedHotel = viewModel.filteredHotels[indexPath.row]
                 vc.selectedHotel = selectedHotel
                 vc.navigationItem.title = "Hotel Details"
                 let backItem = UIBarButtonItem()
@@ -237,6 +270,15 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 self.navigationItem.backBarButtonItem = backItem
                 self.navigationController?.pushViewController(vc, animated: true)
             
+        } else if collectionView == topHotelsCollectionView {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            let selectedHotel = viewModel.filteredHotels[indexPath.row]
+            vc.selectedHotel = selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
