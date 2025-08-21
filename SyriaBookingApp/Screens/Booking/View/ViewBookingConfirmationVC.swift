@@ -36,6 +36,7 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var contactEmailLabel: UILabel!
     @IBOutlet weak var printButton: UIButton!
     @IBOutlet weak var goToHomeButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -63,12 +64,14 @@ class ViewBookingConfirmationVC : UIViewController {
     }
     
     @IBAction func printButtonAction(_ sender: Any) {
+        let pdfData = createPDF()
+        let activityVC = UIActivityViewController(activityItems: [pdfData], applicationActivities: nil)
+        activityVC.excludedActivityTypes = [.assignToContact, .addToReadingList]
+        present(activityVC, animated: true, completion: nil)
     }
     
     @IBAction func goToHomeButtonAction(_ sender: Any) {
-//        let storyboard = UIStoryboard.init(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-//        storyboard.modalPresentationStyle = .fullScreen
-//        present(storyboard, animated: true)
+
     }
     
 }
@@ -147,4 +150,58 @@ extension ViewBookingConfirmationVC {
             )
         }
     }
+    
+    func savePDFToDocuments() {
+        let pdfData = createPDF()
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let pdfURL = documentsURL.appendingPathComponent("BookingConfirmation.pdf")
+        
+        do {
+            try pdfData.write(to: pdfURL)
+            print("PDF saved to: \(pdfURL)")
+        } catch {
+            print("Could not save PDF file: \(error)")
+        }
+    }
+    
+    func createPDF() -> Data {
+        let originalBounds = scrollView.bounds
+        let pageWidth = scrollView.bounds.width
+        let pageHeight: CGFloat = UIScreen.main.bounds.height
+        
+        let pdfPageBounds = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
+        
+        let renderer = UIGraphicsPDFRenderer(bounds: pdfPageBounds)
+
+        let data = renderer.pdfData { context in
+            let totalHeight = scrollView.contentSize.height
+            var currentOffset: CGFloat = 0
+            
+            while currentOffset < totalHeight {
+                context.beginPage()
+                
+                context.cgContext.saveGState()
+                context.cgContext.translateBy(x: 0, y: -currentOffset)
+                
+                scrollView.bounds = CGRect(
+                    x: 0,
+                    y: currentOffset,
+                    width: scrollView.bounds.width,
+                    height: scrollView.bounds.height
+                )
+                
+                scrollView.layoutIfNeeded()
+                scrollView.layer.render(in: context.cgContext)
+                
+                context.cgContext.restoreGState()
+                
+                currentOffset += pageHeight
+            }
+        }
+
+        scrollView.bounds = originalBounds
+        return data
+    }
+
 }
+

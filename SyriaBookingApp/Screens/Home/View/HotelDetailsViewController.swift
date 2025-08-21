@@ -148,6 +148,15 @@ class HotelDetailsViewController : UIViewController {
               self.view.layoutIfNeeded()
           }
     }
+    
+    @IBAction func viewAllRateAndReviewsButtonAction(_ sender: Any) {
+        let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+        viewAllVC.selectedHotel = selectedHotel
+        viewAllVC.modalPresentationStyle = .fullScreen
+//        viewAllVC.modalTransitionStyle = .crossDissolve
+        present(viewAllVC, animated: true)
+    }
+    
 }
 
 extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -261,7 +270,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
 
 extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedHotel?.reviews.count ?? 0
+//        return selectedHotel?.reviews.count ?? 0
+        return min(selectedHotel?.reviews.count ?? 0, 5)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -377,6 +387,10 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         
         setupRatingDropdownMenu()
         scrollView.addTopShadow()
+        
+        averageRatingsLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAverageRating))
+        averageRatingsLabel.addGestureRecognizer(tapGesture)
     }
     
     func setupAmenities(_ amenitiesString: String?) {
@@ -512,5 +526,16 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         
         selectratingButton.showsMenuAsPrimaryAction = true
         selectratingButton.menu = menu
+    }
+    
+    @objc func didTapAverageRating() {
+        if !isRateAndReviewVisible {
+            rateAndReviewsDownButtonAction(rateAndReviewsDownButton)
+        }
+
+        let targetPoint = scrollView.convert(rateAndReviewsView.frame.origin, from: rateAndReviewsView.superview)
+        let yOffset = max(targetPoint.y - 10, 0) // Optional 10pt padding
+        
+        scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
     }
 }

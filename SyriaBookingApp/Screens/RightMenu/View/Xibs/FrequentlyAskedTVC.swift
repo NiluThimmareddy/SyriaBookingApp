@@ -11,10 +11,8 @@ class FrequentlyAskedTVC: UITableViewCell {
 
     @IBOutlet weak var designView: UIView!
     @IBOutlet weak var serialNumLabel: UILabel!
-    
     @IBOutlet weak var imageLabel: UIImageView!
     @IBOutlet weak var headLineLabel: UILabel!
-    
     @IBOutlet weak var imageUIView: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!
     
