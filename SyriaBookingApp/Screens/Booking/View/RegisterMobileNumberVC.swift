@@ -26,6 +26,9 @@ class RegisterMobileNumberVC : UIViewController {
     @IBOutlet weak var enterCountryTF: UITextField!
     @IBOutlet weak var selectDateofBirthTF: UITextField!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mobileNumberCountryCodeButton: UIButton!
+    @IBOutlet weak var countryNameButton: UIButton!
+    @IBOutlet weak var countryMobileNoCountLabel: UILabel!
     
     var shouldShowBottomView = false
     var prefilledMobileNumber: String?
@@ -42,7 +45,34 @@ class RegisterMobileNumberVC : UIViewController {
         "8374926518": (name: "John Doe", email: "john@example.com"),
         "6300121212": (name: "Jane Smith", email: "jane@example.com")
     ]
-
+    
+    let countryCodeList: [(name: String, code: String, flag: String, digitCount: Int)] = [
+        ("India", "+91", "🇮🇳", 10),
+        ("Saudi Arabia", "+966", "🇸🇦", 9),
+        ("USA", "+1", "🇺🇸", 10),
+        ("UK", "+44", "🇬🇧", 10),
+        ("Canada", "+1", "🇨🇦", 10),
+        ("Australia", "+61", "🇦🇺", 9),
+        ("Germany", "+49", "🇩🇪", 11),
+        ("France", "+33", "🇫🇷", 9),
+        ("Japan", "+81", "🇯🇵", 10),
+        ("South Korea", "+82", "🇰🇷", 10),
+        ("UAE", "+971", "🇦🇪", 9),
+        ("Brazil", "+55", "🇧🇷", 11),
+        ("Mexico", "+52", "🇲🇽", 10),
+        ("Russia", "+7", "🇷🇺", 10),
+        ("China", "+86", "🇨🇳", 11),
+        ("Italy", "+39", "🇮🇹", 10),
+        ("Spain", "+34", "🇪🇸", 9),
+        ("South Africa", "+27", "🇿🇦", 9),
+        ("New Zealand", "+64", "🇳🇿", 9),
+        ("Singapore", "+65", "🇸🇬", 8),
+        ("Nigeria", "+234", "🇳🇬", 10),
+        ("Indonesia", "+62", "🇮🇩", 10),
+        ("Turkey", "+90", "🇹🇷", 10),
+        ("Argentina", "+54", "🇦🇷", 10)
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -126,8 +156,16 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number
+            enterMobileNumberTF.text = number 
         }
+        
+        let defaultImage = UIImage(systemName: "flag.fill")
+        countryNameButton.setImage(defaultImage, for: .normal)
+        countryNameButton.setTitle("", for: .normal)
+        countryNameButton.tintColor = .black
         setupDateOfBirthTextField()
+        configureCountryCodeMenu()
+        configureCountryNameMenu()
     }
     
     func getRegisteredUserDetails(for number: String) -> (name: String, email: String)? {
@@ -229,5 +267,42 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             showAlert("Please enter a valid date in dd/MM/yyyy format.")
         }
     }
+    
+    func configureCountryCodeMenu() {
+        var menuItems: [UIAction] = []
+
+        for country in countryCodeList {
+            let action = UIAction(title: "\(country.flag) \(country.name) \(country.code)", handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
+                self.mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14) 
+                self.countryMobileNoCountLabel.text = "Please enter a \(country.digitCount)-digit mobile number"
+            })
+            menuItems.append(action)
+        }
+
+        let menu = UIMenu(title: "Select Country Code", children: menuItems)
+        mobileNumberCountryCodeButton.menu = menu
+        mobileNumberCountryCodeButton.showsMenuAsPrimaryAction = true
+    }
+    
+    func configureCountryNameMenu() {
+        var menuItems: [UIAction] = []
+
+        for country in countryCodeList {
+            let action = UIAction(title: "\(country.flag) \(country.name)", handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.countryNameButton.setTitle(country.flag, for: .normal)
+                self.countryNameButton.setImage(nil, for: .normal) 
+                self.enterCountryTF.text = country.name
+            })
+            menuItems.append(action)
+        }
+
+        let menu = UIMenu(title: "Select Country", children: menuItems)
+        countryNameButton.menu = menu
+        countryNameButton.showsMenuAsPrimaryAction = true
+    }
 }
+
 
