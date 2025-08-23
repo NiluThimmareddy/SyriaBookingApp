@@ -13,6 +13,7 @@ enum APIError: Error {
     case decodingFailed(Error)
     case invalidResponse
     case serverError(Int)
+    case userNotFound
 }
 
 class APIManager {
@@ -36,10 +37,18 @@ class APIManager {
             
             if let httpResponse = response as? HTTPURLResponse {
                 guard (200...299).contains(httpResponse.statusCode) else {
-                    completion(.failure(APIError.serverError(httpResponse.statusCode)))
-                    return
+                    if httpResponse.statusCode == 404 {
+                        completion(.failure(APIError.userNotFound))
+                        return
+                    }else{
+                        completion(.failure(APIError.serverError(httpResponse.statusCode)))
+                        return
+                    }
                 }
-            } else {
+                
+               
+                
+            }  else {
                 completion(.failure(APIError.invalidResponse))
                 return
             }
@@ -57,5 +66,43 @@ class APIManager {
             }
         }
         task.resume()
+    }
+    
+    func postRequest<T: Codable>(
+        urlString: URL,
+        body: [String: Any],
+        responseType: T.Type,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
+        
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: body) else {
+            completion(.failure(NSError(domain: "Invalid Body", code: -2)))
+            return
+        }
+        
+        var request = URLRequest(url: urlString)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No Data", code: -3)))
+                return
+            }
+            
+            do {
+                let decoded = try JSONDecoder().decode(responseType, from: data)
+                completion(.success(decoded))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
     }
 }

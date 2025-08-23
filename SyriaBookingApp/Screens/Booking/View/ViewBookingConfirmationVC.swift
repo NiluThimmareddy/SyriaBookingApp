@@ -274,8 +274,25 @@ class ViewBookingConfirmationVC : UIViewController {
     }
     
     @IBAction func goToHomeButtonAction(_ sender: Any) {
-
+//        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//        let homeVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as! CustomTabBarController
+//      
+//        self.navigationController?.setViewControllers([homeVC], animated: true)
+        
+        // Jump to first tab (HomePage)
+        self.view.window?.rootViewController?.dismiss(animated: true) {
+            if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
+                tabBarController.selectedIndex = 0
+                if let navController = tabBarController.viewControllers?.first as? UINavigationController {
+                    navController.popToRootViewController(animated: false)
+                }
+            }
+        }
+   
     }
+    
+  
+
     
 }
 

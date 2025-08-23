@@ -8,8 +8,8 @@
 
 import UIKit
 
-class HotelDetailsViewController : UIViewController {
-    
+class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
+  
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImagesCollectionView: UICollectionView!
@@ -55,6 +55,10 @@ class HotelDetailsViewController : UIViewController {
     var isAddReviewVisible = true
     var isRateAndReviewVisible = true
     var currentHorizontalStack: UIStackView?
+    
+    var scrolleView: UIScrollView { scrollView }
+    var scrollToTopButton = UIButton(type: .system)
+    var scrolltoTopHelper : ScrollToTopHelper?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -282,6 +286,11 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
         }
         return cell
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let scrolltoTopHelper = scrolltoTopHelper else { return }
+        scrolltoTopHelper.scrollViewDidScroll(scrolleView)
+    }
 }
 
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
@@ -328,6 +337,10 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
     }
     
     func setUpUI() {
+        scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
+        scrollToTopButton.imageView?.contentMode = .scaleToFill
+        
+        scrolltoTopHelper = ScrollToTopHelper(parent: self)
         
         rateAndReviewsTableview.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
         hotelImagesCollectionView.register(UINib(nibName: "DetailsPageHotelImagesCVC", bundle: nil), forCellWithReuseIdentifier: "DetailsPageHotelImagesCVC")
@@ -538,4 +551,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         
         scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
     }
+    
+    
 }

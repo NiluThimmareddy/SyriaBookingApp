@@ -40,11 +40,10 @@ class RegisterMobileNumberVC : UIViewController {
     var selectedRoom: RoomElement?
     var selectedHotel: Hotel?
     var selectedRate: Rate?
-    
-    let registeredUsers: [String: (name: String, email: String)] = [
-        "8374926518": (name: "John Doe", email: "john@example.com"),
-        "6300121212": (name: "Jane Smith", email: "jane@example.com")
-    ]
+   var  selectedCountryName : String?
+    var selectedCountryFlag : String?
+    var viewModel = BookingViewModel()
+    var registerUserDetails : BookingModel?
     
     let countryCodeList: [(name: String, code: String, flag: String, digitCount: Int)] = [
         ("India", "+91", "🇮🇳", 10),
@@ -75,7 +74,6 @@ class RegisterMobileNumberVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setUpUI()
     }
 
@@ -89,22 +87,25 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-        if let userDetails = getRegisteredUserDetails(for: mobileNumber) {
-            enterNameTF.text = userDetails.name
-            enterEmailTF.text = userDetails.email
-            
-            let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-            controller.mobileNumber = mobileNumber
-            controller.guestName = userDetails.name
-            controller.guestEmail = userDetails.email
-            controller.selectedHotel = selectedHotel
-            controller.selectedRoom = selectedRoom
-            controller.selectedRate = selectedRate
-            present(controller, animated: true)
-        } else {
-            presentSelfAsFullScreenWithBottomView()
-            bottomView.isHidden = false
-        }
+        getRegisteredUserDetails(for: mobileNumber, completion: { [weak self] user in
+            if let userDetails = user{
+                guard let self = self else { return }
+                self.enterNameTF.text = userDetails.name
+                enterEmailTF.text = userDetails.email
+                
+                let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                controller.mobileNumber = mobileNumber
+                controller.guestName = userDetails.name
+                controller.guestEmail = userDetails.email
+                controller.selectedHotel = selectedHotel
+                controller.selectedRoom = selectedRoom
+                controller.selectedRate = selectedRate
+                present(controller, animated: true)
+            } else {
+                self?.expandToFullScreen()
+                self?.bottomView.isHidden = false
+            }
+        })
     }
 
     @IBAction func registerButtonAction(_ sender: Any) {
@@ -118,11 +119,6 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-//        guard let address = enterAddressTF.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
-//            showAlert("Please enter your address.")
-//            return
-//        }
-        
         guard let gender = selectGenderButton.title(for: .normal), gender != "Select Gender" else {
             showAlert("Please select your gender.")
             return
@@ -133,58 +129,89 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
+        guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+            showAlert("Please enter a mobile number.")
+            return
+        }
+        
         guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert("Please enter your date of birth.")
             return
         }
-        let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-        controller.mobileNumber = mobileNumberTF.text
-        controller.guestName = name
-        controller.guestEmail = email
-        controller.selectedHotel = selectedHotel
-        controller.selectedRoom = selectedRoom
-        controller.selectedRate = selectedRate
-        present(controller, animated: true)
+        
+        viewModel.onSuccess = { [weak self] response in
+            
+            guard let self = self else { return }
+            self.showAlert(title: "SyriaBooking", message: " Mobile number registered Sucessfully!", onOK:  {
+                
+                self.registerUserDetails = BookingModel(id: response.id, name: response.name, mobile: response.mobile, address: response.address, gender: response.gender, email: response.email, country: response.country, dob: response.dob)
+                
+                let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                controller.mobileNumber = mobileNumber
+                controller.guestName = name
+                controller.guestEmail = email
+                controller.selectedHotel = self.selectedHotel
+                controller.selectedRoom = self.selectedRoom
+                controller.selectedRate = self.selectedRate
+                self.present(controller, animated: true)
+            })
+        }
+        
+        viewModel.onError = { error in
+            self.showAlert(error)
+        }
+        
+        viewModel.SubmitBookingInfo(name: name, mobile: mobileNumber, gender: gender, email: email, country: country, dob: dob)
     }
-    
 }
 
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
         setupGenderPullDownMenu()
         
+        selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
+
+        
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number
             enterMobileNumberTF.text = number 
         }
-        
-        let defaultImage = UIImage(systemName: "flag.fill")
-        countryNameButton.setImage(defaultImage, for: .normal)
-        countryNameButton.setTitle("", for: .normal)
-        countryNameButton.tintColor = .black
+
         setupDateOfBirthTextField()
         configureCountryCodeMenu()
         configureCountryNameMenu()
     }
     
-    func getRegisteredUserDetails(for number: String) -> (name: String, email: String)? {
-        return registeredUsers[number]
+    func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void)
+    {
+        viewModel.onSuccess = { [weak self] response in
+            print("Response: \(response)")
+            
+            DispatchQueue.main.async{
+                self?.registerUserDetails = response
+                completion(response)
+            }
+        }
+        
+        viewModel.onError = { error in
+            
+            if error.capitalized == "User Not Found"{
+                completion(nil)
+            }else{
+                self.showAlert("Something went wrong \(error)")
+                //completion(nil)
+            }
+        }
+        
+        viewModel.FetchUserData(mobile: number)
     }
     
-    func presentSelfAsFullScreenWithBottomView() {
-        guard let presentingVC = self.presentingViewController else { return }
-
-        let enteredNumber = enterMobileNumberTF.text ?? ""
-
-        self.dismiss(animated: true) {
-            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-            guard let fullScreenVC = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-
-            fullScreenVC.modalPresentationStyle = .overFullScreen
-            fullScreenVC.shouldShowBottomView = true
-            fullScreenVC.prefilledMobileNumber = enteredNumber
-            presentingVC.present(fullScreenVC, animated: true)
+    func expandToFullScreen() {
+        if let sheet = self.sheetPresentationController {
+            sheet.animateChanges {
+                sheet.selectedDetentIdentifier = .large
+            }
         }
     }
 
@@ -253,20 +280,55 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
 
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
+        formatter.dateFormat = "yyyy-MM-dd"
         selectDateofBirthTF.text = formatter.string(from: sender.date)
     }
 
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard textField == selectDateofBirthTF else { return }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        if let dateText = textField.text, formatter.date(from: dateText) == nil {
-            showAlert("Please enter a valid date in dd/MM/yyyy format.")
+    @objc private func dateTextFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+
+        // Keep only digits
+        let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+
+        var result = ""
+        for (index, char) in digits.enumerated() {
+            result.append(char)
+            if index == 3 || index == 5 {
+                result.append("-") // Auto add dash after year and month
+            }
+            if result.count >= 10 { break } // yyyy-MM-dd max length
+        }
+
+        // ✅ Prevent cursor jump issue when deleting
+        let currentSelectedRange = textField.selectedTextRange
+        textField.text = result
+        if let range = currentSelectedRange {
+            textField.selectedTextRange = range
+        }
+
+        // ✅ Validate when full date entered (yyyy-MM-dd)
+        if result.count == 10 {
+            if !isValidDate(result) {
+                textField.textColor = .systemRed
+            } else {
+                textField.textColor = .label
+            }
+        } else {
+            textField.textColor = .label
         }
     }
+
+    // MARK: - Date Validation
+    private func isValidDate(_ dateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        return dateFormatter.date(from: dateString) != nil
+    }
+
+
+
     
     func configureCountryCodeMenu() {
         var menuItems: [UIAction] = []
@@ -277,6 +339,13 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
                 self.mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
                 self.mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14) 
                 self.countryMobileNoCountLabel.text = "Please enter a \(country.digitCount)-digit mobile number"
+                
+                self.countryNameButton.setTitle(country.flag, for: .normal)
+                self.countryNameButton.setImage(nil, for: .normal)
+                self.enterCountryTF.text = country.name
+                
+                self.selectedCountryFlag =  country.flag
+                self.selectedCountryName = country.name
             })
             menuItems.append(action)
         }

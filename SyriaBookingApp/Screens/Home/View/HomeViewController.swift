@@ -26,7 +26,8 @@ protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
 }
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController{
+    
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var notificationBarButton: UIBarButtonItem!
@@ -62,6 +63,7 @@ class HomeViewController: UIViewController {
     
     var leftMenuVC: LeftMenuViewController?
     var isLeftMenuVisible = false
+    var scrolltoTopHelper : ScrollToTopHelper?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,6 +211,10 @@ class HomeViewController: UIViewController {
     
     @IBAction func findDealButtonAction(_ sender: Any) {
     }
+    
+    
+    
+    
 }
 
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -279,7 +285,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(vc, animated: true)
+          
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -330,11 +338,12 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+ 
 }
 
 extension HomeViewController {
+    
     func setupUI() {
-        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let todayDate = formatter.string(from: Date())
@@ -346,16 +355,13 @@ extension HomeViewController {
                 guard let self = self else { return }
                 
                 self.viewModel.fetchRecentlyViewedHotels {
-                    
-                
                     self.recentlyCollectionView.reloadData()
                 }
                 
                 self.hideLoader()
                 
                 self.topHotelsCollectionView.reloadData()
-                self.promotionsCollectionView.reloadData()
-                
+                self.promotionsCollectionView.reloadData()                
                 self.propertyTypeCollectionView.reloadData()
                 
                 var seen = Set<String>()
@@ -578,3 +584,4 @@ extension HomeViewController : recentlyViewdHotelsProtocol {
     
     
 }
+

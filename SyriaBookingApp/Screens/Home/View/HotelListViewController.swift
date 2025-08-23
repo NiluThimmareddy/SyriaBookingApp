@@ -7,21 +7,26 @@
 
 import UIKit
 
-class HotelListViewController: UIViewController, ApplyFilterDelegate {
-    
-    @IBOutlet weak var tableView: UITableView!
+
+class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTopCapable {
+   
+    @IBOutlet weak var HotelListtableView: UITableView!
     @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var delegate : recentlyViewdHotelsProtocol?
     var viewModel = HotelViewModel()
     var selectedCity = ""
     
+    
+    var scrolleView: UIScrollView { HotelListtableView }
+    var scrolltoTopHelper : ScrollToTopHelper?
+    var scrollToTopButton = UIButton(type: .system)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
     }
-    
-    
+ 
     func applyFilterOnHotels(){
         guard let hotels = viewModel.hotels?.data else {
             print("No Data")
@@ -33,14 +38,13 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate {
         } else {
             viewModel.filteredHotels = hotels
         }
-        tableView.reloadData()
+     HotelListtableView.reloadData()
     }
     
     func applyFilter(filterdHotels: [Hotel]) {
         viewModel.filteredHotels = filterdHotels
         DispatchQueue.main.async {
-            self.tableView.reloadData()
-
+            self.HotelListtableView.reloadData()
         }
     }
     
@@ -105,11 +109,23 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
    
 }
 
-extension HotelListViewController {
+extension HotelListViewController  {
+ 
     func setUpUI() {
         viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
-        tableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
-        tableView.addTopShadow()
+        HotelListtableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
+        scrolleView.addTopShadow()
         self.applyFilterOnHotels()
+        scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
+        scrollToTopButton.imageView?.contentMode = .scaleToFill
+        scrolltoTopHelper = ScrollToTopHelper(parent: self)
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let scrolltoTopHelper = scrolltoTopHelper else { return }
+        scrolltoTopHelper.scrollViewDidScroll(scrollView)
+    }
+    
+   
+  
 }

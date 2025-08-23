@@ -9,19 +9,29 @@ import Foundation
 
 enum APIURL{
    
+    case BaseURL
     case HotelURL
-    
+    case BookingURL
    
-    private var baseURL: String {
-        return "https://syriabookingcacheapi.azurewebsites.net/api/HotelPublic/aggregates/"
+     var baseURL: String {
+        return "https://syriabookingcacheapi.azurewebsites.net/api/"
     }
     
     //= "https://syriabookingcacheapi.azurewebsites.net/api/HotelPublic/aggregates/"
     
     var url : URL? {
         switch self {
-        case .HotelURL:
+            
+        case .BaseURL:
             return  URL(string: baseURL)
+        case .HotelURL:
+            return  URL(string: baseURL + "HotelPublic/aggregates/")
+        case .BookingURL:
+            return URL(string: baseURL + "UserPublic")
+            
+       
         }
     }
+    
+    
 }
