@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B5B5D9F82E433C5D009B7F2F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B5B5D9F72E433C5D009B7F2F /* Lottie */; };
+		B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */ = {isa = PBXBuildFile; productRef = B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */; };
+		B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B5F697A62E533BAB00D5A569 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5B5D9F82E433C5D009B7F2F /* Lottie in Frameworks */,
+				B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */,
+				B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +85,8 @@
 			);
 			name = SyriaBookingApp;
 			packageProductDependencies = (
-				B5B5D9F72E433C5D009B7F2F /* Lottie */,
+				B5F697A62E533BAB00D5A569 /* Lottie */,
+				B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */,
 			);
 			productName = SyriaBookingApp;
 			productReference = B5E63DFD2E339BF2005443FC /* SyriaBookingApp.app */;
@@ -114,7 +117,8 @@
 			mainGroup = B5E63DF42E339BF2005443FC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B5B5D9F62E433C5D009B7F2F /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				B5F697A52E533BAB00D5A569 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				B5DE7C062E5DA80200C6FC18 /* XCRemoteSwiftPackageReference "CTPanoramaView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5E63DFE2E339BF2005443FC /* Products */;
@@ -350,7 +354,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B5B5D9F62E433C5D009B7F2F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+		B5DE7C062E5DA80200C6FC18 /* XCRemoteSwiftPackageReference "CTPanoramaView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scihant/CTPanoramaView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
+		B5F697A52E533BAB00D5A569 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -361,9 +373,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B5B5D9F72E433C5D009B7F2F /* Lottie */ = {
+		B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B5B5D9F62E433C5D009B7F2F /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			package = B5DE7C062E5DA80200C6FC18 /* XCRemoteSwiftPackageReference "CTPanoramaView" */;
+			productName = CTPanoramaView;
+		};
+		B5F697A62E533BAB00D5A569 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5F697A52E533BAB00D5A569 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */

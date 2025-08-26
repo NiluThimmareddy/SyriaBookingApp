@@ -26,8 +26,7 @@ protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
 }
 
-class HomeViewController: UIViewController{
-    
+class HomeViewController: UIViewController {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var notificationBarButton: UIBarButtonItem!
@@ -65,12 +64,13 @@ class HomeViewController: UIViewController{
     var isLeftMenuVisible = false
     var scrolltoTopHelper : ScrollToTopHelper?
     
+    var promotionsList: [Hotel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
         setupUI()
         viewModel.fetchHotels()
-        
     }
   
     override func viewDidAppear(_ animated: Bool) {
@@ -225,6 +225,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return min(5, viewModel.recentlyViewdHotels.count)
         } else if collectionView == propertyTypeCollectionView {
             return  WhereToNextCityList.count
+        } else if collectionView == promotionsCollectionView {
+            return min(5, promotionsList.count)
         } else {
             return min(10, viewModel.filteredHotels.count)
         }
@@ -248,8 +250,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
-            //            let images = viewModel.filteredHotels[indexPath.row]
-            //            cell.configuration(with: images)
+            let promoHotel = promotionsList[indexPath.row]
+            cell.configuration(with: promoHotel)
+            cell.delegate = self
             return cell
         }
     }
@@ -360,8 +363,17 @@ extension HomeViewController {
                 
                 self.hideLoader()
                 
+                self.viewModel.filteredHotels = self.viewModel.filteredHotels.sorted {
+                    $0.averageRating > $1.averageRating
+                }
                 self.topHotelsCollectionView.reloadData()
-                self.promotionsCollectionView.reloadData()                
+                self.promotionsList = self.viewModel.filteredHotels.filter {
+                    if let desc = $0.shortDescription?.trimmingCharacters(in: .whitespacesAndNewlines) {
+                        return !desc.isEmpty
+                    }
+                    return false
+                }
+                self.promotionsCollectionView.reloadData()
                 self.propertyTypeCollectionView.reloadData()
                 
                 var seen = Set<String>()
@@ -516,7 +528,6 @@ extension HomeViewController {
                 datePicker.date = now
                 return
             }
-            // Allow same-day checkout
             datePicker.minimumDate = checkIn
             datePicker.date = checkIn
         }
@@ -573,15 +584,22 @@ extension HomeViewController {
     
 }
 
-
-extension HomeViewController : recentlyViewdHotelsProtocol {
+extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate {
     func reladRecentlyViewedData() {
         viewModel.fetchRecentlyViewedHotels {
        
             recentlyCollectionView.reloadData()
         }
     }
-    
+ 
+    func didTapExploreMore(in cell: PromotionsCollectionViewCell) {
+        guard let indexPath = promotionsCollectionView.indexPath(for: cell) else { return }
+        let selectedHotel = promotionsList[indexPath.item]
+        if let detailsVC = storyboard?.instantiateViewController(withIdentifier: "PromotionsDetailsVC") as? PromotionsDetailsVC {
+            detailsVC.selectedHotel = selectedHotel
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+        }
+    }
     
 }
 

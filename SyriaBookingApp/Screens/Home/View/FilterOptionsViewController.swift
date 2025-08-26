@@ -48,6 +48,7 @@ class FilterOptionsViewController: UIViewController {
         selectedStarRatings.removeAll()
         selectedReviewScores.removeAll()
         setUpUI()
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
     }
     
     @IBAction func seeResultButtonAction(_ sender: Any) {
@@ -99,9 +100,11 @@ class FilterOptionsViewController: UIViewController {
                     }
                 }
             }
+            
         }
 
         hotelType = selectedHotelTypes
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
         print("Selected Hotel Types: \(selectedHotelTypes)")
     }
 
@@ -118,6 +121,7 @@ class FilterOptionsViewController: UIViewController {
         }
         
         starRating = selectedStarRatings
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
         print("Selected Star Ratings: \(selectedStarRatings)")
     }
     
@@ -133,6 +137,7 @@ class FilterOptionsViewController: UIViewController {
         }
         
         reviewScore = selectedReviewScores
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
         print("Selected Review Scores: \(selectedReviewScores)")
     }
     
@@ -211,6 +216,7 @@ extension FilterOptionsViewController {
             button.isSelected = false
             button.setImage(UIImage(systemName: "square"), for: .normal)
         }
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
     }
     
     func updateButtonUI(_ sender: UIButton) {
@@ -233,6 +239,29 @@ extension FilterOptionsViewController {
                 completion: nil
             )
         }
+    }
+    
+    func updateSeeResultButtonTitleBasedOnFilteredHotels() {
+        if isAnyFilterSelected() {
+            applyFilter { filteredHotels, _ in
+                let count = filteredHotels.count
+                DispatchQueue.main.async {
+                    self.seeResultButton.setTitle("See Results (\(count))", for: .normal)
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.seeResultButton.setTitle("See Results", for: .normal)
+            }
+        }
+    }
+    
+    func isAnyFilterSelected() -> Bool {
+        return !selectedHotelTypes.isEmpty ||
+               !selectedStarRatings.isEmpty ||
+               !selectedReviewScores.isEmpty ||
+               priceRangeSlider.selectedMinValue != priceRangeSlider.minValue ||
+               priceRangeSlider.selectedMaxValue != priceRangeSlider.maxValue
     }
 }
 

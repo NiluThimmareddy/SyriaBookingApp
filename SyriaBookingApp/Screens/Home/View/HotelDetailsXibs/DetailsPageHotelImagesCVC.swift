@@ -6,6 +6,9 @@
 //
 
 import UIKit
+protocol DetailsPageHotelImagesCVCDelegate: AnyObject {
+    func didTapImageFive(in cell: DetailsPageHotelImagesCVC)
+}
 
 class DetailsPageHotelImagesCVC : UICollectionViewCell {
 
@@ -21,9 +24,12 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var shadowViewButton: UIButton!
     
+    weak var delegate: DetailsPageHotelImagesCVCDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         shadowViewButton.alpha = 0.3
+        addTapGestureToImageFive()
     }
     
     override func layoutSubviews() {
@@ -36,6 +42,16 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
         roundCornersOfImageThreeBackViewContainer()
     }
 
+    private func addTapGestureToImageFive() {
+        hotelImageFive.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hotelImageFiveTapped))
+        hotelImageFive.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func hotelImageFiveTapped() {
+        delegate?.didTapImageFive(in: self)
+    }
+    
     private func roundCornersOfImageOneContainer() {
         let maskPath = UIBezierPath(
             roundedRect: hotelImageOne.bounds,

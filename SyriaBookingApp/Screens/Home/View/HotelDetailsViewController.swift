@@ -112,13 +112,13 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     
     @IBAction func addReviewImgButtonAction(_ sender: Any) {
-        isAddReviewVisible.toggle()
-        
-        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
+//        isAddReviewVisible.toggle()
+//        
+//        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
+//        
+//        UIView.animate(withDuration: 0.3) {
+//            self.view.layoutIfNeeded()
+//        }
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
@@ -225,7 +225,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     cell.countLabel.text = "+\(remaining)"
                 }
             }
-            
+            cell.delegate = self
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
@@ -547,10 +547,22 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         }
 
         let targetPoint = scrollView.convert(rateAndReviewsView.frame.origin, from: rateAndReviewsView.superview)
-        let yOffset = max(targetPoint.y - 10, 0) // Optional 10pt padding
+        let yOffset = max(targetPoint.y - 10, 0)
         
         scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
     }
-    
-    
+
+}
+
+extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
+    func didTapImageFive(in cell: DetailsPageHotelImagesCVC) {
+        guard let galleryVC = storyboard?.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else {
+            return
+        }
+        galleryVC.selectedHotel = selectedHotel
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        navigationController?.pushViewController(galleryVC, animated: true)
+    }
 }
