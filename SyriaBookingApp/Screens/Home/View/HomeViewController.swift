@@ -212,9 +212,6 @@ class HomeViewController: UIViewController {
     @IBAction func findDealButtonAction(_ sender: Any) {
     }
     
-    
-    
-    
 }
 
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -594,10 +591,17 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
  
     func didTapExploreMore(in cell: PromotionsCollectionViewCell) {
         guard let indexPath = promotionsCollectionView.indexPath(for: cell) else { return }
+        
+        if promotionsList.isEmpty || indexPath.item >= promotionsList.count {
+            print("Invalid index or empty list")
+            return
+        }
         let selectedHotel = promotionsList[indexPath.item]
         if let detailsVC = storyboard?.instantiateViewController(withIdentifier: "PromotionsDetailsVC") as? PromotionsDetailsVC {
             detailsVC.selectedHotel = selectedHotel
             self.navigationController?.pushViewController(detailsVC, animated: true)
+        } else {
+            print("Failed to instantiate PromotionsDetailsVC")
         }
     }
     
