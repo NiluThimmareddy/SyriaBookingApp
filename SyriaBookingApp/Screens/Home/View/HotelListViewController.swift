@@ -16,8 +16,7 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
     var delegate : recentlyViewdHotelsProtocol?
     var viewModel = HotelViewModel()
     var selectedCity = ""
-    
-    
+    var shouldSortByRating: Bool = false
     var scrolleView: UIScrollView { HotelListtableView }
     var scrolltoTopHelper : ScrollToTopHelper?
     var scrollToTopButton = UIButton(type: .system)
@@ -25,27 +24,6 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
-    }
- 
-    func applyFilterOnHotels(){
-        guard let hotels = viewModel.hotels?.data else {
-            print("No Data")
-            return
-        }
-        
-        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City"{
-            viewModel.filteredHotels = hotels.filter { $0.city == selectedCity }
-        } else {
-            viewModel.filteredHotels = hotels
-        }
-     HotelListtableView.reloadData()
-    }
-    
-    func applyFilter(filterdHotels: [Hotel]) {
-        viewModel.filteredHotels = filterdHotels
-        DispatchQueue.main.async {
-            self.HotelListtableView.reloadData()
-        }
     }
     
     @IBAction func filterButtonAction(_ sender: Any) {
@@ -110,9 +88,7 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
 }
 
 extension HotelListViewController  {
- 
     func setUpUI() {
-        viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
         HotelListtableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
         scrolleView.addTopShadow()
         self.applyFilterOnHotels()
@@ -121,11 +97,35 @@ extension HotelListViewController  {
         scrolltoTopHelper = ScrollToTopHelper(parent: self)
     }
     
+    func applyFilterOnHotels() {
+        guard let hotels = viewModel.hotels?.data else {
+            print("No Data")
+            return
+        }
+
+        var filtered = hotels
+
+        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City" {
+            filtered = filtered.filter { $0.city == selectedCity }
+        }
+
+        if shouldSortByRating {
+            filtered = filtered.sorted { ($0.averageRating) > ($1.averageRating) }
+        }
+
+        viewModel.filteredHotels = filtered
+        HotelListtableView.reloadData()
+    }
+    
+    func applyFilter(filterdHotels: [Hotel]) {
+        viewModel.filteredHotels = filterdHotels
+        DispatchQueue.main.async {
+            self.HotelListtableView.reloadData()
+        }
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let scrolltoTopHelper = scrolltoTopHelper else { return }
         scrolltoTopHelper.scrollViewDidScroll(scrollView)
     }
-    
-   
-  
 }

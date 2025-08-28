@@ -205,6 +205,7 @@ class HomeViewController: UIViewController {
     @IBAction func viewAllButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         controller.viewModel = self.viewModel
+        controller.shouldSortByRating = true
         controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -599,7 +600,7 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
         let selectedHotel = promotionsList[indexPath.item]
         if let detailsVC = storyboard?.instantiateViewController(withIdentifier: "PromotionsDetailsVC") as? PromotionsDetailsVC {
             detailsVC.selectedHotel = selectedHotel
-            self.navigationController?.pushViewController(detailsVC, animated: true)
+            present(detailsVC, animated: true)
         } else {
             print("Failed to instantiate PromotionsDetailsVC")
         }

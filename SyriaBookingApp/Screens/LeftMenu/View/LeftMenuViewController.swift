@@ -12,7 +12,10 @@ class LeftMenuViewController: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var LeftMenuUITableView : UITableView!
-    @IBOutlet weak var logoImgView: UIImageView!
+    @IBOutlet weak var profileImgView: UIImageView!
+    @IBOutlet weak var personNameLabel: UILabel!
+    @IBOutlet weak var personEmailLabel: UILabel!
+    @IBOutlet weak var languageButton: UIButton!
     
     let menuItems = [
         ("Hotels", "bed.double.fill"),
@@ -26,16 +29,7 @@ class LeftMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        
-        [backView,topView].forEach { shadow in
-            shadow?.applyCardStyle()
-            shadow?.layer.cornerRadius = 20
-            shadow?.layer.maskedCorners = [.layerMaxXMinYCorner]
-        }
-        LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
+       setUpUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +51,12 @@ class LeftMenuViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
     }
 
+    @IBAction func rightArrowButtonAction(_ sender: Any) {
+    }
+    
+    @IBAction func languagesButtonAction(_ sender: Any) {
+    }
+    
 }
 
 extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
@@ -121,5 +121,23 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         default :
             break
         }
+    }
+}
+
+extension LeftMenuViewController {
+    func setUpUI() {
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        
+        [backView,topView].forEach { shadow in
+            shadow?.applyCardStyle()
+            shadow?.layer.cornerRadius = 20
+            shadow?.layer.maskedCorners = [.layerMaxXMinYCorner]
+        }
+        LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
+        
+        languageButton.applyTopRightLightGreyGradient()
+        
     }
 }

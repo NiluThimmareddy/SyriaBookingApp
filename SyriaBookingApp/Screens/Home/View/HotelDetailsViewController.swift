@@ -274,7 +274,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
 
 extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return selectedHotel?.reviews.count ?? 0
         return min(selectedHotel?.reviews.count ?? 0, 5)
     }
     

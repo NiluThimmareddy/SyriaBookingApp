@@ -234,4 +234,23 @@ extension UIView {
         self.layer.masksToBounds = false
     }
     
+    
+    func applyFullBlackGradientOverlay() {
+        self.layer.sublayers?.removeAll(where: { $0.name == "fullBlackGradient" })
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.name = "fullBlackGradient"
+        gradientLayer.colors = [
+            UIColor.black.withAlphaComponent(0.7).cgColor,
+            UIColor.clear.cgColor
+        ]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
+        
+        DispatchQueue.main.async {
+            gradientLayer.frame = self.bounds
+            self.layer.insertSublayer(gradientLayer, at: 0)
+        }
+    }
 }

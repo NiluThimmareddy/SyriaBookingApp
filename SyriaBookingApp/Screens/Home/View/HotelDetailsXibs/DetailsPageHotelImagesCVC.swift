@@ -43,9 +43,11 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
     }
 
     private func addTapGestureToImageFive() {
-        hotelImageFive.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hotelImageFiveTapped))
-        hotelImageFive.addGestureRecognizer(tapGesture)
+        [hotelImageOne,hotelImageTwo,hotelImageThree,hotelImageFour,hotelImageFive].forEach { images in
+            images.isUserInteractionEnabled = true
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hotelImageFiveTapped))
+            images.addGestureRecognizer(tapGesture)
+        }
     }
     
     @objc private func hotelImageFiveTapped() {

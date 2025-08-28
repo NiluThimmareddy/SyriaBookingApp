@@ -25,17 +25,26 @@ class PromotionsDetailsVC: UIViewController {
         setUpUI()
     }
 
-    @IBAction func dismissButtonAction(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
+    @IBAction func dismissButtonAction(_ sender: UIButton) {
+        self.dismiss(animated: true)
     }
     
     @IBAction func rightArrowButtonAction(_ sender: Any) {
+        self.dismiss(animated: true) {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            vc.selectedHotel = self.selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
-    
 }
 
 extension PromotionsDetailsVC {
     func setUpUI() {
+        backView.applyCardStyle()
         guard let hotel = selectedHotel else {return}
         subdiscriptionTextView.text = hotel.shortDescription
         hotelNameLabel.text = hotel.name
@@ -48,5 +57,10 @@ extension PromotionsDetailsVC {
         } else {
             hotelImageView.loadImage(from: hotel.coverImageURL)
         }
+        hotelImageView.applyFullBlackGradientOverlay()
+        subdiscriptionTextView.layer.cornerRadius = 10
+        subdiscriptionTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        subdiscriptionTextView.clipsToBounds = true
+        
     }
 }
