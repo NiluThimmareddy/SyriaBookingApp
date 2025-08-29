@@ -45,32 +45,34 @@ class RegisterMobileNumberVC : UIViewController {
     var viewModel = BookingViewModel()
     var registerUserDetails : BookingModel?
     
-    let countryCodeList: [(name: String, code: String, flag: String, digitCount: Int)] = [
-        ("India", "+91", "🇮🇳", 10),
-        ("Saudi Arabia", "+966", "🇸🇦", 9),
-        ("USA", "+1", "🇺🇸", 10),
-        ("UK", "+44", "🇬🇧", 10),
-        ("Canada", "+1", "🇨🇦", 10),
-        ("Australia", "+61", "🇦🇺", 9),
-        ("Germany", "+49", "🇩🇪", 11),
-        ("France", "+33", "🇫🇷", 9),
-        ("Japan", "+81", "🇯🇵", 10),
-        ("South Korea", "+82", "🇰🇷", 10),
-        ("UAE", "+971", "🇦🇪", 9),
-        ("Brazil", "+55", "🇧🇷", 11),
-        ("Mexico", "+52", "🇲🇽", 10),
-        ("Russia", "+7", "🇷🇺", 10),
-        ("China", "+86", "🇨🇳", 11),
-        ("Italy", "+39", "🇮🇹", 10),
-        ("Spain", "+34", "🇪🇸", 9),
-        ("South Africa", "+27", "🇿🇦", 9),
-        ("New Zealand", "+64", "🇳🇿", 9),
-        ("Singapore", "+65", "🇸🇬", 8),
-        ("Nigeria", "+234", "🇳🇬", 10),
-        ("Indonesia", "+62", "🇮🇩", 10),
-        ("Turkey", "+90", "🇹🇷", 10),
-        ("Argentina", "+54", "🇦🇷", 10)
-    ]
+//    let countryCodeList: [(name: String, code: String, flag: String, digitCount: Int)] = [
+//        ("India", "+91", "🇮🇳", 10),
+//        ("Saudi Arabia", "+966", "🇸🇦", 9),
+//        ("USA", "+1", "🇺🇸", 10),
+//        ("UK", "+44", "🇬🇧", 10),
+//        ("Canada", "+1", "🇨🇦", 10),
+//        ("Australia", "+61", "🇦🇺", 9),
+//        ("Germany", "+49", "🇩🇪", 11),
+//        ("France", "+33", "🇫🇷", 9),
+//        ("Japan", "+81", "🇯🇵", 10),
+//        ("South Korea", "+82", "🇰🇷", 10),
+//        ("UAE", "+971", "🇦🇪", 9),
+//        ("Brazil", "+55", "🇧🇷", 11),
+//        ("Mexico", "+52", "🇲🇽", 10),
+//        ("Russia", "+7", "🇷🇺", 10),
+//        ("China", "+86", "🇨🇳", 11),
+//        ("Italy", "+39", "🇮🇹", 10),
+//        ("Spain", "+34", "🇪🇸", 9),
+//        ("South Africa", "+27", "🇿🇦", 9),
+//        ("New Zealand", "+64", "🇳🇿", 9),
+//        ("Singapore", "+65", "🇸🇬", 8),
+//        ("Nigeria", "+234", "🇳🇬", 10),
+//        ("Indonesia", "+62", "🇮🇩", 10),
+//        ("Turkey", "+90", "🇹🇷", 10),
+//        ("Argentina", "+54", "🇦🇷", 10)
+//    ]
+    
+    var countryCodeList : [CountryModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,10 +170,8 @@ class RegisterMobileNumberVC : UIViewController {
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
         setupGenderPullDownMenu()
-        
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
 
-        
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number
@@ -179,8 +179,12 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         }
 
         setupDateOfBirthTextField()
-        configureCountryCodeMenu()
-        configureCountryNameMenu()
+        
+        viewModel.loadCountries { countryName in
+            self.countryCodeList = countryName
+            self.configureCountryCodeMenu()
+            self.configureCountryNameMenu()
+        }
     }
     
     func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void)
@@ -327,9 +331,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         return dateFormatter.date(from: dateString) != nil
     }
 
-
-
-    
     func configureCountryCodeMenu() {
         var menuItems: [UIAction] = []
 
@@ -338,7 +339,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
                 guard let self = self else { return }
                 self.mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
                 self.mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14) 
-                self.countryMobileNoCountLabel.text = "Please enter a \(country.digitCount)-digit mobile number"
+                self.countryMobileNoCountLabel.text = "Please enter a \(country.max_length)-digit mobile number"
                 
                 self.countryNameButton.setTitle(country.flag, for: .normal)
                 self.countryNameButton.setImage(nil, for: .normal)

@@ -74,4 +74,28 @@ class BookingViewModel{
         }
     }
     
+    func loadCountries(completion: @escaping ([CountryModel]) -> Void) {
+        DispatchQueue.global().async {
+            guard let url = Bundle.main.url(forResource: "countries_with_lengths", withExtension: "json"),
+                  let data = try? Data(contentsOf: url) else {
+                DispatchQueue.main.async {
+                    completion([])
+                }
+                return
+            }
+
+            do {
+                let countries = try JSONDecoder().decode([CountryModel].self, from: data)
+                DispatchQueue.main.async {
+                    completion(countries)
+                }
+            } catch {
+                print("Decoding error:", error)   
+                DispatchQueue.main.async {
+                    completion([])
+                }
+            }
+        }
+    }
+    
 }
