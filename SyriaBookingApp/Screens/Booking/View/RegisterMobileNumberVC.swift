@@ -44,35 +44,9 @@ class RegisterMobileNumberVC : UIViewController {
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
     var registerUserDetails : BookingModel?
-    
-//    let countryCodeList: [(name: String, code: String, flag: String, digitCount: Int)] = [
-//        ("India", "+91", "🇮🇳", 10),
-//        ("Saudi Arabia", "+966", "🇸🇦", 9),
-//        ("USA", "+1", "🇺🇸", 10),
-//        ("UK", "+44", "🇬🇧", 10),
-//        ("Canada", "+1", "🇨🇦", 10),
-//        ("Australia", "+61", "🇦🇺", 9),
-//        ("Germany", "+49", "🇩🇪", 11),
-//        ("France", "+33", "🇫🇷", 9),
-//        ("Japan", "+81", "🇯🇵", 10),
-//        ("South Korea", "+82", "🇰🇷", 10),
-//        ("UAE", "+971", "🇦🇪", 9),
-//        ("Brazil", "+55", "🇧🇷", 11),
-//        ("Mexico", "+52", "🇲🇽", 10),
-//        ("Russia", "+7", "🇷🇺", 10),
-//        ("China", "+86", "🇨🇳", 11),
-//        ("Italy", "+39", "🇮🇹", 10),
-//        ("Spain", "+34", "🇪🇸", 9),
-//        ("South Africa", "+27", "🇿🇦", 9),
-//        ("New Zealand", "+64", "🇳🇿", 9),
-//        ("Singapore", "+65", "🇸🇬", 8),
-//        ("Nigeria", "+234", "🇳🇬", 10),
-//        ("Indonesia", "+62", "🇮🇩", 10),
-//        ("Turkey", "+90", "🇹🇷", 10),
-//        ("Argentina", "+54", "🇦🇷", 10)
-//    ]
-    
     var countryCodeList : [CountryModel] = []
+    
+    var maxMobileNumberLength: Int = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,21 +62,26 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-        
+
+        if mobileNumber.count != maxMobileNumberLength {
+            showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
+            return
+        }
+
         getRegisteredUserDetails(for: mobileNumber, completion: { [weak self] user in
-            if let userDetails = user{
+            if let userDetails = user {
                 guard let self = self else { return }
                 self.enterNameTF.text = userDetails.name
-                enterEmailTF.text = userDetails.email
-                
-                let controller = storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                self.enterEmailTF.text = userDetails.email
+
+                let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
                 controller.mobileNumber = mobileNumber
                 controller.guestName = userDetails.name
                 controller.guestEmail = userDetails.email
-                controller.selectedHotel = selectedHotel
-                controller.selectedRoom = selectedRoom
-                controller.selectedRate = selectedRate
-                present(controller, animated: true)
+                controller.selectedHotel = self.selectedHotel
+                controller.selectedRoom = self.selectedRoom
+                controller.selectedRate = self.selectedRate
+                self.present(controller, animated: true)
             } else {
                 self?.expandToFullScreen()
                 self?.bottomView.isHidden = false
@@ -185,6 +164,29 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             self.configureCountryCodeMenu()
             self.configureCountryNameMenu()
         }
+        enterMobileNumberTF.delegate = self
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == enterMobileNumberTF {
+            if string.isEmpty {
+                return true
+            }
+            
+            let allowedCharacters = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            if !allowedCharacters.isSuperset(of: characterSet) {
+                return false
+            }
+            
+            let currentText = textField.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return false }
+            let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+            
+            return updatedText.count <= maxMobileNumberLength
+        }
+
+        return true
     }
     
     func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void)
@@ -292,26 +294,23 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     @objc private func dateTextFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
 
-        // Keep only digits
         let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
 
         var result = ""
         for (index, char) in digits.enumerated() {
             result.append(char)
             if index == 3 || index == 5 {
-                result.append("-") // Auto add dash after year and month
+                result.append("-")
             }
-            if result.count >= 10 { break } // yyyy-MM-dd max length
+            if result.count >= 10 { break }
         }
 
-        // ✅ Prevent cursor jump issue when deleting
         let currentSelectedRange = textField.selectedTextRange
         textField.text = result
         if let range = currentSelectedRange {
             textField.selectedTextRange = range
         }
 
-        // ✅ Validate when full date entered (yyyy-MM-dd)
         if result.count == 10 {
             if !isValidDate(result) {
                 textField.textColor = .systemRed
@@ -347,6 +346,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
                 
                 self.selectedCountryFlag =  country.flag
                 self.selectedCountryName = country.name
+                self.maxMobileNumberLength = country.max_length ?? 10
             })
             menuItems.append(action)
         }
