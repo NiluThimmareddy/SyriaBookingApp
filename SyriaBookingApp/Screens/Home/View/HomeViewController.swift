@@ -192,6 +192,7 @@ class HomeViewController: UIViewController {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
         storyboard.delegate = self
+        storyboard.comingFrom = .search
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
         storyboard.hidesBottomBarWhenPushed = true
@@ -204,6 +205,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func viewAllButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+        controller.comingFrom = .filter
         controller.viewModel = self.viewModel
         controller.shouldSortByRating = true
         controller.hidesBottomBarWhenPushed = true
@@ -260,6 +262,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let HotelCity = WhereToNextCityList[indexPath.row].City
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
             storyboard.viewModel = self.viewModel
+            storyboard.comingFrom = .filter
             storyboard.selectedCity = HotelCity
             storyboard.navigationItem.title = "Hotel List"
             storyboard.hidesBottomBarWhenPushed = true
@@ -364,6 +367,9 @@ extension HomeViewController {
                 self.viewModel.filteredHotels = self.viewModel.filteredHotels.sorted {
                     $0.averageRating > $1.averageRating
                 }
+                
+                self.viewModel.filteredHotelsCopy = self.viewModel.filteredHotels
+                
                 self.topHotelsCollectionView.reloadData()
                 self.promotionsList = self.viewModel.filteredHotels.filter {
                     if let desc = $0.shortDescription?.trimmingCharacters(in: .whitespacesAndNewlines) {
@@ -378,6 +384,7 @@ extension HomeViewController {
                 self.cities = self.viewModel.hotels?.data.compactMap { $0.city }
                     .filter { seen.insert($0).inserted } ?? ["No cities found"]
                 
+                self.cities.insert("All", at: 0)
                 if let cityButton = self.selectCityButton {
                     self.configureDropdownMenu(for: cityButton, options: self.cities)
                 }

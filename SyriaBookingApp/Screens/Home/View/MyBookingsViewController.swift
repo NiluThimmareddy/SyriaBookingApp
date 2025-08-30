@@ -103,6 +103,7 @@ extension MyBookingsViewController {
         segmentControl.addBottomShadow()
         
         viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
+        viewModel.filteredHotelsCopy = viewModel.filteredHotels
         DispatchQueue.main.async {
             self.HistoryTableView.reloadData()
         }

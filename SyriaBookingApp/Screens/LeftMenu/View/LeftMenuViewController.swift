@@ -85,6 +85,7 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         switch indexPath.row {
         case 0 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            controller.comingFrom = .tabBar
             controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         case 1 :
