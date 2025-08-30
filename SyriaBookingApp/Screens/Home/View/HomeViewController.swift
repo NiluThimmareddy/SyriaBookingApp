@@ -222,7 +222,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         if collectionView == topHotelsCollectionView {
             return min(10, viewModel.filteredHotels.count)
         } else if collectionView == recentlyCollectionView {
-            return min(5, viewModel.recentlyViewdHotels.count)
+            return viewModel.recentlyViewdHotels.isEmpty ? 1 : min(5, viewModel.recentlyViewdHotels.count)
         } else if collectionView == propertyTypeCollectionView {
             return  WhereToNextCityList.count
         } else if collectionView == promotionsCollectionView {
@@ -239,10 +239,15 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             cell.configuration(with: hotel)
             return cell
         } else if collectionView == recentlyCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentlyViewedCVC", for: indexPath) as! RecentlyViewedCVC
-            let item = viewModel.recentlyViewdHotels[indexPath.row]
-            cell.configure(with: item)
-            return cell
+            if viewModel.recentlyViewdHotels.isEmpty {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoRecentlyViewedCVC", for: indexPath) as! NoRecentlyViewedCVC
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentlyViewedCVC", for: indexPath) as! RecentlyViewedCVC
+                let item = viewModel.recentlyViewdHotels[indexPath.row]
+                cell.configure(with: item)
+                return cell
+            }
         } else if collectionView == propertyTypeCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WhereToNextCVC", for: indexPath) as! WhereToNextCVC
             let item = WhereToNextCityList[indexPath.row]
@@ -308,9 +313,13 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
             return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
         } else if collectionView == recentlyCollectionView {
-            let itemWidth = collectionView.frame.width * 0.3
-            let itemHeight = collectionView.frame.height
-            return CGSize(width: itemWidth, height: itemHeight)
+            if viewModel.recentlyViewdHotels.isEmpty {
+                return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+            } else {
+                let itemWidth = collectionView.frame.width * 0.3
+                let itemHeight = collectionView.frame.height
+                return CGSize(width: itemWidth, height: itemHeight)
+            }
         } else if collectionView == propertyTypeCollectionView {
             let isIpad = UIDevice.current.userInterfaceIdiom == .pad
             let itemsPerRow: CGFloat = isIpad ? 5 : (1 / 0.35)
@@ -416,6 +425,7 @@ extension HomeViewController {
         if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             topHotelsLayout.estimatedItemSize = .zero
         }
+        recentlyCollectionView.register(UINib(nibName: "NoRecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "NoRecentlyViewedCVC")
         recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")
         if let layouts = recentlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layouts.estimatedItemSize = .zero
@@ -612,6 +622,5 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
             print("Failed to instantiate PromotionsDetailsVC")
         }
     }
-    
 }
 
