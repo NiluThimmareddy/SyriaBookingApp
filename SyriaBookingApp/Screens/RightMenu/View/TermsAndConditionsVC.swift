@@ -30,7 +30,6 @@ class TermsAndConditionsVC: UIViewController {
             webView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
         loadHTMLContent()
-        topView.addBottomShadow()
     }
 
     private func loadHTMLContent() {

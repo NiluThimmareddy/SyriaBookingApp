@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class RegisterMobileNumberVC : UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -36,16 +37,14 @@ class RegisterMobileNumberVC : UIViewController {
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var isDatePickerShown = false
-
     var selectedRoom: RoomElement?
     var selectedHotel: Hotel?
     var selectedRate: Rate?
-   var  selectedCountryName : String?
+    var  selectedCountryName : String?
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
     var registerUserDetails : BookingModel?
     var countryCodeList : [CountryModel] = []
-    
     var maxMobileNumberLength: Int = 10
     
     override func viewDidLoad() {
@@ -206,7 +205,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
                 completion(nil)
             }else{
                 self.showAlert("Something went wrong \(error)")
-                //completion(nil)
             }
         }
         
@@ -322,7 +320,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         }
     }
 
-    // MARK: - Date Validation
     private func isValidDate(_ dateString: String) -> Bool {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -374,5 +371,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         countryNameButton.showsMenuAsPrimaryAction = true
     }
 }
+
 
 

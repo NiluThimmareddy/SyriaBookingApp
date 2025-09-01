@@ -27,6 +27,8 @@ class LeftMenuViewController: UIViewController {
         ("Safety Resource Center", "shield.lefthalf.filled.badge.checkmark")
     ]
     
+    var onDismiss: (()->Void)?
+     
     override func viewDidLoad() {
         super.viewDidLoad()
        setUpUI()
@@ -39,16 +41,7 @@ class LeftMenuViewController: UIViewController {
     }
     
     @IBAction func DismissButtonAction(_ sender: UIButton) {
-        
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            self.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width,height: UIScreen.main.bounds.size.height)
-            self.view.layoutIfNeeded()
-            self.view.backgroundColor = UIColor.clear
-        }, completion: { (finished) -> Void in
-            self.view.removeFromSuperview()
-            self.removeFromParent()
-        })
-        self.navigationController?.navigationBar.isHidden = false
+        onDismiss?()
     }
 
     @IBAction func rightArrowButtonAction(_ sender: Any) {

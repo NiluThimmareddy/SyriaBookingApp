@@ -88,7 +88,5 @@ extension FrequentlyAskedTVCViewController {
         frequentlyAskedTVC.register(UINib(nibName: "FrequentlyAskedTVC", bundle: .main), forCellReuseIdentifier: "FrequentlyAskedTVC")
          frequentlyAskedTVC.dataSource = self
          frequentlyAskedTVC.delegate = self
-        
-        topView.addBottomShadow()
     }
 }

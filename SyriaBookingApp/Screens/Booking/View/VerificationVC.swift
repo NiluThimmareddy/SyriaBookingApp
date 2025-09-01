@@ -1,4 +1,5 @@
 
+
 import UIKit
 
 class VerificationVC : UIViewController {
@@ -6,7 +7,7 @@ class VerificationVC : UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var mobileNumberTF: UITextField!
-    @IBOutlet weak var otpTF: UITextField!
+    @IBOutlet var otpTF: [UITextField]!
     @IBOutlet weak var verifyAndContinueButton: UIButton!
     
     var mobileNumber: String?
@@ -19,9 +20,12 @@ class VerificationVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mobileNumberTF.text = mobileNumber
-       
+        setUpUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        otpTF.first?.becomeFirstResponder()
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -29,7 +33,9 @@ class VerificationVC : UIViewController {
     }
     
     @IBAction func verifyAndContinueButtonAction(_ sender: Any) {
-        guard let otp = otpTF.text, !otp.trimmingCharacters(in: .whitespaces).isEmpty else {
+        let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
+
+        guard !otp.isEmpty else {
             showAlert("Please enter the OTP.")
             return
         }
@@ -50,4 +56,53 @@ class VerificationVC : UIViewController {
         present(controller, animated: true)
     }
     
+}
+
+extension VerificationVC : UITextFieldDelegate {
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+
+        if text.count >= 1 {
+            textField.text = String(text.prefix(1))
+            if textField.tag < otpTF.count - 1 {
+                otpTF[textField.tag + 1].becomeFirstResponder()
+            } else {
+                textField.resignFirstResponder()
+            }
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if string.isEmpty {
+            if let currentText = textField.text, !currentText.isEmpty {
+                textField.text = ""
+                if textField.tag > 0 {
+                    otpTF[textField.tag - 1].becomeFirstResponder()
+                }
+                return false
+            } else {
+                if textField.tag > 0 {
+                    otpTF[textField.tag - 1].becomeFirstResponder()
+                }
+                return false
+            }
+        }
+
+        return (textField.text?.count ?? 0) < 1
+    }
+}
+
+extension VerificationVC {
+    func setUpUI() {
+        mobileNumberTF.text = mobileNumber
+        
+        for (index, textField) in otpTF.enumerated() {
+            textField.delegate = self
+            textField.keyboardType = .numberPad
+            textField.textAlignment = .center
+            textField.tag = index
+            textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        }
+    }
 }

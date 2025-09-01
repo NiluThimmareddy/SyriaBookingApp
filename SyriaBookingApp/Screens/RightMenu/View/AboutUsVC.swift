@@ -14,7 +14,6 @@ class AboutUsVC: UIViewController {
         super.viewDidLoad()
         setupWebView()
         loadHTMLContent()
-        topView.addBottomShadow()
     }
 
     private func setupWebView() {

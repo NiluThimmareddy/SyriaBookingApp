@@ -92,31 +92,23 @@ class HomeViewController: UIViewController {
         sender.isEnabled = false
         
         if isLeftMenuVisible {
-            guard let menuVC = leftMenuVC else {
-                sender.isEnabled = true
-                return
-            }
+            closeLeftMenu()
+            sender.isEnabled = true
             
-            UIView.animate(withDuration: 0.3, animations: {
-                menuVC.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-            }) { _ in
-                menuVC.view.removeFromSuperview()
-                menuVC.removeFromParent()
-                self.leftMenuVC = nil
-                self.isLeftMenuVisible = false
-                sender.title = nil
-                sender.image = UIImage(systemName: "line.horizontal.3")
-                sender.isEnabled = true
-            }
             
         } else {
             let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
             let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
             self.leftMenuVC = menuVC
             
+            menuVC.onDismiss = { [weak self] in
+                
+                self?.closeLeftMenu()
+            }
             self.addChild(menuVC)
             self.view.addSubview(menuVC.view)
             menuVC.didMove(toParent: self)
+            
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -134,7 +126,6 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
         guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
@@ -594,6 +585,23 @@ extension HomeViewController {
                 let newOffset = CGPoint(x: nextOffset, y: 0)
                 collectionView.setContentOffset(newOffset, animated: true)
             }
+        }
+    }
+    
+    func closeLeftMenu() {
+        guard let menuVC = leftMenuVC else { return }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            menuVC.view.frame = CGRect(x: -UIScreen.main.bounds.width,
+                                       y: 0,
+                                       width: UIScreen.main.bounds.width,
+                                       height: UIScreen.main.bounds.height)
+        }) { _ in
+            menuVC.view.removeFromSuperview()
+            menuVC.removeFromParent()
+            self.leftMenuVC = nil
+            self.isLeftMenuVisible = false
+            self.leftMenuBarButton.image = UIImage(systemName: "line.horizontal.3")
         }
     }
     
