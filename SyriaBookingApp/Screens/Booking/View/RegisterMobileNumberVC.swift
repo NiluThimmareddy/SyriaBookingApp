@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class RegisterMobileNumberVC : UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!

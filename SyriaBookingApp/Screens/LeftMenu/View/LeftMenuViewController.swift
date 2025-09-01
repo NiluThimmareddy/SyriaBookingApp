@@ -28,6 +28,7 @@ class LeftMenuViewController: UIViewController {
     ]
     
     var onDismiss: (()->Void)?
+    let languages = ["English", "العربية"]
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +133,26 @@ extension LeftMenuViewController {
         LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
         
         languageButton.applyTopRightLightGreyGradient()
+        configureLanguage()
+    }
+    
+    func configureLanguage() {
+        let menuItems = languages.map { language in
+            UIAction(title: language) { [weak self] _ in
+                guard let self = self else { return }
+                self.languageButton.setTitle(language, for: .normal)
+                
+                switch language {
+                case "English":
+                    print("English selected")
+                case "العربية":
+                    print("Arabic selected")
+                default: break
+                }
+            }
+        }
         
+        languageButton.menu = UIMenu(title: "", children: menuItems)
+        languageButton.showsMenuAsPrimaryAction = true
     }
 }

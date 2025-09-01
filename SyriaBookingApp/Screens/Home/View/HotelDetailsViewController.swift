@@ -43,6 +43,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var rateAndReviewsTableview: UITableView!
     @IBOutlet weak var rateAndReviewsTableviewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateAndReviewsContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var viewAllButton: UIButton!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -157,7 +158,6 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
         viewAllVC.selectedHotel = selectedHotel
         viewAllVC.modalPresentationStyle = .fullScreen
-//        viewAllVC.modalTransitionStyle = .crossDissolve
         present(viewAllVC, animated: true)
     }
     
@@ -403,6 +403,16 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         averageRatingsLabel.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAverageRating))
         averageRatingsLabel.addGestureRecognizer(tapGesture)
+        hideViewAllButton()
+    }
+    
+    func hideViewAllButton() {
+        if selectedHotel?.reviews.count ?? 0 > 5 {
+            viewAllButton.isHidden = false
+        }else{
+            
+            viewAllButton.isHidden = true
+        }
     }
     
     func setupAmenities(_ amenitiesString: String?) {
