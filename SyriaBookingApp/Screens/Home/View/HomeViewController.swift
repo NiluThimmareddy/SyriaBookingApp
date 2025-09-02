@@ -15,12 +15,14 @@ enum DatePickerMode {
 struct WhereToNextList{
     var image : String
     var City : String
-    
-    init( image: String, City: String) {
+    var Cityar: String
+    init(image: String, City: String, Cityar: String) {
         self.image = image
         self.City = City
+        self.Cityar = Cityar
     }
 }
+
 
 protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
@@ -67,13 +69,52 @@ class HomeViewController: UIViewController {
     var promotionsList: [Hotel] = []
     
     
+    //Mark
+    @IBOutlet weak var checkOutTitleLabel: UILabel!
+    @IBOutlet weak var checkInTitleLabel: UILabel!
+    @IBOutlet weak var locationTileLabel: UILabel!
+    @IBOutlet weak var subTitleMessageLabel: UILabel!
+    @IBOutlet weak var recentlyHeadLineLabel: UILabel!
+    
+    @IBOutlet weak var whereToNextHeadLineLabel: UILabel!
+    @IBOutlet weak var topHotelHeadLineLabel: UILabel!
+    @IBOutlet weak var navigationTitleNameLabel: UINavigationItem!
+    var selectedLanguage: Languages = .english
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
         setupUI()
+        NavigationBackGroundColour()
         viewModel.fetchHotels()
+        NotificationCenter.default.addObserver(
+               self,
+               selector: #selector(updateTexts),
+               name: .languageChanged,
+               object: nil
+           )
+           
+           updateTexts()
     }
-  
+    
+    func NavigationBackGroundColour(){
+            navigationController?.navigationBar.barTintColor = .black
+                   navigationController?.navigationBar.isTranslucent = false
+     
+                   // ✅ Navigation Bar title color white
+                   navigationController?.navigationBar.titleTextAttributes = [
+                       .foregroundColor: UIColor.white
+                   ]
+     
+                   // ✅ Navigation bar icons (back button, etc.) white
+                   navigationController?.navigationBar.tintColor = .white
+     
+                   // ✅ Specific bar button icons white
+                   leftMenuBarButton.tintColor = .white
+                   notificationBarButton.tintColor = .white
+                   rightMenuBarButton.tintColor = .white
+            navigationController?.setNavigationBarBlack()
+        }
+     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if HotelDataMaganer.shared.allHotels.isEmpty{
@@ -88,7 +129,47 @@ class HomeViewController: UIViewController {
         gradientView.applyCardStyle()
         topView.addTopShadow()
     }
-    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        topHotelsCollectionView.reloadData()
+        propertyTypeCollectionView.reloadData()
+        recentlyCollectionView.reloadData()
+        
+        if lang == .english {
+            navigationTitleNameLabel.title = "SyriaBooking"
+            locationTileLabel.text = "Location"
+            messageLabel.text = "Good Morning User!"
+            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
+            recentlyHeadLineLabel.text = "Recently Viewed"
+            whereToNextHeadLineLabel.text = "Where to next?"
+            topHotelHeadLineLabel.text = "Top Hotels"
+            checkInTitleLabel.text = "Check In"
+            checkOutTitleLabel.text = "Check Out"
+            selectCityButton.setTitle("Select City", for: .normal)
+                   checkInButton.setTitle("Check In", for: .normal)
+                   checkOutButton.setTitle("Check Out", for: .normal)
+                   searchButton.setTitle("Search", for: .normal)
+                   viewAllButton.setTitle("View All", for: .normal)
+            
+            
+        } else {
+            navigationTitleNameLabel.title = "سيريا بوكينغ"
+            checkInTitleLabel.text = "تسجيل الوصول"
+            checkOutTitleLabel.text = "تسجيل المغادرة"
+            locationTileLabel.text = "الموقع"
+            messageLabel.text = "صباح الخير المستخدم!"
+            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
+            recentlyHeadLineLabel.text = "شوهدت مؤخرا"
+            whereToNextHeadLineLabel.text = "إلى أين بعد؟"
+            topHotelHeadLineLabel.text = "أفضل الفنادق"
+            selectCityButton.setTitle("اختر مدينة", for: .normal)
+            checkInButton.setTitle("تسجيل الوصول", for: .normal)
+            checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
+            searchButton.setTitle("بحث", for: .normal)
+            viewAllButton.setTitle("عرض الكل", for: .normal)
+        }
+    }
+
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
         sender.isEnabled = false
         
@@ -183,6 +264,7 @@ class HomeViewController: UIViewController {
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
+    
         storyboard.delegate = self
         storyboard.comingFrom = .search
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
@@ -393,14 +475,21 @@ extension HomeViewController {
                 var seenCities = Set<String>()
 
                 self.WhereToNextCityList = self.viewModel.hotels?.data.compactMap { hotel -> WhereToNextList? in
-                    let city = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let cityEN = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let cityAR = hotel.cityAR?.trimmingCharacters(in: .whitespacesAndNewlines) ?? hotel.city
                     
-                    guard !city.isEmpty, seenCities.insert(city.lowercased()).inserted else {
+                    // Avoid duplicates (English check)
+                    guard !cityEN.isEmpty, seenCities.insert(cityEN.lowercased()).inserted else {
                         return nil
                     }
 
                     let imageUrl = hotel.images.first?.trimmingCharacters(in: .whitespacesAndNewlines)
-                    return WhereToNextList(image: imageUrl ?? "", City: city)
+
+                    return WhereToNextList(
+                        image: imageUrl ?? "",
+                        City: cityEN,      // English
+                        Cityar: cityAR     // Arabic
+                    )
                 } ?? []
                 print("where to next Hotels List.... \(self.WhereToNextCityList)")
             }
@@ -642,3 +731,23 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
     }
 }
 
+extension UINavigationController {
+    func setNavigationBarBlack() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .black   // ✅ Black background
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white] // ✅ White title
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white] // ✅ White large title
+ 
+        // ✅ Apply appearance to all states
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationBar.compactScrollEdgeAppearance = appearance
+        }
+ 
+        // ✅ Bar button items, back button, etc. → White
+        navigationBar.tintColor = .white
+    }
+}

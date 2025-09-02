@@ -13,9 +13,13 @@ class WhereToNextCVC : UICollectionViewCell {
         hotelImageView.clipsToBounds = true
     }
     
-    func configure(with hotel: WhereToNextList) {
-        popularPlaceLabel.text = "\(hotel.City)"
-        hotelImageView.loadImage(from: hotel.image)
+    func configure(with item: WhereToNextList) {
+        if AppSettings.shared.selectedLanguage == .english{
+            popularPlaceLabel.text = item.City
+        }else{
+            popularPlaceLabel.text = item.Cityar
+        }
+        hotelImageView.loadImage(from: item.image)
     }
     
 }

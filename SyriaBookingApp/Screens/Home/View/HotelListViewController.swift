@@ -124,7 +124,7 @@ extension HotelListViewController  {
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         scrolltoTopHelper = ScrollToTopHelper(parent: self)
         
-        searchBar.placeholder = "Search hotels"
+        searchBar.placeholder = "Search hotels, City"
         searchBar.delegate = self
     }
     

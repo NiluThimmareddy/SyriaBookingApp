@@ -41,9 +41,9 @@ extension PromotionsDetailsVC {
     func setUpUI() {
         backView.applyCardStyle()
         guard let hotel = selectedHotel else {return}
-        subdiscriptionTextView.text = hotel.shortDescription
-        hotelNameLabel.text = hotel.name
-        cityNameLabel.text = hotel.city
+        subdiscriptionTextView.text = hotel.localizedShortDescription()
+        hotelNameLabel.text = hotel.localizedName()
+        cityNameLabel.text = hotel.localizedCity()
         averageRatingsLabel.text = "\(hotel.averageRating)/5"
         totalReviewsLabel.text = "\(hotel.reviewCount) reviews"
         

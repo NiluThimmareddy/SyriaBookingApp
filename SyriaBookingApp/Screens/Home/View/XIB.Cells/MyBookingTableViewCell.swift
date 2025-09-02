@@ -43,7 +43,7 @@ class MyBookingTableViewCell: UITableViewCell {
         
         if let intrating = Int(hotel.averageRating), intrating > 0, intrating <= 5 {
             let hotelNameAttribute = NSMutableAttributedString(
-                string: "\(hotel.name) ",
+                string: "\(hotel.localizedName()) ",
                 attributes: [.foregroundColor: UIColor.label]
             )
             
@@ -56,11 +56,11 @@ class MyBookingTableViewCell: UITableViewCell {
             hotelNameAttribute.append(starAttributedString)
             hotelNameLabel.attributedText = hotelNameAttribute
         } else {
-            hotelNameLabel.text = hotel.name
+            hotelNameLabel.text = hotel.localizedName()
         }
         priceLabel.text = "$\(hotel.minRoomPrice)"
         orderIdLabel.text = hotel.id
-        hotelAddressLabel.text = hotel.city
+        hotelAddressLabel.text = hotel.localizedCity()
     }
 
  

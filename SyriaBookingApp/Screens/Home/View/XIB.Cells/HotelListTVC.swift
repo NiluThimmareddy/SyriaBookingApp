@@ -54,7 +54,7 @@ class HotelListTVC : UITableViewCell {
         let intRating = Int(ratingValue)
 
         let hotelNameAttributed = NSMutableAttributedString(
-            string: "\(model.name) ",
+            string: "\(model.localizedName()) ",
             attributes: [.foregroundColor: UIColor.label]
         )
 
@@ -69,7 +69,7 @@ class HotelListTVC : UITableViewCell {
 
         hotelNameLabel.attributedText = hotelNameAttributed
         distanceLabel.text = model.landmarkDescription
-        cityLabel.text = model.city
+        cityLabel.text = model.localizedCity()
         let price = model.minRoomPrice
         let fullText = "From \(price) / night"
 
