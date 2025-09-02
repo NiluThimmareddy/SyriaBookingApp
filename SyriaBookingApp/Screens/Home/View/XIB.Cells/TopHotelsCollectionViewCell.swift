@@ -56,7 +56,7 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         let intRating = Int(ratingValue)
 
         let hotelNameAttributed = NSMutableAttributedString(
-            string: "\(model.name) ",
+            string: "\(model.localizedName()) ",
             attributes: [.foregroundColor: UIColor.label]
         )
 
@@ -71,11 +71,31 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
 
         hotelNameLabel.attributedText = hotelNameAttributed
 
-        cityNameLabel.text = model.city
+        cityNameLabel.text = model.localizedCity()
         distanceLabel.text = model.landmarkDescription
         starRatingView.rating = Double(ratingValue)
-        priceLabel.text = "\(model.minRoomPrice) / night"
-        reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+     //   priceLabel.text = "\(model.minRoomPrice) / night"
+        //reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        
+        if AppSettings.shared.selectedLanguage == .english {
+            priceLabel.text = "\(model.minRoomPrice) / night"
+            
+        }else{
+            priceLabel.text = "\(model.minRoomPrice) / نان"
+        }
+        
+      
+        if AppSettings.shared.selectedLanguage == .english {
+            reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        } else {
+            reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) مراجعات)"
+        }
+
+        if AppSettings.shared.selectedLanguage == .arabic {
+            bookNowButton.setTitle("احجز الآن", for: .normal)
+        } else {
+            bookNowButton.setTitle("Book Now", for: .normal)
+        }
     }
     
    

@@ -6,7 +6,19 @@
 //
 
 import UIKit
-
+struct MenuItem {
+    let titleEN: String
+    let titleAR: String
+    let icon: String
+    
+    func localizedTitle() -> String {
+        if AppSettings.shared.selectedLanguage == .english {
+            return titleEN
+        } else {
+            return titleAR
+        }
+    }
+}
 class LeftMenuViewController: UIViewController {
     
     @IBOutlet weak var backView: UIView!
@@ -17,15 +29,16 @@ class LeftMenuViewController: UIViewController {
     @IBOutlet weak var personEmailLabel: UILabel!
     @IBOutlet weak var languageButton: UIButton!
     
-    let menuItems = [
-        ("Hotels", "bed.double.fill"),
-        ("Careers", "briefcase.fill"),
-        ("How it works", "questionmark.circle.fill"),
-        ("Your Booking", "calendar.badge.checkmark"),
-        ("COVID-19 – FAQs", "checkmark.shield.fill"),
-        ("Sustainability", "leaf.circle.fill"),
-        ("Safety Resource Center", "shield.lefthalf.filled.badge.checkmark")
+    let menuItems: [MenuItem] = [
+        MenuItem(titleEN: "Hotels", titleAR: "فنادق", icon: "bed.double.fill"),
+        MenuItem(titleEN: "Careers", titleAR: "وظائف", icon: "briefcase.fill"),
+        MenuItem(titleEN: "How it works", titleAR: "كيف تعمل", icon: "questionmark.circle.fill"),
+        MenuItem(titleEN: "Your Booking", titleAR: "حجوزاتك", icon: "calendar.badge.checkmark"),
+        MenuItem(titleEN: "COVID-19 – FAQs", titleAR: "الأسئلة الشائعة - كوفيد 19", icon: "checkmark.shield.fill"),
+        MenuItem(titleEN: "Sustainability", titleAR: "الاستدامة", icon: "leaf.circle.fill"),
+        MenuItem(titleEN: "Safety Resource Center", titleAR: "مركز موارد السلامة", icon: "shield.lefthalf.filled.badge.checkmark")
     ]
+
     
     var onDismiss: (()->Void)?
     let languages = ["English", "العربية"]
@@ -33,8 +46,14 @@ class LeftMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        setUpUI()
-    }
+        configureLanguage()
+        NotificationCenter.default.addObserver(
+        self,selector: #selector(LeftMenuReload),name: .languageChanged,object: nil)
+            }
 
+            @objc func LeftMenuReload() {
+                LeftMenuUITableView.reloadData()
+            }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -61,8 +80,10 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeftMenuTVC") as! LeftMenuTVC
         let item = menuItems[indexPath.row]
-        cell.titleLabel.text = item.0
-        let image = UIImage(systemName: item.1)?.withRenderingMode(.alwaysTemplate)
+        cell.titleLabel.text = item.localizedTitle()
+        
+        // Icon
+        let image = UIImage(systemName: item.icon)?.withRenderingMode(.alwaysTemplate)
         cell.imgView.image = image
         return cell
     }
@@ -136,23 +157,49 @@ extension LeftMenuViewController {
         configureLanguage()
     }
     
+//    func configureLanguage() {
+//        let menuItems = languages.map { language in
+//            UIAction(title: language) { [weak self] _ in
+//                guard let self = self else { return }
+//                self.languageButton.setTitle(language, for: .normal)
+//                
+//                switch language {
+//                case "English":
+//                    print("English selected")
+//                case "العربية":
+//                    print("Arabic selected")
+//                default: break
+//                }
+//            }
+//        }
+//        
+//        languageButton.menu = UIMenu(title: "", children: menuItems)
+//        languageButton.showsMenuAsPrimaryAction = true
+//    }
     func configureLanguage() {
-        let menuItems = languages.map { language in
-            UIAction(title: language) { [weak self] _ in
-                guard let self = self else { return }
-                self.languageButton.setTitle(language, for: .normal)
-                
-                switch language {
-                case "English":
-                    print("English selected")
-                case "العربية":
-                    print("Arabic selected")
-                default: break
+            let menuItems = languages.map { language in
+                UIAction(title: language) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.languageButton.setTitle(language, for: .normal)
+     
+                    // Code for changing language
+                    switch language {
+                    case "English":
+                        AppSettings.shared.selectedLanguage = .english
+                        self.languageButton.setTitle("English", for: .normal)
+                        NotificationCenter.default.post(name: .languageChanged, object: nil)
+                        // apply English localization logic
+                    case "العربية":
+                        AppSettings.shared.selectedLanguage = .arabic
+                        self.languageButton.setTitle("العربية", for: .normal)
+                        NotificationCenter.default.post(name: .languageChanged, object: nil)
+                        // apply Arabic localization logic
+                    default: break
+                    }
                 }
             }
+            
+            languageButton.menu = UIMenu(title: "", children: menuItems)
+            languageButton.showsMenuAsPrimaryAction = true
         }
-        
-        languageButton.menu = UIMenu(title: "", children: menuItems)
-        languageButton.showsMenuAsPrimaryAction = true
-    }
 }

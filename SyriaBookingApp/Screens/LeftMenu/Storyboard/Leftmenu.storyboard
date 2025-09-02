@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9w-g3-NFz">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
@@ -28,7 +28,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YoW-Fj-rye">
-                                <rect key="frame" x="0.0" y="59" width="243" height="793"/>
+                                <rect key="frame" x="0.0" y="118" width="243" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ZJ-8A-cBw">
                                         <rect key="frame" x="0.0" y="0.0" width="243" height="100"/>
@@ -118,7 +118,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="i0r-3S-iu5">
-                                        <rect key="frame" x="0.0" y="110" width="243" height="683"/>
+                                        <rect key="frame" x="0.0" y="110" width="243" height="624"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="Y6W-OH-hqX" id="dyk-rm-B19"/>
@@ -176,10 +176,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eZx-IW-nEj">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jkx-oY-dLS">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="759"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="666"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBj-WW-KlG">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="759.66666666666663"/>
@@ -216,7 +216,7 @@
                                                                 </variation>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Search for Hotels:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PSx-PF-ADH">
-                                                                <rect key="frame" x="10" y="155.66666666666666" width="373" height="21"/>
+                                                                <rect key="frame" x="10" y="155.66666666666669" width="373" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -225,7 +225,7 @@
                                                                 </variation>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gct-6q-Z7z">
-                                                                <rect key="frame" x="10" y="186.66666666666666" width="373" height="71.666666666666657"/>
+                                                                <rect key="frame" x="10" y="186.66666666666669" width="373" height="71.666666666666686"/>
                                                                 <string key="text">Use our powerful search engine to explore hotels across Syria. Filter by city, price, star rating, amenities, and guest reviews to find the perfect stay that fits your needs.</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -429,10 +429,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czD-ts-5yx">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LEn-zk-4S5">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="759"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="666"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EvG-nl-hQK">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="942"/>
@@ -489,7 +489,7 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                                                                 </variation>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.Collaborative &amp; Supportive Culture:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu6-Bw-YN7">
-                                                                <rect key="frame" x="10" y="433.66666666666669" width="373" height="21"/>
+                                                                <rect key="frame" x="10" y="433.66666666666663" width="373" height="21"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -762,7 +762,7 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFY-vf-dFP">
-                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
+                                <rect key="frame" x="0.0" y="162" width="393" height="622"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Travel Information &amp; Booking Support for SyriaBooking.sy Customers" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXt-hU-JEy">
                                         <rect key="frame" x="10" y="10" width="373" height="38.333333333333336"/>
@@ -770,7 +770,7 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0Xi-Xx-vlo">
-                                        <rect key="frame" x="10" y="130.66666666666669" width="373" height="574.33333333333326"/>
+                                        <rect key="frame" x="10" y="130.66666666666671" width="373" height="481.33333333333326"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <connections>
                                             <outlet property="dataSource" destination="cIw-UZ-ScI" id="7Po-sb-BlM"/>
@@ -827,10 +827,10 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YUI-B5-add">
-                                <rect key="frame" x="0.0" y="59" width="393" height="793"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRk-hn-vW2">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="734"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>
@@ -873,10 +873,10 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ih-iR-PUB">
-                                <rect key="frame" x="0.0" y="59" width="393" height="793"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fl-eQ-dSU">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="734"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>
@@ -916,7 +916,7 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ELr-hT-klo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pex-1d-J3N">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -928,16 +928,120 @@ Whether you’re a tech expert, customer service champion, creative storyteller,
             </objects>
             <point key="canvasLocation" x="2278.6259541984732" y="-34.507042253521128"/>
         </scene>
+        <!--LanguageVC-->
+        <scene sceneID="Dsi-N8-OKk">
+            <objects>
+                <viewController storyboardIdentifier="LanguageVC" id="D8q-lf-TZF" customClass="LanguageVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UFm-W7-aeE">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="globe" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5UG-wY-kdl">
+                                <rect key="frame" x="0.0" y="118.66666666666669" width="393" height="664.66666666666652"/>
+                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nor-0m-KNe">
+                                <rect key="frame" x="50" y="326" width="293" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hzT-8z-s0d">
+                                        <rect key="frame" x="10" y="10" width="158" height="35"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="ChooseLanguage"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crS-h4-U09">
+                                        <rect key="frame" x="10" y="65" width="105" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="A8M-sk-ktA"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="circle" catalog="system" title="English"/>
+                                        <connections>
+                                            <action selector="englishSelected:" destination="D8q-lf-TZF" eventType="touchUpInside" id="QDl-Vo-G3F"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAj-nl-0Zy">
+                                        <rect key="frame" x="10" y="125" width="67" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="67f-r9-VIe"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="circle" catalog="system" title="Ar"/>
+                                        <connections>
+                                            <action selector="arabicSelected:" destination="D8q-lf-TZF" eventType="touchUpInside" id="C0S-aI-wsg"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xh-RB-cGP">
+                                        <rect key="frame" x="218" y="150" width="65" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="vex-hu-gcJ"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Done"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="doneDismissButton:" destination="D8q-lf-TZF" eventType="touchUpInside" id="gGA-V3-rUe"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="crS-h4-U09" firstAttribute="leading" secondItem="nor-0m-KNe" secondAttribute="leading" constant="10" id="5ke-fe-wmg"/>
+                                    <constraint firstItem="crS-h4-U09" firstAttribute="top" secondItem="hzT-8z-s0d" secondAttribute="bottom" constant="20" id="Ymm-F5-Dfb"/>
+                                    <constraint firstItem="hzT-8z-s0d" firstAttribute="leading" secondItem="nor-0m-KNe" secondAttribute="leading" constant="10" id="bQc-q8-0Qd"/>
+                                    <constraint firstAttribute="height" constant="200" id="c1H-CA-8K6"/>
+                                    <constraint firstItem="SAj-nl-0Zy" firstAttribute="leading" secondItem="crS-h4-U09" secondAttribute="leading" id="c8e-vI-gM2"/>
+                                    <constraint firstItem="SAj-nl-0Zy" firstAttribute="top" secondItem="crS-h4-U09" secondAttribute="bottom" constant="20" id="lVK-ol-fPl"/>
+                                    <constraint firstAttribute="bottom" secondItem="6xh-RB-cGP" secondAttribute="bottom" constant="10" id="psF-iu-JDx"/>
+                                    <constraint firstItem="hzT-8z-s0d" firstAttribute="top" secondItem="nor-0m-KNe" secondAttribute="top" constant="10" id="sCk-nh-ohM"/>
+                                    <constraint firstAttribute="trailing" secondItem="6xh-RB-cGP" secondAttribute="trailing" constant="10" id="ycZ-hA-xhr"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="oX1-EM-VtU"/>
+                        <color key="backgroundColor" systemColor="systemGray2Color"/>
+                        <constraints>
+                            <constraint firstItem="oX1-EM-VtU" firstAttribute="trailing" secondItem="nor-0m-KNe" secondAttribute="trailing" constant="50" id="LZw-Av-SXF"/>
+                            <constraint firstItem="nor-0m-KNe" firstAttribute="leading" secondItem="oX1-EM-VtU" secondAttribute="leading" constant="50" id="Xvh-RC-zxL"/>
+                            <constraint firstItem="5UG-wY-kdl" firstAttribute="leading" secondItem="oX1-EM-VtU" secondAttribute="leading" id="aPB-xr-oVI"/>
+                            <constraint firstItem="oX1-EM-VtU" firstAttribute="bottom" secondItem="5UG-wY-kdl" secondAttribute="bottom" id="g1T-Al-GMz"/>
+                            <constraint firstItem="nor-0m-KNe" firstAttribute="centerX" secondItem="UFm-W7-aeE" secondAttribute="centerX" id="lhg-8P-1IO"/>
+                            <constraint firstItem="nor-0m-KNe" firstAttribute="centerY" secondItem="UFm-W7-aeE" secondAttribute="centerY" id="u5a-mD-HDa"/>
+                            <constraint firstItem="oX1-EM-VtU" firstAttribute="trailing" secondItem="5UG-wY-kdl" secondAttribute="trailing" id="uOK-cf-OLc"/>
+                            <constraint firstItem="5UG-wY-kdl" firstAttribute="top" secondItem="oX1-EM-VtU" secondAttribute="top" id="ufS-2i-YvK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="arbicLanguageButton" destination="SAj-nl-0Zy" id="1kT-bl-cBY"/>
+                        <outlet property="designUiView" destination="nor-0m-KNe" id="d5j-1Z-DTf"/>
+                        <outlet property="englishLanguageButton" destination="crS-h4-U09" id="fwa-oh-O51"/>
+                        <outlet property="selectedLanguageButton" destination="hzT-8z-s0d" id="aD9-li-07p"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H0E-gv-Kco" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-169" y="675"/>
+        </scene>
     </scenes>
     <resources>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>
+        <image name="circle" catalog="system" width="128" height="123"/>
+        <image name="globe" catalog="system" width="128" height="123"/>
         <image name="person.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
