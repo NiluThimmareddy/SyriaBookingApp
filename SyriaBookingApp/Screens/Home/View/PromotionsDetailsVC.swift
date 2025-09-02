@@ -20,6 +20,7 @@ class PromotionsDetailsVC: UIViewController {
     var promotionsList: [Hotel] = []
     var selectedHotel: Hotel?
     
+    var gotoDetails : (() -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -31,13 +32,7 @@ class PromotionsDetailsVC: UIViewController {
     
     @IBAction func rightArrowButtonAction(_ sender: Any) {
         self.dismiss(animated: true) {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-            vc.selectedHotel = self.selectedHotel
-            vc.navigationItem.title = "Hotel Details"
-            let backItem = UIBarButtonItem()
-            backItem.title = ""
-            self.navigationItem.backBarButtonItem = backItem
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.gotoDetails?()
         }
     }
 }

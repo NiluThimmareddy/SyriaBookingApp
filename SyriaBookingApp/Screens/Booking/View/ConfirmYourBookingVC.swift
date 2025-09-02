@@ -57,6 +57,14 @@ class ConfirmYourBookingVC : UIViewController {
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
         let confirmationVC = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
+        guard let noOfGuest = numberOfGuestsTF.text, !noOfGuest.isEmpty else {
+            showAlert("Please enter a Number of Guests.")
+            return
+        }
+        guard let checkout = checkOutTF.text, !checkout.isEmpty else {
+            showAlert("Please enter a Check Out.")
+            return
+        }
         confirmationVC.guestName = guestName
         confirmationVC.guestEmail = guestEmail
         confirmationVC.guestPhone = guestMobileNumber

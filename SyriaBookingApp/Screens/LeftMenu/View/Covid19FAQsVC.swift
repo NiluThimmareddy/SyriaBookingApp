@@ -65,7 +65,7 @@ extension Covid19FAQsVC : UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return (selectedIndexPath == indexPath) ? 170 : 61
+            return (selectedIndexPath == indexPath) ? 190 : 61
         } else {
             return (selectedIndexPath == indexPath) ? 220 : 61
         }

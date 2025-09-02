@@ -62,7 +62,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         case 4 :
             guard let controller = storyboard?.instantiateViewController(withIdentifier: "ContactUSVC") as? ContactUSVC else { return }
             if let sheet = controller.sheetPresentationController {
-                let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.25 : 0.4
+                let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.28 : 0.4
                 
                 let customDetent = UISheetPresentationController.Detent.custom(identifier: .medium) { context in
                     return context.maximumDetentValue * customDetentHeight

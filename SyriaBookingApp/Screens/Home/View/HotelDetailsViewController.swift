@@ -239,7 +239,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == hotelImagesCollectionView {
             let totalWidth = collectionView.bounds.width
-            return CGSize(width: totalWidth, height: totalWidth * 0.75)
+            return CGSize(width: totalWidth, height: totalWidth * 0.6)
         } else {
             if let room = selectedHotel?.rooms[indexPath.row] {
                 let height = calculateRoomCellHeight(for: room)
@@ -569,9 +569,6 @@ extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
             return
         }
         galleryVC.selectedHotel = selectedHotel
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        navigationController?.pushViewController(galleryVC, animated: true)
+        present(galleryVC, animated: true)
     }
 }

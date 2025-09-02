@@ -66,6 +66,7 @@ class HomeViewController: UIViewController {
     
     var promotionsList: [Hotel] = []
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
@@ -625,6 +626,15 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
         let selectedHotel = promotionsList[indexPath.item]
         if let detailsVC = storyboard?.instantiateViewController(withIdentifier: "PromotionsDetailsVC") as? PromotionsDetailsVC {
             detailsVC.selectedHotel = selectedHotel
+            detailsVC.gotoDetails = {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+                vc.selectedHotel = selectedHotel
+                vc.navigationItem.title = "Hotel Details"
+                let backItem = UIBarButtonItem()
+                backItem.title = ""
+                self.navigationItem.backBarButtonItem = backItem
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
             present(detailsVC, animated: true)
         } else {
             print("Failed to instantiate PromotionsDetailsVC")

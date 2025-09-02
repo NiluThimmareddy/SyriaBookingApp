@@ -10,9 +10,11 @@ import UIKit
 
 class HotelImagesGalleryVC: UIViewController {
 
+    @IBOutlet weak var backview: UIView!
     @IBOutlet weak var hotelImagesCollectionView: UICollectionView!
     @IBOutlet weak var hotelThumbnailCollectionView: UICollectionView!
-
+    @IBOutlet weak var hotelThumbnailCollectionHeightConstraint: NSLayoutConstraint!
+    
     var selectedHotel: Hotel?
     var initialIndex: Int = 0
 
@@ -111,6 +113,7 @@ extension HotelImagesGalleryVC: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension HotelImagesGalleryVC {
     func setUpUI() {
+        backview.applyCardStyle()
         if let hotelName = selectedHotel?.name {
             self.title = hotelName
         }
