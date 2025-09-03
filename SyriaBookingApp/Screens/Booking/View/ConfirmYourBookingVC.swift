@@ -111,7 +111,7 @@ extension ConfirmYourBookingVC {
             let price = selectedRate.price
             let quantity = selectedRate.selectedQuantity
             let guestNotes = selectedRate.notes ?? "Details Unavailable"            
-            let total = Double(price * quantity)
+            let total = Double(price * Double(quantity))
             let formattedTotal = String(format: "$%.2f", total)
             selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
             totalAmountLabel.text = formattedTotal

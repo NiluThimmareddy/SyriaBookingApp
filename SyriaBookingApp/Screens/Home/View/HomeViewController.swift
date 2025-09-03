@@ -97,23 +97,22 @@ class HomeViewController: UIViewController {
     }
     
     func NavigationBackGroundColour(){
-            navigationController?.navigationBar.barTintColor = .black
-                   navigationController?.navigationBar.isTranslucent = false
-     
-                   // ✅ Navigation Bar title color white
-                   navigationController?.navigationBar.titleTextAttributes = [
-                       .foregroundColor: UIColor.white
-                   ]
-     
-                   // ✅ Navigation bar icons (back button, etc.) white
-                   navigationController?.navigationBar.tintColor = .white
-     
-                   // ✅ Specific bar button icons white
-                   leftMenuBarButton.tintColor = .white
-                   notificationBarButton.tintColor = .white
-                   rightMenuBarButton.tintColor = .white
-            navigationController?.setNavigationBarBlack()
-        }
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+        
+        // ✅ Navigation bar icons (back button, etc.) white
+        navigationController?.navigationBar.tintColor = .white
+        
+        // ✅ Specific bar button icons white
+        leftMenuBarButton.tintColor = .white
+        notificationBarButton.tintColor = .white
+        rightMenuBarButton.tintColor = .white
+        navigationController?.setNavigationBarBlack()
+    }
      
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -194,7 +193,7 @@ class HomeViewController: UIViewController {
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
-            self.navigationController?.navigationBar.tintColor = .black
+            self.navigationController?.navigationBar.tintColor = .white
             menuVC.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             
             UIView.animate(withDuration: 0.3, animations: {
@@ -273,7 +272,7 @@ class HomeViewController: UIViewController {
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
-        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
@@ -735,11 +734,10 @@ extension UINavigationController {
     func setNavigationBarBlack() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .black   // ✅ Black background
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white] // ✅ White title
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white] // ✅ White large title
+        appearance.backgroundColor = .black
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
  
-        // ✅ Apply appearance to all states
         navigationBar.standardAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
         navigationBar.compactAppearance = appearance
@@ -747,7 +745,6 @@ extension UINavigationController {
             navigationBar.compactScrollEdgeAppearance = appearance
         }
  
-        // ✅ Bar button items, back button, etc. → White
         navigationBar.tintColor = .white
     }
 }

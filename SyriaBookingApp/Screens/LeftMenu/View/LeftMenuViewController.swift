@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 struct MenuItem {
     let titleEN: String
     let titleAR: String
@@ -19,6 +20,7 @@ struct MenuItem {
         }
     }
 }
+
 class LeftMenuViewController: UIViewController {
     
     @IBOutlet weak var backView: UIView!
@@ -45,19 +47,20 @@ class LeftMenuViewController: UIViewController {
      
     override func viewDidLoad() {
         super.viewDidLoad()
-       setUpUI()
+        setUpUI()
         configureLanguage()
         NotificationCenter.default.addObserver(
-        self,selector: #selector(LeftMenuReload),name: .languageChanged,object: nil)
-            }
-
-            @objc func LeftMenuReload() {
-                LeftMenuUITableView.reloadData()
-            }
+            self,selector: #selector(LeftMenuReload),name: .languageChanged,object: nil)
+    }
+    
+    @objc func LeftMenuReload() {
+        LeftMenuUITableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.navigationItem.backButtonTitle = ""
+        updateLanguageButtonTitle()
     }
     
     @IBAction func DismissButtonAction(_ sender: UIButton) {
@@ -82,7 +85,6 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         let item = menuItems[indexPath.row]
         cell.titleLabel.text = item.localizedTitle()
         
-        // Icon
         let image = UIImage(systemName: item.icon)?.withRenderingMode(.alwaysTemplate)
         cell.imgView.image = image
         return cell
@@ -157,49 +159,45 @@ extension LeftMenuViewController {
         configureLanguage()
     }
     
-//    func configureLanguage() {
-//        let menuItems = languages.map { language in
-//            UIAction(title: language) { [weak self] _ in
-//                guard let self = self else { return }
-//                self.languageButton.setTitle(language, for: .normal)
-//                
-//                switch language {
-//                case "English":
-//                    print("English selected")
-//                case "العربية":
-//                    print("Arabic selected")
-//                default: break
-//                }
-//            }
-//        }
-//        
-//        languageButton.menu = UIMenu(title: "", children: menuItems)
-//        languageButton.showsMenuAsPrimaryAction = true
-//    }
     func configureLanguage() {
-            let menuItems = languages.map { language in
-                UIAction(title: language) { [weak self] _ in
-                    guard let self = self else { return }
-                    self.languageButton.setTitle(language, for: .normal)
-     
-                    // Code for changing language
-                    switch language {
-                    case "English":
-                        AppSettings.shared.selectedLanguage = .english
-                        self.languageButton.setTitle("English", for: .normal)
-                        NotificationCenter.default.post(name: .languageChanged, object: nil)
-                        // apply English localization logic
-                    case "العربية":
-                        AppSettings.shared.selectedLanguage = .arabic
-                        self.languageButton.setTitle("العربية", for: .normal)
-                        NotificationCenter.default.post(name: .languageChanged, object: nil)
-                        // apply Arabic localization logic
-                    default: break
-                    }
+        let menuItems = languages.map { language in
+            UIAction(title: language) { [weak self] _ in
+                guard let self = self else { return }
+                
+                switch language {
+                case "English":
+                    AppSettings.shared.selectedLanguage = .english
+                case "العربية":
+                    AppSettings.shared.selectedLanguage = .arabic
+                default: break
                 }
+
+                NotificationCenter.default.post(name: .languageChanged, object: nil)
+                self.updateLanguageButtonTitle()
             }
-            
-            languageButton.menu = UIMenu(title: "", children: menuItems)
-            languageButton.showsMenuAsPrimaryAction = true
         }
+
+        languageButton.menu = UIMenu(title: "", children: menuItems)
+        languageButton.showsMenuAsPrimaryAction = true
+        
+        updateLanguageButtonTitle()
+    }
+
+    func updateLanguageButtonTitle() {
+        let font = UIFont.boldSystemFont(ofSize: 13)
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+
+        let selectedLanguage = AppSettings.shared.selectedLanguage
+        let title: String
+
+        switch selectedLanguage {
+        case .english:
+            title = "English"
+        case .arabic:
+            title = "العربية"
+        }
+
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        languageButton.setAttributedTitle(attributedTitle, for: .normal)
+    }
 }

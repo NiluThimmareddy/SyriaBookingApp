@@ -113,7 +113,7 @@ extension HotelImagesGalleryVC: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension HotelImagesGalleryVC {
     func setUpUI() {
-        backview.applyCardStyle()
+//        backview.applyCardStyle()
         if let hotelName = selectedHotel?.name {
             self.title = hotelName
         }

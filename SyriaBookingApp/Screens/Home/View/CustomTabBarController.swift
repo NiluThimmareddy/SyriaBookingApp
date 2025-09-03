@@ -51,16 +51,15 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         
         // ✅ Force bottom tab bar on iPad (iOS 18+)
-        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-            self.traitOverrides.horizontalSizeClass = .compact
-        }
- 
+//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+//            self.traitOverrides.horizontalSizeClass = .compact
+//        }
+// 
         // ✅ Setup TabBar appearance
         setUpTabBarAppearance()
  
         updateTabBarTitles()
  
-        // ✅ Language change observer
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateTabBarTitles),
@@ -73,9 +72,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     private func setUpTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .black   // ✅ Black background
+        appearance.backgroundColor = .black
  
-        // ✅ White icons & text (normal + selected)
         appearance.stackedLayoutAppearance.normal.iconColor = .white
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.stackedLayoutAppearance.selected.iconColor = .white
@@ -85,12 +83,11 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         tabBar.scrollEdgeAppearance = appearance
     }
  
-    // MARK: - Update tab bar titles dynamically
     @objc func updateTabBarTitles() {
         if AppSettings.shared.selectedLanguage == .english {
             tabBar.items?[0].title = "Home"
             tabBar.items?[1].title = "Bookings"
-            tabBar.items?[2].title = "Search"   // Index 2 → Search
+            tabBar.items?[2].title = "Search"
             tabBar.items?[3].title = "Profile"
         } else {
             tabBar.items?[0].title = "الرئيسية"       // Home

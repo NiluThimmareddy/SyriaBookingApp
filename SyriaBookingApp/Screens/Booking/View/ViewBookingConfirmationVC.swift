@@ -101,7 +101,7 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
             cell.rateLabel.text = "\(price)"
             cell.descriptionLabel.text = description
             cell.qtyLabel.text = "\(quantity)"
-            cell.amountLabel.text = String(format: "$%.2f", Double(price * quantity))
+            cell.amountLabel.text = String(format: "$%.2f", Double(price * Double(quantity)))
         }
         return cell
     }
@@ -118,7 +118,7 @@ extension ViewBookingConfirmationVC {
         
         let calculatedTotal: String
         if let rate = selectedRate {
-            let totalAmount = Double(rate.price * rate.selectedQuantity)
+            let totalAmount = Double(rate.price * Double(rate.selectedQuantity))
             calculatedTotal = String(format: "%.2f", totalAmount)
             totalPrice = calculatedTotal
         } else {

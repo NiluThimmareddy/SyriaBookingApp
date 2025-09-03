@@ -12,51 +12,13 @@ struct HotelResponse: Codable {
     let data: [Hotel]
 }
 
-//struct Hotel: Codable {
-//    let id :String
-//    let name,nameAR: String?
-//    let city,cityAR: String?
-//    let shortDescriptionAR,shortDescription : String?
-//    let descriptionAR, description: String?
-//    let type: HotelType
-//    let starRating: Int
-//    let hotelChain: String?
-//    let addressLine1, addressLine2: String?
-//    let stateOrProvince: StateOrProvince?
-//    let postalCode, country, email, primaryPhone: String?
-//    let checkInTime, checkOutTime, acceptedCurrencies: String?
-//    let languagesSpoken: LanguagesSpoken
-//    let covidSafetyLevel: CovidSafetyLevel
-//    let discountText: String?
-//    let coverImageURL: String?
-//    let facilities: String?
-//    let landmarkDescription: String?
-//    let averageRating: String
-//    let reviewCount: String
-//    let minRoomPrice: String
-//    let amenities: String?
-//    let coverImageSignedURL: String?
-//    let reviews: [Review]
-//    let landmarks: [Landmark]
-//    let images: [String]
-//    let rooms: [RoomElement]
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case id, name,nameAR, city,cityAR, shortDescription,shortDescriptionAR, description,descriptionAR ,type, starRating, hotelChain, addressLine1, addressLine2, stateOrProvince, postalCode, country, email, primaryPhone, checkInTime, checkOutTime, acceptedCurrencies, languagesSpoken, covidSafetyLevel, discountText
-//        case coverImageURL = "coverImageUrl"
-//        case facilities, landmarkDescription, averageRating, reviewCount, minRoomPrice, amenities
-//        case coverImageSignedURL = "coverImageSignedUrl"
-//        case reviews, landmarks, images, rooms
-//    }
-//}
-
 struct Hotel: Codable {
     let id, name: String
     let city: String
     let nameAR: String?
-    let cityAR: String?   // ✅ Added for Arabic city
+    let cityAR: String?
     let shortDescriptionAR, shortDescription: String?
-    let descriptionAR, description: String?//descriptionAR
+    let descriptionAR, description: String?
     let type: HotelType
     let starRating: Int
     let hotelChain: String?
@@ -190,7 +152,7 @@ struct RoomElement: Codable {
 
 struct Rate: Codable {
     let id, roomID, effectiveDate: String
-    let price: Int
+    let price: Double
     let notes: String?
     var selectedQuantity: Int = 1
     var isSelected: Bool? = false
@@ -206,7 +168,7 @@ struct RoomDetails: Codable {
     let id, hotelID, roomType, bedType: String
     let maxAdults, maxChildren: Int
     let roomSize: String?
-    let basePrice: Int
+    let basePrice: Double
     let roomStatus, refundPolicy: String?
     let breakfastIncluded: Bool
     let availableRooms: Int

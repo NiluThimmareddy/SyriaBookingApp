@@ -21,6 +21,7 @@ class PromotionsDetailsVC: UIViewController {
     var selectedHotel: Hotel?
     
     var gotoDetails : (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
