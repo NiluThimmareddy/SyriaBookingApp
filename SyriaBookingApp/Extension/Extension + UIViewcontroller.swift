@@ -25,7 +25,7 @@ extension UIViewController {
     
     func showLoader(style: UIActivityIndicatorView.Style = .large) {
         guard defaultActivityIndicator == nil else { return } // Already showing
-
+        
         let indicator = UIActivityIndicatorView(style: style)
         indicator.center = self.view.center
         indicator.hidesWhenStopped = true
@@ -58,46 +58,76 @@ extension UIViewController {
     }
 }
 
-//import Foundation
-//import UIKit
-//
-//private var activityIndicatorViewKey: UInt8 = 0
-//
-//extension UIViewController {
-//    
-//    private var customActivityIndicator: UIImageView? {
-//        get {
-//            return objc_getAssociatedObject(self, &activityIndicatorViewKey) as? UIImageView
-//        }
-//        set {
-//            objc_setAssociatedObject(self, &activityIndicatorViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-//        }
-//    }
-//    
-//    func showLoader(imageName: String = "loading", size: CGSize = CGSize(width: 60, height: 60)) {
-//        guard customActivityIndicator == nil else { return } // Avoid adding multiple indicators
-//        
-//        let loader = UIImageView(image: UIImage(named: imageName))
-//        loader.contentMode = .scaleAspectFit
-//        loader.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-//        loader.center = self.view.center
-//        loader.alpha = 0.8
-//        
-//        // Animation
-//        let rotation = CABasicAnimation(keyPath: "transform.rotation")
-//        rotation.fromValue = 0
-//        rotation.toValue = CGFloat.pi * 2
-//        rotation.duration = 1
-//        rotation.repeatCount = .infinity
-//        loader.layer.add(rotation, forKey: "rotate")
-//        
-//        self.view.addSubview(loader)
-//        customActivityIndicator = loader
-//    }
-//    
-//    func hideLoader() {
-//        customActivityIndicator?.removeFromSuperview()
-//        customActivityIndicator = nil
-//    }
-//}
-//
+extension UIViewController {
+    func setupAppNavigationBar() {
+        let logoImageView = UIImageView(image: UIImage(named: "logo"))
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.frame = CGRect(x: -20, y: 0, width: 130, height: 40)
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 130, height: 40))
+        containerView.addSubview(logoImageView)
+        navigationItem.titleView = containerView
+        
+        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapSearch))
+        
+        let notificationButton = UIBarButtonItem(image: UIImage(systemName: "bell.fill"),
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(didTapNotification))
+        
+        let menuImage = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
+        let menuButton = UIBarButtonItem(image: menuImage,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(didTapMenu(_:)))
+        
+        navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
+    }
+    
+    @objc func didTapSearch(_ sender: UIBarButtonItem) {
+        print("Search tapped")
+    }
+    
+    @objc func didTapNotification(_ sender: UIBarButtonItem) {
+        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+            return
+        }
+        notificationVC.title = "Notification"
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        navigationController?.pushViewController(notificationVC, animated: true)
+    }
+    
+    @objc func didTapMenu(_ sender: UIBarButtonItem) {
+        let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
+            
+            controller.modalPresentationStyle = .popover
+            controller.navnController = self.navigationController
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double(controller.menuArray.count)))
+            } else {
+                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double(controller.menuArray.count)))
+            }
+            
+            controller.sourceView = self.view
+            controller.barbuttonItem = sender
+            
+            if let popoverPresentationController = controller.popoverPresentationController {
+                popoverPresentationController.delegate = controller
+                popoverPresentationController.barButtonItem = sender
+                popoverPresentationController.permittedArrowDirections = .any
+                popoverPresentationController.sourceView = self.view
+                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
+            }
+            
+            DispatchQueue.main.async {
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+}

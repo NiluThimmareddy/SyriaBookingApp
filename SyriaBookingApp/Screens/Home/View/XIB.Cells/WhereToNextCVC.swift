@@ -11,6 +11,7 @@ class WhereToNextCVC : UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         hotelImageView.clipsToBounds = true
+        popularPlaceLabel.font = .captionFont
     }
     
     func configure(with item: WhereToNextList) {

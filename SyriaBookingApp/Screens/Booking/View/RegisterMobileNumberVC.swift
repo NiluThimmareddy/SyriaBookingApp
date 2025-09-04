@@ -45,11 +45,34 @@ class RegisterMobileNumberVC : UIViewController {
     var registerUserDetails : BookingModel?
     var countryCodeList : [CountryModel] = []
     var maxMobileNumberLength: Int = 10
+    var isFullScreenIfMobileNotRegistered: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
     }
+    
+    @IBAction func mobileNumberCountryCodeButtonAction(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "SelectCountryViewController") as! SelectCountryViewController
+        vc.countryList = countryCodeList
+        vc.delegate = self
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            vc.modalPresentationStyle = .formSheet
+            vc.preferredContentSize = CGSize(
+                width: UIScreen.main.bounds.width * 0.75,
+                height: UIScreen.main.bounds.height * 0.6
+            )
+        } else {
+            if let sheet = vc.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.prefersGrabberVisible = true
+            }
+        }
+        
+        present(vc, animated: true)
+    }
+    
 
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -67,8 +90,10 @@ class RegisterMobileNumberVC : UIViewController {
         }
 
         getRegisteredUserDetails(for: mobileNumber, completion: { [weak self] user in
+            guard let self = self else { return }
+            
             if let userDetails = user {
-                guard let self = self else { return }
+                // User is registered
                 self.enterNameTF.text = userDetails.name
                 self.enterEmailTF.text = userDetails.email
 
@@ -81,8 +106,15 @@ class RegisterMobileNumberVC : UIViewController {
                 controller.selectedRate = self.selectedRate
                 self.present(controller, animated: true)
             } else {
-                self?.expandToFullScreen()
-                self?.bottomView.isHidden = false
+                if self.isFullScreenIfMobileNotRegistered {
+                    self.modalPresentationStyle = .fullScreen
+                    if let presentingVC = self.presentingViewController {
+                        self.dismiss(animated: false) {
+                            presentingVC.present(self, animated: true)
+                        }
+                    }
+                }
+                self.bottomView.isHidden = false
             }
         })
     }
@@ -159,10 +191,10 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
         viewModel.loadCountries { countryName in
             self.countryCodeList = countryName
-            self.configureCountryCodeMenu()
             self.configureCountryNameMenu()
         }
         enterMobileNumberTF.delegate = self
+        
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -325,32 +357,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter.date(from: dateString) != nil
     }
-
-    func configureCountryCodeMenu() {
-        var menuItems: [UIAction] = []
-
-        for country in countryCodeList {
-            let action = UIAction(title: "\(country.flag) \(country.name) \(country.code)", handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
-                self.mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14) 
-                self.countryMobileNoCountLabel.text = "Please enter a \(country.max_length)-digit mobile number"
-                
-                self.countryNameButton.setTitle(country.flag, for: .normal)
-                self.countryNameButton.setImage(nil, for: .normal)
-                self.enterCountryTF.text = country.name
-                
-                self.selectedCountryFlag =  country.flag
-                self.selectedCountryName = country.name
-                self.maxMobileNumberLength = country.max_length ?? 10
-            })
-            menuItems.append(action)
-        }
-
-        let menu = UIMenu(title: "Select Country Code", children: menuItems)
-        mobileNumberCountryCodeButton.menu = menu
-        mobileNumberCountryCodeButton.showsMenuAsPrimaryAction = true
-    }
     
     func configureCountryNameMenu() {
         var menuItems: [UIAction] = []
@@ -371,5 +377,18 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     }
 }
 
-
-
+extension RegisterMobileNumberVC : SelectCountryDelegate {
+    func didSelectCountry(_ country: CountryModel) {
+        mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
+        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        countryMobileNoCountLabel.text = "Please enter a \(country.max_length ?? 10)-digit mobile number"
+        
+        countryNameButton.setTitle(country.flag, for: .normal)
+        countryNameButton.setImage(nil, for: .normal)
+        enterCountryTF.text = country.name
+        
+        selectedCountryFlag = country.flag
+        selectedCountryName = country.name
+        maxMobileNumberLength = country.max_length ?? 10
+    }
+}

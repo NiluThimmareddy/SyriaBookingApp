@@ -21,6 +21,11 @@ class SustainabilityVC: UIViewController {
         loadHTMLContent()
         scrollView.addTopShadow()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
+    }
 
     private func setupWebView() {
         webView = WKWebView(frame: self.view.bounds)
@@ -90,6 +95,7 @@ class SustainabilityVC: UIViewController {
             </style>
         </head>
         <body>
+            <h2>Sustainability at SyriaBooking.sy</h2>
             <h1>Supporting Responsible Travel and Sustainable Hospitality in Syria</h1>
 
             <p><strong>At SyriaBooking.sy</strong>, we believe travel should not only be enjoyable but also respectful — of the environment, local communities, and cultural heritage. We are committed to promoting sustainable tourism practices that benefit both travelers and our beloved Syria.</p>

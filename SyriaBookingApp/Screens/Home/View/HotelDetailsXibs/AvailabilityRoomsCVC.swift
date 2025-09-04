@@ -29,7 +29,6 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
 
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()

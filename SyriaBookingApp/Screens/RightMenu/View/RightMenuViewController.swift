@@ -12,7 +12,7 @@ class RightMenuViewController: UIViewController {
 
     @IBOutlet weak var rightMenuTableView: UITableView!
     
-    let menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions",   "About Us","Contact Us"]
+    let menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions",   "About Us","Contact Us", "Roport an App","Profile","Logout"]
     
     var barbuttonItem: UIBarButtonItem?
     var navnController: UINavigationController?
@@ -25,8 +25,6 @@ class RightMenuViewController: UIViewController {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
     }
-  
-
 }
 
 extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{

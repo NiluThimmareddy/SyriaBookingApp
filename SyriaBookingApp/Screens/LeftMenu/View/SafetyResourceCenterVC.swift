@@ -21,6 +21,11 @@ class SafetyResourceCenterVC : UIViewController {
         loadHTMLContent()
         scrollView.addTopShadow()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
+    }
 
     private func setupWebView() {
         webView = WKWebView(frame: self.view.bounds)
@@ -90,6 +95,7 @@ class SafetyResourceCenterVC : UIViewController {
             </style>
         </head>
         <body>
+            <h2>Safety Resource Center</h2>
             <h1>Your Safety Is Our Priority</h1>
 
             <p><strong>At SyriaBooking.sy</strong>, your peace of mind is at the heart of everything we do. We are committed to providing a safe, secure, and informed travel experience — from the moment you book until you check out.</p>

@@ -15,6 +15,7 @@ class RecentlyViewedCVC: UICollectionViewCell {
         
     override func awakeFromNib() {
         super.awakeFromNib()
+        hotelNameLabel.font = .captionFont
     }
     
     func configure(with hotel: Hotel) {

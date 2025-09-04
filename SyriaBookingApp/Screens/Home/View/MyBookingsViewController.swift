@@ -10,11 +10,7 @@ import UIKit
 class MyBookingsViewController: UIViewController {
 
     @IBOutlet weak var HistoryTableView: UITableView!
-    @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var topView: UIView!
     @IBOutlet weak var gradientView: UIView!
     
     let viewModel = HotelViewModel()
@@ -26,23 +22,8 @@ class MyBookingsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        hideNavigationBar()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        showNavigationBar()
-    }
-    
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        gradientView.applyTopRightLightGreenGradient()
-//    }
-    
-    @IBAction func backButtonAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func shareButtonAction(_ sender: Any) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
     }
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
@@ -107,5 +88,6 @@ extension MyBookingsViewController {
         DispatchQueue.main.async {
             self.HistoryTableView.reloadData()
         }
+        navigationController?.setNavigationBarBlack()
     }
 }

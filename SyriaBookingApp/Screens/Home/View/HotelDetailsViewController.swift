@@ -5,7 +5,6 @@
 //  Created by ToqSoft on 25/07/25.
 //
 
-
 import UIKit
 
 class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
@@ -44,6 +43,13 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var rateAndReviewsTableviewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateAndReviewsContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewAllButton: UIButton!
+    @IBOutlet weak var overViewLabel: UILabel!
+    @IBOutlet weak var facilitiesLabel: UILabel!
+    @IBOutlet weak var availabilityLabel: UILabel!
+    @IBOutlet weak var addReviewLabel: UILabel!
+    @IBOutlet weak var yourNameLabel: UILabel!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var reviewLabel: UILabel!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -65,6 +71,10 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         super.viewDidLoad()
         
         setUpUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -114,9 +124,9 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     
     @IBAction func addReviewImgButtonAction(_ sender: Any) {
 //        isAddReviewVisible.toggle()
-//        
+//
 //        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
-//        
+//
 //        UIView.animate(withDuration: 0.3) {
 //            self.view.layoutIfNeeded()
 //        }
@@ -292,43 +302,31 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
     }
 }
 
-extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
+extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
-        
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+
         controller.selectedHotel = selectedHotel
         controller.selectedRoom = room
         controller.selectedRate = selectedRate
-        if let sheet = controller.sheetPresentationController {
-            let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.25 : 0.3
-            
-            let customDetent = UISheetPresentationController.Detent.custom(identifier: .medium) { context in
-                return context.maximumDetentValue * customDetentHeight
-            }
-            
-            sheet.detents = [
-                customDetent,
-                .large()
-            ]
-            sheet.selectedDetentIdentifier = .medium
-            sheet.prefersGrabberVisible = true
-            sheet.preferredCornerRadius = 20
-            
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                sheet.largestUndimmedDetentIdentifier = .medium
-                controller.preferredContentSize = CGSize(
-                    width: UIScreen.main.bounds.width,
-                    height: UIScreen.main.bounds.height * 0.6
-                )
-            }
-        }
+
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                 height: UIScreen.main.bounds.height * 0.5)
         
-        controller.modalPresentationStyle = .pageSheet
-        controller.selectedRoom = room
+        controller.isFullScreenIfMobileNotRegistered = true
         controller.selectedHotel = self.selectedHotel
+        controller.selectedRoom = room
         present(controller, animated: true)
+    }
+    
+    func presentationController(forPresented presented: UIViewController,
+                                presenting: UIViewController?,
+                                source: UIViewController) -> UIPresentationController? {
+        return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
     func showAlertForRateSelection() {
@@ -404,6 +402,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAverageRating))
         averageRatingsLabel.addGestureRecognizer(tapGesture)
         hideViewAllButton()
+        hotelNameLabel.font = .titleFont
+        [overViewLabel,facilitiesLabel,availabilityLabel,addReviewLabel,rateAndReviewsLabel].forEach { fontSize in
+            fontSize?.font = .subtitleFont
+        }
+        [yourNameLabel,ratingLabel,reviewLabel].forEach { fontSize in
+            fontSize?.font = .bodyFont
+        }
     }
     
     func hideViewAllButton() {
@@ -572,3 +577,50 @@ extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
         present(galleryVC, animated: true)
     }
 }
+
+class CenteredPresentationController: UIPresentationController {
+    
+    override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else { return .zero }
+        
+        let height = containerView.bounds.height * 0.3
+        let width: CGFloat
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            width = containerView.bounds.width * 0.76
+        } else {
+            width = containerView.bounds.width
+        }
+        
+        let originX = (containerView.bounds.width - width) / 2
+        let originY = (containerView.bounds.height - height) / 2
+        
+        return CGRect(x: originX, y: originY, width: width, height: height)
+    }
+    
+    override func presentationTransitionWillBegin() {
+        super.presentationTransitionWillBegin()
+        guard let containerView = containerView else { return }
+        let dimmingView = UIView(frame: containerView.bounds)
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        dimmingView.alpha = 0
+        dimmingView.tag = 99
+        containerView.addSubview(dimmingView)
+        
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
+            dimmingView.alpha = 1
+        })
+    }
+    
+    override func dismissalTransitionWillBegin() {
+        super.dismissalTransitionWillBegin()
+        containerView?.viewWithTag(99)?.removeFromSuperview()
+    }
+    
+    override func containerViewWillLayoutSubviews() {
+        super.containerViewWillLayoutSubviews()
+        presentedView?.layer.cornerRadius = 20
+        presentedView?.clipsToBounds = true
+    }
+}
+

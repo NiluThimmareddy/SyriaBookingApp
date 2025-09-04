@@ -17,9 +17,11 @@ enum hotelListSource{
 class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTopCapable {
    
     @IBOutlet weak var HotelListtableView: UITableView!
-    @IBOutlet weak var filterButton: UIBarButtonItem!
-    
+    @IBOutlet weak var filterButton: UIButton!
+    @IBOutlet weak var gridButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var hotelCollectionView: UICollectionView!
+    
     var delegate : recentlyViewdHotelsProtocol?
     var viewModel = HotelViewModel()
     var selectedCity = ""
@@ -28,6 +30,8 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
     var scrolltoTopHelper : ScrollToTopHelper?
     var scrollToTopButton = UIButton(type: .system)
     var comingFrom : hotelListSource = .tabBar
+    
+    var isGridView = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +48,25 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
             
         }
     }
-    
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
+        setupAppNavigationBar()
+    }
+
+    @IBAction func gridButtonAction(_ sender: Any) {
+        isGridView.toggle()
+        
+        hotelCollectionView.isHidden = !isGridView
+        HotelListtableView.isHidden = isGridView
+        
+        let imageName = isGridView ? "list.bullet" : "square.grid.2x2"
+        gridButton.setImage(UIImage(systemName: imageName), for: .normal)
+        
+        if isGridView {
+            hotelCollectionView.reloadData()
+        } else {
+            HotelListtableView.reloadData()
+        }
     }
     
     @IBAction func filterButtonAction(_ sender: Any) {
@@ -113,10 +130,58 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
    
 }
 
+extension HotelListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.filteredHotels.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
+        let hotel = viewModel.filteredHotels[indexPath.row]
+        cell.configuration(with: hotel)
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+        let selectedHotel = viewModel.filteredHotels[indexPath.row]
+
+        HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+        delegate?.reladRecentlyViewedData()
+        vc.selectedHotel = selectedHotel
+        vc.navigationItem.title = "Hotel Details"
+
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+            return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
+        let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+        let availableWidth = collectionView.bounds.width - spacing
+        let widthPerItem = availableWidth / numberOfItemsPerRow
+        let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
+        return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
+    }
+}
+
 extension HotelListViewController  {
     func setUpUI() {
-        
-
         HotelListtableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
         scrolleView.addTopShadow()
         self.applyFilterOnHotels()
@@ -126,25 +191,30 @@ extension HotelListViewController  {
         
         searchBar.placeholder = "Search hotels, City"
         searchBar.delegate = self
+        
+        hotelCollectionView.isHidden = true
+        hotelCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
+        if let topHotelsLayout = hotelCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            topHotelsLayout.estimatedItemSize = .zero
+        }
+        navigationController?.setNavigationBarBlack()
     }
     
     func applyFilterOnHotels() {
-         guard let hotels = viewModel.hotels?.data else {
-             print("No Data")
-             return
-         }
+        guard let hotels = viewModel.hotels?.data else {
+            print("No Data")
+            return
+        }
         var filtered = hotels
         
-        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City"
-        {
+        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City" {
             filtered = filtered.filter { $0.city == selectedCity }
         }
         
-        if shouldSortByRating
-        {
+        if shouldSortByRating {
             filtered = filtered.sorted { ($0.averageRating) > ($1.averageRating)
             }
-    }
+        }
         viewModel.filteredHotels = filtered
         viewModel.filteredHotelsCopy =  filtered
         HotelListtableView.reloadData()

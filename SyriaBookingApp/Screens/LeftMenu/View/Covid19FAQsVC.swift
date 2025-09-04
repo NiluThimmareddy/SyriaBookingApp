@@ -35,6 +35,10 @@ class Covid19FAQsVC : UIViewController {
         super.viewDidLoad()
         setUpUI()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
+    }
 }
 
 extension Covid19FAQsVC : UITableViewDelegate, UITableViewDataSource {

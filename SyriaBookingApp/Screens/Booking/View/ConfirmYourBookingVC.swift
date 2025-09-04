@@ -3,6 +3,7 @@ import UIKit
 
 class ConfirmYourBookingVC : UIViewController {
 
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var guestNameLabel: UILabel!
     @IBOutlet weak var guestEmailLabel: UILabel!
@@ -98,6 +99,7 @@ class ConfirmYourBookingVC : UIViewController {
 
 extension ConfirmYourBookingVC {
     func setUpUI() {
+        backView.applyCardStyle()
         guestNameLabel.text = guestName
         guestEmailLabel.text = guestEmail
         guestMobileNumberLabel.text = guestMobileNumber

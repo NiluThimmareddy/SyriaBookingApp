@@ -50,6 +50,17 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var recentlyCollectionView: UICollectionView!
     @IBOutlet weak var propertyTypeCollectionView: UICollectionView!
     @IBOutlet weak var topView: UIView!
+    //Mark
+    @IBOutlet weak var checkOutTitleLabel: UILabel!
+    @IBOutlet weak var checkInTitleLabel: UILabel!
+    @IBOutlet weak var locationTileLabel: UILabel!
+    @IBOutlet weak var subTitleMessageLabel: UILabel!
+    @IBOutlet weak var recentlyHeadLineLabel: UILabel!
+    @IBOutlet weak var whereToNextHeadLineLabel: UILabel!
+    @IBOutlet weak var topHotelHeadLineLabel: UILabel!
+    @IBOutlet weak var navigationTitleNameLabel: UINavigationItem!
+    @IBOutlet weak var handpickedHotelsLabel: UILabel!
+    @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -61,57 +72,22 @@ class HomeViewController: UIViewController {
     var promotionScrollTimer: Timer?
     var cities = [String]()
     var WhereToNextCityList = [WhereToNextList]()
-    
     var leftMenuVC: LeftMenuViewController?
     var isLeftMenuVisible = false
     var scrolltoTopHelper : ScrollToTopHelper?
-    
     var promotionsList: [Hotel] = []
     
-    
-    //Mark
-    @IBOutlet weak var checkOutTitleLabel: UILabel!
-    @IBOutlet weak var checkInTitleLabel: UILabel!
-    @IBOutlet weak var locationTileLabel: UILabel!
-    @IBOutlet weak var subTitleMessageLabel: UILabel!
-    @IBOutlet weak var recentlyHeadLineLabel: UILabel!
-    
-    @IBOutlet weak var whereToNextHeadLineLabel: UILabel!
-    @IBOutlet weak var topHotelHeadLineLabel: UILabel!
-    @IBOutlet weak var navigationTitleNameLabel: UINavigationItem!
     var selectedLanguage: Languages = .english
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
         setupUI()
-        NavigationBackGroundColour()
-        viewModel.fetchHotels()
-        NotificationCenter.default.addObserver(
-               self,
-               selector: #selector(updateTexts),
-               name: .languageChanged,
-               object: nil
-           )
-           
-           updateTexts()
     }
     
-    func NavigationBackGroundColour(){
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
-        
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        
-        // ✅ Navigation bar icons (back button, etc.) white
-        navigationController?.navigationBar.tintColor = .white
-        
-        // ✅ Specific bar button icons white
-        leftMenuBarButton.tintColor = .white
-        notificationBarButton.tintColor = .white
-        rightMenuBarButton.tintColor = .white
-        navigationController?.setNavigationBarBlack()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
     }
      
     override func viewDidAppear(_ animated: Bool) {
@@ -127,46 +103,6 @@ class HomeViewController: UIViewController {
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
-    }
-    @objc func updateTexts() {
-        let lang = AppSettings.shared.selectedLanguage
-        topHotelsCollectionView.reloadData()
-        propertyTypeCollectionView.reloadData()
-        recentlyCollectionView.reloadData()
-        
-        if lang == .english {
-            navigationTitleNameLabel.title = "SyriaBooking"
-            locationTileLabel.text = "Location"
-            messageLabel.text = "Good Morning User!"
-            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
-            recentlyHeadLineLabel.text = "Recently Viewed"
-            whereToNextHeadLineLabel.text = "Where to next?"
-            topHotelHeadLineLabel.text = "Top Hotels"
-            checkInTitleLabel.text = "Check In"
-            checkOutTitleLabel.text = "Check Out"
-            selectCityButton.setTitle("Select City", for: .normal)
-                   checkInButton.setTitle("Check In", for: .normal)
-                   checkOutButton.setTitle("Check Out", for: .normal)
-                   searchButton.setTitle("Search", for: .normal)
-                   viewAllButton.setTitle("View All", for: .normal)
-            
-            
-        } else {
-            navigationTitleNameLabel.title = "سيريا بوكينغ"
-            checkInTitleLabel.text = "تسجيل الوصول"
-            checkOutTitleLabel.text = "تسجيل المغادرة"
-            locationTileLabel.text = "الموقع"
-            messageLabel.text = "صباح الخير المستخدم!"
-            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
-            recentlyHeadLineLabel.text = "شوهدت مؤخرا"
-            whereToNextHeadLineLabel.text = "إلى أين بعد؟"
-            topHotelHeadLineLabel.text = "أفضل الفنادق"
-            selectCityButton.setTitle("اختر مدينة", for: .normal)
-            checkInButton.setTitle("تسجيل الوصول", for: .normal)
-            checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
-            searchButton.setTitle("بحث", for: .normal)
-            viewAllButton.setTitle("عرض الكل", for: .normal)
-        }
     }
 
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
@@ -209,43 +145,43 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
-        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
-                return
-            }
-            notificationVC.title = "Notification"
-            let backItem = UIBarButtonItem()
-            backItem.title = ""
-            navigationItem.backBarButtonItem = backItem
-            navigationController?.navigationBar.tintColor = .black
-            navigationController?.pushViewController(notificationVC, animated: true)
+//        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+//                return
+//            }
+//            notificationVC.title = "Notification"
+//            let backItem = UIBarButtonItem()
+//            backItem.title = ""
+//            navigationItem.backBarButtonItem = backItem
+//            navigationController?.navigationBar.tintColor = .black
+//            navigationController?.pushViewController(notificationVC, animated: true)
     }
     
     @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
         
-        let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
-            controller.modalPresentationStyle = .popover
-            controller.navnController = self.navigationController
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double((controller.menuArray.count))))
-            } else {
-                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
-            }
-            controller.sourceView = self.view
-            controller.barbuttonItem = sender
-            
-            if let popoverPresentationController = controller.popoverPresentationController {
-                popoverPresentationController.delegate = controller
-                popoverPresentationController.barButtonItem = sender
-                popoverPresentationController.permittedArrowDirections = .any
-                popoverPresentationController.sourceView = self.view
-                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
-            }
-            
-            DispatchQueue.main.async {
-                self.present(controller,animated: true, completion: nil)
-            }
-        }
+//        let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
+//        if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
+//            controller.modalPresentationStyle = .popover
+//            controller.navnController = self.navigationController
+//            if UIDevice.current.userInterfaceIdiom == .pad {
+//                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double((controller.menuArray.count))))
+//            } else {
+//                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
+//            }
+//            controller.sourceView = self.view
+//            controller.barbuttonItem = sender
+//            
+//            if let popoverPresentationController = controller.popoverPresentationController {
+//                popoverPresentationController.delegate = controller
+//                popoverPresentationController.barButtonItem = sender
+//                popoverPresentationController.permittedArrowDirections = .any
+//                popoverPresentationController.sourceView = self.view
+//                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
+//            }
+//            
+//            DispatchQueue.main.async {
+//                self.present(controller,animated: true, completion: nil)
+//            }
+//        }
     }
     
     @IBAction func checkInButtonAction(_ sender: Any) {
@@ -268,7 +204,6 @@ class HomeViewController: UIViewController {
         storyboard.comingFrom = .search
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
         storyboard.navigationItem.title = "Hotel List"
-        storyboard.hidesBottomBarWhenPushed = true
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
@@ -281,7 +216,6 @@ class HomeViewController: UIViewController {
         controller.comingFrom = .filter
         controller.viewModel = self.viewModel
         controller.shouldSortByRating = true
-        controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -343,7 +277,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             storyboard.comingFrom = .filter
             storyboard.selectedCity = HotelCity
             storyboard.navigationItem.title = "Hotel List"
-            storyboard.hidesBottomBarWhenPushed = true
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -435,7 +368,6 @@ extension HomeViewController {
         let todayDate = formatter.string(from: Date())
         checkInButton.setTitle(todayDate, for: .normal)
         
-        rightMenuBarButton.image = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -530,7 +462,80 @@ extension HomeViewController {
         setupDatePickerUI()
         startPromotionAutoScroll()
         
+        [recentlyHeadLineLabel,whereToNextHeadLineLabel,topHotelHeadLineLabel,handpickedHotelsLabel].forEach { fontSize in
+            fontSize?.font = .titleFont
+        }
+        handPickedHotelsDescriptionLabel.font = .captionFont
         
+        NavigationBackGroundColour()
+        viewModel.fetchHotels()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
+        updateTexts()
+    }
+    
+    func NavigationBackGroundColour(){
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+        
+        // ✅ Navigation bar icons (back button, etc.) white
+        navigationController?.navigationBar.tintColor = .white
+        
+        // ✅ Specific bar button icons white
+        leftMenuBarButton.tintColor = .white
+//        notificationBarButton.tintColor = .white
+//        rightMenuBarButton.tintColor = .white
+        navigationController?.setNavigationBarBlack()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        topHotelsCollectionView.reloadData()
+        propertyTypeCollectionView.reloadData()
+        recentlyCollectionView.reloadData()
+        
+        if lang == .english {
+            navigationTitleNameLabel.title = "SyriaBooking"
+            locationTileLabel.text = "Location"
+            messageLabel.text = "Good Morning User!"
+            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
+            recentlyHeadLineLabel.text = "Recently Viewed"
+            whereToNextHeadLineLabel.text = "Where to next?"
+            topHotelHeadLineLabel.text = "Top Hotels"
+            checkInTitleLabel.text = "Check In"
+            checkOutTitleLabel.text = "Check Out"
+            selectCityButton.setTitle("Select City", for: .normal)
+                   checkInButton.setTitle("Check In", for: .normal)
+                   checkOutButton.setTitle("Check Out", for: .normal)
+                   searchButton.setTitle("Search", for: .normal)
+                   viewAllButton.setTitle("View All", for: .normal)
+            
+            
+        } else {
+            navigationTitleNameLabel.title = "سيريا بوكينغ"
+            checkInTitleLabel.text = "تسجيل الوصول"
+            checkOutTitleLabel.text = "تسجيل المغادرة"
+            locationTileLabel.text = "الموقع"
+            messageLabel.text = "صباح الخير المستخدم!"
+            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
+            recentlyHeadLineLabel.text = "شوهدت مؤخرا"
+            whereToNextHeadLineLabel.text = "إلى أين بعد؟"
+            topHotelHeadLineLabel.text = "أفضل الفنادق"
+            selectCityButton.setTitle("اختر مدينة", for: .normal)
+            checkInButton.setTitle("تسجيل الوصول", for: .normal)
+            checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
+            searchButton.setTitle("بحث", for: .normal)
+            viewAllButton.setTitle("عرض الكل", for: .normal)
+        }
     }
     
     func updateGreetingMessage(with userName: String? = nil) {
@@ -603,7 +608,6 @@ extension HomeViewController {
                 datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
             ])
         }
-        
         datePickerContainerView.isHidden.toggle()
     }
     

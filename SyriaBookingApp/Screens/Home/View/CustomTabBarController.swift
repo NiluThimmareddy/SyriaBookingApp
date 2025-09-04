@@ -87,13 +87,13 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         if AppSettings.shared.selectedLanguage == .english {
             tabBar.items?[0].title = "Home"
             tabBar.items?[1].title = "Bookings"
-            tabBar.items?[2].title = "Search"
-            tabBar.items?[3].title = "Profile"
+            tabBar.items?[2].title = "Filter List"
+            tabBar.items?[3].title = "Contact Us"
         } else {
-            tabBar.items?[0].title = "الرئيسية"       // Home
-            tabBar.items?[1].title = "الحجوزات"      // Bookings
-            tabBar.items?[2].title = "بحث"           // Search
-            tabBar.items?[3].title = "الملف الشخصي"   // Profile
+            tabBar.items?[0].title = "الرئيسية"
+            tabBar.items?[1].title = "الحجوزات"
+            tabBar.items?[2].title = "قائمة التصفية"
+            tabBar.items?[3].title = "اتصل بنا"
         }
     }
 }
