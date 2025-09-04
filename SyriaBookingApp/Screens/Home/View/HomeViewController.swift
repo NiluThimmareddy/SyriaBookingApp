@@ -31,8 +31,6 @@ protocol recentlyViewdHotelsProtocol{
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
-    @IBOutlet weak var notificationBarButton: UIBarButtonItem!
-    @IBOutlet weak var rightMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var selectCityButton: UIButton!
@@ -61,6 +59,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var navigationTitleNameLabel: UINavigationItem!
     @IBOutlet weak var handpickedHotelsLabel: UILabel!
     @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
+    @IBOutlet weak var sliderView: UIView!
+    @IBOutlet weak var sliderCollectionView: UICollectionView!
+    
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -78,23 +79,35 @@ class HomeViewController: UIViewController {
     var promotionsList: [Hotel] = []
     
     var selectedLanguage: Languages = .english
+    var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
+    
+    var sliderItems : [String] = []
+    
+    var sliderAutoScrollTimer: Timer?
+    var sliderCurrentIndex = 0
+    var isUserInteracting = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
         setupUI()
+        
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
     }
-     
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if HotelDataMaganer.shared.allHotels.isEmpty{
             viewModel.fetchHotels()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopSliderAutoScroll()
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,7 +117,7 @@ class HomeViewController: UIViewController {
         gradientView.applyCardStyle()
         topView.addTopShadow()
     }
-
+    
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
         sender.isEnabled = false
         
@@ -144,46 +157,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @IBAction func notificationBarButtonAction(_ sender: UIBarButtonItem) {
-//        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
-//                return
-//            }
-//            notificationVC.title = "Notification"
-//            let backItem = UIBarButtonItem()
-//            backItem.title = ""
-//            navigationItem.backBarButtonItem = backItem
-//            navigationController?.navigationBar.tintColor = .black
-//            navigationController?.pushViewController(notificationVC, animated: true)
-    }
-    
-    @IBAction func rightMenuBarButtonAction(_ sender: UIBarButtonItem) {
-        
-//        let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
-//        if let controller = storyboard.instantiateViewController(withIdentifier: "RightMenuViewController") as? RightMenuViewController {
-//            controller.modalPresentationStyle = .popover
-//            controller.navnController = self.navigationController
-//            if UIDevice.current.userInterfaceIdiom == .pad {
-//                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double((controller.menuArray.count))))
-//            } else {
-//                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double((controller.menuArray.count))))
-//            }
-//            controller.sourceView = self.view
-//            controller.barbuttonItem = sender
-//            
-//            if let popoverPresentationController = controller.popoverPresentationController {
-//                popoverPresentationController.delegate = controller
-//                popoverPresentationController.barButtonItem = sender
-//                popoverPresentationController.permittedArrowDirections = .any
-//                popoverPresentationController.sourceView = self.view
-//                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
-//            }
-//            
-//            DispatchQueue.main.async {
-//                self.present(controller,animated: true, completion: nil)
-//            }
-//        }
-    }
-    
     @IBAction func checkInButtonAction(_ sender: Any) {
         currentDatePickerMode = .checkIn
         updateDatePickerLimits()
@@ -199,7 +172,7 @@ class HomeViewController: UIViewController {
     @IBAction func searchButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         storyboard.viewModel = self.viewModel
-    
+        
         storyboard.delegate = self
         storyboard.comingFrom = .search
         storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
@@ -234,7 +207,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return  WhereToNextCityList.count
         } else if collectionView == promotionsCollectionView {
             return min(5, promotionsList.count)
-        } else {
+        } else if collectionView == sliderCollectionView{
+            return sliderItems.count
+        } else  {
             return min(10, viewModel.filteredHotels.count)
         }
     }
@@ -260,6 +235,38 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let item = WhereToNextCityList[indexPath.row]
             cell.configure(with: item)
             return cell
+        } else if collectionView == sliderCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SliderCollectionViewCell", for: indexPath) as! SliderCollectionViewCell
+            cell.greetingMessageLabel.isHidden = true
+            if let user = UserSessionManager.getUser()  {
+                
+                cell.loginButton.isHidden = true
+                if indexPath.row == 0{
+                    cell.greetingMessageLabel.isHidden = false
+                    let greeting = updateGreetingMessage()
+                    cell.greetingMessageLabel.text = "\(greeting) \(user.name)"
+                    
+                }
+            } else {
+                if indexPath.row == 0{
+                    cell.loginButton.isHidden = false
+                }else{
+                    cell.loginButton.isHidden = true
+                }
+            }
+            cell.imageView.image = UIImage(named: sliderItems[indexPath.row])
+            
+            //also write the confition for check user is login or not
+            
+            
+            cell.loginClicked = {
+                //Code for open Login Page
+                let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+                guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+                controller.modalPresentationStyle = .formSheet
+                self.present(controller, animated: true)
+            }
+            return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
             let promoHotel = promotionsList[indexPath.row]
@@ -282,14 +289,14 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else if collectionView == recentlyCollectionView {
-                let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
             let selectedHotel = viewModel.filteredHotels[indexPath.row]
-                vc.selectedHotel = selectedHotel
-                vc.navigationItem.title = "Hotel Details"
-                let backItem = UIBarButtonItem()
-                backItem.title = ""
-                self.navigationItem.backBarButtonItem = backItem
-                self.navigationController?.pushViewController(vc, animated: true)
+            vc.selectedHotel = selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(vc, animated: true)
             
         } else if collectionView == topHotelsCollectionView {
             let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
@@ -300,7 +307,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(vc, animated: true)
-          
+            
         }
         
     }
@@ -341,6 +348,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let width = isIpad ? (fullWidth / 2) : fullWidth
             let height = fullHeight
             return CGSize(width: width, height: height)
+        } else if collectionView == sliderCollectionView {
+            return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
         } else {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
@@ -357,12 +366,27 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
- 
+    
 }
 
 extension HomeViewController {
     
     func setupUI() {
+        startSliderAutoScroll()
+        sliderView.applyCardStyle()
+        sliderItems = sliderImages + sliderImages + sliderImages
+        sliderCollectionView.collectionViewLayout = CubeFlowLayout()
+        
+        DispatchQueue.main.async {
+            self.sliderCollectionView.reloadData()
+            let middleIndex = IndexPath(item: self.sliderImages.count, section: 0)
+            if middleIndex.item < self.sliderImages.count {
+                self.sliderCollectionView.scrollToItem(at: middleIndex, at: .centeredHorizontally, animated: false)
+            }
+        }
+        
+        sliderCollectionView.register(UINib(nibName: "SliderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SliderCollectionViewCell")
+        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let todayDate = formatter.string(from: Date())
@@ -404,7 +428,7 @@ extension HomeViewController {
                 }
                 
                 var seenCities = Set<String>()
-
+                
                 self.WhereToNextCityList = self.viewModel.hotels?.data.compactMap { hotel -> WhereToNextList? in
                     let cityEN = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
                     let cityAR = hotel.cityAR?.trimmingCharacters(in: .whitespacesAndNewlines) ?? hotel.city
@@ -413,9 +437,9 @@ extension HomeViewController {
                     guard !cityEN.isEmpty, seenCities.insert(cityEN.lowercased()).inserted else {
                         return nil
                     }
-
+                    
                     let imageUrl = hotel.images.first?.trimmingCharacters(in: .whitespacesAndNewlines)
-
+                    
                     return WhereToNextList(
                         image: imageUrl ?? "",
                         City: cityEN,      // English
@@ -458,7 +482,6 @@ extension HomeViewController {
         stackView.layer.cornerRadius = 20
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
-        updateGreetingMessage()
         setupDatePickerUI()
         startPromotionAutoScroll()
         
@@ -492,9 +515,21 @@ extension HomeViewController {
         
         // ✅ Specific bar button icons white
         leftMenuBarButton.tintColor = .white
-//        notificationBarButton.tintColor = .white
-//        rightMenuBarButton.tintColor = .white
         navigationController?.setNavigationBarBlack()
+    }
+    
+    @objc func scrollToNext() {
+        guard sliderItems.count > 0 else { return }
+        
+        let currentIndex = Int(sliderCollectionView.contentOffset.x / sliderCollectionView.bounds.width)
+        var nextIndex = currentIndex + 1
+        
+        if nextIndex >= sliderItems.count {
+            nextIndex = sliderImages.count
+        }
+        
+        let indexPath = IndexPath(item: nextIndex, section: 0)
+        sliderCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     @objc func updateTexts() {
@@ -514,12 +549,10 @@ extension HomeViewController {
             checkInTitleLabel.text = "Check In"
             checkOutTitleLabel.text = "Check Out"
             selectCityButton.setTitle("Select City", for: .normal)
-                   checkInButton.setTitle("Check In", for: .normal)
-                   checkOutButton.setTitle("Check Out", for: .normal)
-                   searchButton.setTitle("Search", for: .normal)
-                   viewAllButton.setTitle("View All", for: .normal)
-            
-            
+            checkInButton.setTitle("Check In", for: .normal)
+            checkOutButton.setTitle("Check Out", for: .normal)
+            searchButton.setTitle("Search", for: .normal)
+            viewAllButton.setTitle("View All", for: .normal)
         } else {
             navigationTitleNameLabel.title = "سيريا بوكينغ"
             checkInTitleLabel.text = "تسجيل الوصول"
@@ -538,7 +571,7 @@ extension HomeViewController {
         }
     }
     
-    func updateGreetingMessage(with userName: String? = nil) {
+    func updateGreetingMessage() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
         let greeting: String
         
@@ -552,16 +585,14 @@ extension HomeViewController {
         default:
             greeting = ""
         }
-        
-        let nameToShow = (userName?.isEmpty == false) ? userName! : "User"
-        messageLabel.text = "\(greeting) \(nameToShow)!"
+        return  "\(greeting)"
     }
     
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-       
+        
         datePicker.preferredDatePickerStyle = .inline
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
@@ -616,13 +647,13 @@ extension HomeViewController {
         let now = Date()
         switch currentDatePickerMode {
         case .checkIn:
-           
+            
             datePicker.minimumDate = now
             datePicker.date = now
-
+            
         case .checkOut:
             guard let checkIn = selectedCheckInDate else {
-               
+                
                 datePicker.minimumDate = now
                 datePicker.date = now
                 return
@@ -631,15 +662,15 @@ extension HomeViewController {
             datePicker.date = checkIn
         }
     }
-
-
+    
+    
     @objc private func dateChanged(_ sender: UIDatePicker) {
         switch currentDatePickerMode {
         case .checkIn:
             selectedCheckInDate = sender.date
             checkOutButton.setTitle("check out", for: .normal)
         case .checkOut :
-           break
+            break
         }
         
         let formatter = DateFormatter()
@@ -698,16 +729,67 @@ extension HomeViewController {
         }
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if scrollView == sliderCollectionView {
+            stopSliderAutoScroll()
+            isUserInteracting = true
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == sliderCollectionView {
+            isUserInteracting = false
+            
+            // find the current visible index
+            let page = Int(scrollView.contentOffset.x / scrollView.frame.width)
+            sliderCurrentIndex = page
+            
+            // restart auto scroll after 3 sec
+            startSliderAutoScroll(after: 3.0)
+        }
+    }
+    
+    
+    func startSliderAutoScroll(after delay: TimeInterval = 2.0) {
+        stopSliderAutoScroll() // avoid multiple timers
+        sliderAutoScrollTimer = Timer.scheduledTimer(timeInterval: delay,
+                                                     target: self,
+                                                     selector: #selector(scrollToNextItem),
+                                                     userInfo: nil,
+                                                     repeats: true)
+    }
+    
+    func stopSliderAutoScroll() {
+        sliderAutoScrollTimer?.invalidate()
+        sliderAutoScrollTimer = nil
+    }
+    
+    @objc func scrollToNextItem() {
+        guard let collectionView = sliderCollectionView else { return }
+        
+        let totalItems = sliderImages.count
+        if totalItems == 0 { return }
+        
+        // move next
+        sliderCurrentIndex = (sliderCurrentIndex + 1) % totalItems
+        let indexPath = IndexPath(item: sliderCurrentIndex, section: 0)
+        
+        collectionView.scrollToItem(at: indexPath,
+                                    at: .centeredHorizontally,
+                                    animated: true)
+    }
+    
+    
 }
 
 extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate {
     func reladRecentlyViewedData() {
         viewModel.fetchRecentlyViewedHotels {
-       
+            
             recentlyCollectionView.reloadData()
         }
     }
- 
+    
     func didTapExploreMore(in cell: PromotionsCollectionViewCell) {
         guard let indexPath = promotionsCollectionView.indexPath(for: cell) else { return }
         
@@ -741,14 +823,14 @@ extension UINavigationController {
         appearance.backgroundColor = .black
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
- 
+        
         navigationBar.standardAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
         navigationBar.compactAppearance = appearance
         if #available(iOS 15.0, *) {
             navigationBar.compactScrollEdgeAppearance = appearance
         }
- 
+        
         navigationBar.tintColor = .white
     }
 }

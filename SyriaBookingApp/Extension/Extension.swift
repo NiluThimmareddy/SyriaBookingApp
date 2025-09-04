@@ -91,3 +91,14 @@ extension UIFont {
         UIFont(name: "Poppins-Bold", size: size) ?? UIFont.boldSystemFont(ofSize: size)
     }
 }
+
+extension UICollectionViewLayoutAttributes {
+    var anchorPoint: CGPoint {
+        get {
+            return self.value(forKey: "anchorPoint") as? CGPoint ?? CGPoint(x: 0.5, y: 0.5)
+        }
+        set {
+            self.setValue(newValue, forKey: "anchorPoint")
+        }
+    }
+}

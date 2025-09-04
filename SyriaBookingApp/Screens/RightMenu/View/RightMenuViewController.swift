@@ -12,7 +12,7 @@ class RightMenuViewController: UIViewController {
 
     @IBOutlet weak var rightMenuTableView: UITableView!
     
-    let menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions",   "About Us","Contact Us", "Roport an App","Profile","Logout"]
+    let menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions",   "About Us", "Roport an App","Profile","Logout"]
     
     var barbuttonItem: UIBarButtonItem?
     var navnController: UINavigationController?
@@ -58,33 +58,13 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             let controller = storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
             present(controller, animated: true)
         case 4 :
-            guard let controller = storyboard?.instantiateViewController(withIdentifier: "ContactUSVC") as? ContactUSVC else { return }
-            if let sheet = controller.sheetPresentationController {
-                let customDetentHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 0.28 : 0.4
-                
-                let customDetent = UISheetPresentationController.Detent.custom(identifier: .medium) { context in
-                    return context.maximumDetentValue * customDetentHeight
-                }
-                
-                sheet.detents = [
-                    customDetent,
-                    .large()
-                ]
-                sheet.selectedDetentIdentifier = .medium
-                sheet.prefersGrabberVisible = true
-                sheet.preferredCornerRadius = 20
-                
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    sheet.largestUndimmedDetentIdentifier = .medium
-                    controller.preferredContentSize = CGSize(
-                        width: UIScreen.main.bounds.width,
-                        height: UIScreen.main.bounds.height * 0.6
-                    )
-                }
-            }
-            
-            controller.modalPresentationStyle = .pageSheet
+            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
             present(controller, animated: true)
+        case 5 :
+            let controller = storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController") as! ProfilePageViewController
+            present(controller, animated: true)
+        case 6 :
+            UserSessionManager.clearUser()
         default :
             break
         }

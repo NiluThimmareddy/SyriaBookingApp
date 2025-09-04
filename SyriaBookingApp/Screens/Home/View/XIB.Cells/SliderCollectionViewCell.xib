@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="W30-kA-gim" customClass="SliderCollectionViewCell" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="8M3-ob-RKg">
+                <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Slider1" translatesAutoresizingMaskIntoConstraints="NO" id="Myd-p4-laj">
+                        <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good morning User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-sv-XiE">
+                        <rect key="frame" x="15" y="15" width="182.33333333333334" height="24"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kik-Xf-hdt">
+                        <rect key="frame" x="60" y="60" width="100" height="40"/>
+                        <color key="backgroundColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="Hjb-FG-pbG"/>
+                            <constraint firstAttribute="height" constant="40" id="a3G-Jf-d4u"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="17"/>
+                        <color key="tintColor" systemColor="labelColor"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title=" Login "/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="LoginButtonAction:" destination="W30-kA-gim" eventType="touchUpInside" id="ehc-AX-bnM"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Myd-p4-laj" secondAttribute="bottom" id="41d-cg-bLc"/>
+                    <constraint firstItem="Myd-p4-laj" firstAttribute="top" secondItem="8M3-ob-RKg" secondAttribute="top" id="58W-AG-GX9"/>
+                    <constraint firstItem="Myd-p4-laj" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" id="Ce2-wm-BfE"/>
+                    <constraint firstItem="bVc-sv-XiE" firstAttribute="top" secondItem="8M3-ob-RKg" secondAttribute="top" constant="15" id="Sbv-Ch-94V"/>
+                    <constraint firstItem="bVc-sv-XiE" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" constant="15" id="Xqg-xU-yS0"/>
+                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" constant="60" id="kot-Ay-Ii2"/>
+                    <constraint firstAttribute="trailing" secondItem="Myd-p4-laj" secondAttribute="trailing" id="sOU-kc-S5H"/>
+                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="top" secondItem="Myd-p4-laj" secondAttribute="top" constant="60" id="x4O-WC-Hac"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="502" height="319"/>
+            <connections>
+                <outlet property="greetingMessageLabel" destination="bVc-sv-XiE" id="9Gh-63-SU3"/>
+                <outlet property="imageView" destination="Myd-p4-laj" id="4RX-fy-Jga"/>
+                <outlet property="loginButton" destination="Kik-Xf-hdt" id="wps-o6-FsX"/>
+            </connections>
+            <point key="canvasLocation" x="352.67175572519085" y="-118.66197183098592"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="Slider1" width="640" height="283.33334350585938"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

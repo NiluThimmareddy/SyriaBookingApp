@@ -12,9 +12,11 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var HistoryTableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
     
     let viewModel = HotelViewModel()
     var selectedSegmentIndex: Int = 0
+    var selectedHotel: Hotel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,28 +67,51 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     }
 }
 
-extension MyBookingsViewController {
+extension MyBookingsViewController : UIViewControllerTransitioningDelegate {
+    
+    func presentationController(forPresented presented: UIViewController,
+                                presenting: UIViewController?,
+                                source: UIViewController) -> UIPresentationController? {
+        return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+    
     func setupUI(){
-        HistoryTableView.register(UINib(nibName: "MyBookingTableViewCell", bundle: nil), forCellReuseIdentifier: "MyBookingTableViewCell")
-        
-        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white
-        ]
-        
-        let normalAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black
-        ]
-        
-        segmentControl.setTitleTextAttributes(normalAttributes, for: .normal)
-        segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        segmentControl.layer.backgroundColor = UIColor.white.cgColor
-        segmentControl.selectedSegmentTintColor = UIColor.black
-        segmentControl.addBottomShadow()
-        
-        viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
-        viewModel.filteredHotelsCopy = viewModel.filteredHotels
-        DispatchQueue.main.async {
-            self.HistoryTableView.reloadData()
+        if let user = UserSessionManager.getUser() {
+            HistoryTableView.register(UINib(nibName: "MyBookingTableViewCell", bundle: nil), forCellReuseIdentifier: "MyBookingTableViewCell")
+            
+            let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.white
+            ]
+            
+            let normalAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.black
+            ]
+            
+            segmentControl.setTitleTextAttributes(normalAttributes, for: .normal)
+            segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+            segmentControl.layer.backgroundColor = UIColor.white.cgColor
+            segmentControl.selectedSegmentTintColor = UIColor.black
+            segmentControl.addBottomShadow()
+            
+            viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
+            viewModel.filteredHotelsCopy = viewModel.filteredHotels
+            DispatchQueue.main.async {
+                self.HistoryTableView.reloadData()
+            }
+            messageLabel.isHidden = true
+        } else {
+            messageLabel.isHidden = false
+            segmentControl.isHidden = true
+            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+            controller.selectedHotel = selectedHotel
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                     height: UIScreen.main.bounds.height * 0.5)
+            controller.isFullScreenIfMobileNotRegistered = true
+            controller.selectedHotel = self.selectedHotel
+            present(controller, animated: true)
         }
         navigationController?.setNavigationBarBlack()
     }

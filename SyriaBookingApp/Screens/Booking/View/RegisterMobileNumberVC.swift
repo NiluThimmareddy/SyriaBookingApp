@@ -93,7 +93,6 @@ class RegisterMobileNumberVC : UIViewController {
             guard let self = self else { return }
             
             if let userDetails = user {
-                // User is registered
                 self.enterNameTF.text = userDetails.name
                 self.enterEmailTF.text = userDetails.email
 
@@ -157,10 +156,13 @@ class RegisterMobileNumberVC : UIViewController {
                 
                 self.registerUserDetails = BookingModel(id: response.id, name: response.name, mobile: response.mobile, address: response.address, gender: response.gender, email: response.email, country: response.country, dob: response.dob)
                 
+                guard let user = self.registerUserDetails else { return }
+                UserSessionManager.saveUser(user)
+                
                 let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-                controller.mobileNumber = mobileNumber
-                controller.guestName = name
-                controller.guestEmail = email
+                controller.mobileNumber = response.mobile
+                controller.guestName = response.name
+                controller.guestEmail = response.email
                 controller.selectedHotel = self.selectedHotel
                 controller.selectedRoom = self.selectedRoom
                 controller.selectedRate = self.selectedRate
@@ -226,6 +228,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             
             DispatchQueue.main.async{
                 self?.registerUserDetails = response
+                UserSessionManager.saveUser(response)
                 completion(response)
             }
         }
