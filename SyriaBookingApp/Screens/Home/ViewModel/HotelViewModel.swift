@@ -15,6 +15,10 @@ class HotelViewModel {
     var onDataLoaded: (() -> Void)?
     var onError: ((Error) -> Void)?
  
+    
+    var onSuccess: ((Review) -> Void)?
+    var onReviewError: ((String) -> Void)?
+    
     var filteredHotelsCopy : [Hotel] = []
     
     func fetchHotels() {
@@ -43,6 +47,38 @@ class HotelViewModel {
             }
         }
     }
+    
+    func   fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
+      NetworkRetryManager.executeWithNetworkRetry(
+          observerKey: "FetchHotelsRetry",
+          showAlertOnFail: true,
+          onError: onError
+      ) { [weak self] in
+          guard let self = self else { return }
+          
+          guard let urlstr = APIURL.fetchHotelReviews.url?.absoluteString else { return }
+          let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
+          let url = URL(string: getUrl)
+         
+        
+          guard let url = url else {
+              print("Invalid hotel URL")
+              return
+          }
+          
+          
+
+          APIManager.shared.fetchData(from: url, modelType: Review.self) { result in
+              switch result {
+              case .success(let response):
+                  self.onSuccess?(response)
+                  self.onDataLoaded?()
+              case .failure(let error):
+                  self.onError?(error)
+              }
+          }
+      }
+  }
  
     
     func fetchRecentlyViewedHotels(completion: () -> Void) {
@@ -97,5 +133,32 @@ class HotelViewModel {
         }
     }
     
+    
+    func SubmitReview(HotelId: String, reviewerName: String, rating: Int , reviewText: String)
+    {
+
+        let params: [String: Any] = [
+            "hotelId": HotelId,
+            "reviewerName": reviewerName,
+            "rating": rating,
+            "reviewText": reviewText
+        ]
+        
+        guard let url =  APIURL.PostReview.url else {
+            self.onReviewError?("Invalid URL")
+            return
+        }
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: ReviewResponse.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onSuccess?(response.data)
+                case .failure(let failure):
+                    self.onReviewError?(failure.localizedDescription)
+                }
+            }
+        }
+    }
 }
  

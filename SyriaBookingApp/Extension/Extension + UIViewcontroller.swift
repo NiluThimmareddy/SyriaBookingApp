@@ -88,6 +88,7 @@ extension UIViewController {
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {
         print("Search tapped")
+        
     }
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
@@ -107,6 +108,24 @@ extension UIViewController {
             
             controller.modalPresentationStyle = .popover
             controller.navnController = self.navigationController
+            
+            
+            controller.onDismiss = {
+                //Goto Home
+                self.view.window?.rootViewController?.dismiss(animated: true) {
+                    if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
+                        tabBarController.selectedIndex = 0
+                        if let navController = tabBarController.viewControllers?.first as? UINavigationController {
+                            navController.popToRootViewController(animated: false)
+                        }
+                    }
+                }
+            }
+            if UserSessionManager.getUser() == nil {
+                controller.menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions","About Us", "Roport an App","Profile"]
+            }else{
+                controller.menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions", "About Us", "Roport an App","Profile","Logout"]
+            }
             
             if UIDevice.current.userInterfaceIdiom == .pad {
                 controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double(controller.menuArray.count)))

@@ -37,7 +37,7 @@ struct Hotel: Codable {
     let minRoomPrice: String
     let amenities: String?
     let coverImageSignedURL: String?
-    let reviews: [Review]
+    var reviews: [Review]
     let landmarks: [Landmark]
     let images: [String]
     let rooms: [RoomElement]
@@ -140,6 +140,11 @@ struct Review: Codable {
         case hotelID = "hotelId"
         case reviewerName, rating, reviewText, createdOn
     }
+}
+
+struct ReviewResponse : Codable{
+    let message: String
+    let data: Review
 }
 
 struct RoomElement: Codable {

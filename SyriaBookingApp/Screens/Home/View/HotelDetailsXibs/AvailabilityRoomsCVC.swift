@@ -12,8 +12,8 @@ protocol AvailabilityRoomsCVCDelegate: AnyObject {
     func showAlertForRateSelection()
 }
 
-class AvailabilityRoomsCVC : UICollectionViewCell {
-
+class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioningDelegate {
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var roomImageView: UIImageView!
     @IBOutlet weak var roomNameLabel: UILabel!
@@ -28,22 +28,18 @@ class AvailabilityRoomsCVC : UICollectionViewCell {
     
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
-
+    var onBooknowBottonClick : (()->Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()
     }
-
+    
     @IBAction func bookNowButtonAction(_ sender: Any) {
-        guard let room = selectedRoom else { return }
-        
-        if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
-            delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
-        } else {
-            delegate?.showAlertForRateSelection() 
-        }
+       
+        self.onBooknowBottonClick?()
+       
     }
-
+    
 }
 
 extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
@@ -71,7 +67,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     
     @objc func checkMarkTapped(_ sender: UIButton) {
         let row = sender.tag
-        selectedRoom?.rates[row].isSelected?.toggle()        
+        selectedRoom?.rates[row].isSelected?.toggle()
         roomRatesTableview.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
     }
     
@@ -87,8 +83,16 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
 
 extension AvailabilityRoomsCVC {
     func setUpUI() {
+        
+        
+        
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         roomImageView.applyCardStyle()
+        if UserSessionManager.getUser() == nil{
+            bookNowButton.setTitle("Login", for: .normal)
+        }else{
+            bookNowButton.setTitle("BookNow", for: .normal)
+        }
     }
     
     func configure(with rooms: RoomElement) {
@@ -99,13 +103,13 @@ extension AvailabilityRoomsCVC {
         let rowHeight: CGFloat = 40
         roomRatesTableviewheightConstraint.constant = CGFloat(rateCount) * rowHeight
         self.layoutIfNeeded()
-
+        
         if let imageUrlString = rooms.coverImage, !imageUrlString.isEmpty {
             roomImageView.loadImage(from: imageUrlString)
         } else {
             roomImageView.image = UIImage(named: "HotelPlaceholder 1")
         }
-
+        
         let roomType = rooms.room.roomType
         let bedType = rooms.room.bedType
         let roomSize = rooms.room.roomSize ?? "N/A"
@@ -120,7 +124,7 @@ extension AvailabilityRoomsCVC {
         let refundPolicyText = "Refund Policy: \(refundPolicy)"
         let aminitiesText = "Amenities: \(amenities)"
         let breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
-
+        
         roomNameLabel.text = "\(roomType) (\(bedType))"
         roomSizeLabel.text = roomsizeText
         maxGuestsLabel.text = guestText

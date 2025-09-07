@@ -8,11 +8,9 @@
 import UIKit
 
 class RightMenuViewController: UIViewController {
-    
-
     @IBOutlet weak var rightMenuTableView: UITableView!
     
-    let menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions",   "About Us", "Roport an App","Profile","Logout"]
+    var menuArray = [String]()
     
     var barbuttonItem: UIBarButtonItem?
     var navnController: UINavigationController?
@@ -21,9 +19,12 @@ class RightMenuViewController: UIViewController {
     var contentSize: CGSize?
     var popoverdirection: UIPopoverArrowDirection = .any
     
+    var onDismiss : (() -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
+        
+        
     }
 }
 
@@ -64,7 +65,16 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             let controller = storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController") as! ProfilePageViewController
             present(controller, animated: true)
         case 6 :
-            UserSessionManager.clearUser()
+            
+            showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
+                UserSessionManager.clearUser()
+                self.dismiss(animated: true){
+                    self.onDismiss?()
+                }
+            }) {
+                self.dismiss(animated: true)
+            }
+          
         default :
             break
         }

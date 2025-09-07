@@ -51,6 +51,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var reviewLabel: UILabel!
     
+   var  hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     
@@ -66,6 +67,8 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     var scrolleView: UIScrollView { scrollView }
     var scrollToTopButton = UIButton(type: .system)
     var scrolltoTopHelper : ScrollToTopHelper?
+    
+    var user : BookingModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,6 +136,52 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
+        guard user != nil else { return }
+        guard let selectedHotel = selectedHotel else { return}
+        
+        guard let name = enterYourNameTF?.text else {
+            showAlert("Please enter name")
+            return
+        }
+        
+        guard let rating = selectratingButton.titleLabel?.text else {
+            showAlert("Please select Rating")
+            return
+        }
+        
+        guard let reviewTextView = reviewTextView.text else {
+            showAlert("Please enter review")
+            return
+        }
+  
+        self.hotelviewModel.onSuccess = { [weak self] review in
+                
+                guard let self = self else { return }
+                showAlert(title: "Syriabooking", message: "thank you for your valueable review ", onOK:  {
+                    //fisrt fetch the particular hotels reviews
+                    self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
+                    
+                    self.hotelviewModel.onSuccess = {[weak self] response in
+                        self?.selectedHotel?.reviews.insert(response, at: 0)
+                        //here main hotelviewmodel hotel variable i want to add review means i whhole application i want to add this review where review is using
+                        if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: {$0.id == selectedHotel.id}){
+                            HotelDataMaganer.shared.allHotels[index].reviews.insert(response, at: 0)
+                        }
+                        DispatchQueue.main.async {
+                            self?.rateAndReviewsTableview.reloadData()
+                        }
+                        // then Reload revie Tableview
+                    }
+                })
+                
+            }
+
+        self.hotelviewModel.onReviewError = { error in
+            
+            self.showAlert("something went wrong try again! : \(error.description)")
+        }
+        
+        hotelviewModel.SubmitReview(HotelId: selectedHotel.id, reviewerName:name, rating: selectratingButton.tag, reviewText:  reviewTextView)
     }
     
     @IBAction func rateAndReviewsDownButtonAction(_ sender: Any) {
@@ -240,8 +289,33 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
             let rooms = (selectedHotel?.rooms[indexPath.row])!
-            cell.configure(with: rooms)
             cell.delegate = self
+            cell.onBooknowBottonClick = {
+                if UserSessionManager.getUser() == nil{
+                    // open loginin
+                    let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+                    guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+
+                    controller.modalPresentationStyle = .custom
+                    controller.transitioningDelegate = self
+                    controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                             height: UIScreen.main.bounds.height * 0.5)
+                    controller.isFullScreenIfMobileNotRegistered = false
+                    
+                    self.present(controller, animated: true)
+                }else{
+                    guard let room = self.selectedRoom else { return }
+                    
+                    if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
+                        cell.delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
+                    } else {
+                        cell.delegate?.showAlertForRateSelection()
+                        
+                    }
+                }
+            }
+            cell.configure(with: rooms)
+            
             return cell
         }
     }
@@ -305,22 +379,37 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
-        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-
-        controller.selectedHotel = selectedHotel
-        controller.selectedRoom = room
-        controller.selectedRate = selectedRate
-
-        controller.modalPresentationStyle = .custom
-        controller.transitioningDelegate = self
-        controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                 height: UIScreen.main.bounds.height * 0.5)
         
-        controller.isFullScreenIfMobileNotRegistered = true
-        controller.selectedHotel = self.selectedHotel
-        controller.selectedRoom = room
-        present(controller, animated: true)
+        if UserSessionManager.getUser() != nil{
+            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+            
+            controller.selectedHotel = selectedHotel
+            controller.selectedRoom = room
+            controller.selectedRate = selectedRate
+            
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                     height: UIScreen.main.bounds.height * 0.5)
+            
+            controller.isFullScreenIfMobileNotRegistered = true
+            controller.selectedHotel = self.selectedHotel
+            controller.selectedRoom = room
+            present(controller, animated: true)
+        }else{
+            //LoginPage
+            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+            controller.selectedHotel = selectedHotel
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                     height: UIScreen.main.bounds.height * 0.5)
+            controller.isFullScreenIfMobileNotRegistered = true
+            controller.selectedHotel = self.selectedHotel
+            present(controller, animated: true)
+        }
     }
     
     func presentationController(forPresented presented: UIViewController,
@@ -334,6 +423,14 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func setUpUI() {
+        
+        if let user = UserSessionManager.getUser() {
+            self.user = user
+            submitReviewButton.isEnabled = true
+        }else{
+            self.user = nil
+            submitReviewButton.isEnabled = false
+        }
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         
@@ -624,3 +721,7 @@ class CenteredPresentationController: UIPresentationController {
     }
 }
 
+
+extension HotelDetailsViewController{
+    
+}

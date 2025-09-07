@@ -49,9 +49,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var propertyTypeCollectionView: UICollectionView!
     @IBOutlet weak var topView: UIView!
     //Mark
-    @IBOutlet weak var checkOutTitleLabel: UILabel!
-    @IBOutlet weak var checkInTitleLabel: UILabel!
-    @IBOutlet weak var locationTileLabel: UILabel!
+    
     @IBOutlet weak var subTitleMessageLabel: UILabel!
     @IBOutlet weak var recentlyHeadLineLabel: UILabel!
     @IBOutlet weak var whereToNextHeadLineLabel: UILabel!
@@ -61,7 +59,14 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
     @IBOutlet weak var sliderView: UIView!
     @IBOutlet weak var sliderCollectionView: UICollectionView!
-    
+    @IBOutlet weak var searchViewHeightConstraint:   NSLayoutConstraint!
+    @IBOutlet weak var checkoutStackView: UIStackView!
+    @IBOutlet weak var tomorrowDateButton: UIButton!
+    @IBOutlet weak var dayAfterTomorrowButton: UIButton!
+   
+    @IBOutlet weak var selectCityView: UIView!
+    @IBOutlet weak var selectCheckInView: UIView!
+    @IBOutlet weak var selectCheckOutView: UIView!
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -69,6 +74,7 @@ class HomeViewController: UIViewController {
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
     var selectedCheckInDate: Date?
+    var selectedCheckOutDate: Date?
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
     var cities = [String]()
@@ -79,13 +85,15 @@ class HomeViewController: UIViewController {
     var promotionsList: [Hotel] = []
     
     var selectedLanguage: Languages = .english
+    
     var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
-    
     var sliderItems : [String] = []
-    
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
+                        
+                        
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +104,8 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
+        
+        sliderCollectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -112,7 +122,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        searchView.applyCardStyle()
+//        searchView.applyCardStyle()
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
@@ -170,18 +180,24 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func searchButtonAction(_ sender: Any) {
-        let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
-        storyboard.viewModel = self.viewModel
         
-        storyboard.delegate = self
-        storyboard.comingFrom = .search
-        storyboard.selectedCity = self.selectCityButton.titleLabel?.text ?? ""
-        storyboard.navigationItem.title = "Hotel List"
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        self.navigationItem.backBarButtonItem = backItem
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.pushViewController(storyboard, animated: true)
+        if let selectedCity = self.selectCityButton.titleLabel?.text,  selectedCity != "Select City"{
+            let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            storyboard.viewModel = self.viewModel
+            
+            storyboard.delegate = self
+            storyboard.comingFrom = .search
+            storyboard.selectedCity = selectedCity
+            storyboard.navigationItem.title = "Hotel List"
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.navigationBar.tintColor = .white
+            self.navigationController?.pushViewController(storyboard, animated: true)
+        } else{
+            
+            showAlert(title: "SyriaBooking", message: "Please select city")
+        }
     }
     
     @IBAction func viewAllButtonAction(_ sender: Any) {
@@ -195,6 +211,26 @@ class HomeViewController: UIViewController {
     @IBAction func findDealButtonAction(_ sender: Any) {
     }
     
+    
+    @IBAction func tomorrowDateButtonAction(_ sender: UIButton) {
+        checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
+        let formater = DateFormatter()
+        formater.dateStyle = .medium
+        
+        let date = formater.date(from: sender.titleLabel?.text ?? "")
+        selectedCheckInDate = date
+        updateDatePickerLimits()
+    }
+    
+    @IBAction func dayAfterTomorrowDateButtonAction(_ sender: UIButton) {
+        checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
+        let formater = DateFormatter()
+        formater.dateStyle = .medium
+        
+        let date = formater.date(from: sender.titleLabel?.text ?? "")
+        selectedCheckInDate = date
+        updateDatePickerLimits()
+    }
 }
 
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -309,8 +345,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             self.navigationController?.pushViewController(vc, animated: true)
             
         }
-        
     }
+
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -372,9 +408,15 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 extension HomeViewController {
     
     func setupUI() {
+        searchView.isHidden = true
+        searchView.addBottomShadow()
+        searchViewHeightConstraint.constant = 0
+//        selectCityButton.addBottomShadow()
+//        checkOutButton.addBottomShadow()
+//        checkoutStackView.addBottomShadow()
         startSliderAutoScroll()
         sliderView.applyCardStyle()
-        sliderItems = sliderImages + sliderImages + sliderImages
+        sliderItems = sliderImages
         sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         
         DispatchQueue.main.async {
@@ -390,8 +432,8 @@ extension HomeViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let todayDate = formatter.string(from: Date())
-        checkInButton.setTitle(todayDate, for: .normal)
-        
+        //checkInButton.setTitle(todayDate, for: .normal)
+        setUpTomorrowDate()
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -499,8 +541,38 @@ extension HomeViewController {
             object: nil
         )
         
-        updateTexts()
+        selectCityView.addBottomShadow()
+        selectCheckInView.addBottomShadow()
+        selectCheckOutView.addBottomShadow()
+//        updateTexts()
     }
+    
+    
+    func setUpTomorrowDate(){
+        let today = Date()
+        
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateStyle = .medium
+            let tomorrowDate = formatter.string(from: tomorrow)
+            
+            
+            tomorrowDateButton.setTitle(tomorrowDate, for: .normal)
+           
+        }
+        
+        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
+            formatter.dateStyle = .medium
+            dayAfterTomorrowButton.setTitle(dayAfterTomorrowDate, for: .normal)
+           
+        }
+    }
+    
+    
     
     func NavigationBackGroundColour(){
         navigationController?.navigationBar.barTintColor = .white
@@ -540,14 +612,11 @@ extension HomeViewController {
         
         if lang == .english {
             navigationTitleNameLabel.title = "SyriaBooking"
-            locationTileLabel.text = "Location"
-            messageLabel.text = "Good Morning User!"
-            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
+//            messageLabel.text = "Good Morning User!"
+//            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
             recentlyHeadLineLabel.text = "Recently Viewed"
             whereToNextHeadLineLabel.text = "Where to next?"
             topHotelHeadLineLabel.text = "Top Hotels"
-            checkInTitleLabel.text = "Check In"
-            checkOutTitleLabel.text = "Check Out"
             selectCityButton.setTitle("Select City", for: .normal)
             checkInButton.setTitle("Check In", for: .normal)
             checkOutButton.setTitle("Check Out", for: .normal)
@@ -555,11 +624,8 @@ extension HomeViewController {
             viewAllButton.setTitle("View All", for: .normal)
         } else {
             navigationTitleNameLabel.title = "سيريا بوكينغ"
-            checkInTitleLabel.text = "تسجيل الوصول"
-            checkOutTitleLabel.text = "تسجيل المغادرة"
-            locationTileLabel.text = "الموقع"
-            messageLabel.text = "صباح الخير المستخدم!"
-            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
+//            messageLabel.text = "صباح الخير المستخدم!"
+//            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
             recentlyHeadLineLabel.text = "شوهدت مؤخرا"
             whereToNextHeadLineLabel.text = "إلى أين بعد؟"
             topHotelHeadLineLabel.text = "أفضل الفنادق"
@@ -670,6 +736,7 @@ extension HomeViewController {
             selectedCheckInDate = sender.date
             checkOutButton.setTitle("check out", for: .normal)
         case .checkOut :
+            selectedCheckOutDate = sender.date
             break
         }
         
@@ -677,6 +744,7 @@ extension HomeViewController {
         formatter.dateStyle = .medium
         let selectedDate = formatter.string(from: sender.date)
         activeButton?.setTitle(selectedDate, for: .normal)
+        
         datePickerContainerView.isHidden = true
     }
     
@@ -814,6 +882,34 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
             print("Failed to instantiate PromotionsDetailsVC")
         }
     }
+    
+    override func didTapSearch(_ sender: UIBarButtonItem) {
+      
+            print("Search tapped")
+            if searchView.isHidden {
+                        // Show with animation
+                        
+                        searchViewHeightConstraint.constant = 210 // your desired height
+                        UIView.animate(withDuration: 0.4,
+                                       delay: 0,
+                                       options: .curveEaseInOut) {
+                            self.view.layoutIfNeeded()
+                        }
+                searchView.isHidden = false
+                    } else {
+                        // Hide with animation
+                        searchViewHeightConstraint.constant = 0
+                        UIView.animate(withDuration: 0.3,
+                                       delay: 0,
+                                       options: .curveEaseOut,
+                                       animations: {
+                            self.view.layoutIfNeeded()
+                        }) { _ in
+                            self.searchView.isHidden = true
+                        }
+                    }
+        }
+    
 }
 
 extension UINavigationController {
@@ -833,4 +929,5 @@ extension UINavigationController {
         
         navigationBar.tintColor = .white
     }
+    
 }

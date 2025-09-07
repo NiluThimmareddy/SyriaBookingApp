@@ -126,8 +126,7 @@ extension ConfirmYourBookingVC {
         
         increaseNoButton.layer.cornerRadius = 10
         increaseNoButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        increaseNoButton.clipsToBounds = true
-        
+        increaseNoButton.clipsToBounds = true        
         decreaseNoButton.layer.cornerRadius = 10
         decreaseNoButton.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         decreaseNoButton.clipsToBounds = true

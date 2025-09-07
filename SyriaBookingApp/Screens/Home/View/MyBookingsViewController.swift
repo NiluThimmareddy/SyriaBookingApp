@@ -8,7 +8,7 @@
 import UIKit
 
 class MyBookingsViewController: UIViewController {
-
+    
     @IBOutlet weak var HistoryTableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var gradientView: UIView!
@@ -20,13 +20,29 @@ class MyBookingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if UserSessionManager.getUser() == nil {
+            // Automatically show login form when opening bookings
+            DispatchQueue.main.async {
+                self.presentLoginForm(isFullScreen: true)
+            }
+        }
+        
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         setupAppNavigationBar()
     }
+    
+    
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
@@ -67,7 +83,7 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     }
 }
 
-extension MyBookingsViewController : UIViewControllerTransitioningDelegate {
+extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     
     func presentationController(forPresented presented: UIViewController,
                                 presenting: UIViewController?,
@@ -75,14 +91,17 @@ extension MyBookingsViewController : UIViewControllerTransitioningDelegate {
         return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
-    func setupUI(){
-        if let user = UserSessionManager.getUser() {
-            HistoryTableView.register(UINib(nibName: "MyBookingTableViewCell", bundle: nil), forCellReuseIdentifier: "MyBookingTableViewCell")
+    func setupUI() {
+        if UserSessionManager.getUser() != nil {
+            // ✅ Logged in → show booking table
+            HistoryTableView.register(
+                UINib(nibName: "MyBookingTableViewCell", bundle: nil),
+                forCellReuseIdentifier: "MyBookingTableViewCell"
+            )
             
             let selectedTextAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.white
             ]
-            
             let normalAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.black
             ]
@@ -95,24 +114,47 @@ extension MyBookingsViewController : UIViewControllerTransitioningDelegate {
             
             viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
             viewModel.filteredHotelsCopy = viewModel.filteredHotels
+            
             DispatchQueue.main.async {
                 self.HistoryTableView.reloadData()
             }
+            
             messageLabel.isHidden = true
+            segmentControl.isHidden = false
         } else {
+            // ❌ Not logged in → show message, hide booking table
             messageLabel.isHidden = false
+            
             segmentControl.isHidden = true
-            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-            controller.selectedHotel = selectedHotel
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                     height: UIScreen.main.bounds.height * 0.5)
-            controller.isFullScreenIfMobileNotRegistered = true
-            controller.selectedHotel = self.selectedHotel
-            present(controller, animated: true)
         }
+        
         navigationController?.setNavigationBarBlack()
     }
+    
+    
+    
+    func presentLoginForm(isFullScreen: Bool) {
+        print("Login tapped from gesture...")
+
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
+            print("Failed to load RegisterMobileNumberVC")
+            return
+        }
+        controller.dismissButton.isEnabled = false
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        controller.preferredContentSize = CGSize(
+            width: UIScreen.main.bounds.width * 0.8,
+            height: UIScreen.main.bounds.height * 0.5
+        )
+        controller.isFullScreenIfMobileNotRegistered = isFullScreen
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
 }
+
+
+
+

@@ -45,7 +45,7 @@ extension UIViewController{
         
         if let cancel = cancelButtonTitle {
             alert.addAction(UIAlertAction(title: cancel, style: .cancel) { _ in
-                onCancel?()
+                self.dismiss(animated: true)
             })
         }
         self.present(alert, animated: true, completion: nil)

@@ -12,7 +12,9 @@ enum APIURL{
     case BaseURL
     case HotelURL
     case BookingURL
-   
+   case PostReview
+    case fetchHotelReviews
+    
      var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
     }
@@ -28,8 +30,11 @@ enum APIURL{
             return  URL(string: baseURL + "HotelPublic/aggregates/")
         case .BookingURL:
             return URL(string: baseURL + "UserPublic")
-            
+        case .PostReview :
+            return URL(string: baseURL + "HotelReviewPublic/")
        
+        case .fetchHotelReviews:
+            return URL(string: baseURL + "/HotelReviewPublic/")
         }
     }
     
