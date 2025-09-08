@@ -68,13 +68,7 @@ class APIManager {
         task.resume()
     }
     
-    func postRequest<T: Codable>(
-        urlString: URL,
-        body: [String: Any],
-        responseType: T.Type,
-        completion: @escaping (Result<T, Error>) -> Void
-    ) {
-        
+    func postRequest<T: Codable>(urlString: URL,body: [String: Any],responseType: T.Type,completion: @escaping (Result<T, Error>) -> Void) {
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body) else {
             completion(.failure(NSError(domain: "Invalid Body", code: -2)))

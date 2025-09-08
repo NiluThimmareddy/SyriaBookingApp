@@ -59,6 +59,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
+    static var notificationVCReference: YourNotificationVC?
     func setupAppNavigationBar() {
         let logoImageView = UIImageView(image: UIImage(named: "logo"))
         logoImageView.contentMode = .scaleAspectFit
@@ -92,15 +93,25 @@ extension UIViewController {
     }
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
-        guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
-            return
+        if let existingVC = UIViewController.notificationVCReference {
+            // Already open → dismiss it
+            existingVC.dismiss(animated: true) {
+                UIViewController.notificationVCReference = nil
+            }
+        } else {
+            // Not open → present it
+            guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+                return
+            }
+            notificationVC.modalPresentationStyle = .overCurrentContext
+            notificationVC.modalTransitionStyle = .crossDissolve
+            
+            present(notificationVC, animated: true) {
+                UIViewController.notificationVCReference = notificationVC
+            }
         }
-        notificationVC.title = "Notification"
-        let backItem = UIBarButtonItem()
-        backItem.title = ""
-        navigationItem.backBarButtonItem = backItem
-        navigationController?.pushViewController(notificationVC, animated: true)
     }
+
     
     @objc func didTapMenu(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)

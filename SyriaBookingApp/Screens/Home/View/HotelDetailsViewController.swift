@@ -424,13 +424,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     
     func setUpUI() {
         
-        if let user = UserSessionManager.getUser() {
-            self.user = user
-            submitReviewButton.isEnabled = true
-        }else{
-            self.user = nil
-            submitReviewButton.isEnabled = false
-        }
+//        if let user = UserSessionManager.getUser() {
+//            self.user = user
+//            submitReviewButton.isEnabled = true
+//        }else{
+//            self.user = nil
+//            submitReviewButton.isEnabled = false
+//        }
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         

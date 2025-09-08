@@ -187,3 +187,13 @@ struct RoomDetails: Codable {
         case roomType, bedType, maxAdults, maxChildren, roomSize, basePrice, roomStatus, refundPolicy, breakfastIncluded, availableRooms, description, amenities, inventory
     }
 }
+
+struct Booking {
+    let id: String
+    let hotelName: String
+    let roomType: String
+    let checkIn: String
+    let checkOut: String
+    let totalAmount: Double
+    let status: String   // pending, confirmed, cancelled
+}
