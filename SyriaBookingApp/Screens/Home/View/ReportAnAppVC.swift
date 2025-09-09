@@ -16,13 +16,21 @@ class ReportAnAppVC: UIViewController {
     @IBOutlet weak var enterMessageTextView: UITextView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var topView: UIView!
-    
+    var comingfrom  = ""
+    var hotelViewModel = HotelViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
         setupRatingDropdownMenu()
+        
+        if comingfrom == "RightMenu"{
+            //set subject Complain
+           
+            self.selectSubjectButton.setTitle("Complaint", for: .normal)
+            self.selectSubjectButton.isEnabled = false
+        }
     }
     
     func setupRatingDropdownMenu() {
@@ -33,6 +41,7 @@ class ReportAnAppVC: UIViewController {
         for title in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
                 self?.selectSubjectButton.setTitle(title, for: .normal)
+                
             })
             actions.append(action)
         }
@@ -44,9 +53,41 @@ class ReportAnAppVC: UIViewController {
     }
 
     @IBAction func submitButtonAction(_ sender: Any) {
+        showLoader()
+        
+        if let user = UserSessionManager.getUser() {
+            
+            guard let subject = selectSubjectButton.titleLabel?.text else{
+                showAlert("please select subject")
+                return
+            }
+            
+            guard let message = enterMessageTextView.text else{
+                showAlert("please enter message")
+                return
+            }
+            
+            hotelViewModel.onReporAnAppSucess = { response in
+                self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onCancel:  {
+                    self.willMove(toParent: nil)
+                    self.view.removeFromSuperview()
+                    self.removeFromParent()
+                })
+                
+            }
+            
+            hotelViewModel.submitReporAnApp(subject:subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile)
+        }
+        
+        
     }
     
     @IBAction func dismissButton(_ sender: Any) {
-        self.dismiss(animated: true)
+      
+                // Remove popup from parent
+                self.willMove(toParent: nil)
+                self.view.removeFromSuperview()
+                self.removeFromParent()
+            
     }
 }

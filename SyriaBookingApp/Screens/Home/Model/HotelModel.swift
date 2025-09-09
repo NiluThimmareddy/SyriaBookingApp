@@ -187,3 +187,8 @@ struct RoomDetails: Codable {
         case roomType, bedType, maxAdults, maxChildren, roomSize, basePrice, roomStatus, refundPolicy, breakfastIncluded, availableRooms, description, amenities, inventory
     }
 }
+
+
+struct ReporAnAppModel: Codable {
+    let message : String
+}

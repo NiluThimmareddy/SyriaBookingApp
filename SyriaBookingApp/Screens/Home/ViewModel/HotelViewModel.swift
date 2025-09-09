@@ -17,6 +17,7 @@ class HotelViewModel {
  
     
     var onSuccess: ((Review) -> Void)?
+    var onReporAnAppSucess : ((ReporAnAppModel)->Void)?
     var onReviewError: ((String) -> Void)?
     
     var filteredHotelsCopy : [Hotel] = []
@@ -154,6 +155,37 @@ class HotelViewModel {
                 switch result {
                 case .success(let response):
                     self.onSuccess?(response.data)
+                case .failure(let failure):
+                    self.onReviewError?(failure.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func submitReporAnApp(subject:String,message:String,userName:String,UserEmail:String,userPhone:String){
+       
+        let params: [String: Any] = [
+            "type": "",
+            "subject": subject,
+            "message": message,
+            "hotelId": "",
+            "hotelName": "",
+            "bookingId": "",
+            "userName": userName,
+            "userEmail": UserEmail,
+            "userPhone": userPhone
+        ]
+        
+        guard let url =  APIURL.postReportAnApp.url else {
+            self.onReviewError?("Invalid URL")
+            return
+        }
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: ReporAnAppModel.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onReporAnAppSucess?(response)
                 case .failure(let failure):
                     self.onReviewError?(failure.localizedDescription)
                 }

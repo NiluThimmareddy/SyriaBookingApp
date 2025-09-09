@@ -218,7 +218,11 @@ class HomeViewController: UIViewController {
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
+        
+        guard let date = date else { return }
         selectedCheckInDate = date
+        currentDatePickerMode = .checkOut
+        setNextDateInCkechout(checkInDate: date)
         updateDatePickerLimits()
     }
     
@@ -229,7 +233,25 @@ class HomeViewController: UIViewController {
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
         selectedCheckInDate = date
+        guard let date = date else { return }
+        setNextDateInCkechout(checkInDate: date)
+        currentDatePickerMode = .checkOut
         updateDatePickerLimits()
+    }
+    
+    func setNextDateInCkechout(checkInDate:Date){
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: checkInDate) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateStyle = .medium
+            let tomorrowDate = formatter.string(from: tomorrow)
+            
+           
+            selectedCheckOutDate = tomorrow
+            
+           checkOutButton.setTitle(tomorrowDate, for: .normal)
+           
+        }
     }
 }
 
@@ -565,8 +587,8 @@ extension HomeViewController {
         if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
-            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
             formatter.dateStyle = .medium
+            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
             dayAfterTomorrowButton.setTitle(dayAfterTomorrowDate, for: .normal)
            
         }
@@ -734,7 +756,7 @@ extension HomeViewController {
         switch currentDatePickerMode {
         case .checkIn:
             selectedCheckInDate = sender.date
-            checkOutButton.setTitle("check out", for: .normal)
+            setNextDateInCkechout(checkInDate:sender.date)
         case .checkOut :
             selectedCheckOutDate = sender.date
             break

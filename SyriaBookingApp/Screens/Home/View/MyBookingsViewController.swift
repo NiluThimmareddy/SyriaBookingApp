@@ -17,7 +17,8 @@ class MyBookingsViewController: UIViewController {
     let viewModel = HotelViewModel()
     var selectedSegmentIndex: Int = 0
     var selectedHotel: Hotel?
-    
+    var isLoginPopupPresented = false
+    var comingFrom : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,19 +27,13 @@ class MyBookingsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if UserSessionManager.getUser() == nil {
-            // Automatically show login form when opening bookings
-            DispatchQueue.main.async {
-                self.presentLoginForm(isFullScreen: true)
-            }
-        }
         
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+       
         setupAppNavigationBar()
     }
     
@@ -93,6 +88,13 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     
     func setupUI() {
         if UserSessionManager.getUser() != nil {
+            
+            messageLabel.isHidden = true
+            segmentControl.isHidden = false
+            HistoryTableView.isHidden = false
+          
+            isLoginPopupPresented = false
+            
             // ✅ Logged in → show booking table
             HistoryTableView.register(
                 UINib(nibName: "MyBookingTableViewCell", bundle: nil),
@@ -119,42 +121,39 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 self.HistoryTableView.reloadData()
             }
             
-            messageLabel.isHidden = true
-            segmentControl.isHidden = false
+           
         } else {
-            // ❌ Not logged in → show message, hide booking table
-            messageLabel.isHidden = false
-            
             segmentControl.isHidden = true
-        }
+            HistoryTableView.isHidden = true
+            messageLabel.isHidden = false
+            if !isLoginPopupPresented {
+                            isLoginPopupPresented = true
+                            DispatchQueue.main.async {
+                                self.presentLoginForm(isFullScreen: true)
+                            }
+                        }
+                    }
         
         navigationController?.setNavigationBarBlack()
     }
     
-    
-    
     func presentLoginForm(isFullScreen: Bool) {
-        print("Login tapped from gesture...")
-
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
             print("Failed to load RegisterMobileNumberVC")
             return
         }
-        controller.dismissButton.isEnabled = false
-        controller.modalPresentationStyle = .custom
-        controller.transitioningDelegate = self
-        controller.preferredContentSize = CGSize(
-            width: UIScreen.main.bounds.width * 0.8,
-            height: UIScreen.main.bounds.height * 0.5
-        )
-        controller.isFullScreenIfMobileNotRegistered = isFullScreen
         
-        self.present(controller, animated: true, completion: nil)
+        showPopup(controller,widthMultiplier: 0.8, heightMultiplier: 0.3)
     }
-    
 }
 
+extension MyBookingsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        // ✅ Allow showing again after dismiss
+        isLoginPopupPresented = false
+    }
+}
 
 
 

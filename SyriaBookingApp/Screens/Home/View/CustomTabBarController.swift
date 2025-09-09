@@ -96,5 +96,37 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             tabBar.items?[3].title = "اتصل بنا"
         }
     }
+    
+  
+    func tabBarController(_ tabBarController: UITabBarController,
+                          shouldSelect viewController: UIViewController) -> Bool {
+        
+        if let nav = viewController as? UINavigationController,
+           nav.topViewController is ReportAnAppVC {
+            
+            // ✅ Get current visible VC
+            if let topVC = UIApplication.topViewController() {
+                
+                // ✅ Prevent duplicates: check if ReportAnAppVC already added as child
+                if topVC.children.contains(where: { $0 is ReportAnAppVC }) {
+                    return false
+                }
+                
+                // ✅ Show popup
+                if let contactVC = storyboard?.instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
+                    topVC.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.6)
+                }
+            }
+            
+            return false // prevent default tab switch
+        }
+        
+        return true
+    }
+
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+    }
 }
  

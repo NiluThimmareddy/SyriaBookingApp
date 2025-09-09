@@ -150,3 +150,101 @@ extension UIViewController {
         }
     }
 }
+
+extension UIViewController {
+    
+    /// Present any child VC as a centered popup with optional dim background
+    func showPopup(_ childVC: UIViewController,
+                   widthMultiplier: CGFloat = 0.85,
+                   heightMultiplier: CGFloat = 0.6,
+                   cornerRadius: CGFloat = 16,
+                   withDim: Bool = true) {
+        
+        // 🔑 Remove existing popup first
+        dismissPopup()
+        
+        // --- Add child relationship ---
+        addChild(childVC)
+        
+        var dimView: UIView?
+        if withDim {
+            let dim = UIView(frame: view.bounds)
+            dim.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+            dim.tag = 9999
+            dim.isUserInteractionEnabled = true
+            view.addSubview(dim)
+            dimView = dim
+            
+            // Tap outside to dismiss
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+            dim.addGestureRecognizer(tapGesture)
+        }
+        
+        // --- Popup View ---
+        let popupView = childVC.view!
+        popupView.translatesAutoresizingMaskIntoConstraints = false
+        popupView.layer.cornerRadius = cornerRadius
+        popupView.clipsToBounds = true
+        popupView.alpha = 0.0
+        popupView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        view.addSubview(popupView)
+        
+        NSLayoutConstraint.activate([
+            popupView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            popupView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            popupView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: widthMultiplier),
+            popupView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: heightMultiplier)
+        ])
+        
+        childVC.didMove(toParent: self)
+        
+        // --- Animate in ---
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.5,
+                       options: .curveEaseOut,
+                       animations: {
+            dimView?.backgroundColor = UIColor.black.withAlphaComponent(withDim ? 0.5 : 0.0)
+            popupView.alpha = 1.0
+            popupView.transform = .identity
+        }, completion: nil)
+    }
+    
+    /// Dismiss currently shown popup
+    @objc func dismissPopup() {
+        guard let popupVC = children.last else { return }
+        let popupView = popupVC.view!
+        let dimView = view.viewWithTag(9999)
+        
+        UIView.animate(withDuration: 0.25, animations: {
+            dimView?.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+            popupView.alpha = 0.0
+            popupView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        }, completion: { _ in
+            dimView?.removeFromSuperview()
+            popupVC.willMove(toParent: nil)
+            popupView.removeFromSuperview()
+            popupVC.removeFromParent()
+            
+            // ✅ Make sure touches are re-enabled
+            self.view.isUserInteractionEnabled = true
+        })
+    }
+    
+    /// Dismiss popup of specific type
+    func dismissPopup<T: UIViewController>(ofType type: T.Type) {
+        if let popup = children.first(where: { $0 is T }) {
+            popup.willMove(toParent: nil)
+            popup.view.removeFromSuperview()
+            popup.removeFromParent()
+        }
+        
+        if let dimView = view.viewWithTag(9999) {
+            dimView.removeFromSuperview()
+        }
+        
+        // ✅ Re-enable interaction just in case
+        self.view.isUserInteractionEnabled = true
+    }
+}

@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum ComingFromToLogin {
+    case tabbarBooking
+    case HomeSliderView
+    case HotelDetails
+    
+}
 class RegisterMobileNumberVC : UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -46,7 +52,7 @@ class RegisterMobileNumberVC : UIViewController {
     var countryCodeList : [CountryModel] = []
     var maxMobileNumberLength: Int = 10
     var isFullScreenIfMobileNotRegistered: Bool = false
-    
+    var comingFrom : ComingFromToLogin?
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -180,6 +186,7 @@ class RegisterMobileNumberVC : UIViewController {
 
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
+        changeTheLoginViewDesing()
         setupGenderPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
 
@@ -197,6 +204,23 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         }
         enterMobileNumberTF.delegate = self
         
+    }
+    
+    func changeTheLoginViewDesing(){
+        switch comingFrom{
+        case .HotelDetails :
+            //
+            break
+        case .tabbarBooking:
+            //disable dismissbutton
+            self.dismissButton.isHidden = true
+            break
+        case .HomeSliderView :
+            break
+        case .none:
+            break
+        
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
