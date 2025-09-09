@@ -9,7 +9,7 @@ import UIKit
 
 class ViewBookingConfirmationVC : UIViewController {
     
-    @IBOutlet weak var checkMarkImgView: UIImageView!
+    @IBOutlet weak var checkMarkImgView: UIImageView! 
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var bookingReferenceLabel: UILabel!
     @IBOutlet weak var bookingDateLabel: UILabel!
@@ -37,6 +37,9 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var printButton: UIButton!
     @IBOutlet weak var goToHomeButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var messageStatusLabel: UILabel!
+    @IBOutlet weak var descriptionStatusLabel: UILabel!
+    @IBOutlet weak var statusView: UIView!
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
@@ -79,12 +82,8 @@ class ViewBookingConfirmationVC : UIViewController {
                 }
             }
         }
-   
     }
-    
-  
 
-    
 }
 
 extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource {
@@ -161,6 +160,37 @@ extension ViewBookingConfirmationVC {
                 highlightColor: .label
             )
         }
+        
+        switch status.lowercased() {
+        case "pending":
+            messageStatusLabel.text = "Awaiting confirmation"
+            descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
+            statusView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+            statusView.layer.borderColor = UIColor.systemBlue.cgColor
+            checkMarkImgView.image = UIImage(systemName: "clock")
+            checkMarkImgView.tintColor = UIColor.systemBlue
+        case "cancelled":
+            messageStatusLabel.text = "Booking cancelled"
+            descriptionStatusLabel.text = "This booking has been cancelled. If you believe this is a mistake, please contact support."
+            statusView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
+            statusView.layer.borderColor = UIColor.systemRed.cgColor
+            checkMarkImgView.image = UIImage(systemName: "xmark.circle")
+            checkMarkImgView.tintColor = UIColor.systemRed
+        case "confirmed":
+            messageStatusLabel.text = "Your booking is confirmed!"
+            descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
+            statusView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
+            statusView.layer.borderColor = UIColor.systemGreen.cgColor
+            checkMarkImgView.image = UIImage(systemName: "checkmark.seal.fill")
+            checkMarkImgView.tintColor = UIColor.systemGreen
+        default:
+            messageStatusLabel.text = "Booking Status: \(status)"
+            descriptionStatusLabel.text = "Contact support for more details."
+            statusView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.1)
+            statusView.layer.borderColor = UIColor.darkGray.cgColor
+            checkMarkImgView.image = UIImage(systemName: "questionmark.circle")
+            checkMarkImgView.tintColor = UIColor.darkGray
+        }
     }
     
     func savePDFToDocuments() {
@@ -214,7 +244,5 @@ extension ViewBookingConfirmationVC {
         scrollView.bounds = originalBounds
         return data
     }
-
-
 }
 

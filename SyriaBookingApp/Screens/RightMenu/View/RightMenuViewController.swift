@@ -8,6 +8,7 @@
 import UIKit
 
 class RightMenuViewController: UIViewController {
+    
     @IBOutlet weak var rightMenuTableView: UITableView!
     
     var menuArray = [String]()
@@ -74,12 +75,10 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             }) {
                 self.dismiss(animated: true)
             }
-          
         default :
             break
         }
     }
-    
 }
 
 extension RightMenuViewController: UIPopoverPresentationControllerDelegate{

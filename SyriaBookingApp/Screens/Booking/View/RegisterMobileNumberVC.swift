@@ -245,8 +245,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         return true
     }
     
-    func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void)
-    {
+    func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void) {
         viewModel.onSuccess = { [weak self] response in
             print("Response: \(response)")
             

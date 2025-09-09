@@ -33,7 +33,6 @@ class MyBookingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
         setupAppNavigationBar()
     }
     
@@ -41,6 +40,21 @@ class MyBookingsViewController: UIViewController {
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
+        if selectedSegmentIndex == 0 {
+            viewModel.filteredBookings = [
+                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
+                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "pending"),
+                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
+                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
+            ]
+        } else {
+            viewModel.filteredBookings = [
+                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
+                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "confirmed"), // changed
+                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
+                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
+            ]
+        }
         HistoryTableView.reloadData()
     }
     
@@ -48,46 +62,37 @@ class MyBookingsViewController: UIViewController {
 
 extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(5, viewModel.filteredHotels.count)
+        return min(5, viewModel.filteredBookings.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
-        let hotel = viewModel.filteredHotels[indexPath.row]
-        cell.configure(with: hotel)
-        
-        switch selectedSegmentIndex {
-        case 1:
-            cell.statusButton.setTitle("Checked-Out", for: .normal)
-            cell.statusButton.setTitleColor(.systemOrange, for: .normal)
-            cell.statusButton.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.1)
-        case 2:
-            cell.statusButton.setTitle("Cancelled", for: .normal)
-            cell.statusButton.setTitleColor(.systemRed, for: .normal)
-            cell.statusButton.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
-        default:
-            cell.statusButton.setTitle("Confirmed", for: .normal)
-            cell.statusButton.setTitleColor(.systemGreen, for: .normal)
-            cell.statusButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
-        }
+        let hotel = viewModel.filteredBookings[indexPath.row]
+        cell.configure(booking: hotel)
+        cell.delegate = self
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UIDevice.current.userInterfaceIdiom == .pad ? 250 : 206
+        return UIDevice.current.userInterfaceIdiom == .pad ? 250 : 152
     }
 }
 
 extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     
-    func presentationController(forPresented presented: UIViewController,
-                                presenting: UIViewController?,
-                                source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
         return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
     func setupUI() {
+        
         if UserSessionManager.getUser() != nil {
+            viewModel.filteredBookings = [
+                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
+                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "pending"),
+                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
+                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
+            ]
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
@@ -100,7 +105,6 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 UINib(nibName: "MyBookingTableViewCell", bundle: nil),
                 forCellReuseIdentifier: "MyBookingTableViewCell"
             )
-            
             let selectedTextAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.white
             ]
@@ -134,6 +138,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                         }
                     }
         
+        }
         navigationController?.setNavigationBarBlack()
     }
     
@@ -148,12 +153,25 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
+extension MyBookingsViewController: MyBookingCellDelegate {
+    func didTapDetails(for booking: Booking) {
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        if let detailsVC = storyboard.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC {
+            detailsVC.status = booking.status
+            detailsVC.guestName = "John Doe"
+            detailsVC.guestEmail = "john@example.com"
+            detailsVC.guestPhone = "+91 9876543210"
+            detailsVC.numberOfGuests = "2"
+            detailsVC.roomType = booking.roomType
+            detailsVC.checkInDate = booking.checkIn
+            detailsVC.checkOutDate = booking.checkOut
+            detailsVC.totalPrice = "$\(booking.totalAmount)"
+            detailsVC.modalPresentationStyle = .fullScreen
+            present(detailsVC, animated: true)
+        }
 extension MyBookingsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         // ✅ Allow showing again after dismiss
         isLoginPopupPresented = false
     }
 }
-
-
-

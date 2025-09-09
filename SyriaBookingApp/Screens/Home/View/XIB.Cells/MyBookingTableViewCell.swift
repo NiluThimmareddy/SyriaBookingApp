@@ -6,64 +6,77 @@
 //
 
 import UIKit
+protocol MyBookingCellDelegate: AnyObject {
+    func didTapDetails(for booking: Booking)
+}
 
 class MyBookingTableViewCell: UITableViewCell {
 
     @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var checkinLabel: UILabel!
-    @IBOutlet weak var checkoutLabel: UILabel!
-    @IBOutlet weak var hotelImageView: UIImageView!
-    @IBOutlet weak var statusButton: UIButton!
-    @IBOutlet weak var hotelAddressLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var orderIdLabel: UILabel!
+    @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var hotelNameLabel: UILabel!
+    @IBOutlet weak var roomTypeLabel: UILabel!
+    @IBOutlet weak var datesLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var upcomingDataLabel: UILabel!
+    @IBOutlet weak var totalAmountLabel: UILabel!
+    @IBOutlet weak var detailsButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var contactSupportButton: UIButton!
+    
+    weak var delegate: MyBookingCellDelegate?
+    var currentBooking: Booking?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
-        setupUI()
+        statusLabel.layer.cornerRadius = 6
+        statusLabel.clipsToBounds = true
+    }
+    
+    func configure(booking: Booking) {
+        currentBooking = booking
+        hotelNameLabel.text = booking.hotelName
+        roomTypeLabel.text = booking.roomType
+        datesLabel.text = "\(booking.checkIn) - \(booking.checkOut)"
+        totalAmountLabel.text = "₹\(booking.totalAmount)"
+        
+        switch booking.status.lowercased() {
+        case "pending":
+            imgView.image = UIImage(systemName: "clock")
+            statusLabel.text = "Pending"
+            statusLabel.backgroundColor = .systemBlue
+            cancelButton.isHidden = false
+            
+        case "cancelled":
+            imgView.image = UIImage(systemName: "xmark.circle")
+            statusLabel.text = "Cancelled"
+            statusLabel.backgroundColor = .systemRed
+            cancelButton.isHidden = true
+            
+        case "confirmed":
+            imgView.image = UIImage(systemName: "checkmark.circle")
+            statusLabel.text = "Confirmed"
+            statusLabel.backgroundColor = .systemGreen
+            cancelButton.isHidden = true
+            
+        default:
+            imgView.image = UIImage(systemName: "house")
+            statusLabel.text = booking.status
+            statusLabel.backgroundColor = .darkGray
+            cancelButton.isHidden = true
+        }
     }
 
-    func setupUI(){
-        DispatchQueue.main.async {
-            self.checkinLabel.addBorder(edge: .right, color: .systemGray4, thickness: 0.8)
-            self.checkoutLabel.addBorder(edge: .left, color: .systemGray4, thickness: 0.8)
-            
+    @IBAction func detailsButtonAction(_ sender: Any) {
+        if let booking = currentBooking {
+            delegate?.didTapDetails(for: booking)
         }
     }
     
-    func configure(with hotel: Hotel) {
-        
-        if let firstImageURL = hotel.images.first, !firstImageURL.isEmpty {
-            hotelImageView.loadImage(from: firstImageURL)
-        } else {
-            hotelImageView.loadImage(from: hotel.coverImageURL)
-        }
-        
-        if let intrating = Int(hotel.averageRating), intrating > 0, intrating <= 5 {
-            let hotelNameAttribute = NSMutableAttributedString(
-                string: "\(hotel.localizedName()) ",
-                attributes: [.foregroundColor: UIColor.label]
-            )
-            
-            let stars = String(repeating: "★", count: intrating)
-            let starAttributedString = NSAttributedString(
-                string: stars,
-                attributes: [.foregroundColor: UIColor.systemYellow]
-            )
-            
-            hotelNameAttribute.append(starAttributedString)
-            hotelNameLabel.attributedText = hotelNameAttribute
-        } else {
-            hotelNameLabel.text = hotel.localizedName()
-        }
-        priceLabel.text = "$\(hotel.minRoomPrice)"
-        orderIdLabel.text = hotel.id
-        hotelAddressLabel.text = hotel.localizedCity()
+    @IBAction func cancelButtonAction(_ sender: Any) {
     }
-
- 
-    @IBAction func statusButtonAction(_ sender: Any) {
+    
+    @IBAction func contactSupportButtonAction(_ sender: Any) {
     }
 }

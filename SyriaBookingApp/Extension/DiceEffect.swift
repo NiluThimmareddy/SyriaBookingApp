@@ -73,5 +73,3 @@ class CubeFlowLayout: UICollectionViewFlowLayout {
         return attributesArray
     }
 }
-
-

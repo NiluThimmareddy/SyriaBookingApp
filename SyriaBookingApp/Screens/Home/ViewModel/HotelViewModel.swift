@@ -14,7 +14,8 @@ class HotelViewModel {
     var recentlyViewdHotels : [Hotel] = []
     var onDataLoaded: (() -> Void)?
     var onError: ((Error) -> Void)?
- 
+
+    var filteredBookings: [Booking] = []
     
     var onSuccess: ((Review) -> Void)?
     var onReporAnAppSucess : ((ReporAnAppModel)->Void)?

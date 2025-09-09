@@ -63,7 +63,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var checkoutStackView: UIStackView!
     @IBOutlet weak var tomorrowDateButton: UIButton!
     @IBOutlet weak var dayAfterTomorrowButton: UIButton!
-   
     @IBOutlet weak var selectCityView: UIView!
     @IBOutlet weak var selectCheckInView: UIView!
     @IBOutlet weak var selectCheckOutView: UIView!
@@ -431,11 +430,8 @@ extension HomeViewController {
     
     func setupUI() {
         searchView.isHidden = true
-        searchView.addBottomShadow()
+        searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
-//        selectCityButton.addBottomShadow()
-//        checkOutButton.addBottomShadow()
-//        checkoutStackView.addBottomShadow()
         startSliderAutoScroll()
         sliderView.applyCardStyle()
         sliderItems = sliderImages
@@ -545,6 +541,7 @@ extension HomeViewController {
         stackView.clipsToBounds = true
         stackView.layer.cornerRadius = 20
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        searchView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         
         setupDatePickerUI()
         startPromotionAutoScroll()
@@ -578,10 +575,7 @@ extension HomeViewController {
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-            
-            
             tomorrowDateButton.setTitle(tomorrowDate, for: .normal)
-           
         }
         
         if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
@@ -590,7 +584,6 @@ extension HomeViewController {
             formatter.dateStyle = .medium
             let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
             dayAfterTomorrowButton.setTitle(dayAfterTomorrowDate, for: .normal)
-           
         }
     }
     
@@ -856,7 +849,6 @@ extension HomeViewController {
     
     @objc func scrollToNextItem() {
         guard let collectionView = sliderCollectionView else { return }
-        
         let totalItems = sliderImages.count
         if totalItems == 0 { return }
         

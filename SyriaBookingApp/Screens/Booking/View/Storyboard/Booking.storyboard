@@ -1610,7 +1610,7 @@ You can now view and print your booking confirmation by clicking the button belo
                                 <rect key="frame" x="0.0" y="59" width="393" height="694"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZAq-gi-gRY">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1754.3333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1756.3333333333333"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fhS-kv-dY4">
                                                 <rect key="frame" x="76.666666666666686" y="20" width="240" height="50"/>
@@ -1619,28 +1619,54 @@ You can now view and print your booking confirmation by clicking the button belo
                                                     <constraint firstAttribute="height" constant="50" id="FB9-eG-Bdz"/>
                                                 </constraints>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.seal.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nFU-5L-wvy">
-                                                <rect key="frame" x="146.66666666666666" y="89.333333333333343" width="100" height="101.33333333333331"/>
-                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqj-eY-MVS">
+                                                <rect key="frame" x="20" y="90" width="353" height="190"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.seal.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nFU-5L-wvy">
+                                                        <rect key="frame" x="126.66666666666666" y="4.3333333333333357" width="100" height="101.33333333333331"/>
+                                                        <color key="tintColor" systemColor="systemYellowColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="nFU-5L-wvy" secondAttribute="height" id="5WT-kf-uCs"/>
+                                                            <constraint firstAttribute="height" constant="100" id="JAc-qh-ycK"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for your booking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kD5-E7-RvK">
+                                                        <rect key="frame" x="5" y="110" width="343" height="21.666666666666657"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for choosing us! Your booking has been successfully processed, and we're excited to welcome you soon." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YuD-H5-iYa">
+                                                        <rect key="frame" x="5" y="141.66666666666669" width="343" height="26.333333333333343"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="nFU-5L-wvy" secondAttribute="height" id="5WT-kf-uCs"/>
-                                                    <constraint firstAttribute="height" constant="100" id="JAc-qh-ycK"/>
+                                                    <constraint firstItem="kD5-E7-RvK" firstAttribute="top" secondItem="nFU-5L-wvy" secondAttribute="bottom" constant="5" id="HyZ-Ud-Yyh"/>
+                                                    <constraint firstAttribute="height" constant="190" id="KLl-mq-S0M"/>
+                                                    <constraint firstItem="nFU-5L-wvy" firstAttribute="top" secondItem="fqj-eY-MVS" secondAttribute="top" constant="5" id="NlY-TO-F8B"/>
+                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="YuD-H5-iYa" secondAttribute="bottom" constant="10" id="WAW-La-gbc"/>
+                                                    <constraint firstItem="YuD-H5-iYa" firstAttribute="trailing" secondItem="kD5-E7-RvK" secondAttribute="trailing" id="bQJ-XK-mJ5"/>
+                                                    <constraint firstAttribute="trailing" secondItem="kD5-E7-RvK" secondAttribute="trailing" constant="5" id="h0g-7d-5pW"/>
+                                                    <constraint firstItem="YuD-H5-iYa" firstAttribute="top" secondItem="kD5-E7-RvK" secondAttribute="bottom" constant="10" id="khy-5U-pqX"/>
+                                                    <constraint firstItem="kD5-E7-RvK" firstAttribute="leading" secondItem="fqj-eY-MVS" secondAttribute="leading" constant="5" id="wOW-d7-hov"/>
+                                                    <constraint firstItem="YuD-H5-iYa" firstAttribute="leading" secondItem="kD5-E7-RvK" secondAttribute="leading" id="y0E-R1-r3u"/>
+                                                    <constraint firstItem="nFU-5L-wvy" firstAttribute="centerX" secondItem="fqj-eY-MVS" secondAttribute="centerX" id="ynr-VS-xec"/>
                                                 </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for your booking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kD5-E7-RvK">
-                                                <rect key="frame" x="20" y="210" width="353" height="21.666666666666657"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for choosing us! Your booking has been successfully processed, and we're excited to welcome you soon." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YuD-H5-iYa">
-                                                <rect key="frame" x="20" y="241.66666666666669" width="353" height="26.333333333333314"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DlA-SV-NBO">
-                                                <rect key="frame" x="20" y="288" width="353" height="1456.3333333333333"/>
+                                                <rect key="frame" x="20" y="290" width="353" height="1456.3333333333333"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotel booking Confirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwp-UB-gdA">
                                                         <rect key="frame" x="10" y="20" width="333" height="20.333333333333329"/>
@@ -2063,20 +2089,15 @@ You can now view and print your booking confirmation by clicking the button belo
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="kD5-E7-RvK" firstAttribute="leading" secondItem="ZAq-gi-gRY" secondAttribute="leading" constant="20" id="3X4-bx-mnV"/>
+                                            <constraint firstAttribute="trailing" secondItem="fqj-eY-MVS" secondAttribute="trailing" constant="20" id="1ai-cs-SIx"/>
+                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="leading" secondItem="fqj-eY-MVS" secondAttribute="leading" id="3sU-vJ-waj"/>
                                             <constraint firstItem="fhS-kv-dY4" firstAttribute="centerX" secondItem="ZAq-gi-gRY" secondAttribute="centerX" id="5V8-vG-Bne"/>
-                                            <constraint firstItem="YuD-H5-iYa" firstAttribute="top" secondItem="kD5-E7-RvK" secondAttribute="bottom" constant="10" id="7iB-hn-JJE"/>
-                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="trailing" secondItem="YuD-H5-iYa" secondAttribute="trailing" id="8Wm-aG-gad"/>
-                                            <constraint firstItem="YuD-H5-iYa" firstAttribute="leading" secondItem="kD5-E7-RvK" secondAttribute="leading" id="B8N-WO-zKg"/>
-                                            <constraint firstItem="YuD-H5-iYa" firstAttribute="trailing" secondItem="kD5-E7-RvK" secondAttribute="trailing" id="CrB-bH-uHE"/>
                                             <constraint firstItem="fhS-kv-dY4" firstAttribute="top" secondItem="ZAq-gi-gRY" secondAttribute="top" constant="20" id="Fz6-2o-kP7"/>
-                                            <constraint firstItem="kD5-E7-RvK" firstAttribute="top" secondItem="nFU-5L-wvy" secondAttribute="bottom" constant="20" id="NiL-Pa-a8Q"/>
-                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="top" secondItem="YuD-H5-iYa" secondAttribute="bottom" constant="20" id="bgX-ft-eKL"/>
-                                            <constraint firstAttribute="trailing" secondItem="kD5-E7-RvK" secondAttribute="trailing" constant="20" id="dsB-Rm-8H4"/>
+                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="trailing" secondItem="fqj-eY-MVS" secondAttribute="trailing" id="OdP-EC-Qxj"/>
                                             <constraint firstAttribute="bottom" secondItem="DlA-SV-NBO" secondAttribute="bottom" constant="10" id="h0o-nx-oUZ"/>
-                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="leading" secondItem="YuD-H5-iYa" secondAttribute="leading" id="iXx-YR-KaN"/>
-                                            <constraint firstItem="nFU-5L-wvy" firstAttribute="top" secondItem="fhS-kv-dY4" secondAttribute="bottom" constant="20" id="jNW-r4-oJL"/>
-                                            <constraint firstItem="nFU-5L-wvy" firstAttribute="centerX" secondItem="fhS-kv-dY4" secondAttribute="centerX" id="tiT-h1-9DW"/>
+                                            <constraint firstItem="fqj-eY-MVS" firstAttribute="leading" secondItem="ZAq-gi-gRY" secondAttribute="leading" constant="20" id="ijV-2f-qTE"/>
+                                            <constraint firstItem="fqj-eY-MVS" firstAttribute="top" secondItem="fhS-kv-dY4" secondAttribute="bottom" constant="20" id="mqL-qA-KqR"/>
+                                            <constraint firstItem="DlA-SV-NBO" firstAttribute="top" secondItem="fqj-eY-MVS" secondAttribute="bottom" constant="10" id="rC3-hz-shf"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -2159,6 +2180,7 @@ You can now view and print your booking confirmation by clicking the button belo
                         <outlet property="checkMarkImgView" destination="nFU-5L-wvy" id="5aE-sO-CnZ"/>
                         <outlet property="checkOutLabel" destination="5LW-O6-MiW" id="HzT-hB-ft1"/>
                         <outlet property="contactEmailLabel" destination="T14-ZF-5je" id="VZ6-kn-kJQ"/>
+                        <outlet property="descriptionStatusLabel" destination="YuD-H5-iYa" id="KtU-8v-stZ"/>
                         <outlet property="goToHomeButton" destination="L9Z-d7-cZe" id="XEW-v9-GpK"/>
                         <outlet property="guestEmailLabel" destination="a8C-fC-GJQ" id="nnB-pP-DSY"/>
                         <outlet property="guestLabel" destination="jxg-ml-pAp" id="5S9-O7-2E5"/>
@@ -2170,20 +2192,22 @@ You can now view and print your booking confirmation by clicking the button belo
                         <outlet property="hotelNameLabel" destination="Yb1-Z2-0IS" id="ty5-PV-qMQ"/>
                         <outlet property="hotelPhoneNumberLabel" destination="cWQ-bf-QEe" id="1ws-Da-4nN"/>
                         <outlet property="languagesSpokenLabel" destination="n3z-D8-EHN" id="rHp-xM-v8K"/>
+                        <outlet property="messageStatusLabel" destination="kD5-E7-RvK" id="u7C-ft-n06"/>
                         <outlet property="numberOfGuestsLabel" destination="oWv-0R-7pZ" id="LSX-LU-gY7"/>
                         <outlet property="paymentMethodLabel" destination="Svw-mr-8fv" id="crD-Zs-pKB"/>
                         <outlet property="printButton" destination="68p-K2-BU7" id="DQH-Ee-Sas"/>
                         <outlet property="roomRateDetailsTableview" destination="KeL-BZ-SlO" id="toF-Nz-2Nr"/>
                         <outlet property="roomTypeLabel" destination="hkn-EV-LCl" id="lhK-Hw-hKe"/>
                         <outlet property="scrollView" destination="u7j-98-9WN" id="7AW-68-o8l"/>
-                        <outlet property="statusLabel" destination="TUP-E8-qcJ" id="WlY-Ah-AEd"/>
+                        <outlet property="statusLabel" destination="TUP-E8-qcJ" id="c5O-hk-Y30"/>
+                        <outlet property="statusView" destination="fqj-eY-MVS" id="RaB-Km-u1U"/>
                         <outlet property="totalNightsLabel" destination="bd3-h7-FhZ" id="Fr1-SL-d40"/>
                         <outlet property="totalPriceLabel" destination="ONj-6G-yOc" id="h8u-xs-UWn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zng-P0-gaq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3694" y="-35"/>
+            <point key="canvasLocation" x="3693.8931297709923" y="-35.211267605633807"/>
         </scene>
     </scenes>
     <resources>

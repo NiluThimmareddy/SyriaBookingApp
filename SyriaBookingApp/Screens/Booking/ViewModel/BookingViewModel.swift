@@ -44,8 +44,7 @@ class BookingViewModel{
         
     }
     
-    func SubmitBookingInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String)
-    {
+    func SubmitBookingInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {
 
         let params: [String: Any] = [
             "name": name,
