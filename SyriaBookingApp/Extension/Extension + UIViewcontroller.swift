@@ -83,8 +83,12 @@ extension UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: #selector(didTapMenu(_:)))
+        if UserSessionManager.getUser() == nil {
+            navigationItem.rightBarButtonItems = [menuButton, searchButton]
+        } else {
+            navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
+        }
         
-        navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
     }
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {
@@ -94,24 +98,28 @@ extension UIViewController {
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
         if let existingVC = UIViewController.notificationVCReference {
-            // Already open → dismiss it
             existingVC.dismiss(animated: true) {
                 UIViewController.notificationVCReference = nil
             }
         } else {
-            // Not open → present it
             guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
                 return
             }
             notificationVC.modalPresentationStyle = .overCurrentContext
             notificationVC.modalTransitionStyle = .crossDissolve
             
+            if let tabBarController = self.tabBarController as? YourNotificationVCDelegate {
+                notificationVC.delegate = tabBarController
+            } else if let delegateSelf = self as? YourNotificationVCDelegate {
+                notificationVC.delegate = delegateSelf
+            } else {
+                print("WARNING: No delegate set for YourNotificationVC")
+            }
             present(notificationVC, animated: true) {
                 UIViewController.notificationVCReference = notificationVC
             }
         }
     }
-
     
     @objc func didTapMenu(_ sender: UIBarButtonItem) {
         let storyboard = UIStoryboard.init(name: "RightMenu", bundle: nil)
@@ -164,7 +172,6 @@ extension UIViewController {
 
 extension UIViewController {
     
-    /// Present any child VC as a centered popup with optional dim background
     func showPopup(_ childVC: UIViewController,
                    widthMultiplier: CGFloat = 0.85,
                    heightMultiplier: CGFloat = 0.6,

@@ -82,17 +82,12 @@ class HomeViewController: UIViewController {
     var isLeftMenuVisible = false
     var scrolltoTopHelper : ScrollToTopHelper?
     var promotionsList: [Hotel] = []
-    
     var selectedLanguage: Languages = .english
-    
     var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
     var sliderItems : [String] = []
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
-                        
-                        
-  
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +116,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        searchView.applyCardStyle()
+        //        searchView.applyCardStyle()
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
@@ -245,11 +240,11 @@ class HomeViewController: UIViewController {
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
             
-           
+            
             selectedCheckOutDate = tomorrow
             
-           checkOutButton.setTitle(tomorrowDate, for: .normal)
-           
+            checkOutButton.setTitle(tomorrowDate, for: .normal)
+            
         }
     }
 }
@@ -367,7 +362,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
         }
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -563,7 +558,7 @@ extension HomeViewController {
         selectCityView.addBottomShadow()
         selectCheckInView.addBottomShadow()
         selectCheckOutView.addBottomShadow()
-//        updateTexts()
+        //        updateTexts()
     }
     
     
@@ -627,8 +622,8 @@ extension HomeViewController {
         
         if lang == .english {
             navigationTitleNameLabel.title = "SyriaBooking"
-//            messageLabel.text = "Good Morning User!"
-//            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
+            //            messageLabel.text = "Good Morning User!"
+            //            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
             recentlyHeadLineLabel.text = "Recently Viewed"
             whereToNextHeadLineLabel.text = "Where to next?"
             topHotelHeadLineLabel.text = "Top Hotels"
@@ -639,8 +634,8 @@ extension HomeViewController {
             viewAllButton.setTitle("View All", for: .normal)
         } else {
             navigationTitleNameLabel.title = "سيريا بوكينغ"
-//            messageLabel.text = "صباح الخير المستخدم!"
-//            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
+            //            messageLabel.text = "صباح الخير المستخدم!"
+            //            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
             recentlyHeadLineLabel.text = "شوهدت مؤخرا"
             whereToNextHeadLineLabel.text = "إلى أين بعد؟"
             topHotelHeadLineLabel.text = "أفضل الفنادق"
@@ -898,31 +893,31 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
     }
     
     override func didTapSearch(_ sender: UIBarButtonItem) {
-      
-            print("Search tapped")
-            if searchView.isHidden {
-                        // Show with animation
-                        
-                        searchViewHeightConstraint.constant = 210 // your desired height
-                        UIView.animate(withDuration: 0.4,
-                                       delay: 0,
-                                       options: .curveEaseInOut) {
-                            self.view.layoutIfNeeded()
-                        }
-                searchView.isHidden = false
-                    } else {
-                        // Hide with animation
-                        searchViewHeightConstraint.constant = 0
-                        UIView.animate(withDuration: 0.3,
-                                       delay: 0,
-                                       options: .curveEaseOut,
-                                       animations: {
-                            self.view.layoutIfNeeded()
-                        }) { _ in
-                            self.searchView.isHidden = true
-                        }
-                    }
+        
+        print("Search tapped")
+        if searchView.isHidden {
+            // Show with animation
+            
+            searchViewHeightConstraint.constant = 210 // your desired height
+            UIView.animate(withDuration: 0.4,
+                           delay: 0,
+                           options: .curveEaseInOut) {
+                self.view.layoutIfNeeded()
+            }
+            searchView.isHidden = false
+        } else {
+            // Hide with animation
+            searchViewHeightConstraint.constant = 0
+            UIView.animate(withDuration: 0.3,
+                           delay: 0,
+                           options: .curveEaseOut,
+                           animations: {
+                self.view.layoutIfNeeded()
+            }) { _ in
+                self.searchView.isHidden = true
+            }
         }
+    }
     
 }
 
@@ -943,5 +938,5 @@ extension UINavigationController {
         
         navigationBar.tintColor = .white
     }
-    
 }
+

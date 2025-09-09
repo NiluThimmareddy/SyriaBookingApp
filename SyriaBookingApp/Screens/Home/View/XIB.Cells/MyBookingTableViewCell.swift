@@ -54,9 +54,9 @@ class MyBookingTableViewCell: UITableViewCell {
             statusLabel.backgroundColor = .systemRed
             cancelButton.isHidden = true
             
-        case "confirmed":
+        case "completed":
             imgView.image = UIImage(systemName: "checkmark.circle")
-            statusLabel.text = "Confirmed"
+            statusLabel.text = "Completed"
             statusLabel.backgroundColor = .systemGreen
             cancelButton.isHidden = true
             

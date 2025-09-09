@@ -19,9 +19,34 @@ class YourNotificationTVC: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
     
+    func configure(with booking: Booking) {
+        hotelNameLabel.text = booking.hotelName
+        datesLabel.text = "\(booking.checkIn) - \(booking.checkOut)"
+        statusLabel.text = booking.status.capitalized
+//        upComingDateLabel.text = "Check-in: \(booking.checkIn)"
+        
+        switch booking.status.lowercased() {
+        case "pending":
+            imgView.image = UIImage(systemName: "clock")
+            statusLabel.text = "Pending"
+            statusLabel.textColor = .systemBlue
+            imgView.tintColor = .systemBlue
+        case "cancelled":
+            imgView.image = UIImage(systemName: "xmark.circle")
+            statusLabel.text = "Cancelled"
+            statusLabel.textColor = .systemRed
+            imgView.tintColor = .systemRed
+        case "completed":
+            imgView.image = UIImage(systemName: "checkmark.circle")
+            statusLabel.text = "Completed"
+            statusLabel.textColor = .systemGreen
+            imgView.tintColor = .systemGreen
+        default:
+            imgView.image = UIImage(systemName: "house")
+            statusLabel.text = booking.status
+            statusLabel.textColor = .systemGray
+            imgView.tintColor = .systemGray
+        }
+    }
 }

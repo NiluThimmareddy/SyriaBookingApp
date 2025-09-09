@@ -5,6 +5,13 @@
 //  Created by ToqSoft on 01/08/25.
 //
 
+//
+//  MyBookingsViewController.swift
+//  SyriaBookingApp
+//
+//  Created by ToqSoft on 01/08/25.
+//
+
 import UIKit
 
 class MyBookingsViewController: UIViewController {
@@ -19,15 +26,13 @@ class MyBookingsViewController: UIViewController {
     var selectedHotel: Hotel?
     var isLoginPopupPresented = false
     var comingFrom : String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        
         setupUI()
     }
     
@@ -42,17 +47,17 @@ class MyBookingsViewController: UIViewController {
         selectedSegmentIndex = sender.selectedSegmentIndex
         if selectedSegmentIndex == 0 {
             viewModel.filteredBookings = [
-                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
-                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "pending"),
-                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
-                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
+                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 300, status: "cancelled"),
+                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 350, status: "pending"),
+                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "05 Sep 2025", checkOut: "07 Sep 2025", totalAmount: 280, status: "cancelled"),
+                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "01 Oct 2025", checkOut: "05 Oct 2025", totalAmount: 40, status: "cancelled")
             ]
         } else {
             viewModel.filteredBookings = [
-                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
-                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "confirmed"), // changed
-                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
-                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
+                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 300, status: "cancelled"),
+                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 350, status: "completed"), // changed
+                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "05 Sep 2025", checkOut: "07 Sep 2025", totalAmount: 280, status: "cancelled"),
+                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "01 Oct 2025", checkOut: "05 Sep 2025", totalAmount: 40, status: "cancelled")
             ]
         }
         HistoryTableView.reloadData()
@@ -97,7 +102,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             messageLabel.isHidden = true
             segmentControl.isHidden = false
             HistoryTableView.isHidden = false
-          
+            
             isLoginPopupPresented = false
             
             // ✅ Logged in → show booking table
@@ -124,24 +129,21 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             DispatchQueue.main.async {
                 self.HistoryTableView.reloadData()
             }
-            
-           
         } else {
             segmentControl.isHidden = true
             HistoryTableView.isHidden = true
             messageLabel.isHidden = false
             if !isLoginPopupPresented {
-                            isLoginPopupPresented = true
-                            DispatchQueue.main.async {
-                                self.presentLoginForm(isFullScreen: true)
-                            }
-                        }
-                    }
-        
+                isLoginPopupPresented = true
+                DispatchQueue.main.async {
+                    self.presentLoginForm(isFullScreen: true)
+                }
+            }
+            
         }
         navigationController?.setNavigationBarBlack()
     }
-    
+
     func presentLoginForm(isFullScreen: Bool) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
@@ -149,9 +151,10 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             return
         }
         
-        showPopup(controller,widthMultiplier: 0.8, heightMultiplier: 0.3)
+        showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
     }
 }
+
 
 extension MyBookingsViewController: MyBookingCellDelegate {
     func didTapDetails(for booking: Booking) {
@@ -169,9 +172,11 @@ extension MyBookingsViewController: MyBookingCellDelegate {
             detailsVC.modalPresentationStyle = .fullScreen
             present(detailsVC, animated: true)
         }
+    }
+}
 extension MyBookingsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        // ✅ Allow showing again after dismiss
         isLoginPopupPresented = false
     }
 }
+

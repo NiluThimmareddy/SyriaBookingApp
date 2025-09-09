@@ -397,7 +397,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = room
             present(controller, animated: true)
-        }else{
+        } else {
             //LoginPage
             let storyboard = UIStoryboard(name: "Booking", bundle: nil)
             guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }

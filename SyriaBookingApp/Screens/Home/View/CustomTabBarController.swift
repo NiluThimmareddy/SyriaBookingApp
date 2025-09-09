@@ -1,47 +1,10 @@
-////
-////  CustomTabBarController.swift
-////  SyriaBookingApp
-////
-////  Created by ToqSoft on 01/08/25.
-////
 //
-//import UIKit
+//  CustomTabBarController.swift
+//  SyriaBookingApp
 //
-//class CustomTabBarController: UITabBarController, UITabBarControllerDelegate{
-//    
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
+//  Created by ToqSoft on 01/08/25.
 //
-////        guard #available(iOS 18, *), UIDevice.current.userInterfaceIdiom == .pad else {
-////            return
-////        }
-////        
-////        traitOverrides.horizontalSizeClass = .compact
-//         
-////        self.delegate = self
-//    }
-//    
-//
-//    // Detect tab switch
-//    
-//    
-////    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-////        
-////        // Check if selected tab is at index 2 (third tab)
-////        if let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController),
-////           selectedIndex == 2,
-////           let hotelListVC = viewController as? HotelListViewController,
-////           let homeVC = viewController as? HomeViewController {
-////            
-////            // Pass the data
-////            hotelListVC.viewModel = homeVC.viewModel
-////        }
-////    }
-//
-//
-//   
-//}
+
 import UIKit
  
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
@@ -118,7 +81,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
                 }
             }
             
-            return false // prevent default tab switch
+            return false
         }
         
         return true
@@ -130,3 +93,9 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
 }
  
+extension CustomTabBarController: YourNotificationVCDelegate {
+    func yourNotificationDidRequestTabSwitch(to index: Int) {
+        print("Delegate called, switching to tab \(index)")
+        self.selectedIndex = index
+    }
+}
