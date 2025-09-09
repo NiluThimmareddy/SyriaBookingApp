@@ -129,17 +129,6 @@ extension UIViewController {
             controller.navnController = self.navigationController
             
             
-            controller.onDismiss = {
-                //Goto Home
-                self.view.window?.rootViewController?.dismiss(animated: true) {
-                    if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
-                        tabBarController.selectedIndex = 0
-                        if let navController = tabBarController.viewControllers?.first as? UINavigationController {
-                            navController.popToRootViewController(animated: false)
-                        }
-                    }
-                }
-            }
             if UserSessionManager.getUser() == nil {
                 controller.menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions","About Us", "Roport an App","Profile"]
             }else{

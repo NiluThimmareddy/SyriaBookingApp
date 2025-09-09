@@ -34,11 +34,7 @@ class SplashScreensVC: UIViewController {
     }
     
     @IBAction func skipButtonAction(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-            tabBarVC.modalPresentationStyle = .fullScreen
-            self.navigationController?.setViewControllers([tabBarVC], animated: true)
-        }
+        openHomePage()
     }
     
     @IBAction func nextPageButtonAction(_ sender: UIButton) {
@@ -46,11 +42,15 @@ class SplashScreensVC: UIViewController {
             currentPage += 1
             updateContent()
         } else {
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                tabBarVC.modalPresentationStyle = .fullScreen
-                self.navigationController?.setViewControllers([tabBarVC], animated: true)
-            }
+            openHomePage()
+        }
+    }
+    
+    func openHomePage(){
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+            tabBarVC.modalPresentationStyle = .fullScreen
+            self.present(tabBarVC, animated: true)
         }
     }
 }

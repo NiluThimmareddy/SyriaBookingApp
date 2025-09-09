@@ -83,11 +83,6 @@ class ReportAnAppVC: UIViewController {
     }
     
     @IBAction func dismissButton(_ sender: Any) {
-      
-                // Remove popup from parent
-                self.willMove(toParent: nil)
-                self.view.removeFromSuperview()
-                self.removeFromParent()
-            
+        UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
     }
 }

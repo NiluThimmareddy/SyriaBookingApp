@@ -72,9 +72,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
                 self.dismiss(animated: true){
                     self.onDismiss?()
                 }
-            }) {
-                self.dismiss(animated: true)
-            }
+            })
         default :
             break
         }
