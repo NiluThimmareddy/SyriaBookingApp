@@ -28,7 +28,7 @@ protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
 }
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
@@ -313,9 +313,18 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
             cell.loginClicked = {
                 //Code for open Login Page
+                //                let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+                //                guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+                //                controller.modalPresentationStyle = .formSheet
+                //                self.present(controller, animated: true)
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-                controller.modalPresentationStyle = .formSheet
+                
+                controller.modalPresentationStyle = .custom
+                controller.transitioningDelegate = self
+                controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+                                                         height: UIScreen.main.bounds.height * 0.5)
+//                controller.isFullScreenIfMobileNotRegistered = false
                 self.present(controller, animated: true)
             }
             return cell
@@ -430,7 +439,10 @@ extension HomeViewController {
         startSliderAutoScroll()
         sliderView.applyCardStyle()
         sliderItems = sliderImages
-        sliderCollectionView.collectionViewLayout = CubeFlowLayout()
+        
+        if UIDevice.current.userInterfaceIdiom != .pad{
+            sliderCollectionView.collectionViewLayout = CubeFlowLayout()
+        }
         
         DispatchQueue.main.async {
             self.sliderCollectionView.reloadData()

@@ -53,10 +53,16 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         
+        if UserSessionManager.getUser() == nil{
+            cell.isUserInteractionEnabled = false
+        }else{
+            cell.isUserInteractionEnabled = true
+        }
+        
         cell.checkMarkButton.tag = indexPath.row
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
         cell.selectRoomsButton.tag =  indexPath.row
-        
+       
         cell.configure(with: roomRate) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
@@ -83,9 +89,6 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
 
 extension AvailabilityRoomsCVC {
     func setUpUI() {
-        
-        
-        
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         roomImageView.applyCardStyle()
         if UserSessionManager.getUser() == nil{

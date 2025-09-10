@@ -31,18 +31,12 @@ class MyBookingsViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupUI()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupUI()
         setupAppNavigationBar()
     }
-    
-    
-    
+
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
         if selectedSegmentIndex == 0 {
@@ -84,13 +78,7 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
 }
 
 extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
-    
-    func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
-        return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-    
     func setupUI() {
-        
         if UserSessionManager.getUser() != nil {
             viewModel.filteredBookings = [
                 Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
@@ -103,9 +91,6 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             segmentControl.isHidden = false
             HistoryTableView.isHidden = false
             
-            isLoginPopupPresented = false
-            
-            // ✅ Logged in → show booking table
             HistoryTableView.register(
                 UINib(nibName: "MyBookingTableViewCell", bundle: nil),
                 forCellReuseIdentifier: "MyBookingTableViewCell"
@@ -126,6 +111,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
             viewModel.filteredHotelsCopy = viewModel.filteredHotels
             
+            //            isLoginPopupPresented = false
             DispatchQueue.main.async {
                 self.HistoryTableView.reloadData()
             }
@@ -133,28 +119,19 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             segmentControl.isHidden = true
             HistoryTableView.isHidden = true
             messageLabel.isHidden = false
-            if !isLoginPopupPresented {
-                isLoginPopupPresented = true
-                DispatchQueue.main.async {
-                    self.presentLoginForm(isFullScreen: true)
+            DispatchQueue.main.async {
+                let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+                guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
+                    print("Failed to load RegisterMobileNumberVC")
+                    return
                 }
+                
+                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
-            
+            navigationController?.setNavigationBarBlack()
         }
-        navigationController?.setNavigationBarBlack()
-    }
-
-    func presentLoginForm(isFullScreen: Bool) {
-        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
-            print("Failed to load RegisterMobileNumberVC")
-            return
-        }
-        
-        showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
     }
 }
-
 
 extension MyBookingsViewController: MyBookingCellDelegate {
     func didTapDetails(for booking: Booking) {
@@ -174,9 +151,5 @@ extension MyBookingsViewController: MyBookingCellDelegate {
         }
     }
 }
-extension MyBookingsViewController: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        isLoginPopupPresented = false
-    }
-}
+
 

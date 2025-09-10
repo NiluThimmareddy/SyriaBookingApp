@@ -77,6 +77,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        roomsAvailabilityCollectionView.reloadData()
         setupAppNavigationBar()
     }
     
@@ -144,7 +145,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
             return
         }
         
-        guard let rating = selectratingButton.titleLabel?.text else {
+        guard (selectratingButton.titleLabel?.text) != nil else {
             showAlert("Please select Rating")
             return
         }

@@ -8,7 +8,7 @@
 import UIKit
 
 class ReportAnAppVC: UIViewController {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var selectSubjectButton: UIButton!
@@ -27,7 +27,7 @@ class ReportAnAppVC: UIViewController {
         
         if comingfrom == "RightMenu"{
             //set subject Complain
-           
+            
             self.selectSubjectButton.setTitle("Complaint", for: .normal)
             self.selectSubjectButton.isEnabled = false
         }
@@ -45,42 +45,53 @@ class ReportAnAppVC: UIViewController {
             })
             actions.append(action)
         }
-
+        
         let menu = UIMenu(title: "Select Subject", children: actions)
         
         selectSubjectButton.showsMenuAsPrimaryAction = true
         selectSubjectButton.menu = menu
     }
-
+    
     @IBAction func submitButtonAction(_ sender: Any) {
-        showLoader()
-        
-        if let user = UserSessionManager.getUser() {
-            
-            guard let subject = selectSubjectButton.titleLabel?.text else{
-                showAlert("please select subject")
-                return
-            }
-            
-            guard let message = enterMessageTextView.text else{
-                showAlert("please enter message")
-                return
-            }
-            
-            hotelViewModel.onReporAnAppSucess = { response in
-                self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onCancel:  {
-                    self.willMove(toParent: nil)
-                    self.view.removeFromSuperview()
-                    self.removeFromParent()
-                })
-                
-            }
-            
-            hotelViewModel.submitReporAnApp(subject:subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile)
+        // Validate subject
+        guard let subject = selectSubjectButton.titleLabel?.text,
+              !subject.isEmpty, subject.lowercased() != "select subject" else {
+            showAlert("Please select subject")
+            return
         }
         
+        // Validate message
+        guard let message = enterMessageTextView.text,
+              !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            showAlert("Please enter message")
+            return
+        }
         
+        // Validate user
+        guard let user = UserSessionManager.getUser() else {
+            showAlert("You are not logged in to send \(subject)")
+            return
+        }
+        showLoader()
+        hotelViewModel.onReporAnAppSucess = { response in
+            self.hideLoader()
+            self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onCancel: {
+                self.willMove(toParent: nil)
+                self.view.removeFromSuperview()
+                self.removeFromParent()
+            })
+        }
+        
+        hotelViewModel.onReviewError = { error in
+            self.hideLoader()
+            self.showAlert(error)
+        }
+        
+        // API call
+        hotelViewModel.submitReporAnApp(subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
+        )
     }
+    
     
     @IBAction func dismissButton(_ sender: Any) {
         UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
