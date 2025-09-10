@@ -88,6 +88,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
+    var delegate : recentlyViewdHotelsProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,7 +256,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         if collectionView == topHotelsCollectionView {
             return min(10, viewModel.filteredHotels.count)
         } else if collectionView == recentlyCollectionView {
-            return viewModel.recentlyViewdHotels.isEmpty ? 1 : min(5, viewModel.recentlyViewdHotels.count)
+            return viewModel.recentlyViewdHotels.isEmpty ? 1 : min(10, viewModel.recentlyViewdHotels.count)
         } else if collectionView == propertyTypeCollectionView {
             return  WhereToNextCityList.count
         } else if collectionView == promotionsCollectionView {
@@ -312,19 +313,16 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
             
             cell.loginClicked = {
-                //Code for open Login Page
-                //                let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-                //                guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-                //                controller.modalPresentationStyle = .formSheet
-                //                self.present(controller, animated: true)
+
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
                 controller.comingFrom = .HomeSliderView
                 controller.modalPresentationStyle = .custom
                 controller.transitioningDelegate = self
-//                controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-//                                                         height: UIScreen.main.bounds.height * 0.5)
-//                controller.isFullScreenIfMobileNotRegistered = false
+                controller.reloadScreenAfterDismiss = {
+                    self.viewDidLoad()
+                    self.viewWillAppear(true)
+                }
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
             return cell
@@ -364,6 +362,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let selectedHotel = viewModel.filteredHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
+            HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+            delegate?.reladRecentlyViewedData()
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -371,7 +371,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
         }
     }
-    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -437,17 +436,14 @@ extension HomeViewController {
         searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
         startSliderAutoScroll()
-        sliderView.applyCardStyle()
+//        sliderView.applyCardStyle()
         sliderItems = sliderImages
         
         if UIDevice.current.userInterfaceIdiom != .pad{
+            sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         }
        
-         
-        
-         
-        
         DispatchQueue.main.async {
             self.sliderCollectionView.reloadData()
             let middleIndex = IndexPath(item: self.sliderImages.count, section: 0)
@@ -460,7 +456,7 @@ extension HomeViewController {
         
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        let todayDate = formatter.string(from: Date())
+//        let todayDate = formatter.string(from: Date())
         //checkInButton.setTitle(todayDate, for: .normal)
         setUpTomorrowDate()
         viewModel.onDataLoaded = { [weak self] in

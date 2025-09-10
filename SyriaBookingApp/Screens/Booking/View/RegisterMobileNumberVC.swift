@@ -54,6 +54,7 @@ class RegisterMobileNumberVC : UIViewController {
     var isFullScreenIfMobileNotRegistered: Bool = false
     var comingFrom : ComingFromToLogin?
     
+    var reloadScreenAfterDismiss : (() -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -82,11 +83,17 @@ class RegisterMobileNumberVC : UIViewController {
     
 
     @IBAction func dismissButtonAction(_ sender: Any) {
-        if comingFrom == .HomeSliderView{
+        if comingFrom == .HomeSliderView {
             UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
-        }else{
-            self.dismiss(animated: true, completion: nil)
-        }
+           
+        } else if comingFrom == .tabbarBooking{
+            //Move to home page
+            UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
+           
+            
+        } else {
+                self.dismiss(animated: true, completion: nil)
+            }
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
@@ -104,6 +111,8 @@ class RegisterMobileNumberVC : UIViewController {
             guard let self = self else { return }
             
             if let userDetails = user {
+                
+//                self.reloadScreenAfterDismiss?()
                 self.enterNameTF.text = userDetails.name
                 self.enterEmailTF.text = userDetails.email
 
@@ -118,6 +127,7 @@ class RegisterMobileNumberVC : UIViewController {
             } else {
                 if let parentVC = self.parent {
                     parentVC.expandPopupToFullScreen(self)
+                    
                 }
                 self.bottomView.isHidden = false
             }
@@ -213,7 +223,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             break
         case .tabbarBooking:
             //disable dismissbutton
-            self.dismissButton.isHidden = true
+//            self.dismissButton.isHidden = true
             break
         case .HomeSliderView :
             break

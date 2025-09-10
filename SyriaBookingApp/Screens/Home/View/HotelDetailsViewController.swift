@@ -304,7 +304,10 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
                                                              height: UIScreen.main.bounds.height * 0.5)
                     controller.isFullScreenIfMobileNotRegistered = false
-                    
+                    controller.reloadScreenAfterDismiss = {
+                        self.viewDidLoad()
+                        self.viewWillAppear(true)
+                    }
                     self.present(controller, animated: true)
                 }else{
                     guard let room = self.selectedRoom else { return }
@@ -399,6 +402,10 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.isFullScreenIfMobileNotRegistered = true
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = room
+//            controller.reloadScreenAfterDismiss = {
+//                self.viewDidLoad()
+//                self.viewWillAppear(true)
+//            }
             present(controller, animated: true)
         } else {
             //LoginPage
@@ -411,6 +418,10 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                                                      height: UIScreen.main.bounds.height * 0.5)
             controller.isFullScreenIfMobileNotRegistered = true
             controller.selectedHotel = self.selectedHotel
+            controller.reloadScreenAfterDismiss = {
+                self.viewDidLoad()
+                self.viewWillAppear(true)
+            }
             present(controller, animated: true)
         }
     }

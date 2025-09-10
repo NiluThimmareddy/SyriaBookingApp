@@ -9,6 +9,9 @@ import UIKit
 
 class MyBookingsViewController: UIViewController {
     
+    
+    
+    
     @IBOutlet weak var HistoryTableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var gradientView: UIView!
@@ -64,6 +67,11 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
         let hotel = viewModel.filteredBookings[indexPath.row]
         cell.configure(booking: hotel)
+        cell.contactSupprtButtonAction = {
+            if let contactVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
+                self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.6)
+            }
+        }
         cell.delegate = self
         return cell
     }
@@ -71,6 +79,8 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 250 : 152
     }
+    
+    
 }
 
 extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
@@ -129,9 +139,14 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                     return
                 }
                 controller.comingFrom = .tabbarBooking
+//                controller.reloadScreenAfterDismiss = {
+//                    self.viewDidLoad()
+//                    self.viewWillAppear(true)
+//                }
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
         }
+        
       
     }
 }
