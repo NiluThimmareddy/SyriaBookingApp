@@ -73,12 +73,14 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpUI()
+       
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setUpUI()
         roomsAvailabilityCollectionView.reloadData()
         setupAppNavigationBar()
+        
     }
     
     override func viewDidLayoutSubviews() {

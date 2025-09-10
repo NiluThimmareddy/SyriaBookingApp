@@ -61,6 +61,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             present(controller, animated: true)
         case 4 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
+            controller.comingfrom = "RightMenu"
             present(controller, animated: true)
         case 5 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController") as! ProfilePageViewController

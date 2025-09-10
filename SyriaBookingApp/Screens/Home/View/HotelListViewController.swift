@@ -35,7 +35,7 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
+       
         
         viewModel.onDataLoaded = {
             DispatchQueue.main.async {
@@ -49,8 +49,9 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        super.viewWillAppear(animated)        
         setupAppNavigationBar()
+        setUpUI()
     }
 
     @IBAction func gridButtonAction(_ sender: Any) {

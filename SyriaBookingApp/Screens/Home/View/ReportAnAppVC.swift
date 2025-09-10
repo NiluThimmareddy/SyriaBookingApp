@@ -94,6 +94,10 @@ class ReportAnAppVC: UIViewController {
     
     
     @IBAction func dismissButton(_ sender: Any) {
-        UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+        if comingfrom == "RightMenu"{
+            self.dismiss(animated: true)
+        }else{
+            UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+        }
     }
 }

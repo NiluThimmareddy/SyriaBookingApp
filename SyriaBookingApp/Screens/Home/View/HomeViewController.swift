@@ -92,21 +92,22 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
-        setupUI()
+       
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
-        
+        setupUI()
+        if HotelDataMaganer.shared.allHotels.isEmpty{
+            viewModel.fetchHotels()
+        }
         sliderCollectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if HotelDataMaganer.shared.allHotels.isEmpty{
-            viewModel.fetchHotels()
-        }
+       
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -443,6 +444,10 @@ extension HomeViewController {
         if UIDevice.current.userInterfaceIdiom != .pad{
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         }
+       
+         
+        
+         
         
         DispatchQueue.main.async {
             self.sliderCollectionView.reloadData()
@@ -908,9 +913,14 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
         
         print("Search tapped")
         if searchView.isHidden {
-            // Show with animation
+ 
             
-            searchViewHeightConstraint.constant = 210 // your desired height
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                            searchViewHeightConstraint.constant = 280
+                        } else {
+                            searchViewHeightConstraint.constant = 210
+                        }
+    
             UIView.animate(withDuration: 0.4,
                            delay: 0,
                            options: .curveEaseInOut) {

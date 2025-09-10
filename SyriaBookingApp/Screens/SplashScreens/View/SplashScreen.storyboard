@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a67-3A-NxU">
-                                <rect key="frame" x="0.0" y="-46" width="393" height="898"/>
+                                <rect key="frame" x="0.0" y="54" width="393" height="764"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sHp-wR-1eK">
-                                <rect key="frame" x="348" y="783" width="35" height="35"/>
+                                <rect key="frame" x="348" y="749" width="35" height="35"/>
                                 <color key="backgroundColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="sHp-wR-1eK" secondAttribute="height" id="XWt-z5-AR8"/>
@@ -43,7 +43,7 @@
                                 </connections>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="mdU-SU-gG1">
-                                <rect key="frame" x="160" y="787.66666666666663" width="73" height="26"/>
+                                <rect key="frame" x="160" y="753.66666666666663" width="73" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="WSv-OU-RCY"/>
                                 </constraints>
@@ -53,7 +53,7 @@
                                 </connections>
                             </pageControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Bp-4t-oCT">
-                                <rect key="frame" x="10" y="783" width="62" height="35"/>
+                                <rect key="frame" x="10" y="749" width="62" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="xdC-Jg-ZEv"/>
                                 </constraints>
@@ -93,7 +93,7 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="a67-3A-NxU" secondAttribute="trailing" id="ZA8-GK-Ltd"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="sHp-wR-1eK" secondAttribute="trailing" constant="10" id="gT6-qB-kQR"/>
                             <constraint firstItem="2Bp-4t-oCT" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="hmk-z5-Jyv"/>
-                            <constraint firstItem="a67-3A-NxU" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="-105" id="l2U-yr-Vas">
+                            <constraint firstItem="a67-3A-NxU" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="-64" id="l2U-yr-Vas">
                                 <variation key="heightClass=regular-widthClass=regular" constant="-70"/>
                             </constraint>
                         </constraints>
@@ -119,7 +119,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_onboarding1" translatesAutoresizingMaskIntoConstraints="NO" id="Q6u-OZ-mDH">
-                                <rect key="frame" x="20" y="99" width="353" height="300"/>
+                                <rect key="frame" x="20" y="158" width="353" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="a2n-2U-p05">
                                         <variation key="heightClass=regular-widthClass=regular" constant="400"/>
@@ -127,7 +127,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LnC-2J-70z">
-                                <rect key="frame" x="-5" y="468" width="398" height="350"/>
+                                <rect key="frame" x="-5" y="434" width="398" height="350"/>
                                 <subviews>
                                     <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="FiP-I4-3uq">
                                         <rect key="frame" x="305" y="20" width="73" height="26"/>

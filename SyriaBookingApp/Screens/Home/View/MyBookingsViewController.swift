@@ -20,6 +20,8 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var myBookigsTitleLabel: UILabel!
+      @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
     
     let viewModel = HotelViewModel()
     var selectedSegmentIndex: Int = 0
@@ -35,6 +37,7 @@ class MyBookingsViewController: UIViewController {
         super.viewWillAppear(animated)
         setupUI()
         setupAppNavigationBar()
+        
     }
 
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
@@ -79,6 +82,8 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
 
 extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     func setupUI() {
+        navigationController?.setNavigationBarBlack()
+
         if UserSessionManager.getUser() != nil {
             viewModel.filteredBookings = [
                 Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
@@ -90,7 +95,8 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             messageLabel.isHidden = true
             segmentControl.isHidden = false
             HistoryTableView.isHidden = false
-            
+            myBookigsTitleLabel.isHidden = false
+            myBookingsDescriptionLabel.isHidden = false
             HistoryTableView.register(
                 UINib(nibName: "MyBookingTableViewCell", bundle: nil),
                 forCellReuseIdentifier: "MyBookingTableViewCell"
@@ -116,20 +122,24 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 self.HistoryTableView.reloadData()
             }
         } else {
+            
             segmentControl.isHidden = true
             HistoryTableView.isHidden = true
+            myBookigsTitleLabel.isHidden = true
+            myBookingsDescriptionLabel.isHidden = true
             messageLabel.isHidden = false
+            
             DispatchQueue.main.async {
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
                     print("Failed to load RegisterMobileNumberVC")
                     return
                 }
-                
+                controller.comingFrom = .tabbarBooking
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
-            navigationController?.setNavigationBarBlack()
         }
+      
     }
 }
 
