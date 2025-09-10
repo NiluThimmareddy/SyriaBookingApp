@@ -40,7 +40,7 @@ class VerificationVC : UIViewController {
             return
         }
         
-        if otp != "1234" {
+        if otp != "123456" { 
             showAlert("Invalid OTP. Please try again.")
             return
         }

@@ -5,13 +5,6 @@
 //  Created by ToqSoft on 01/08/25.
 //
 
-//
-//  MyBookingsViewController.swift
-//  SyriaBookingApp
-//
-//  Created by ToqSoft on 01/08/25.
-//
-
 import UIKit
 
 class MyBookingsViewController: UIViewController {
@@ -156,10 +149,9 @@ extension MyBookingsViewController: MyBookingCellDelegate {
             detailsVC.checkInDate = booking.checkIn
             detailsVC.checkOutDate = booking.checkOut
             detailsVC.totalPrice = "$\(booking.totalAmount)"
+            detailsVC.isFromMyBookings = true
             detailsVC.modalPresentationStyle = .fullScreen
             present(detailsVC, animated: true)
         }
     }
 }
-
-

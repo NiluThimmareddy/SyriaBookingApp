@@ -254,4 +254,26 @@ extension UIViewController {
         // ✅ Re-enable interaction just in case
         self.view.isUserInteractionEnabled = true
     }
+    
+    func expandPopupToFullScreen(_ childVC: UIViewController) {
+        guard let popupView = childVC.view else { return }
+        
+        // Remove old constraints
+        view.constraints.forEach { constraint in
+            if constraint.firstItem as? UIView == popupView || constraint.secondItem as? UIView == popupView {
+                view.removeConstraint(constraint)
+            }
+        }
+        // Add fullscreen constraints
+        NSLayoutConstraint.activate([
+            popupView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            popupView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            popupView.topAnchor.constraint(equalTo: view.topAnchor),
+            popupView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }

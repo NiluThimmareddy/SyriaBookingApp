@@ -53,6 +53,7 @@ class RegisterMobileNumberVC : UIViewController {
     var maxMobileNumberLength: Int = 10
     var isFullScreenIfMobileNotRegistered: Bool = false
     var comingFrom : ComingFromToLogin?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -115,13 +116,8 @@ class RegisterMobileNumberVC : UIViewController {
                 controller.selectedRate = self.selectedRate
                 self.present(controller, animated: true)
             } else {
-                if self.isFullScreenIfMobileNotRegistered {
-                    self.modalPresentationStyle = .fullScreen
-                    if let presentingVC = self.presentingViewController {
-                        self.dismiss(animated: false) {
-                            presentingVC.present(self, animated: true)
-                        }
-                    }
+                if let parentVC = self.parent {
+                    parentVC.expandPopupToFullScreen(self)
                 }
                 self.bottomView.isHidden = false
             }

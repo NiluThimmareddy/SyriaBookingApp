@@ -57,8 +57,9 @@ class ViewBookingConfirmationVC : UIViewController {
     var numberOfGuests: String?
     var roomType: String?
     var totalPrice: String?
-    
     let quantity = 1
+    
+    var isFromMyBookings: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,11 +75,17 @@ class ViewBookingConfirmationVC : UIViewController {
     }
     
     @IBAction func goToHomeButtonAction(_ sender: Any) {
-        self.view.window?.rootViewController?.dismiss(animated: true) {
-            if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
-                tabBarController.selectedIndex = 0
-                if let navController = tabBarController.viewControllers?.first as? UINavigationController {
-                    navController.popToRootViewController(animated: false)
+        if isFromMyBookings {
+            // Just dismiss back to MyBookingsViewController
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            // Default "Go To Home" behavior
+            self.view.window?.rootViewController?.dismiss(animated: true) {
+                if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
+                    tabBarController.selectedIndex = 0
+                    if let navController = tabBarController.viewControllers?.first as? UINavigationController {
+                        navController.popToRootViewController(animated: false)
+                    }
                 }
             }
         }
@@ -123,6 +130,12 @@ extension ViewBookingConfirmationVC {
         } else {
             calculatedTotal = "0.00"
             totalPrice = "0.00"
+        }
+        
+        if isFromMyBookings {
+            goToHomeButton.setTitle("Cancel", for: .normal)
+        } else {
+            goToHomeButton.setTitle("Go To Home", for: .normal)
         }
         
         let bookingLabelConfigs: [(UILabel, String, String)] = [

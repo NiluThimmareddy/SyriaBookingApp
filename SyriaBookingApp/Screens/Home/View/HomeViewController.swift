@@ -297,8 +297,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 if indexPath.row == 0{
                     cell.greetingMessageLabel.isHidden = false
                     let greeting = updateGreetingMessage()
-                    cell.greetingMessageLabel.text = "\(greeting) \(user.name)"
-                    
+                    cell.greetingMessageLabel.text = "\(greeting) \(user.name)!"
                 }
             } else {
                 if indexPath.row == 0{
