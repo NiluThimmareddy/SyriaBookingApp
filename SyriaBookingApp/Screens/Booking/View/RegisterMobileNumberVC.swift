@@ -81,7 +81,11 @@ class RegisterMobileNumberVC : UIViewController {
     
 
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        if comingFrom == .HomeSliderView{
+            UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
+        }else{
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {

@@ -319,13 +319,13 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 //                self.present(controller, animated: true)
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-                
+                controller.comingFrom = .HomeSliderView
                 controller.modalPresentationStyle = .custom
                 controller.transitioningDelegate = self
-                controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                         height: UIScreen.main.bounds.height * 0.5)
+//                controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
+//                                                         height: UIScreen.main.bounds.height * 0.5)
 //                controller.isFullScreenIfMobileNotRegistered = false
-                self.present(controller, animated: true)
+                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
             return cell
         } else {
