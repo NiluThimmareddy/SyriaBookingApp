@@ -18,6 +18,7 @@ class ConfirmYourBookingVC : UIViewController {
     @IBOutlet weak var checkOutButton: UIButton!
     @IBOutlet weak var increaseNoButton: UIButton!
     @IBOutlet weak var decreaseNoButton: UIButton!
+    @IBOutlet weak var bottomView: UIView!
     
     var guestName: String?
     var guestEmail: String?
@@ -130,6 +131,10 @@ extension ConfirmYourBookingVC {
         decreaseNoButton.layer.cornerRadius = 10
         decreaseNoButton.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         decreaseNoButton.clipsToBounds = true
+        bottomView.layer.cornerRadius = 10
+        bottomView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        bottomView.clipsToBounds = true
+        
     }
     
     func setupDatePickerUI() {

@@ -90,6 +90,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var isUserInteracting = false
     var delegate : recentlyViewdHotelsProtocol?
     
+    var isScrollingForward = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
@@ -839,30 +841,40 @@ extension HomeViewController {
         }
     }
     
-    
-    func startSliderAutoScroll(after delay: TimeInterval = 2.0) {
+    func startSliderAutoScroll(after delay: TimeInterval = 3.0) {
         stopSliderAutoScroll() // avoid multiple timers
-        sliderAutoScrollTimer = Timer.scheduledTimer(timeInterval: delay,
-                                                     target: self,
-                                                     selector: #selector(scrollToNextItem),
-                                                     userInfo: nil,
-                                                     repeats: true)
+        sliderAutoScrollTimer = Timer.scheduledTimer(timeInterval: delay,target: self,selector: #selector(scrollToNextItem),userInfo: nil,repeats: true)
     }
     
     func stopSliderAutoScroll() {
         sliderAutoScrollTimer?.invalidate()
         sliderAutoScrollTimer = nil
     }
-    
+         
     @objc func scrollToNextItem() {
         guard let collectionView = sliderCollectionView else { return }
         let totalItems = sliderImages.count
         if totalItems == 0 { return }
-        
-        // move next
-        sliderCurrentIndex = (sliderCurrentIndex + 1) % totalItems
+     
+        if isScrollingForward {
+            if sliderCurrentIndex < totalItems - 1 {
+                sliderCurrentIndex += 1
+            } else {
+                // reached last → reverse direction
+                isScrollingForward = false
+                sliderCurrentIndex -= 1
+            }
+        } else {
+            if sliderCurrentIndex > 0 {
+                sliderCurrentIndex -= 1
+            } else {
+                // reached first → reverse direction
+                isScrollingForward = true
+                sliderCurrentIndex += 1
+            }
+        }
+     
         let indexPath = IndexPath(item: sliderCurrentIndex, section: 0)
-        
         collectionView.scrollToItem(at: indexPath,
                                     at: .centeredHorizontally,
                                     animated: true)

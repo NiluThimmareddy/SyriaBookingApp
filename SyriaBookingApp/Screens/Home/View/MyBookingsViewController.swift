@@ -9,9 +9,6 @@ import UIKit
 
 class MyBookingsViewController: UIViewController {
     
-    
-    
-    
     @IBOutlet weak var HistoryTableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var gradientView: UIView!
@@ -64,22 +61,31 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
-        let hotel = viewModel.filteredBookings[indexPath.row]
-        cell.configure(booking: hotel)
-        cell.contactSupprtButtonAction = {
-            if let contactVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
-                self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.6)
+        let booking = viewModel.filteredBookings[indexPath.row]
+        
+        if selectedSegmentIndex == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ArchiveTableViewCell", for: indexPath) as! ArchiveTableViewCell
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
+            cell.configure(booking: booking)
+            cell.contactSupprtButtonAction = {
+                if let contactVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
+                    self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
+                }
             }
+            cell.delegate = self
+            return cell
         }
-        cell.delegate = self
-        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UIDevice.current.userInterfaceIdiom == .pad ? 250 : 152
+        if selectedSegmentIndex == 1 {
+            return UIDevice.current.userInterfaceIdiom == .pad ? 120 : 100
+        } else {
+            return UIDevice.current.userInterfaceIdiom == .pad ? 180 : 152
+        }
     }
-    
     
 }
 
@@ -104,6 +110,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 UINib(nibName: "MyBookingTableViewCell", bundle: nil),
                 forCellReuseIdentifier: "MyBookingTableViewCell"
             )
+            HistoryTableView.register(UINib(nibName: "ArchiveTableViewCell", bundle: nil), forCellReuseIdentifier: "ArchiveTableViewCell")
             let selectedTextAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.white
             ]
@@ -151,7 +158,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
-extension MyBookingsViewController: MyBookingCellDelegate {
+extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate {
     func didTapDetails(for booking: Booking) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         if let detailsVC = storyboard.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC {
@@ -167,6 +174,21 @@ extension MyBookingsViewController: MyBookingCellDelegate {
             detailsVC.isFromMyBookings = true
             detailsVC.modalPresentationStyle = .fullScreen
             present(detailsVC, animated: true)
+        }
+    }
+    func didTapCancel(for booking: Booking) {
+        if let cancelVC = storyboard?.instantiateViewController(withIdentifier: "CancelBookingVC") as? CancelBookingVC {
+            cancelVC.modalPresentationStyle = .overFullScreen
+            cancelVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            cancelVC.booking = booking
+            cancelVC.delegate = self
+            present(cancelVC, animated: true)
+        }
+    }
+    func didConfirmCancellation(for booking: Booking) {
+        if let index = viewModel.filteredBookings.firstIndex(where: { $0.id == booking.id }) {
+            viewModel.filteredBookings[index].status = "cancelled"
+            HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
     }
 }

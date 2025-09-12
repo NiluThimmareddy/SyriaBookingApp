@@ -84,6 +84,7 @@ class RegisterMobileNumberVC : UIViewController {
 
     @IBAction func dismissButtonAction(_ sender: Any) {
         if comingFrom == .HomeSliderView {
+//            self.reloadScreenAfterDismiss?()
             UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
            
         } else if comingFrom == .tabbarBooking{

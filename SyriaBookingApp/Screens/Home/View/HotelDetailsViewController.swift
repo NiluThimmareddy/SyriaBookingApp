@@ -50,37 +50,33 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var yourNameLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var reviewLabel: UILabel!
+    @IBOutlet weak var contactTypesLabel: UILabel!
+    @IBOutlet weak var pleseClickHereButton: UIButton!
     
-   var  hotelviewModel = HotelViewModel()
+    var  hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    
     let imageCache = NSCache<NSString, UIImage>()
-    
     var isDescriptionVisible = true
     var isFacilitiesVisible = false
     var isAvailabilityVisible = false
     var isAddReviewVisible = true
     var isRateAndReviewVisible = true
     var currentHorizontalStack: UIStackView?
-    
     var scrolleView: UIScrollView { scrollView }
     var scrollToTopButton = UIButton(type: .system)
     var scrolltoTopHelper : ScrollToTopHelper?
-    
     var user : BookingModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpUI()
         roomsAvailabilityCollectionView.reloadData()
         setupAppNavigationBar()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,6 +93,11 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @IBAction func pleaseClickHereButtonAction(_ sender: Any) {
+        let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
+        present(controller, animated: true)
     }
     
     @IBAction func facilitiesButtonAction(_ sender: Any) {
@@ -495,6 +496,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         averageRatingsLabel.text = "\(hotel.averageRating) (\(hotel.reviewCount) reviews)"
         descriptionLabel.text = hotel.description
         rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        contactTypesLabel.text = "To contact directly \(hotel.name) in case of any enquiry / feedback / complaint,"
         
         setupAmenities(hotel.amenities)
         
@@ -736,6 +738,6 @@ class CenteredPresentationController: UIPresentationController {
 }
 
 
-extension HotelDetailsViewController{
+extension HotelDetailsViewController {
     
 }

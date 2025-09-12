@@ -199,5 +199,5 @@ struct Booking {
     let checkIn: String
     let checkOut: String
     let totalAmount: Double
-    let status: String   // pending, confirmed, cancelled
+    var status: String   // pending, confirmed, cancelled
 }

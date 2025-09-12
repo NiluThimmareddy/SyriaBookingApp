@@ -631,10 +631,11 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSd-Gv-Gi0">
-                                        <rect key="frame" x="10" y="213.00000000000003" width="313" height="59.999999999999972"/>
+                                        <rect key="frame" x="10" y="193.00000000000003" width="313" height="79.999999999999972"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile is registered. Please enter OTP to continue." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4u-2M-Fzy">
-                                                <rect key="frame" x="5" y="0.0" width="308" height="60"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4u-2M-Fzy">
+                                                <rect key="frame" x="5" y="0.0" width="308" height="80"/>
+                                                <string key="text">Dear mahesh, your mobile is registered. An OTP has been sent to iammaheshreddy.ios26@gmail.com. Please enter it below to continue.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.094117647058823528" green="0.20784313725490194" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -643,7 +644,7 @@
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.8901960784313725" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstItem="e4u-2M-Fzy" firstAttribute="top" secondItem="gSd-Gv-Gi0" secondAttribute="top" id="0I8-V5-tMe"/>
-                                            <constraint firstAttribute="height" constant="60" id="NcW-QX-LfY"/>
+                                            <constraint firstAttribute="height" constant="80" id="NcW-QX-LfY"/>
                                             <constraint firstItem="e4u-2M-Fzy" firstAttribute="leading" secondItem="gSd-Gv-Gi0" secondAttribute="leading" constant="5" id="inz-IY-5Ik"/>
                                             <constraint firstAttribute="bottom" secondItem="e4u-2M-Fzy" secondAttribute="bottom" id="xMu-c8-3bJ"/>
                                             <constraint firstAttribute="trailing" secondItem="e4u-2M-Fzy" secondAttribute="trailing" id="yju-om-DhO"/>
@@ -654,7 +655,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter OTP (temp : 1234)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A08-Aw-jIO">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter OTP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A08-Aw-jIO">
                                         <rect key="frame" x="10" y="293" width="313" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
@@ -739,7 +740,7 @@
                                     <constraint firstItem="kr9-7C-Icy" firstAttribute="leading" secondItem="A08-Aw-jIO" secondAttribute="leading" id="MsL-k4-liB"/>
                                     <constraint firstAttribute="bottom" secondItem="GN5-Hh-OBB" secondAttribute="bottom" constant="20" id="VXw-xd-1pG"/>
                                     <constraint firstItem="A08-Aw-jIO" firstAttribute="top" secondItem="gSd-Gv-Gi0" secondAttribute="bottom" constant="20" id="WI8-Td-6nQ"/>
-                                    <constraint firstItem="gSd-Gv-Gi0" firstAttribute="top" secondItem="dh8-WT-AsI" secondAttribute="bottom" constant="70" id="XyT-5m-nC7"/>
+                                    <constraint firstItem="gSd-Gv-Gi0" firstAttribute="top" secondItem="dh8-WT-AsI" secondAttribute="bottom" constant="50" id="XyT-5m-nC7"/>
                                     <constraint firstItem="ggw-a6-vHY" firstAttribute="top" secondItem="FnG-uP-sll" secondAttribute="top" constant="20" id="YZ5-76-xcQ"/>
                                     <constraint firstItem="dh8-WT-AsI" firstAttribute="leading" secondItem="JQP-65-7AY" secondAttribute="leading" id="Zdb-iv-yvY"/>
                                     <constraint firstItem="A08-Aw-jIO" firstAttribute="trailing" secondItem="gSd-Gv-Gi0" secondAttribute="trailing" id="a9v-Yx-vop"/>
@@ -845,10 +846,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FnG-Cd-pH5">
-                                        <rect key="frame" x="0.0" y="60" width="353" height="674"/>
+                                        <rect key="frame" x="0.0" y="60" width="353" height="629"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qv-Ok-i8q">
-                                                <rect key="frame" x="0.0" y="0.0" width="353" height="926"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="353" height="835"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ZhD-aO-Iu7">
                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="835"/>
@@ -1337,48 +1338,13 @@
                                                             </view>
                                                         </subviews>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLa-Pe-kM2">
-                                                        <rect key="frame" x="0.0" y="845" width="353" height="1"/>
-                                                        <color key="backgroundColor" systemColor="systemGray2Color"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="5hL-Nx-ltS"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5n-cl-jPQ">
-                                                        <rect key="frame" x="193" y="861" width="150" height="50"/>
-                                                        <color key="backgroundColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="50" id="85A-RG-9nZ"/>
-                                                            <constraint firstAttribute="width" constant="150" id="zaA-Ox-t9Q"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                        <state key="normal" title="Submit Booking"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="Submit Booking">
-                                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
-                                                        </buttonConfiguration>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="5"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="submitBookingButtonAction:" destination="kqM-dA-HbO" eventType="touchUpInside" id="2fE-8P-4zl"/>
-                                                        </connections>
-                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="y5n-cl-jPQ" firstAttribute="top" secondItem="aLa-Pe-kM2" secondAttribute="bottom" constant="15" id="33r-OX-sA1"/>
                                                     <constraint firstItem="ZhD-aO-Iu7" firstAttribute="top" secondItem="1Qv-Ok-i8q" secondAttribute="top" id="3Kg-Vk-xpV"/>
                                                     <constraint firstItem="ZhD-aO-Iu7" firstAttribute="leading" secondItem="1Qv-Ok-i8q" secondAttribute="leading" id="79k-or-NI6"/>
-                                                    <constraint firstAttribute="trailing" secondItem="y5n-cl-jPQ" secondAttribute="trailing" constant="10" id="HZe-hf-gRJ"/>
                                                     <constraint firstAttribute="trailing" secondItem="ZhD-aO-Iu7" secondAttribute="trailing" id="JPE-nC-qhn"/>
-                                                    <constraint firstAttribute="trailing" secondItem="aLa-Pe-kM2" secondAttribute="trailing" id="NaW-bi-Ps2"/>
-                                                    <constraint firstItem="aLa-Pe-kM2" firstAttribute="top" secondItem="ZhD-aO-Iu7" secondAttribute="bottom" constant="10" id="YPP-ys-geo"/>
-                                                    <constraint firstAttribute="bottom" secondItem="y5n-cl-jPQ" secondAttribute="bottom" constant="15" id="jR8-1N-Wge"/>
-                                                    <constraint firstItem="aLa-Pe-kM2" firstAttribute="leading" secondItem="1Qv-Ok-i8q" secondAttribute="leading" id="v3K-2y-beZ"/>
+                                                    <constraint firstAttribute="bottom" secondItem="ZhD-aO-Iu7" secondAttribute="bottom" id="ZRQ-ok-aUk"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -1398,16 +1364,63 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </scrollView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dke-V1-hbU">
+                                        <rect key="frame" x="0.0" y="689" width="353" height="60"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLa-Pe-kM2">
+                                                <rect key="frame" x="0.0" y="0.0" width="353" height="1"/>
+                                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="5hL-Nx-ltS"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5n-cl-jPQ">
+                                                <rect key="frame" x="193" y="10" width="150" height="40"/>
+                                                <color key="backgroundColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="85A-RG-9nZ"/>
+                                                    <constraint firstAttribute="width" constant="150" id="zaA-Ox-t9Q"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Submit Booking"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Submit Booking">
+                                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="submitBookingButtonAction:" destination="kqM-dA-HbO" eventType="touchUpInside" id="2fE-8P-4zl"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="y5n-cl-jPQ" secondAttribute="trailing" constant="10" id="15x-m9-WtO"/>
+                                            <constraint firstAttribute="trailing" secondItem="aLa-Pe-kM2" secondAttribute="trailing" id="4ST-uL-eha"/>
+                                            <constraint firstItem="aLa-Pe-kM2" firstAttribute="leading" secondItem="dke-V1-hbU" secondAttribute="leading" id="Q7R-Bq-qbc"/>
+                                            <constraint firstAttribute="bottom" secondItem="y5n-cl-jPQ" secondAttribute="bottom" constant="10" id="R2g-kb-1wO"/>
+                                            <constraint firstAttribute="height" constant="60" id="b0M-vJ-zzM"/>
+                                            <constraint firstItem="aLa-Pe-kM2" firstAttribute="top" secondItem="dke-V1-hbU" secondAttribute="top" id="sSW-I1-Wna"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="FnG-Cd-pH5" secondAttribute="trailing" id="0NG-8F-52T"/>
                                     <constraint firstItem="FnG-Cd-pH5" firstAttribute="top" secondItem="rjC-2p-qDx" secondAttribute="bottom" constant="10" id="AA2-p4-KcK"/>
+                                    <constraint firstItem="dke-V1-hbU" firstAttribute="leading" secondItem="Zzb-pI-Cga" secondAttribute="leading" id="Gkf-hh-vyc"/>
+                                    <constraint firstAttribute="trailing" secondItem="dke-V1-hbU" secondAttribute="trailing" id="Toa-Wn-CDM"/>
                                     <constraint firstItem="FnG-Cd-pH5" firstAttribute="leading" secondItem="Zzb-pI-Cga" secondAttribute="leading" id="aat-eV-cNP"/>
+                                    <constraint firstAttribute="bottom" secondItem="dke-V1-hbU" secondAttribute="bottom" id="agz-DL-CpC"/>
                                     <constraint firstItem="rjC-2p-qDx" firstAttribute="leading" secondItem="Zzb-pI-Cga" secondAttribute="leading" id="bDE-Gq-eyl"/>
                                     <constraint firstAttribute="trailing" secondItem="rjC-2p-qDx" secondAttribute="trailing" id="joh-Qs-5jh"/>
                                     <constraint firstItem="rjC-2p-qDx" firstAttribute="top" secondItem="Zzb-pI-Cga" secondAttribute="top" id="kl4-Lc-qcx"/>
-                                    <constraint firstAttribute="bottom" secondItem="FnG-Cd-pH5" secondAttribute="bottom" constant="15" id="wQ7-Kh-uXN"/>
+                                    <constraint firstAttribute="bottom" secondItem="FnG-Cd-pH5" secondAttribute="bottom" constant="60" id="wQ7-Kh-uXN"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1427,6 +1440,7 @@
                     </view>
                     <connections>
                         <outlet property="backView" destination="Zzb-pI-Cga" id="ZwK-6k-UIu"/>
+                        <outlet property="bottomView" destination="dke-V1-hbU" id="Dx9-mg-bJS"/>
                         <outlet property="checkInButton" destination="xnH-rh-8Vl" id="NDH-ed-ADu"/>
                         <outlet property="checkInTF" destination="sEu-Ot-a1I" id="M2v-AK-yhI"/>
                         <outlet property="checkOutButton" destination="CPO-YF-C57" id="S28-Ym-SfH"/>
@@ -1456,7 +1470,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vPW-TN-uhK">
-                                <rect key="frame" x="20" y="59" width="353" height="759"/>
+                                <rect key="frame" x="20" y="316" width="353" height="245"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Booking Confirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krw-SG-LfE">
                                         <rect key="frame" x="10" y="15" width="177.66666666666666" height="21"/>
@@ -1487,30 +1501,29 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrJ-mX-QQj">
-                                        <rect key="frame" x="10" y="64" width="333" height="685"/>
+                                        <rect key="frame" x="10" y="64" width="333" height="171"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 🎉 Booking Confirmed!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRl-jz-g3l">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⏳ Booking Request Queued" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRl-jz-g3l">
                                                 <rect key="frame" x="10" y="10" width="313" height="21"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="iOt-wq-oMs">
-                                                <rect key="frame" x="10" y="41" width="313" height="170"/>
+                                                <rect key="frame" x="10" y="41" width="313" height="120"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="170" id="DTo-hv-OYK"/>
+                                                    <constraint firstAttribute="height" constant="120" id="DTo-hv-OYK"/>
                                                 </constraints>
-                                                <string key="text">Dear mahesh,
-Thank you for choosing to book with us. Your reservation has been successfully completed.
-We're delighted to have you as our guest and look forward to providing you with a comfortable and memorable stay.
-You can now view and print your booking confirmation by clicking the button below.</string>
+                                                <string key="text">Thanks, mahesh! We've received your booking request and placed it in our processing queue.
+We'll finalize your booking shortly and it will appear in your booking list.
+You can check your bookings in My Bookings</string>
                                                 <color key="textColor" red="0.094117647058823528" green="0.20784313725490194" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jFr-dd-tMG">
-                                                <rect key="frame" x="55" y="221" width="223" height="40"/>
+                                                <rect key="frame" x="55" y="221.00000000000006" width="223" height="40"/>
                                                 <color key="backgroundColor" name="AccentColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="vcA-fy-v7t"/>
@@ -1532,14 +1545,14 @@ You can now view and print your booking confirmation by clicking the button belo
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGM-g2-rkR">
-                                                <rect key="frame" x="10" y="271" width="313" height="1"/>
+                                                <rect key="frame" x="10" y="271.00000000000006" width="313" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="xhb-d3-P83"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0d-4E-Jl0">
-                                                <rect key="frame" x="10" y="282" width="313" height="50.333333333333314"/>
+                                                <rect key="frame" x="10" y="282.00000000000006" width="313" height="50.333333333333314"/>
                                                 <string key="text">Wishing you a pleasant journey and a wonderful stay.
 — The SyriaBooking Team</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1547,7 +1560,7 @@ You can now view and print your booking confirmation by clicking the button belo
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.81176470588235294" green="0.8901960784313725" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.80392156862745101" green="0.92941176470588238" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstItem="Z0d-4E-Jl0" firstAttribute="top" secondItem="pGM-g2-rkR" secondAttribute="bottom" constant="10" id="3vx-G1-5Tu"/>
                                             <constraint firstItem="iOt-wq-oMs" firstAttribute="top" secondItem="oRl-jz-g3l" secondAttribute="bottom" constant="10" id="Gpn-fg-gr6"/>
@@ -1555,6 +1568,7 @@ You can now view and print your booking confirmation by clicking the button belo
                                             <constraint firstItem="Z0d-4E-Jl0" firstAttribute="trailing" secondItem="pGM-g2-rkR" secondAttribute="trailing" id="NSh-fC-gM0"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jFr-dd-tMG" secondAttribute="trailing" constant="20" symbolic="YES" id="P09-Kz-kMV"/>
                                             <constraint firstItem="oRl-jz-g3l" firstAttribute="leading" secondItem="hrJ-mX-QQj" secondAttribute="leading" constant="10" id="RFP-xA-3OF"/>
+                                            <constraint firstAttribute="bottom" secondItem="iOt-wq-oMs" secondAttribute="bottom" constant="10" id="TVa-cI-XJ8"/>
                                             <constraint firstItem="Z0d-4E-Jl0" firstAttribute="leading" secondItem="pGM-g2-rkR" secondAttribute="leading" id="WJZ-4c-EZs"/>
                                             <constraint firstAttribute="trailing" secondItem="oRl-jz-g3l" secondAttribute="trailing" constant="10" id="ZfF-gG-Kjq"/>
                                             <constraint firstItem="jFr-dd-tMG" firstAttribute="centerX" secondItem="hrJ-mX-QQj" secondAttribute="centerX" id="cZI-ac-Yw9"/>
@@ -1562,10 +1576,17 @@ You can now view and print your booking confirmation by clicking the button belo
                                             <constraint firstAttribute="trailing" secondItem="pGM-g2-rkR" secondAttribute="trailing" constant="10" id="fkx-j2-ET2"/>
                                             <constraint firstItem="pGM-g2-rkR" firstAttribute="leading" secondItem="hrJ-mX-QQj" secondAttribute="leading" constant="10" id="hXX-6V-J3a"/>
                                             <constraint firstItem="iOt-wq-oMs" firstAttribute="leading" secondItem="oRl-jz-g3l" secondAttribute="leading" id="huj-Kd-qW4"/>
-                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Z0d-4E-Jl0" secondAttribute="bottom" constant="10" id="iCn-Mc-NLI"/>
                                             <constraint firstItem="iOt-wq-oMs" firstAttribute="trailing" secondItem="oRl-jz-g3l" secondAttribute="trailing" id="l6E-H1-GJU"/>
                                             <constraint firstItem="pGM-g2-rkR" firstAttribute="top" secondItem="jFr-dd-tMG" secondAttribute="bottom" constant="10" id="raS-ym-nN8"/>
+                                            <constraint firstAttribute="bottom" secondItem="Z0d-4E-Jl0" secondAttribute="bottom" constant="10" id="xKU-CP-gkB"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="jFr-dd-tMG"/>
+                                                <exclude reference="pGM-g2-rkR"/>
+                                                <exclude reference="Z0d-4E-Jl0"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1594,10 +1615,8 @@ You can now view and print your booking confirmation by clicking the button belo
                         <constraints>
                             <constraint firstItem="vPW-TN-uhK" firstAttribute="centerX" secondItem="7wd-1L-fvP" secondAttribute="centerX" id="6N7-1p-zof"/>
                             <constraint firstItem="7wd-1L-fvP" firstAttribute="trailing" secondItem="vPW-TN-uhK" secondAttribute="trailing" constant="20" id="CHz-xL-VcU"/>
-                            <constraint firstItem="vPW-TN-uhK" firstAttribute="top" secondItem="7wd-1L-fvP" secondAttribute="top" id="O4c-Kw-x7U"/>
-                            <constraint firstItem="vPW-TN-uhK" firstAttribute="centerY" secondItem="7wd-1L-fvP" secondAttribute="centerY" id="O6y-75-aQI"/>
-                            <constraint firstItem="7wd-1L-fvP" firstAttribute="bottom" secondItem="vPW-TN-uhK" secondAttribute="bottom" id="bqW-ba-8nq"/>
                             <constraint firstItem="vPW-TN-uhK" firstAttribute="leading" secondItem="7wd-1L-fvP" secondAttribute="leading" constant="20" id="e5A-2P-AAR"/>
+                            <constraint firstItem="vPW-TN-uhK" firstAttribute="centerY" secondItem="7wd-1L-fvP" secondAttribute="centerY" id="zdM-Az-zmb"/>
                         </constraints>
                     </view>
                     <connections>
@@ -2242,16 +2261,16 @@ You can now view and print your booking confirmation by clicking the button belo
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

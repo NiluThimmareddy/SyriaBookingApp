@@ -77,7 +77,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
                 
                 // ✅ Show popup
                 if let contactVC = storyboard?.instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
-                    topVC.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.6)
+                    topVC.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
                 }
             }
             

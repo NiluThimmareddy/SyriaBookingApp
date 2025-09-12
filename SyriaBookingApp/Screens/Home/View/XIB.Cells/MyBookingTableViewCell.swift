@@ -6,8 +6,10 @@
 //
 
 import UIKit
+
 protocol MyBookingCellDelegate: AnyObject {
     func didTapDetails(for booking: Booking)
+    func didTapCancel(for booking: Booking)
 }
 
 class MyBookingTableViewCell: UITableViewCell {
@@ -76,6 +78,9 @@ class MyBookingTableViewCell: UITableViewCell {
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
+        if let booking = currentBooking {
+            delegate?.didTapCancel(for: booking)
+        }
     }
     
     @IBAction func contactSupportButtonAction(_ sender: Any) {

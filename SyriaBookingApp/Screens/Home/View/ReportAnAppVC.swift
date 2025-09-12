@@ -11,25 +11,45 @@ class ReportAnAppVC: UIViewController {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var subjectLabel: UILabel!
-    @IBOutlet weak var selectSubjectButton: UIButton!
+    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var selectTypeButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var enterMessageTextView: UITextView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var contactTitleLabel: UILabel!
+    @IBOutlet weak var enterSubjectTF: UITextField!
+    @IBOutlet weak var yourNameLabel: UILabel!
+    @IBOutlet weak var enterYourNameTF: UITextField!
+    @IBOutlet weak var yourEmailLabel: UILabel!
+    @IBOutlet weak var enterEmailTF: UITextField!
+    @IBOutlet weak var phoneNoLabel: UILabel!
+    @IBOutlet weak var enterPhoneNumberTF: UITextField!
+    @IBOutlet weak var chevronImgView: UIImageView!
+    
     var comingfrom  = ""
     var hotelViewModel = HotelViewModel()
+    var titleText: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
         setupRatingDropdownMenu()
-        
-        if comingfrom == "RightMenu"{
-            //set subject Complain
+        if comingfrom == "RightMenu" {
+            contactTitleLabel.text = titleText ?? "Report an app"
             
-            self.selectSubjectButton.setTitle("Complaint", for: .normal)
-            self.selectSubjectButton.isEnabled = false
+            self.selectTypeButton.setTitle("Complaint", for: .normal)
+            self.selectTypeButton.isEnabled = false
+            self.typeLabel.isHidden = true
+            self.selectTypeButton.isHidden = true
+            self.chevronImgView.isHidden = true
+            
+            self.typeLabel.heightAnchor.constraint(equalToConstant: 0).isActive = true
+            self.selectTypeButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+            self.chevronImgView.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        } else {
+            contactTitleLabel.text = "Contact Us"
         }
     }
     
@@ -40,7 +60,7 @@ class ReportAnAppVC: UIViewController {
         
         for title in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
-                self?.selectSubjectButton.setTitle(title, for: .normal)
+                self?.selectTypeButton.setTitle(title, for: .normal)
                 
             })
             actions.append(action)
@@ -48,13 +68,13 @@ class ReportAnAppVC: UIViewController {
         
         let menu = UIMenu(title: "Select Subject", children: actions)
         
-        selectSubjectButton.showsMenuAsPrimaryAction = true
-        selectSubjectButton.menu = menu
+        selectTypeButton.showsMenuAsPrimaryAction = true
+        selectTypeButton.menu = menu
     }
     
     @IBAction func submitButtonAction(_ sender: Any) {
         // Validate subject
-        guard let subject = selectSubjectButton.titleLabel?.text,
+        guard let subject = selectTypeButton.titleLabel?.text,
               !subject.isEmpty, subject.lowercased() != "select subject" else {
             showAlert("Please select subject")
             return

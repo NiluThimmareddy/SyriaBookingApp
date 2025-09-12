@@ -21,11 +21,10 @@ class RightMenuViewController: UIViewController {
     var popoverdirection: UIPopoverArrowDirection = .any
     
     var onDismiss : (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
-        
-        
     }
 }
 
@@ -62,12 +61,13 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         case 4 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
             controller.comingfrom = "RightMenu"
+            controller.titleText = "Report an app"
             present(controller, animated: true)
         case 5 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "ProfilePageViewController") as! ProfilePageViewController
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
             present(controller, animated: true)
         case 6 :
-            
             showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
                 UserSessionManager.clearUser()
                 self.dismiss(animated: true){

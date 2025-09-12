@@ -50,8 +50,12 @@
                                 <rect key="frame" x="45" y="72" width="70" height="15"/>
                                 <color key="backgroundColor" red="0.79607843140000001" green="0.2666666667" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="h3b-BS-EdB"/>
-                                    <constraint firstAttribute="height" constant="15" id="yoR-8P-jgX"/>
+                                    <constraint firstAttribute="width" constant="70" id="h3b-BS-EdB">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="15" id="yoR-8P-jgX">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                                    </constraint>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -162,7 +166,9 @@
                             <constraint firstAttribute="trailing" secondItem="PQu-nA-d5i" secondAttribute="trailing" constant="10" id="DHV-3V-Cao"/>
                             <constraint firstItem="TBk-Qu-adR" firstAttribute="trailing" secondItem="ywg-Vs-V3z" secondAttribute="trailing" id="ELk-Oz-Wbd"/>
                             <constraint firstItem="ywg-Vs-V3z" firstAttribute="top" secondItem="7w3-M5-NeW" secondAttribute="bottom" constant="5" id="NVp-ZQ-tPN"/>
-                            <constraint firstItem="fie-Cl-0EE" firstAttribute="top" secondItem="x2p-J5-ory" secondAttribute="bottom" constant="5" id="RUn-8W-1lZ"/>
+                            <constraint firstItem="fie-Cl-0EE" firstAttribute="top" secondItem="x2p-J5-ory" secondAttribute="bottom" constant="5" id="RUn-8W-1lZ">
+                                <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                            </constraint>
                             <constraint firstItem="x2p-J5-ory" firstAttribute="top" secondItem="ywg-Vs-V3z" secondAttribute="bottom" constant="10" id="Uov-E1-ePG"/>
                             <constraint firstItem="cf1-SU-RuE" firstAttribute="leading" secondItem="g9h-ZQ-b1w" secondAttribute="leading" constant="10" id="Vmc-jl-OFG"/>
                             <constraint firstItem="ywg-Vs-V3z" firstAttribute="trailing" secondItem="7w3-M5-NeW" secondAttribute="trailing" id="ee1-dc-GKU"/>
@@ -217,16 +223,16 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
