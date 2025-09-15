@@ -11,11 +11,21 @@ class BookingViewModel{
     
     var onSuccess: ((BookingModel) -> Void)?
     var onError: ((String) -> Void)?
-    
-    func FetchUserData(mobile:String){
+    var onVerifyOTPSucess : ((VerifyOTPModel) -> Void)?
+    func FetchUserData(mobile:String? = nil,id:String? = nil){
         
         guard let urlstr = APIURL.BookingURL.url?.absoluteString else { return }
-        let getUrl = urlstr + "/mobile/\(mobile)"
+        var getUrl = ""
+        if let mobile = mobile, !mobile.isEmpty {
+             getUrl = urlstr + "/mobile/\(mobile)"
+        } else if let id = id, !id.isEmpty{
+            getUrl = urlstr + "/\(id)"
+        }else{
+            self.onError?("Enter valid data")
+        }
+        
+       
+        
         
         let url = URL(string: getUrl)
         
@@ -42,6 +52,65 @@ class BookingViewModel{
             }
         }
         
+    }
+    
+    var onOTPSuccess: ((OTPResponseModel) -> Void)?
+    
+    func fetchOTP(mobileNumber:String){
+        
+        guard let urlstr = APIURL.postForOTP.url?.absoluteString else { return }
+//        let getUrl = urlstr + "\(mobileNumber)"
+        
+        let url = URL(string: urlstr)
+        
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        let params: [String: Any] = [
+            "mobile": mobileNumber,
+        ]
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: OTPResponseModel.self) { result in
+             DispatchQueue.main.async{
+                 switch result {
+                 case .success(let response):
+                     self.onOTPSuccess?(response)
+                 case .failure(let failure):
+                     self.onError?(failure.localizedDescription)
+                 }
+             }
+         }
+    }
+    
+    func verifyOTP(mobile:String,otp:String){
+        
+        guard let urlstr = APIURL.verifyOTP.url?.absoluteString else { return }
+//        let getUrl = urlstr + "\(mobileNumber)"
+        
+        let url = URL(string: urlstr)
+        
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        let params: [String: Any] = [
+              "mobile": mobile,
+              "code": otp
+        ]
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: VerifyOTPModel.self) { result in
+             DispatchQueue.main.async{
+                 switch result {
+                 case .success(let response):
+                     self.onVerifyOTPSucess?(response)
+                 case .failure(let failure):
+                     self.onError?(failure.localizedDescription)
+                 }
+             }
+         }
     }
     
     func SubmitBookingInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {

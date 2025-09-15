@@ -947,7 +947,6 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
             }
         }
     }
-    
 }
 
 extension UINavigationController {
@@ -964,7 +963,6 @@ extension UINavigationController {
         if #available(iOS 15.0, *) {
             navigationBar.compactScrollEdgeAppearance = appearance
         }
-        
         navigationBar.tintColor = .white
     }
 }

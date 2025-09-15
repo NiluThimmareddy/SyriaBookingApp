@@ -10,6 +10,10 @@ enum APIURL{
     case PostReview
     case fetchHotelReviews
     case postReportAnApp
+    case postForOTP
+    case verifyOTP
+    
+    
     var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
     }
@@ -29,6 +33,11 @@ enum APIURL{
             return URL(string: baseURL + "/HotelReviewPublic/")
         case .postReportAnApp:
             return URL(string: baseURL + "/ContactPublic")
+        case .postForOTP:
+            return URL(string: baseURL + "UserPublic/send-otp")
+        case .verifyOTP:
+            return URL(string: baseURL + "UserPublic/verify-otp")
+            
         }
     }
 }

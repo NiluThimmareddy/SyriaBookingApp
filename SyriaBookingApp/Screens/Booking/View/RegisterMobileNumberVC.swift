@@ -6,13 +6,13 @@
 //
 
 import UIKit
-
+import libPhoneNumber
 enum ComingFromToLogin {
     case tabbarBooking
     case HomeSliderView
     case HotelDetails
-    
 }
+
 class RegisterMobileNumberVC : UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -53,7 +53,7 @@ class RegisterMobileNumberVC : UIViewController {
     var maxMobileNumberLength: Int = 10
     var isFullScreenIfMobileNotRegistered: Bool = false
     var comingFrom : ComingFromToLogin?
-    
+    var countryCode : String?
     var reloadScreenAfterDismiss : (() -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +77,6 @@ class RegisterMobileNumberVC : UIViewController {
                 sheet.prefersGrabberVisible = true
             }
         }
-        
         present(vc, animated: true)
     }
     
@@ -98,34 +97,76 @@ class RegisterMobileNumberVC : UIViewController {
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
+       
+        // Ensure country selected
+        guard let country = selectedCountryName else {
+            showAlert("⚠️ Please select a country.")
+            return
+        }
+        
+        guard let regionCode = countryCodeList.first(where: { $0.name == country })?.country_code else {
+            showAlert("⚠️ Could not find region code for selected country.")
+            return
+        }
+        
+        guard let phonecode = countryCodeList.first(where: {$0.name == country})?.code  else { return }
+        
+        
         guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
             showAlert("Please enter a mobile number.")
             return
         }
+      
 
         if mobileNumber.count != maxMobileNumberLength {
             showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
             return
         }
+        
+        
+      
+        
+        if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
+            showAlert("⚠️ Please enter a valid mobile number for \(country).")
+            return
+        }
+        
+        showLoader()
+        
+        countryCode = String(phonecode.dropFirst())
+        guard let countryCode = countryCode else { return }
+       let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
 
-        getRegisteredUserDetails(for: mobileNumber, completion: { [weak self] user in
+        // You can keep this mapping in your CountryModelpo
+       
+        getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
             guard let self = self else { return }
             
+            
+            //post for get otp
+            
+            
             if let userDetails = user {
-                
+            
+                self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
+                   
+                    let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                    controller.OptResponse = otpResponse
+                    controller.mobileNumber = userDetails.mobile
+                    controller.guestName = userDetails.name
+                    controller.guestEmail = userDetails.email
+                    controller.selectedHotel = self.selectedHotel
+                    controller.selectedRoom = self.selectedRoom
+                    controller.selectedRate = self.selectedRate
+                    self.present(controller, animated: true)
+                })
 //                self.reloadScreenAfterDismiss?()
-                self.enterNameTF.text = userDetails.name
-                self.enterEmailTF.text = userDetails.email
+//                self.enterNameTF.text = userDetails.name
+//                self.enterEmailTF.text = userDetails.email
 
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-                controller.mobileNumber = mobileNumber
-                controller.guestName = userDetails.name
-                controller.guestEmail = userDetails.email
-                controller.selectedHotel = self.selectedHotel
-                controller.selectedRoom = self.selectedRoom
-                controller.selectedRate = self.selectedRate
-                self.present(controller, animated: true)
+               
             } else {
+                hideLoader()
                 if let parentVC = self.parent {
                     parentVC.expandPopupToFullScreen(self)
                     
@@ -156,10 +197,12 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-        guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+        guard var mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
             showAlert("Please enter a mobile number.")
             return
         }
+        
+        mobileNumber = countryCode ?? "" + mobileNumber
         
         guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert("Please enter your date of birth.")
@@ -169,14 +212,14 @@ class RegisterMobileNumberVC : UIViewController {
         viewModel.onSuccess = { [weak self] response in
             
             guard let self = self else { return }
-            self.showAlert(title: "SyriaBooking", message: " Mobile number registered Sucessfully!", onOK:  {
+
                 
-                self.registerUserDetails = BookingModel(id: response.id, name: response.name, mobile: response.mobile, address: response.address, gender: response.gender, email: response.email, country: response.country, dob: response.dob)
+//                guard let user = self.registerUserDetails else { return }
+//                UserSessionManager.saveUser(user)
                 
-                guard let user = self.registerUserDetails else { return }
-                UserSessionManager.saveUser(user)
-                
+            self.getOTP(mobilenumebr: response.mobile) { otpResponse in
                 let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                controller.OptResponse = otpResponse
                 controller.mobileNumber = response.mobile
                 controller.guestName = response.name
                 controller.guestEmail = response.email
@@ -184,7 +227,7 @@ class RegisterMobileNumberVC : UIViewController {
                 controller.selectedRoom = self.selectedRoom
                 controller.selectedRate = self.selectedRate
                 self.present(controller, animated: true)
-            })
+            }
         }
         
         viewModel.onError = { error in
@@ -261,15 +304,15 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             print("Response: \(response)")
             
             DispatchQueue.main.async{
-                self?.registerUserDetails = response
-                UserSessionManager.saveUser(response)
+//
+
                 completion(response)
             }
         }
         
         viewModel.onError = { error in
             
-            if error.capitalized == "User Not Found"{
+            if error.capitalized == "USER NOT FOUND"{
                 completion(nil)
             }else{
                 self.showAlert("Something went wrong \(error)")
@@ -278,6 +321,24 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
         viewModel.FetchUserData(mobile: number)
     }
+    
+    func getOTP(mobilenumebr:String, completion: @escaping (OTPResponseModel) -> Void){
+        self.showLoader()
+        viewModel.onOTPSuccess = { response in
+            self.hideLoader()
+           completion(response)
+        }
+        
+        viewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(error.description)
+            
+        }
+        
+        viewModel.fetchOTP(mobileNumber: mobilenumebr)        
+    }
+    
+    
     
     func expandToFullScreen() {
         if let sheet = self.sheetPresentationController {
@@ -427,5 +488,48 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
         selectedCountryFlag = country.flag
         selectedCountryName = country.name
         maxMobileNumberLength = country.max_length ?? 10
+    }
+    
+    
+    func validateMobileNumber(_ number: String, countryCode: String) -> Bool {
+        guard let phoneUtil = NBPhoneNumberUtil.sharedInstance() else {
+            print("❌ Failed to get NBPhoneNumberUtil instance")
+            return false
+        }
+        
+        // 1️⃣ Remove whitespaces
+        let cleanNumber = number.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // 2️⃣ Ensure only digits (no letters/symbols allowed)
+        let digitSet = CharacterSet.decimalDigits
+        guard CharacterSet(charactersIn: cleanNumber).isSubset(of: digitSet) else {
+            print("❌ Invalid characters found in number")
+            return false
+        }
+        
+        do {
+            // 3️⃣ Parse with ISO region code (e.g., "IN" for India)
+            let parsedNumber = try phoneUtil.parse(cleanNumber, defaultRegion: countryCode)
+            
+            // 4️⃣ Check if valid & possible
+            let isValid = phoneUtil.isValidNumber(parsedNumber)
+            let isPossible = phoneUtil.isPossibleNumber(parsedNumber)
+            
+            // 5️⃣ Extra rule for India
+            if countryCode == "IN" {
+                let regex = "^[6-9][0-9]{9}$"  // must start with 6–9 and be 10 digits
+                let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+                let indianRule = predicate.evaluate(with: cleanNumber)
+                
+                print("🇮🇳 Indian Rule: \(indianRule)")
+                return isValid && isPossible && indianRule
+            }
+            
+            print("✅ Parsed: \(parsedNumber), valid: \(isValid), possible: \(isPossible)")
+            return isValid && isPossible
+        } catch let error as NSError {
+            print("❌ Number parsing failed: \(error.localizedDescription)")
+            return false
+        }
     }
 }

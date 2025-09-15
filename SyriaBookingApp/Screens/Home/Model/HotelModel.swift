@@ -192,6 +192,7 @@ struct RoomDetails: Codable {
 struct ReporAnAppModel: Codable {
     let message : String
 }
+
 struct Booking {
     let id: String
     let hotelName: String

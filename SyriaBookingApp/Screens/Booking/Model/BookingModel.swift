@@ -50,4 +50,38 @@ struct BookingModel: Codable {
     }
 }
 
+struct OTPResponseModel : Codable {
+  let  message: String
+  let  data: OTPModel
+       
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.message = try container.decode(String.self, forKey: .message)
+        self.data = try container.decode(OTPModel.self, forKey: .data)
+    }
+}
 
+struct  OTPModel : Codable {
+    let delivery: String
+    let to: String
+    let expiresAtUtc : String
+    let otp : String
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.delivery = try container.decode(String.self, forKey: .delivery)
+        self.to = try container.decode(String.self, forKey: .to)
+        self.expiresAtUtc = try container.decode(String.self, forKey: .expiresAtUtc)
+        self.otp = try container.decode(String.self, forKey: .otp)
+    }
+}
+
+
+struct VerifyOTPModel : Codable{
+    let message: String
+    let data: UserData
+}
+
+struct UserData: Codable {
+    let userId: String
+}

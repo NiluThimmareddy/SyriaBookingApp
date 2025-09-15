@@ -2,6 +2,13 @@
 
 import UIKit
 
+enum comingFromLoginSuccess {
+    case Home
+    case BookingHistory
+    case HotelDetail
+    
+}
+
 class VerificationVC : UIViewController {
 
     @IBOutlet weak var backView: UIView!
@@ -10,6 +17,7 @@ class VerificationVC : UIViewController {
     @IBOutlet var otpTF: [UITextField]!
     @IBOutlet weak var verifyAndContinueButton: UIButton!
     
+    @IBOutlet weak var messageLabel: UILabel!
     var mobileNumber: String?
     var guestName: String?
     var guestEmail: String?
@@ -17,7 +25,10 @@ class VerificationVC : UIViewController {
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRate: Rate?
+    var OptResponse : OTPResponseModel?
+    var viewModel = BookingViewModel()
     
+    var comingFrom : comingFromLoginSuccess?
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -33,6 +44,7 @@ class VerificationVC : UIViewController {
     }
     
     @IBAction func verifyAndContinueButtonAction(_ sender: Any) {
+       
         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
 
         guard !otp.isEmpty else {
@@ -40,20 +52,74 @@ class VerificationVC : UIViewController {
             return
         }
         
-        if otp != "123456" { 
-            showAlert("Invalid OTP. Please try again.")
+        guard let mobileNumber = mobileNumber else {
             return
         }
         
-        let controller = storyboard?.instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
-        controller.guestName = guestName
-        controller.guestEmail = guestEmail
-        controller.guestMobileNumber = mobileNumber
-        controller.selectedHotel = selectedHotel
-        controller.selectedRoom = selectedRoom
-        controller.selectedRate = selectedRate
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true)
+       
+        self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
+            
+            guard let UserId = UserId else { return }
+            
+            self?.viewModel.onSuccess = { response in
+               
+                UserSessionManager.saveUser(response)
+            }
+            
+            self?.viewModel.onError = { error in
+                self?.showAlert(error.description)
+            }
+            
+            self?.viewModel.FetchUserData(id: UserId.data.userId)
+
+            //write code based on from which page user come here like HomePage, bookingPage, bookinghistory page
+            
+//            guard let comingFrom = self?.comingFrom else { return }
+            
+            switch self?.comingFrom {
+                
+            case .Home:
+                //Reload HomePage
+                self?.dismiss(animated: true)
+                self?.dismissPopup()
+            case .BookingHistory:
+                    //Reload BookingHistory
+                self?.dismiss(animated: true)
+                self?.dismissPopup()
+            case .HotelDetail:
+                //Move to confirm page
+                let controller = self?.storyboard?.instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
+                controller.guestName = self?.guestName
+                controller.guestEmail = self?.guestEmail
+                controller.guestMobileNumber = mobileNumber
+                controller.selectedHotel = self?.selectedHotel
+                controller.selectedRoom = self?.selectedRoom
+                controller.selectedRate = self?.selectedRate
+                controller.modalPresentationStyle = .fullScreen
+                self?.present(controller, animated: true)
+            case .none:
+                self?.dismissPopup()
+                self?.dismiss(animated: true)
+            }
+        }
+    }
+    
+   
+    
+    func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
+        showLoader()
+        viewModel.onVerifyOTPSucess = { response in
+            self.hideLoader()
+           completion(response)
+        }
+        
+        viewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(error.description)
+        }
+        
+        viewModel.verifyOTP(mobile: mobile, otp: otp)
+        
     }
     
 }
@@ -96,6 +162,8 @@ extension VerificationVC : UITextFieldDelegate {
 extension VerificationVC {
     func setUpUI() {
         mobileNumberTF.text = mobileNumber
+        
+        messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
         
         for (index, textField) in otpTF.enumerated() {
             textField.delegate = self
