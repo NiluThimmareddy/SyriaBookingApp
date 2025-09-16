@@ -102,7 +102,7 @@ class BookingConfirmationVC: UIViewController, UITextViewDelegate {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate: Rate?
+    var selectedRate = [Rate]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,6 +155,7 @@ class BookingConfirmationVC: UIViewController, UITextViewDelegate {
         if URL.absoluteString == "mybookings://open" {
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             if let vc = storyboard.instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController {
+                
                 vc.modalPresentationStyle = .fullScreen
                 present(vc, animated: true)
             }

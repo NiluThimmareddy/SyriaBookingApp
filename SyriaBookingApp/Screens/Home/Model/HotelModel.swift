@@ -161,6 +161,7 @@ struct Rate: Codable {
     let notes: String?
     var selectedQuantity: Int = 1
     var isSelected: Bool? = false
+   
     
     enum CodingKeys: String, CodingKey {
         case id

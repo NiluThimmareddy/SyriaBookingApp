@@ -42,9 +42,7 @@ class RegisterMobileNumberVC : UIViewController {
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var isDatePickerShown = false
-    var selectedRoom: RoomElement?
-    var selectedHotel: Hotel?
-    var selectedRate: Rate?
+ 
     var  selectedCountryName : String?
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
@@ -151,13 +149,14 @@ class RegisterMobileNumberVC : UIViewController {
                 self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
                    
                     let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
+                   
+//                    controller.comingFrom = .
                     controller.OptResponse = otpResponse
                     controller.mobileNumber = userDetails.mobile
                     controller.guestName = userDetails.name
                     controller.guestEmail = userDetails.email
-                    controller.selectedHotel = self.selectedHotel
-                    controller.selectedRoom = self.selectedRoom
-                    controller.selectedRate = self.selectedRate
+                   
+                   
                     self.present(controller, animated: true)
                 })
 //                self.reloadScreenAfterDismiss?()
@@ -175,6 +174,10 @@ class RegisterMobileNumberVC : UIViewController {
             }
         })
     }
+    
+//    func GetFromWhereToComing() -> comingFromLoginSuccess {
+//        
+//    }
 
     @IBAction func registerButtonAction(_ sender: Any) {
         guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
@@ -212,8 +215,6 @@ class RegisterMobileNumberVC : UIViewController {
         viewModel.onSuccess = { [weak self] response in
             
             guard let self = self else { return }
-
-                
 //                guard let user = self.registerUserDetails else { return }
 //                UserSessionManager.saveUser(user)
                 
@@ -223,9 +224,8 @@ class RegisterMobileNumberVC : UIViewController {
                 controller.mobileNumber = response.mobile
                 controller.guestName = response.name
                 controller.guestEmail = response.email
-                controller.selectedHotel = self.selectedHotel
-                controller.selectedRoom = self.selectedRoom
-                controller.selectedRate = self.selectedRate
+               
+              
                 self.present(controller, animated: true)
             }
         }

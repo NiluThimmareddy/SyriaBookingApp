@@ -321,6 +321,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 controller.comingFrom = .HomeSliderView
                 controller.modalPresentationStyle = .custom
                 controller.transitioningDelegate = self
+                controller.comingFrom = .HomeSliderView
                 controller.reloadScreenAfterDismiss = {
                     self.viewDidLoad()
                     self.viewWillAppear(true)

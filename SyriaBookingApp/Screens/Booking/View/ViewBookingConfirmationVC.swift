@@ -43,7 +43,7 @@ class ViewBookingConfirmationVC : UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate: Rate?
+    var selectedRate = [Rate]()
     
     var bookingReference: String = UUID().uuidString.prefix(8).uppercased()
     var bookingDate: String?
@@ -95,12 +95,12 @@ class ViewBookingConfirmationVC : UIViewController {
 
 extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return selectedRate.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomRateTVC") as! RoomRateTVC
-        if let rate = selectedRate {
+        let rate = selectedRate[indexPath.row]
             let price = rate.price
             let description = rate.notes ?? "No description available"
             let quantity = rate.selectedQuantity
@@ -108,7 +108,9 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
             cell.descriptionLabel.text = description
             cell.qtyLabel.text = "\(quantity)"
             cell.amountLabel.text = String(format: "$%.2f", Double(price * Double(quantity)))
-        }
+//
+        
+        
         return cell
     }
     
@@ -123,14 +125,15 @@ extension ViewBookingConfirmationVC {
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
         let calculatedTotal: String
-        if let rate = selectedRate {
-            let totalAmount = Double(rate.price * Double(rate.selectedQuantity))
-            calculatedTotal = String(format: "%.2f", totalAmount)
-            totalPrice = calculatedTotal
-        } else {
-            calculatedTotal = "0.00"
-            totalPrice = "0.00"
+        var   totalAmount : Double = 0.0
+        
+        
+        for i in selectedRate {
+            totalAmount += Double(i.price * Double(i.selectedQuantity))
         }
+        
+        calculatedTotal = String(format: "%.2f", totalAmount)
+        totalPrice = calculatedTotal
         
         if isFromMyBookings {
             goToHomeButton.setTitle("Cancel", for: .normal)

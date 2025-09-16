@@ -22,9 +22,7 @@ class VerificationVC : UIViewController {
     var guestName: String?
     var guestEmail: String?
 
-    var selectedHotel: Hotel?
-    var selectedRoom: RoomElement?
-    var selectedRate: Rate?
+   
     var OptResponse : OTPResponseModel?
     var viewModel = BookingViewModel()
     
@@ -88,15 +86,7 @@ class VerificationVC : UIViewController {
                 self?.dismissPopup()
             case .HotelDetail:
                 //Move to confirm page
-                let controller = self?.storyboard?.instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
-                controller.guestName = self?.guestName
-                controller.guestEmail = self?.guestEmail
-                controller.guestMobileNumber = mobileNumber
-                controller.selectedHotel = self?.selectedHotel
-                controller.selectedRoom = self?.selectedRoom
-                controller.selectedRate = self?.selectedRate
-                controller.modalPresentationStyle = .fullScreen
-                self?.present(controller, animated: true)
+                self?.dismiss(animated: true)
             case .none:
                 self?.dismissPopup()
                 self?.dismiss(animated: true)

@@ -33,7 +33,7 @@ class ConfirmYourBookingVC : UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate: Rate?
+    var selectedRate = [Rate]()
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,19 +110,33 @@ extension ConfirmYourBookingVC {
         let todayDate = formatter.string(from: Date())
         checkInTF.text = todayDate
         
-        if let selectedRoom = selectedRoom, let selectedRate = selectedRate {
-            let price = selectedRate.price
-            let quantity = selectedRate.selectedQuantity
-            let guestNotes = selectedRate.notes ?? "Details Unavailable"            
-            let total = Double(price * Double(quantity))
+//        if let selectedRoom = selectedRoom, let selectedRate = selectedRate {
+//            let price = selectedRate.price
+//            let quantity = selectedRate.selectedQuantity
+//            let guestNotes = selectedRate.notes ?? "Details Unavailable"            
+//            let total = Double(price * Double(quantity))
+//            let formattedTotal = String(format: "$%.2f", total)
+//            selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+//            totalAmountLabel.text = formattedTotal
+//        } else {
+//            selectedRoomAndRatesLabel.text = "N/A"
+//            totalAmountLabel.text = "N/A"
+//        }
+        var roomRatesData = ""
+        var total : Double = 0.0
+        for i in selectedRate {
+            let price = i.price
+            let quantity = i.selectedQuantity
+            let guestNotes = i.notes ?? "Details Unavailable"
+           total  += Double(price * Double(quantity))
             let formattedTotal = String(format: "$%.2f", total)
-            selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
-            totalAmountLabel.text = formattedTotal
-        } else {
-            selectedRoomAndRatesLabel.text = "N/A"
-            totalAmountLabel.text = "N/A"
+            roomRatesData +=  " \n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+            
         }
         
+        let formattedTotal = String(format: "$%.2f", total)
+        selectedRoomAndRatesLabel.text = roomRatesData
+        totalAmountLabel.text = formattedTotal
         setupDatePickerUI()
         
         increaseNoButton.layer.cornerRadius = 10

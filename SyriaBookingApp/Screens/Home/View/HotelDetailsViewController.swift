@@ -56,6 +56,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     var  hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
+    var selectedRoomRates = [Rate]()
     let imageCache = NSCache<NSString, UIImage>()
     var isDescriptionVisible = true
     var isFacilitiesVisible = false
@@ -294,12 +295,12 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
             let rooms = (selectedHotel?.rooms[indexPath.row])!
             cell.delegate = self
-            cell.onBooknowBottonClick = {
+            cell.onBooknowBottonClick = { selectedRoom in
                 if UserSessionManager.getUser() == nil{
                     // open loginin
                     let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                     guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-
+                    controller.comingFrom = .HotelDetails
                     controller.modalPresentationStyle = .custom
                     controller.transitioningDelegate = self
                     controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
@@ -311,8 +312,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     }
                     self.present(controller, animated: true)
                 }else{
-                    guard let room = self.selectedRoom else { return }
-                    
+                    guard let room = selectedRoom else { return }
+                    self.selectedRoomRates = room.rates
                     if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
                         cell.delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
                     } else {
@@ -387,43 +388,16 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         
-        if UserSessionManager.getUser() != nil{
-            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-            
-            controller.selectedHotel = selectedHotel
-            controller.selectedRoom = room
-            controller.selectedRate = selectedRate
-            
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                     height: UIScreen.main.bounds.height * 0.5)
-            
-            controller.isFullScreenIfMobileNotRegistered = true
+        if let user = UserSessionManager.getUser(){
+            let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
+            controller.guestName = user.name
+            controller.guestEmail = user.email
+           
             controller.selectedHotel = self.selectedHotel
-            controller.selectedRoom = room
-//            controller.reloadScreenAfterDismiss = {
-//                self.viewDidLoad()
-//                self.viewWillAppear(true)
-//            }
-            present(controller, animated: true)
-        } else {
-            //LoginPage
-            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-            guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-            controller.selectedHotel = selectedHotel
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                     height: UIScreen.main.bounds.height * 0.5)
-            controller.isFullScreenIfMobileNotRegistered = true
-            controller.selectedHotel = self.selectedHotel
-            controller.reloadScreenAfterDismiss = {
-                self.viewDidLoad()
-                self.viewWillAppear(true)
-            }
-            present(controller, animated: true)
+            controller.selectedRoom = self.selectedRoom
+            controller.selectedRate = room.rates
+//            controller.modalPresentationStyle = .fullScreen
+            self.present(controller, animated: true)
         }
     }
     

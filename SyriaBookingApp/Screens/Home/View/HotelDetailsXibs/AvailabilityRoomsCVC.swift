@@ -28,15 +28,15 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
-    var onBooknowBottonClick : (()->Void)?
+    var onBooknowBottonClick : ((RoomElement?)->Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()
     }
     
     @IBAction func bookNowButtonAction(_ sender: Any) {
-       
-        self.onBooknowBottonClick?()
+//        guard let selectedRoom = selectedRoom else { return }
+        self.onBooknowBottonClick?(selectedRoom)
        
     }
     
@@ -49,7 +49,8 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomsRatesTVC", for: indexPath) as! RoomsRatesTVC
-        guard let roomRate = selectedRoom?.rates[indexPath.row] else {
+        guard let selectedRoom = selectedRoom else {
+       
             return cell
         }
         
@@ -63,7 +64,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
         cell.selectRoomsButton.tag =  indexPath.row
        
-        cell.configure(with: roomRate) { [weak self] selectedQty in
+        cell.configure(with: selectedRoom) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
         }
@@ -73,6 +74,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     
     @objc func checkMarkTapped(_ sender: UIButton) {
         let row = sender.tag
+        
         selectedRoom?.rates[row].isSelected?.toggle()
         roomRatesTableview.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
     }
