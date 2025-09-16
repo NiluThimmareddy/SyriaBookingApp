@@ -313,6 +313,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     self.present(controller, animated: true)
                 }else{
                     guard let room = selectedRoom else { return }
+                    self.selectedRoom = room
                     self.selectedRoomRates = room.rates
                     if let selectedRate = room.rates.first(where: { $0.isSelected == true }) {
                         cell.delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
@@ -392,6 +393,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
             controller.guestName = user.name
             controller.guestEmail = user.email
+            controller.guestMobileNumber = user.mobile
            
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom

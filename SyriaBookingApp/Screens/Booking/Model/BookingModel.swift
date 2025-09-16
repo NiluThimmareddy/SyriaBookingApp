@@ -85,3 +85,21 @@ struct VerifyOTPModel : Codable{
 struct UserData: Codable {
     let userId: String
 }
+
+
+struct PostBookingResponse: Codable {
+    let id: String
+    let timestamp: String
+    let userId: String
+    let hotelId: String
+    let roomId: String
+    let guestName: String
+    let guestPhone: String
+    let guestEmail: String
+    let numberOfGuests: Int
+    let checkIn: String
+    let checkOut: String
+    let bookingStatus: String
+    let bookingDetails: String
+    let totalAmount: Double
+}

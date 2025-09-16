@@ -12,7 +12,7 @@ enum APIURL{
     case postReportAnApp
     case postForOTP
     case verifyOTP
-    
+    case postBooking
     
     var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
@@ -37,6 +37,8 @@ enum APIURL{
             return URL(string: baseURL + "UserPublic/send-otp")
         case .verifyOTP:
             return URL(string: baseURL + "UserPublic/verify-otp")
+        case .postBooking:
+            return URL(string: baseURL + "BookingPublic")
             
         }
     }

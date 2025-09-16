@@ -129,7 +129,9 @@ extension ViewBookingConfirmationVC {
         
         
         for i in selectedRate {
-            totalAmount += Double(i.price * Double(i.selectedQuantity))
+            if i.isSelected ?? false {
+                totalAmount += Double(i.price * Double(i.selectedQuantity))
+            }
         }
         
         calculatedTotal = String(format: "%.2f", totalAmount)

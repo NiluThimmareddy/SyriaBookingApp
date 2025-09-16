@@ -10,6 +10,7 @@ import Foundation
 class BookingViewModel{
     
     var onSuccess: ((BookingModel) -> Void)?
+    var onPostBookingSuccess : ((PostBookingResponse) -> Void)?
     var onError: ((String) -> Void)?
     var onVerifyOTPSucess : ((VerifyOTPModel) -> Void)?
     func FetchUserData(mobile:String? = nil,id:String? = nil){
@@ -113,7 +114,7 @@ class BookingViewModel{
          }
     }
     
-    func SubmitBookingInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {
+    func SubmitUserRegistrationInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {
 
         let params: [String: Any] = [
             "name": name,
@@ -161,6 +162,42 @@ class BookingViewModel{
                 print("Decoding error:", error)   
                 DispatchQueue.main.async {
                     completion([])
+                }
+            }
+        }
+    }
+    
+    
+    
+    func SubmitBookingInfo(userId: String, hotelId: String, roomId: String, guestName: String, guestPhone: String, guestEmail: String, numberOfGuests: Int,checkIn : String, checkOut : String,  totalAmount : Double, bookingDetails: String ) {
+
+        let params: [String: Any] = [
+       
+          "userId": userId,
+          "hotelId": hotelId,
+          "roomId": roomId,
+          "guestName": guestName,
+          "guestPhone": guestPhone,
+          "guestEmail": guestEmail,
+          "numberOfGuests": numberOfGuests,
+          "checkIn": checkIn,
+          "checkOut": checkOut,
+          "totalAmount": totalAmount,
+          "bookingDetails": bookingDetails
+        ]
+        
+        guard let url =  APIURL.postBooking.url else {
+            self.onError?("Invalid URL")
+            return
+        }
+        
+       APIManager.shared.postRequest(urlString: url , body: params, responseType: PostBookingResponse.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onPostBookingSuccess?(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
                 }
             }
         }

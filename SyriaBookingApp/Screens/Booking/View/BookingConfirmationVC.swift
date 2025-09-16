@@ -150,19 +150,43 @@ class BookingConfirmationVC: UIViewController, UITextViewDelegate {
         ]
     }
 
+//    
+//    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+//        if URL.absoluteString == "mybookings://open" {
+//            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//            if let vc = storyboard.instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController {
+//                
+//                vc.modalPresentationStyle = .fullScreen
+//                present(vc, animated: true)
+//            }
+//            return false
+//        }
+//        return true
+//    }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if URL.absoluteString == "mybookings://open" {
+            // Load your TabBarController from storyboard
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            if let vc = storyboard.instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController {
+            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                 
-                vc.modalPresentationStyle = .fullScreen
-                present(vc, animated: true)
+                // Switch to MyBookings tab (index 1)
+                tabBarController.selectedIndex = 1
+                
+                // If the tab has a navigation controller, pop to root (optional)
+                if let nav = tabBarController.viewControllers?[1] as? UINavigationController {
+                    nav.popToRootViewController(animated: false)
+                }
+                
+                // Present the TabBarController
+                tabBarController.modalPresentationStyle = .fullScreen
+                present(tabBarController, animated: true, completion: nil)
             }
             return false
         }
         return true
     }
+
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true)

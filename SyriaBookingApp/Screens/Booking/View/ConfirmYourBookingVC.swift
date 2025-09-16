@@ -20,6 +20,7 @@ class ConfirmYourBookingVC : UIViewController {
     @IBOutlet weak var decreaseNoButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
     
+    
     var guestName: String?
     var guestEmail: String?
     var guestMobileNumber: String?
@@ -30,11 +31,12 @@ class ConfirmYourBookingVC : UIViewController {
     var currentDatePickerMode: DatePickerMode = .checkIn
     var selectedCheckInDate: Date?
     var isDatePickerShown = false
-    
+    var formattedTotal = ""
+    var total : Double = 0.0
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
-   
+    var  viewModel = BookingViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,28 +60,67 @@ class ConfirmYourBookingVC : UIViewController {
     }
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
-        let confirmationVC = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
-        guard let noOfGuest = numberOfGuestsTF.text, !noOfGuest.isEmpty else {
-            showAlert("Please enter a Number of Guests.")
+        guard let noOfGuestText = numberOfGuestsTF.text,
+              !noOfGuestText.isEmpty,
+              let noOfGuest = Int(noOfGuestText) else {
+            showAlert("Please enter a valid number of guests.")
             return
         }
+        guard let checkIn = checkInTF.text, !checkIn.isEmpty else {
+            showAlert("Please enter a Check Out.")
+            return
+        }
+        
         guard let checkout = checkOutTF.text, !checkout.isEmpty else {
             showAlert("Please enter a Check Out.")
             return
         }
-        confirmationVC.guestName = guestName
-        confirmationVC.guestEmail = guestEmail
-        confirmationVC.guestPhone = guestMobileNumber
-        confirmationVC.checkInDate = checkInTF.text
-        confirmationVC.checkOutDate = checkOutTF.text
-        confirmationVC.numberOfGuests = numberOfGuestsTF.text
-        confirmationVC.totalPrice = totalAmountLabel.text
-        confirmationVC.roomType = selectedRoomAndRatesLabel.text
         
-        confirmationVC.selectedHotel = selectedHotel
-        confirmationVC.selectedRoom = selectedRoom
-        confirmationVC.selectedRate = selectedRate
-        present(confirmationVC, animated: true)
+        guard let guestMobileNumber = guestMobileNumber else {
+            showAlert("Please enter a mobile number.")
+            return
+        }
+        
+        guard let user = UserSessionManager.getUser() else { return }
+        guard let hotel = selectedHotel else {
+            print("No room selected")
+            return
+        }
+        guard let selectedRoom = selectedRoom else {
+            print("No room selected")
+            return
+        }
+        showLoader()
+        viewModel.onPostBookingSuccess = { [weak self] response in
+            
+            guard let self = self else { return }
+            hideLoader()
+            let confirmationVC = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
+           
+            confirmationVC.guestName = response.guestName
+            confirmationVC.guestEmail = response.guestEmail
+            confirmationVC.guestPhone = response.guestPhone
+//            confirmationVC.checkInDate = response.checkIn
+//            confirmationVC.checkOutDate = response.checkOut
+//            confirmationVC.numberOfGuests = "\(response.numberOfGuests)"
+//            confirmationVC.totalPrice = "\(response.totalAmount)"
+//            confirmationVC.roomType = selectedRoomAndRatesLabel.text
+//            
+//            confirmationVC.selectedHotel = selectedHotel
+//            confirmationVC.selectedRoom = selectedRoom
+//            confirmationVC.selectedRate = selectedRate
+            present(confirmationVC, animated: true)
+            
+        }
+        
+        viewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(error.description)
+        }
+        
+        
+        viewModel.SubmitBookingInfo(userId: user.id, hotelId: hotel.id, roomId: selectedRoom.room.id, guestName: guestName ?? "", guestPhone: guestMobileNumber, guestEmail: guestEmail ?? "", numberOfGuests: noOfGuest, checkIn: checkIn, checkOut: checkout, totalAmount: total, bookingDetails: selectedRoomAndRatesLabel.text ?? "")
+        
     }
     
     @IBAction func increaseNoButtonAction(_ sender: Any) {
@@ -123,18 +164,20 @@ extension ConfirmYourBookingVC {
 //            totalAmountLabel.text = "N/A"
 //        }
         var roomRatesData = ""
-        var total : Double = 0.0
+       
         for i in selectedRate {
-            let price = i.price
-            let quantity = i.selectedQuantity
-            let guestNotes = i.notes ?? "Details Unavailable"
-           total  += Double(price * Double(quantity))
-            let formattedTotal = String(format: "$%.2f", total)
-            roomRatesData +=  " \n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+            if i.isSelected == true {
+                let price = i.price
+                let quantity = i.selectedQuantity
+                let guestNotes = i.notes ?? "Details Unavailable"
+                total  += Double(price * Double(quantity))
+                let formattedTotal = String(format: "$%.2f", total)
+                roomRatesData +=  " \n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+            }
             
         }
         
-        let formattedTotal = String(format: "$%.2f", total)
+         formattedTotal = String(format: "$%.2f", total)
         selectedRoomAndRatesLabel.text = roomRatesData
         totalAmountLabel.text = formattedTotal
         setupDatePickerUI()

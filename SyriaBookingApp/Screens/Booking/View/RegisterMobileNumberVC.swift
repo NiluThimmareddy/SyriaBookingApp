@@ -234,7 +234,7 @@ class RegisterMobileNumberVC : UIViewController {
             self.showAlert(error)
         }
         
-        viewModel.SubmitBookingInfo(name: name, mobile: mobileNumber, gender: gender, email: email, country: country, dob: dob)
+        viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumber, gender: gender, email: email, country: country, dob: dob)
     }
 }
 
