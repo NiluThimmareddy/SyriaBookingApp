@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BookingViewModel{
+class BookingViewModel {
     
     var onSuccess: ((BookingModel) -> Void)?
     var onPostBookingSuccess : ((PostBookingResponse) -> Void)?
@@ -166,41 +166,84 @@ class BookingViewModel{
             }
         }
     }
+    func postRequest<T: Decodable>(urlString: URL,body: [String: Any],responseType: T.Type,completion: @escaping (Result<T, Error>) -> Void
+    ) {
+        var request = URLRequest(url: urlString)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data"])))
+                return
+            }
+            
+            // 📩 Log the raw JSON response
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("📩 Full JSON Response: \(jsonString)")
+            }
+            
+            do {
+                let decoded = try JSONDecoder().decode(responseType, from: data)
+                completion(.success(decoded))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
     
-    
-    
-    func SubmitBookingInfo(userId: String, hotelId: String, roomId: String, guestName: String, guestPhone: String, guestEmail: String, numberOfGuests: Int,checkIn : String, checkOut : String,  totalAmount : Double, bookingDetails: String ) {
-
+    func SubmitBookingInfo(userId: String,hotelId: String,roomId: String,guestName: String,guestPhone: String,guestEmail: String,numberOfGuests: Int,checkIn: String,checkOut: String,totalAmount: Double,bookingDetails: String
+    ) {
         let params: [String: Any] = [
-       
-          "userId": userId,
-          "hotelId": hotelId,
-          "roomId": roomId,
-          "guestName": guestName,
-          "guestPhone": guestPhone,
-          "guestEmail": guestEmail,
-          "numberOfGuests": numberOfGuests,
-          "checkIn": checkIn,
-          "checkOut": checkOut,
-          "totalAmount": totalAmount,
-          "bookingDetails": bookingDetails
+            "userId": userId,
+            "hotelId": hotelId,
+            "roomId": roomId,
+            "guestName": guestName,
+            "guestPhone": guestPhone,
+            "guestEmail": guestEmail,
+            "numberOfGuests": numberOfGuests,
+            "checkIn": checkIn,
+            "checkOut": checkOut,
+            "totalAmount": totalAmount,
+            "bookingDetails": bookingDetails
         ]
         
-        guard let url =  APIURL.postBooking.url else {
+        print("📤 Request body:", params)
+        
+        guard let url = APIURL.postBooking.url else {
             self.onError?("Invalid URL")
             return
         }
         
-       APIManager.shared.postRequest(urlString: url , body: params, responseType: PostBookingResponse.self) { result in
-            DispatchQueue.main.async{
+        APIManager.shared.postRequest(urlString: url, body: params, responseType: PostBookingWrapper.self) { result in
+            DispatchQueue.main.async {
                 switch result {
-                case .success(let response):
-                    self.onPostBookingSuccess?(response)
-                case .failure(let failure):
-                    self.onError?(failure.localizedDescription)
+                case .success(let wrapper):
+                    if let booking = wrapper.data {
+                        print("✅ Parsed Booking:", booking)
+                        self.onPostBookingSuccess?(booking)
+                    } else {
+                        print("⚠️ Wrapper received but no booking data")
+                    }
+                case .failure(let error):
+                    print("❌ Decoding error:", error.localizedDescription)
+                    self.onError?(error.localizedDescription)
                 }
             }
         }
     }
+
     
 }

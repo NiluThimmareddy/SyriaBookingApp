@@ -115,16 +115,12 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-      
 
         if mobileNumber.count != maxMobileNumberLength {
             showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
             return
         }
-        
-        
-      
-        
+
         if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
             showAlert("⚠️ Please enter a valid mobile number for \(country).")
             return
@@ -136,14 +132,11 @@ class RegisterMobileNumberVC : UIViewController {
         guard let countryCode = countryCode else { return }
        let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
 
-        // You can keep this mapping in your CountryModelpo
        
         getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
             guard let self = self else { return }
             
-            
             //post for get otp
-            
             
             if let userDetails = user {
             

@@ -36,7 +36,10 @@ class ConfirmYourBookingVC : UIViewController {
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
-    var  viewModel = BookingViewModel()
+    var viewModel = BookingViewModel()
+    
+    var selectedCheckOutDate: Date?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,61 +69,57 @@ class ConfirmYourBookingVC : UIViewController {
             showAlert("Please enter a valid number of guests.")
             return
         }
-        guard let checkIn = checkInTF.text, !checkIn.isEmpty else {
-            showAlert("Please enter a Check Out.")
+
+        guard let checkInDate = selectedCheckInDate else {
+            showAlert("Please select a check-in date.")
             return
         }
-        
-        guard let checkout = checkOutTF.text, !checkout.isEmpty else {
-            showAlert("Please enter a Check Out.")
+
+        guard let checkOutDate = selectedCheckOutDate else {
+            showAlert("Please select a check-out date.")
             return
         }
-        
-        guard let guestMobileNumber = guestMobileNumber else {
+
+        guard let guestMobileNumber = guestMobileNumberTF.text, !guestMobileNumber.isEmpty else {
             showAlert("Please enter a mobile number.")
             return
         }
-        
-        guard let user = UserSessionManager.getUser() else { return }
-        guard let hotel = selectedHotel else {
-            print("No room selected")
-            return
-        }
-        guard let selectedRoom = selectedRoom else {
-            print("No room selected")
-            return
-        }
+
+        guard let user = UserSessionManager.getUser(),
+              let hotel = selectedHotel,
+              let selectedRoom = selectedRoom else { return }
+
         showLoader()
+
+        let checkInISO = iso8601String(from: checkInDate)
+        let checkOutISO = iso8601String(from: checkOutDate)
+
         viewModel.onPostBookingSuccess = { [weak self] response in
-            
             guard let self = self else { return }
-            hideLoader()
-            let confirmationVC = storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as! BookingConfirmationVC
-           
+            self.hideLoader()
+
+            guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
             confirmationVC.guestName = response.guestName
             confirmationVC.guestEmail = response.guestEmail
             confirmationVC.guestPhone = response.guestPhone
-//            confirmationVC.checkInDate = response.checkIn
-//            confirmationVC.checkOutDate = response.checkOut
-//            confirmationVC.numberOfGuests = "\(response.numberOfGuests)"
-//            confirmationVC.totalPrice = "\(response.totalAmount)"
-//            confirmationVC.roomType = selectedRoomAndRatesLabel.text
-//            
-//            confirmationVC.selectedHotel = selectedHotel
-//            confirmationVC.selectedRoom = selectedRoom
-//            confirmationVC.selectedRate = selectedRate
-            present(confirmationVC, animated: true)
-            
+            confirmationVC.checkInDate = response.checkIn
+            confirmationVC.checkOutDate = response.checkOut
+            confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
+            confirmationVC.totalPrice = "\(response.totalAmount ?? 0.0)"
+            confirmationVC.roomType = self.selectedRoomAndRatesLabel.text
+            confirmationVC.selectedHotel = self.selectedHotel
+            confirmationVC.selectedRoom = self.selectedRoom
+            confirmationVC.selectedRate = self.selectedRate
+            self.present(confirmationVC, animated: true)
         }
-        
+
         viewModel.onError = { error in
             self.hideLoader()
             self.showAlert(error.description)
         }
-        
-        
-        viewModel.SubmitBookingInfo(userId: user.id, hotelId: hotel.id, roomId: selectedRoom.room.id, guestName: guestName ?? "", guestPhone: guestMobileNumber, guestEmail: guestEmail ?? "", numberOfGuests: noOfGuest, checkIn: checkIn, checkOut: checkout, totalAmount: total, bookingDetails: selectedRoomAndRatesLabel.text ?? "")
-        
+
+        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: selectedRoomAndRatesLabel.text ?? ""
+        )
     }
     
     @IBAction func increaseNoButtonAction(_ sender: Any) {
@@ -180,7 +179,6 @@ extension ConfirmYourBookingVC {
         bottomView.layer.cornerRadius = 10
         bottomView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         bottomView.clipsToBounds = true
-        
     }
     
     func setupDatePickerUI() {
@@ -241,33 +239,39 @@ extension ConfirmYourBookingVC {
         let now = Date()
         switch currentDatePickerMode {
         case .checkIn:
-           
             datePicker.minimumDate = now
-            datePicker.date = now
-
+            datePicker.date = selectedCheckInDate ?? now
         case .checkOut:
             guard let checkIn = selectedCheckInDate else {
-               
                 datePicker.minimumDate = now
                 datePicker.date = now
                 return
             }
             datePicker.minimumDate = checkIn
-            datePicker.date = checkIn
+            datePicker.date = selectedCheckOutDate ?? checkIn
         }
     }
 
+    func iso8601String(from date: Date) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.string(from: date)
+    }
+    
     @objc private func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        let selectedDate = formatter.string(from: sender.date)
+        let selectedDateString = formatter.string(from: sender.date)
+
         switch currentDatePickerMode {
         case .checkIn:
             selectedCheckInDate = sender.date
-            checkInTF.text = selectedDate
+            checkInTF.text = selectedDateString
             checkOutTF.text = ""
+            selectedCheckOutDate = nil
         case .checkOut:
-            checkOutTF.text = selectedDate
+            selectedCheckOutDate = sender.date
+            checkOutTF.text = selectedDateString
         }
         datePickerContainerView.isHidden = true
     }

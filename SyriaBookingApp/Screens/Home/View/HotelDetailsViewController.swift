@@ -388,7 +388,6 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
-        
         if let user = UserSessionManager.getUser(){
             let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
             controller.guestName = user.name
@@ -398,7 +397,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRate = room.rates
-//            controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: true)
         }
     }
