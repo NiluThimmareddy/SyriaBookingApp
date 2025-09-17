@@ -7,7 +7,7 @@ class ConfirmYourBookingVC : UIViewController {
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var guestNameLabel: UILabel!
     @IBOutlet weak var guestEmailLabel: UILabel!
-    @IBOutlet weak var guestMobileNumberLabel: UILabel!
+    @IBOutlet weak var guestMobileNumberTF: UITextField!
     @IBOutlet weak var numberOfGuestsTF: UITextField!
     @IBOutlet weak var checkInTF: UITextField!
     @IBOutlet weak var checkOutTF: UITextField!
@@ -144,25 +144,13 @@ extension ConfirmYourBookingVC {
         backView.applyCardStyle()
         guestNameLabel.text = guestName
         guestEmailLabel.text = guestEmail
-        guestMobileNumberLabel.text = guestMobileNumber
+        guestMobileNumberTF.text = guestMobileNumber
         
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let todayDate = formatter.string(from: Date())
         checkInTF.text = todayDate
         
-//        if let selectedRoom = selectedRoom, let selectedRate = selectedRate {
-//            let price = selectedRate.price
-//            let quantity = selectedRate.selectedQuantity
-//            let guestNotes = selectedRate.notes ?? "Details Unavailable"            
-//            let total = Double(price * Double(quantity))
-//            let formattedTotal = String(format: "$%.2f", total)
-//            selectedRoomAndRatesLabel.text = "$\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
-//            totalAmountLabel.text = formattedTotal
-//        } else {
-//            selectedRoomAndRatesLabel.text = "N/A"
-//            totalAmountLabel.text = "N/A"
-//        }
         var roomRatesData = ""
        
         for i in selectedRate {
@@ -170,11 +158,12 @@ extension ConfirmYourBookingVC {
                 let price = i.price
                 let quantity = i.selectedQuantity
                 let guestNotes = i.notes ?? "Details Unavailable"
-                total  += Double(price * Double(quantity))
-                let formattedTotal = String(format: "$%.2f", total)
-                roomRatesData +=  " \n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedTotal)"
+
+                let lineTotal = Double(price) * Double(quantity)
+                let formattedLineTotal = String(format: "$%.2f", lineTotal)
+                total += lineTotal
+                roomRatesData += "\n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedLineTotal)"
             }
-            
         }
         
          formattedTotal = String(format: "$%.2f", total)

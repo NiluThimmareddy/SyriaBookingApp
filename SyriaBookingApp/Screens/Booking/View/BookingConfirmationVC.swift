@@ -150,19 +150,6 @@ class BookingConfirmationVC: UIViewController, UITextViewDelegate {
         ]
     }
 
-//    
-//    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-//        if URL.absoluteString == "mybookings://open" {
-//            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-//            if let vc = storyboard.instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController {
-//                
-//                vc.modalPresentationStyle = .fullScreen
-//                present(vc, animated: true)
-//            }
-//            return false
-//        }
-//        return true
-//    }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if URL.absoluteString == "mybookings://open" {

@@ -125,11 +125,10 @@ extension ViewBookingConfirmationVC {
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
         let calculatedTotal: String
-        var   totalAmount : Double = 0.0
-        
+        var totalAmount : Double = 0.0
         
         for i in selectedRate {
-            if i.isSelected ?? false {
+            if i.isSelected == true {
                 totalAmount += Double(i.price * Double(i.selectedQuantity))
             }
         }

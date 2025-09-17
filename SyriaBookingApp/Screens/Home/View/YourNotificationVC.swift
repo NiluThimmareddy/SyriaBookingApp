@@ -126,8 +126,9 @@ class YourNotificationVC: UIViewController {
     
     @IBAction func viewAllButtonAction(_ sender: Any) {
         print("ViewAll tapped, calling delegate")
-        delegate?.yourNotificationDidRequestTabSwitch(to: 1)
-        self.dismiss(animated: true)
+        self.dismiss(animated: true) { [weak self] in
+            self?.delegate?.yourNotificationDidRequestTabSwitch(to: 1)
+        }
     }
 }
 
