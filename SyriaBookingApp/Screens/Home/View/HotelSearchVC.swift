@@ -31,6 +31,7 @@ class HotelSearchVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +39,12 @@ class HotelSearchVC : UIViewController {
         setupAppNavigationBar()
         toggleSearchView()
         setupDatePickerUI()
+        setSearchViewVisible(true, animated: false)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        UIViewController.searchVCReference = nil
     }
 
     @IBAction func selectCityButtonAction(_ sender: Any) {
@@ -102,6 +109,29 @@ class HotelSearchVC : UIViewController {
         }
     }
     
+    func setSearchViewVisible(_ visible: Bool, animated: Bool) {
+        if visible {
+            searchViewHeightConstraint.constant = UIDevice.current.userInterfaceIdiom == .pad ? 280 : 210
+            searchView.isHidden = false
+            if animated {
+                UIView.animate(withDuration: 0.4) { self.view.layoutIfNeeded() }
+            } else {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            searchViewHeightConstraint.constant = 0
+            if animated {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.layoutIfNeeded()
+                }) { _ in
+                    self.searchView.isHidden = true
+                }
+            } else {
+                searchView.isHidden = true
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
     func setNextDateInCkechout(checkInDate:Date){
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: checkInDate) {
             let formatter = DateFormatter()
