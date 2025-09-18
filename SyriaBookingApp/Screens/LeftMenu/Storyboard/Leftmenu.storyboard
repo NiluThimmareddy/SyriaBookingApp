@@ -41,7 +41,7 @@
                                                     <constraint firstAttribute="width" secondItem="TeI-rA-PCZ" secondAttribute="height" id="thC-6S-Wfs"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maheswar Reddy" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-oC-TvZ">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Maheswar Reddy" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-oC-TvZ">
                                                 <rect key="frame" x="60" y="9.9999999999999982" width="155" height="19.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <nil key="textColor"/>
@@ -69,10 +69,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="center" semanticContentAttribute="forceRightToLeft" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l9I-07-458">
-                                                <rect key="frame" x="140" y="60" width="95" height="30"/>
+                                                <rect key="frame" x="140" y="65" width="95" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="95" id="Of3-WG-3bG"/>
-                                                    <constraint firstAttribute="height" constant="30" id="gEm-I5-FaM"/>
+                                                    <constraint firstAttribute="height" constant="25" id="gEm-I5-FaM"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
@@ -99,21 +99,44 @@
                                                     <action selector="languagesButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="wZe-gX-dfM"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MUe-Us-ATe">
+                                                <rect key="frame" x="10" y="10" width="223" height="40"/>
+                                                <color key="backgroundColor" systemColor="labelColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="OPX-lJ-tHc"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Login"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="20"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="loginButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="267-Sd-FTf"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="l9I-07-458" secondAttribute="bottom" constant="10" id="1ga-W1-7hd"/>
                                             <constraint firstItem="TeI-rA-PCZ" firstAttribute="leading" secondItem="2ZJ-8A-cBw" secondAttribute="leading" constant="10" id="59o-vL-XMw"/>
-                                            <constraint firstItem="n0Q-I5-vaQ" firstAttribute="bottom" secondItem="TeI-rA-PCZ" secondAttribute="bottom" id="Dtv-gz-Tb6"/>
+                                            <constraint firstItem="MUe-Us-ATe" firstAttribute="leading" secondItem="2ZJ-8A-cBw" secondAttribute="leading" constant="10" id="8m1-g9-0iZ"/>
+                                            <constraint firstItem="n0Q-I5-vaQ" firstAttribute="top" secondItem="NGX-oC-TvZ" secondAttribute="bottom" constant="3.6699999999999999" id="9Vw-in-swY"/>
                                             <constraint firstItem="l9I-07-458" firstAttribute="trailing" secondItem="JcU-TY-p4h" secondAttribute="trailing" id="GRx-td-CWE"/>
                                             <constraint firstItem="JcU-TY-p4h" firstAttribute="leading" secondItem="NGX-oC-TvZ" secondAttribute="trailing" constant="5" id="JMX-mA-iNh"/>
                                             <constraint firstItem="NGX-oC-TvZ" firstAttribute="top" secondItem="TeI-rA-PCZ" secondAttribute="top" id="LY9-Wo-2ar"/>
                                             <constraint firstItem="JcU-TY-p4h" firstAttribute="centerY" secondItem="TeI-rA-PCZ" secondAttribute="centerY" id="P0O-Mm-33z"/>
                                             <constraint firstItem="TeI-rA-PCZ" firstAttribute="top" secondItem="2ZJ-8A-cBw" secondAttribute="top" constant="10" id="SeI-PL-cd9"/>
+                                            <constraint firstAttribute="trailing" secondItem="MUe-Us-ATe" secondAttribute="trailing" constant="10" id="WIC-mo-tNS"/>
                                             <constraint firstAttribute="trailing" secondItem="JcU-TY-p4h" secondAttribute="trailing" constant="8" id="WLh-J3-xd0"/>
                                             <constraint firstItem="NGX-oC-TvZ" firstAttribute="leading" secondItem="TeI-rA-PCZ" secondAttribute="trailing" constant="10" id="ihl-6x-WK2"/>
+                                            <constraint firstItem="l9I-07-458" firstAttribute="top" relation="greaterThanOrEqual" secondItem="n0Q-I5-vaQ" secondAttribute="bottom" constant="5" id="kLk-eb-T90"/>
                                             <constraint firstItem="n0Q-I5-vaQ" firstAttribute="leading" secondItem="NGX-oC-TvZ" secondAttribute="leading" id="lht-GW-mL1"/>
                                             <constraint firstAttribute="height" constant="100" id="pN7-BJ-Gw3"/>
+                                            <constraint firstItem="MUe-Us-ATe" firstAttribute="top" secondItem="2ZJ-8A-cBw" secondAttribute="top" constant="10" id="qgi-6i-Uw6"/>
                                             <constraint firstItem="n0Q-I5-vaQ" firstAttribute="trailing" secondItem="NGX-oC-TvZ" secondAttribute="trailing" id="u1K-mw-SyD"/>
                                         </constraints>
                                     </view>
@@ -157,6 +180,7 @@
                         <outlet property="LeftMenuUITableView" destination="i0r-3S-iu5" id="UCx-4N-3NA"/>
                         <outlet property="backView" destination="YoW-Fj-rye" id="ja7-OT-9ms"/>
                         <outlet property="languageButton" destination="l9I-07-458" id="HFj-ov-Vnb"/>
+                        <outlet property="loginbutton" destination="MUe-Us-ATe" id="rgf-81-7I8"/>
                         <outlet property="personEmailLabel" destination="n0Q-I5-vaQ" id="cmn-Sc-mmT"/>
                         <outlet property="personNameLabel" destination="NGX-oC-TvZ" id="FYU-L6-XpA"/>
                         <outlet property="profileImgView" destination="TeI-rA-PCZ" id="gH7-J5-ngB"/>

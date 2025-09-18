@@ -15,7 +15,7 @@ enum ComingFromToLogin {
 }
 
 class RegisterMobileNumberVC : UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -43,7 +43,6 @@ class RegisterMobileNumberVC : UIViewController {
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var isDatePickerShown = false
- 
     var  selectedCountryName : String?
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
@@ -54,6 +53,7 @@ class RegisterMobileNumberVC : UIViewController {
     var comingFrom : ComingFromToLogin?
     var countryCode : String?
     var reloadScreenAfterDismiss : (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -79,24 +79,22 @@ class RegisterMobileNumberVC : UIViewController {
         present(vc, animated: true)
     }
     
-
+    
     @IBAction func dismissButtonAction(_ sender: Any) {
         if comingFrom == .HomeSliderView {
-//            self.reloadScreenAfterDismiss?()
+            //            self.reloadScreenAfterDismiss?()
             UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
-           
+            
         } else if comingFrom == .tabbarBooking{
             //Move to home page
             UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
-           
-            
         } else {
-                self.dismiss(animated: true, completion: nil)
-            }
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
-       
+        
         // Ensure country selected
         guard let country = selectedCountryName else {
             showAlert("⚠️ Please select a country.")
@@ -115,12 +113,12 @@ class RegisterMobileNumberVC : UIViewController {
             showAlert("Please enter a mobile number.")
             return
         }
-
+        
         if mobileNumber.count != maxMobileNumberLength {
             showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
             return
         }
-
+        
         if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
             showAlert("⚠️ Please enter a valid mobile number for \(country).")
             return
@@ -130,49 +128,44 @@ class RegisterMobileNumberVC : UIViewController {
         
         countryCode = String(phonecode.dropFirst())
         guard let countryCode = countryCode else { return }
-       let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
-
-       
+        let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
+        
+        
         getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
             guard let self = self else { return }
             
             //post for get otp
             
             if let userDetails = user {
-            
+                
                 self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
-                   
+                    
                     let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
-                   
-//                    controller.comingFrom = .
+                    
+                    //                    controller.comingFrom = .
                     controller.OptResponse = otpResponse
                     controller.mobileNumber = userDetails.mobile
                     controller.guestName = userDetails.name
                     controller.guestEmail = userDetails.email
-                   
-                   
+                    
+                    
                     self.present(controller, animated: true)
                 })
-//                self.reloadScreenAfterDismiss?()
-//                self.enterNameTF.text = userDetails.name
-//                self.enterEmailTF.text = userDetails.email
-
-               
+                //                self.reloadScreenAfterDismiss?()
+                //                self.enterNameTF.text = userDetails.name
+                //                self.enterEmailTF.text = userDetails.email
+                
+                
             } else {
                 hideLoader()
                 if let parentVC = self.parent {
                     parentVC.expandPopupToFullScreen(self)
-                    
                 }
                 self.bottomView.isHidden = false
             }
         })
     }
     
-//    func GetFromWhereToComing() -> comingFromLoginSuccess {
-//        
-//    }
-
     @IBAction func registerButtonAction(_ sender: Any) {
         guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert("Please enter your name.")
@@ -209,17 +202,17 @@ class RegisterMobileNumberVC : UIViewController {
         viewModel.onSuccess = { [weak self] response in
             
             guard let self = self else { return }
-//                guard let user = self.registerUserDetails else { return }
-//                UserSessionManager.saveUser(user)
-                
+            //                guard let user = self.registerUserDetails else { return }
+            //                UserSessionManager.saveUser(user)
+            
             self.getOTP(mobilenumebr: response.mobile) { otpResponse in
                 let controller = self.storyboard?.instantiateViewController(withIdentifier: "VerificationVC") as! VerificationVC
                 controller.OptResponse = otpResponse
                 controller.mobileNumber = response.mobile
                 controller.guestName = response.name
                 controller.guestEmail = response.email
-               
-              
+                
+                
                 self.present(controller, animated: true)
             }
         }
@@ -237,13 +230,13 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         changeTheLoginViewDesing()
         setupGenderPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
-
+        
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number
-            enterMobileNumberTF.text = number 
+            enterMobileNumberTF.text = number
         }
-
+        
         setupDateOfBirthTextField()
         
         viewModel.loadCountries { countryName in
@@ -261,13 +254,13 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             break
         case .tabbarBooking:
             //disable dismissbutton
-//            self.dismissButton.isHidden = true
+            //            self.dismissButton.isHidden = true
             break
         case .HomeSliderView :
             break
         case .none:
             break
-        
+            
         }
     }
     
@@ -289,7 +282,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             
             return updatedText.count <= maxMobileNumberLength
         }
-
+        
         return true
     }
     
@@ -298,18 +291,22 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             print("Response: \(response)")
             
             DispatchQueue.main.async{
-//
-
+                //
+                
                 completion(response)
             }
         }
         
         viewModel.onError = { error in
-            
-            if error.capitalized == "USER NOT FOUND"{
-                completion(nil)
-            }else{
-                self.showAlert("Something went wrong \(error)")
+            if error.lowercased() == "user not found" {
+                DispatchQueue.main.async {
+                    self.bottomView.isHidden = false
+                    completion(nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlert("Something went wrong: \(error)")
+                }
             }
         }
         
@@ -320,7 +317,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         self.showLoader()
         viewModel.onOTPSuccess = { response in
             self.hideLoader()
-           completion(response)
+            completion(response)
         }
         
         viewModel.onError = { error in
@@ -329,10 +326,8 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             
         }
         
-        viewModel.fetchOTP(mobileNumber: mobilenumebr)        
+        viewModel.fetchOTP(mobileNumber: mobilenumebr)
     }
-    
-    
     
     func expandToFullScreen() {
         if let sheet = self.sheetPresentationController {
@@ -341,22 +336,22 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             }
         }
     }
-
+    
     func setupGenderPullDownMenu() {
         let male = UIAction(title: "Male") { _ in
             self.selectGenderButton.setTitle("Male", for: .normal)
         }
-
+        
         let female = UIAction(title: "Female") { _ in
             self.selectGenderButton.setTitle("Female", for: .normal)
         }
-
+        
         let other = UIAction(title: "Other") { _ in
             self.selectGenderButton.setTitle("Other", for: .normal)
         }
-
+        
         let genderMenu = UIMenu(title: "", children: [male, female, other])
-
+        
         selectGenderButton.menu = genderMenu
         selectGenderButton.showsMenuAsPrimaryAction = true
     }
@@ -364,7 +359,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setupDateOfBirthTextField() {
         selectDateofBirthTF.delegate = self
         selectDateofBirthTF.keyboardType = .numbersAndPunctuation
-
+        
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
@@ -383,40 +378,39 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         selectDateofBirthTF.inputView = nil
         selectDateofBirthTF.inputAccessoryView = nil
     }
-
+    
     @objc func showDatePicker() {
         selectDateofBirthTF.inputView = datePicker
-
+        
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed))
         toolbar.setItems([doneButton], animated: true)
         selectDateofBirthTF.inputAccessoryView = toolbar
-
+        
         selectDateofBirthTF.reloadInputViews()
         selectDateofBirthTF.becomeFirstResponder()
     }
-
+    
     @objc func donePressed() {
         selectDateofBirthTF.inputView = nil
         selectDateofBirthTF.inputAccessoryView = nil
         selectDateofBirthTF.reloadInputViews()
         selectDateofBirthTF.resignFirstResponder()
     }
-
-
+    
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         selectDateofBirthTF.text = formatter.string(from: sender.date)
     }
-
+    
     
     @objc private func dateTextFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-
+        
         let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-
+        
         var result = ""
         for (index, char) in digits.enumerated() {
             result.append(char)
@@ -425,13 +419,13 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             }
             if result.count >= 10 { break }
         }
-
+        
         let currentSelectedRange = textField.selectedTextRange
         textField.text = result
         if let range = currentSelectedRange {
             textField.selectedTextRange = range
         }
-
+        
         if result.count == 10 {
             if !isValidDate(result) {
                 textField.textColor = .systemRed
@@ -442,7 +436,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             textField.textColor = .label
         }
     }
-
+    
     private func isValidDate(_ dateString: String) -> Bool {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -452,17 +446,17 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     
     func configureCountryNameMenu() {
         var menuItems: [UIAction] = []
-
+        
         for country in countryCodeList {
             let action = UIAction(title: "\(country.flag) \(country.name)", handler: { [weak self] _ in
                 guard let self = self else { return }
                 self.countryNameButton.setTitle(country.flag, for: .normal)
-                self.countryNameButton.setImage(nil, for: .normal) 
+                self.countryNameButton.setImage(nil, for: .normal)
                 self.enterCountryTF.text = country.name
             })
             menuItems.append(action)
         }
-
+        
         let menu = UIMenu(title: "Select Country", children: menuItems)
         countryNameButton.menu = menu
         countryNameButton.showsMenuAsPrimaryAction = true

@@ -275,6 +275,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
             let hotel = viewModel.filteredHotels[indexPath.row]
             cell.configuration(with: hotel)
+            cell.delegate = self
             return cell
         } else if collectionView == recentlyCollectionView {
             if viewModel.recentlyViewdHotels.isEmpty {
@@ -884,7 +885,16 @@ extension HomeViewController {
     
 }
 
-extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate {
+extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate , TopHotelsCollectionViewCellDelegate {
+    
+    func didTapBookNow(for hotel: Hotel) {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        if let hotelDetailsVC = storyboard.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController {
+            hotelDetailsVC.selectedHotel = hotel
+            self.navigationController?.pushViewController(hotelDetailsVC, animated: true)
+        }
+    }
+    
     func reladRecentlyViewedData() {
         viewModel.fetchRecentlyViewedHotels {
             
