@@ -13,11 +13,12 @@ enum APIURL{
     case postForOTP
     case verifyOTP
     case postBooking
+    case notification
+    case notificationCount
     
     var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
     }
-    //= "https://syriabookingcacheapi.azurewebsites.net/api/HotelPublic/aggregates/"
     
     var url : URL? {
         switch self {
@@ -39,7 +40,11 @@ enum APIURL{
             return URL(string: baseURL + "UserPublic/verify-otp")
         case .postBooking:
             return URL(string: baseURL + "BookingPublic")
-            
+        case .notification:
+            return URL(string: baseURL + "BookingPublic/Notifications-by-user/")
+        case . notificationCount:
+            return URL(string: baseURL + "BookingPublic/Notifications-count-by-user/")
         }
     }
 }
+

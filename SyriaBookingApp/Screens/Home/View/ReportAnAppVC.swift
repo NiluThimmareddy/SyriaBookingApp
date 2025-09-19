@@ -30,7 +30,7 @@ class ReportAnAppVC: UIViewController {
     var comingfrom : comingFromLogin?
     var hotelViewModel = HotelViewModel()
     var titleText: String?
-    
+    var type = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         topView.layer.cornerRadius = 10
@@ -61,7 +61,7 @@ class ReportAnAppVC: UIViewController {
         for title in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
                 self?.selectTypeButton.setTitle(title, for: .normal)
-                
+                self?.type = title
             })
             actions.append(action)
         }
@@ -74,6 +74,7 @@ class ReportAnAppVC: UIViewController {
     
     @IBAction func submitButtonAction(_ sender: Any) {
         // Validate subject
+        
         guard let subject = selectTypeButton.titleLabel?.text,
               !subject.isEmpty, subject.lowercased() != "select subject" else {
             showAlert("Please select subject")
@@ -108,8 +109,22 @@ class ReportAnAppVC: UIViewController {
         }
         
         // API call
-        hotelViewModel.submitReporAnApp(subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
-        )
+        
+        if comingfrom == .TabBar  || comingfrom == .RightMenu{
+            //pass type,subject,message,username,email ans phone from textfield
+           
+            if comingfrom == .RightMenu {
+                type = "Complaint"
+            }
+            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
+            )
+            
+        }else if comingfrom == .HotelDetail {
+            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
+            )
+        }else {
+            
+        }
     }
     
     

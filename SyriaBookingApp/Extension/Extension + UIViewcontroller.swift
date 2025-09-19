@@ -11,6 +11,7 @@ import UIKit
 import ObjectiveC
 
 private var activityIndicatorKey: UInt8 = 0
+private var notificationViewModelKey: UInt8 = 0
 
 extension UIViewController {
     
@@ -62,6 +63,9 @@ extension UIViewController {
     static var searchVCReference: HotelSearchVC?
     static var notificationVCReference: YourNotificationVC?
     func setupAppNavigationBar() {
+        let viewModel = NotificationViewModel()
+        self.notificationViewModel = viewModel
+        self.notificationViewModel = viewModel
         let logoImageView = UIImageView(image: UIImage(named: "logo"))
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.frame = CGRect(x: -20, y: 0, width: 130, height: 40)
@@ -74,22 +78,39 @@ extension UIViewController {
                                            target: self,
                                            action: #selector(didTapSearch))
         
-        let notificationButton = UIBarButtonItem(image: UIImage(systemName: "bell.fill"),
-                                                 style: .plain,
-                                                 target: self,
-                                                 action: #selector(didTapNotification))
+        let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        badgeButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
+        badgeButton.addTarget(self, action: #selector(didTapNotification), for: .touchUpInside)
+        let notificationButton = UIBarButtonItem(customView: badgeButton)
+        
         
         let menuImage = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
         let menuButton = UIBarButtonItem(image: menuImage,
                                          style: .plain,
                                          target: self,
                                          action: #selector(didTapMenu(_:)))
-        if UserSessionManager.getUser() == nil {
-            navigationItem.rightBarButtonItems = [menuButton, searchButton]
-        } else {
-            navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
-        }
         
+//        badgeButton.badge = 10
+        if let user =  UserSessionManager.getUser()  {
+            
+            
+            viewModel.onCountSuccess = { data in               
+                print("Count: \(data.count)")
+                        badgeButton.badge = data.count
+            }
+            
+            viewModel.onError = { error in
+                print("Notification count error")
+                print(error)
+                
+            }
+            
+            viewModel.fetchNotificationCount(userId: user.id)
+            navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
+            
+        }else{
+            navigationItem.rightBarButtonItems = [menuButton, searchButton]
+        }
     }
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {
@@ -172,6 +193,17 @@ extension UIViewController {
             DispatchQueue.main.async {
                 self.present(controller, animated: true, completion: nil)
             }
+        }
+    }
+}
+
+extension UIViewController {
+    var notificationViewModel: NotificationViewModel? {
+        get {
+            return objc_getAssociatedObject(self, &notificationViewModelKey) as? NotificationViewModel
+        }
+        set {
+            objc_setAssociatedObject(self, &notificationViewModelKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 }

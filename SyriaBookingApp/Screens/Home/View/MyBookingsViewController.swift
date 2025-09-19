@@ -139,7 +139,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 }
             }
 
-            viewModel.fetchNotificationUser(userId: "UP00194")
+            viewModel.fetchNotificationUser(userId: user.id)
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
