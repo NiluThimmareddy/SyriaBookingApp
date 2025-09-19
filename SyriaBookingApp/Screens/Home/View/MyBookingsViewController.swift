@@ -14,11 +14,11 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var myBookigsTitleLabel: UILabel!
-      @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
+    @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
     
-    let viewModel = HotelViewModel()
+    let viewModel = NotificationViewModel()
     var selectedSegmentIndex: Int = 0
-//    var selectedHotel: Hotel?
+    //    var selectedHotel: Hotel?
     var isLoginPopupPresented = false
     var comingFrom : String?
     
@@ -37,47 +37,61 @@ class MyBookingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupUI()
         setupAppNavigationBar()
+        segmentControl.selectedSegmentIndex = 0
         
     }
-
+    
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
-        if selectedSegmentIndex == 0 {
-            viewModel.filteredBookings = [
-                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 300, status: "cancelled"),
-                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 350, status: "pending"),
-                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "05 Sep 2025", checkOut: "07 Sep 2025", totalAmount: 280, status: "cancelled"),
-                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "01 Oct 2025", checkOut: "05 Oct 2025", totalAmount: 40, status: "cancelled")
-            ]
-        } else {
-            viewModel.filteredBookings = [
-                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 300, status: "cancelled"),
-                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 350, status: "completed"), // changed
-                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "05 Sep 2025", checkOut: "07 Sep 2025", totalAmount: 280, status: "cancelled"),
-                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "01 Oct 2025", checkOut: "05 Sep 2025", totalAmount: 40, status: "cancelled")
-            ]
-        }
-        HistoryTableView.reloadData()
+        configureSelectedSegment(completion:{
+            self.HistoryTableView.reloadData()
+        })
+        
     }
     
+    func configureSelectedSegment(completion: @escaping ()->Void){
+       if selectedSegmentIndex == 0 {
+           // UPCOMING: today or future dates
+           viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+               if let date = data.checkInUtc.toDate() {
+                   return date >= Calendar.current.startOfDay(for: Date()) // today & future
+               }
+               
+               return false
+           }
+       } else {
+           // PAST: before today
+           viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+               if let date = data.checkInUtc.toDate() {
+                   return date < Calendar.current.startOfDay(for: Date()) // strictly past
+               }
+               return false
+           }
+       }
+       
+       completion()
+        
+    }
 }
 
 extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(5, viewModel.filteredBookings.count)
+        return  viewModel.filteredHistoryArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let booking = viewModel.filteredBookings[indexPath.row]
+        let booking = viewModel.filteredHistoryArray[indexPath.row]
         
         if selectedSegmentIndex == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ArchiveTableViewCell", for: indexPath) as! ArchiveTableViewCell
+            cell.configure(booking: booking)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
@@ -94,7 +108,7 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if selectedSegmentIndex == 1 {
-            return UIDevice.current.userInterfaceIdiom == .pad ? 120 : 100
+            return UIDevice.current.userInterfaceIdiom == .pad ? 130 : 110
         } else {
             return UIDevice.current.userInterfaceIdiom == .pad ? 180 : 152
         }
@@ -106,13 +120,26 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     func setupUI() {
         navigationController?.setNavigationBarBlack()
 
-        if UserSessionManager.getUser() != nil {
-            viewModel.filteredBookings = [
-                Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 300, status: "cancelled"),
-                Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "2025-09-05", checkOut: "2025-09-10", totalAmount: 350, status: "pending"),
-                Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "2025-09-05", checkOut: "2025-09-07", totalAmount: 280, status: "cancelled"),
-                Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "2025-10-01", checkOut: "2025-10-05", totalAmount: 40, status: "cancelled")
-            ]
+        if let  user = UserSessionManager.getUser() {
+            self.showLoader()
+            viewModel.onSuccess = { response in
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    self.selectedSegmentIndex = 0
+                    self.configureSelectedSegment(completion:{
+                        self.HistoryTableView.reloadData()
+                    })
+                }
+            }
+            
+            viewModel.onError = { error in
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    self.showAlert(error)
+                }
+            }
+
+            viewModel.fetchNotificationUser(userId: "UP00194")
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
@@ -137,11 +164,10 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             segmentControl.selectedSegmentTintColor = UIColor.black
             segmentControl.addBottomShadow()
             
-            viewModel.filteredHotels = HotelDataMaganer.shared.allHotels
-            viewModel.filteredHotelsCopy = viewModel.filteredHotels
             
             //            isLoginPopupPresented = false
             DispatchQueue.main.async {
+                self.selectedSegmentIndex = 0
                 self.HistoryTableView.reloadData()
             }
         } else {
@@ -171,10 +197,13 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
 }
 
 extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate {
-    func didTapDetails(for booking: Booking) {
+   
+    
+    func didTapDetails(for booking: BookingHistoryModel) {
         guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
         }
+        
         viewBookingConfirmationVC.selectedHotel = selectedHotel
         viewBookingConfirmationVC.selectedRoom = selectedRoom
         viewBookingConfirmationVC.selectedRate = selectedRate
@@ -183,9 +212,9 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         formatter.dateStyle = .medium
         viewBookingConfirmationVC.bookingDate = formatter.string(from: Date())
 
-        viewBookingConfirmationVC.totalNights = calculateTotalNights(checkIn: booking.checkIn, checkOut: booking.checkOut)
-        viewBookingConfirmationVC.checkInDate = booking.checkIn
-        viewBookingConfirmationVC.checkOutDate = booking.checkOut
+        viewBookingConfirmationVC.totalNights = calculateTotalNights(checkIn: booking.checkInUtc, checkOut: booking.checkOutUtc)
+        viewBookingConfirmationVC.checkInDate = booking.checkInUtc
+        viewBookingConfirmationVC.checkOutDate = booking.checkOutUtc
         viewBookingConfirmationVC.guestName = guestName ?? ""
         viewBookingConfirmationVC.guestEmail = guestEmail ?? ""
         viewBookingConfirmationVC.guestPhone = guestPhone ?? ""
@@ -196,7 +225,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         present(viewBookingConfirmationVC, animated: true)
     }
 
-    func didTapCancel(for booking: Booking) {
+    func didTapCancel(for booking: BookingHistoryModel) {
         if let cancelVC = storyboard?.instantiateViewController(withIdentifier: "CancelBookingVC") as? CancelBookingVC {
             cancelVC.modalPresentationStyle = .overFullScreen
             cancelVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -205,9 +234,9 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             present(cancelVC, animated: true)
         }
     }
-    func didConfirmCancellation(for booking: Booking) {
-        if let index = viewModel.filteredBookings.firstIndex(where: { $0.id == booking.id }) {
-            viewModel.filteredBookings[index].status = "cancelled"
+    func didConfirmCancellation(for booking: BookingHistoryModel) {
+        if let index = viewModel.filteredHistoryArray.firstIndex(where: { $0.id == booking.id }) {
+            viewModel.filteredHistoryArray[index].status = "cancelled"
             HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
     }
@@ -221,3 +250,20 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         return Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
     }
 }
+
+
+
+extension String {
+    func toDate() -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime] // only internet date time
+        if let date = formatter.date(from: self) {
+            return date
+        }
+
+        // Try with fractional seconds as a fallback
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.date(from: self)
+    }
+}
+

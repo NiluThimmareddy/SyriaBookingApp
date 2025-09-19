@@ -20,9 +20,9 @@ class YourNotificationTVC: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func configure(with booking: Booking) {
+    func configure(with booking: BookingHistoryModel) {
         hotelNameLabel.text = booking.hotelName
-        datesLabel.text = "\(booking.checkIn) - \(booking.checkOut)"
+        datesLabel.text = "\(booking.checkInUtc.description) - \(booking.checkOutUtc.description)"
         statusLabel.text = booking.status.capitalized
 //        upComingDateLabel.text = "Check-in: \(booking.checkIn)"
         

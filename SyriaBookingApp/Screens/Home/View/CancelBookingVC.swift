@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CancelBookingDelegate: AnyObject {
-    func didConfirmCancellation(for booking: Booking)
+    func didConfirmCancellation(for booking: BookingHistoryModel)
 }
 
 class CancelBookingVC: UIViewController {
@@ -25,7 +25,7 @@ class CancelBookingVC: UIViewController {
     
     private var placeholderLabel: UILabel!
     weak var delegate: CancelBookingDelegate?
-    var booking: Booking?
+    var booking: BookingHistoryModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,13 +45,11 @@ class CancelBookingVC: UIViewController {
         }
         self.dismiss(animated: true, completion: nil)
     }
-    
 }
 
 extension CancelBookingVC : UITextViewDelegate {
     func setupPlaceholder() {
-        reasonTextView.delegate = self
-        
+        reasonTextView.delegate = self        
         placeholderLabel = UILabel()
         placeholderLabel.text = "Tell us briefly why you're cancelling"
         placeholderLabel.font = UIFont.systemFont(ofSize: 15)

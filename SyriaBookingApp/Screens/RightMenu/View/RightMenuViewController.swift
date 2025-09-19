@@ -60,7 +60,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             present(controller, animated: true)
         case 4 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
-            controller.comingfrom = "RightMenu"
+            controller.comingfrom = .RightMenu
             controller.titleText = "Report an app"
             present(controller, animated: true)
         case 5 :

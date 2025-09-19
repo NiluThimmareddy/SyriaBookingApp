@@ -1,0 +1,64 @@
+//
+//  NotificationViewModel.swift
+//  SyriaBookingApp
+//
+//  Created by ToqSoft on 18/09/25.
+//
+
+import Foundation
+class NotificationViewModel {
+    var BookingHistoryArray = [BookingHistoryModel]()
+    var filteredHistoryArray =  [BookingHistoryModel]()
+    var onError : ((String)->Void)?
+    var onSuccess : (([BookingHistoryModel])->Void)?
+    var onCountSuccess : ((NotificationCountModel) -> Void)?
+    
+    func fetchNotificationUser(userId:String){
+        guard var url = APIURL.notification.url?.absoluteString else { return }
+        
+        url += "\(userId)?includePast=true&take=50"
+        
+        guard let url = URL(string: url) else{
+            onError?("Invalid Url")
+            return
+        }
+        
+        
+        APIManager.shared.fetchData(from: url, modelType: BookingHistoryResponseModel.self) { [weak self] result in
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let success):
+                self.BookingHistoryArray = success.data
+                self.onSuccess?(success.data)
+            case .failure(let failure):
+                self.onError?(failure.localizedDescription)
+            }
+        }
+    }
+    
+    func fetchNotificationCount(userId:String){
+        guard var url = APIURL.notificationCount.url?.absoluteString else { return }
+        
+        url += "\(userId)"
+        
+        guard let url = URL(string: url) else{
+            onError?("Invalid Url")
+            return
+        }
+        
+        
+        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let success):
+              print(success)
+                self.onCountSuccess?(success)
+            case .failure(let failure):
+                self.onError?(failure.localizedDescription)
+            }
+        }
+        
+    }
+}

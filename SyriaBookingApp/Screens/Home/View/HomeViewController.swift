@@ -516,7 +516,7 @@ extension HomeViewController {
                         Cityar: cityAR     // Arabic
                     )
                 } ?? []
-                print("where to next Hotels List.... \(self.WhereToNextCityList)")
+               
             }
         }
         

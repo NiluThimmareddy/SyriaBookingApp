@@ -8,8 +8,8 @@
 import UIKit
 
 protocol MyBookingCellDelegate: AnyObject {
-    func didTapDetails(for booking: Booking)
-    func didTapCancel(for booking: Booking)
+    func didTapDetails(for booking: BookingHistoryModel)
+    func didTapCancel(for booking: BookingHistoryModel)
 }
 
 class MyBookingTableViewCell: UITableViewCell {
@@ -27,7 +27,7 @@ class MyBookingTableViewCell: UITableViewCell {
     @IBOutlet weak var contactSupportButton: UIButton!
     
     weak var delegate: MyBookingCellDelegate?
-    var currentBooking: Booking?
+    var currentBooking: BookingHistoryModel?
     var contactSupprtButtonAction : (()->Void)?
     
     override func awakeFromNib() {
@@ -37,11 +37,11 @@ class MyBookingTableViewCell: UITableViewCell {
         statusLabel.clipsToBounds = true
     }
     
-    func configure(booking: Booking) {
+    func configure(booking: BookingHistoryModel) {
         currentBooking = booking
         hotelNameLabel.text = booking.hotelName
         roomTypeLabel.text = booking.roomType
-        datesLabel.text = "\(booking.checkIn) - \(booking.checkOut)"
+        datesLabel.text = "\(booking.checkInUtc) - \(booking.checkOutUtc)"
         totalAmountLabel.text = "₹\(booking.totalAmount)"
         
         switch booking.status.lowercased() {

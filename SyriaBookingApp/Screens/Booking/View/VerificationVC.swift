@@ -2,31 +2,29 @@
 
 import UIKit
 
-enum comingFromLoginSuccess {
+enum comingFromLogin {
     case Home
     case BookingHistory
     case HotelDetail
-    
+    case RightMenu
+    case TabBar
 }
 
 class VerificationVC : UIViewController {
-
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var mobileNumberTF: UITextField!
     @IBOutlet var otpTF: [UITextField]!
     @IBOutlet weak var verifyAndContinueButton: UIButton!
-    
     @IBOutlet weak var messageLabel: UILabel!
+    
     var mobileNumber: String?
     var guestName: String?
     var guestEmail: String?
-
-   
     var OptResponse : OTPResponseModel?
     var viewModel = BookingViewModel()
+    var comingFrom : comingFromLogin?
     
-    var comingFrom : comingFromLoginSuccess?
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -42,7 +40,6 @@ class VerificationVC : UIViewController {
     }
     
     @IBAction func verifyAndContinueButtonAction(_ sender: Any) {
-       
         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
 
         guard !otp.isEmpty else {
@@ -53,14 +50,10 @@ class VerificationVC : UIViewController {
         guard let mobileNumber = mobileNumber else {
             return
         }
-        
        
         self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
-            
             guard let UserId = UserId else { return }
-            
             self?.viewModel.onSuccess = { response in
-               
                 UserSessionManager.saveUser(response)
             }
             
@@ -69,13 +62,8 @@ class VerificationVC : UIViewController {
             }
             
             self?.viewModel.FetchUserData(id: UserId.data.userId)
-
-            //write code based on from which page user come here like HomePage, bookingPage, bookinghistory page
-            
-//            guard let comingFrom = self?.comingFrom else { return }
             
             switch self?.comingFrom {
-                
             case .Home:
                 //Reload HomePage
                 self?.dismiss(animated: true)
@@ -90,28 +78,26 @@ class VerificationVC : UIViewController {
             case .none:
                 self?.dismissPopup()
                 self?.dismiss(animated: true)
+            case .some(.RightMenu):
+                break
+            case .some(.TabBar):
+                break
             }
         }
     }
-    
-   
-    
+
     func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
         showLoader()
         viewModel.onVerifyOTPSucess = { response in
             self.hideLoader()
            completion(response)
         }
-        
         viewModel.onError = { error in
             self.hideLoader()
             self.showAlert(error.description)
         }
-        
         viewModel.verifyOTP(mobile: mobile, otp: otp)
-        
     }
-    
 }
 
 extension VerificationVC : UITextFieldDelegate {
@@ -129,7 +115,6 @@ extension VerificationVC : UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         if string.isEmpty {
             if let currentText = textField.text, !currentText.isEmpty {
                 textField.text = ""
@@ -144,7 +129,6 @@ extension VerificationVC : UITextFieldDelegate {
                 return false
             }
         }
-
         return (textField.text?.count ?? 0) < 1
     }
 }
@@ -152,9 +136,7 @@ extension VerificationVC : UITextFieldDelegate {
 extension VerificationVC {
     func setUpUI() {
         mobileNumberTF.text = mobileNumber
-        
         messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
-        
         for (index, textField) in otpTF.enumerated() {
             textField.delegate = self
             textField.keyboardType = .numberPad

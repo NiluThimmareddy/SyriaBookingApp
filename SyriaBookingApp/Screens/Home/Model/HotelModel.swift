@@ -203,3 +203,28 @@ struct Booking {
     let totalAmount: Double
     var status: String   // pending, confirmed, cancelled
 }
+
+struct BookingHistoryResponseModel : Codable {
+    var message : String
+    var data : [BookingHistoryModel]
+}
+struct BookingHistoryModel: Codable {
+    let id: String
+    let type: String
+    var status: String
+    let hotelId: String
+    let roomId: String
+    let hotelName: String
+    let roomType: String
+    let checkInUtc: String
+    let checkOutUtc: String
+    let totalAmount: Double
+    let lastUpdatedUtc: String
+    let title: String
+    let subtitle: String
+    let deepLink: String
+}
+
+struct NotificationCountModel : Codable {
+    let count : Int
+}

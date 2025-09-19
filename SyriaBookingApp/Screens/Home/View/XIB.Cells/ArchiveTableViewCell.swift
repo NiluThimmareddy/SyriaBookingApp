@@ -9,6 +9,7 @@ import UIKit
 
 class ArchiveTableViewCell : UITableViewCell {
 
+    @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelIdLabel: UILabel!
     @IBOutlet weak var datesLabel: UILabel!
@@ -21,6 +22,41 @@ class ArchiveTableViewCell : UITableViewCell {
         backView.applyCardStyle()
         pendingLabel.layer.cornerRadius = 6
         pendingLabel.clipsToBounds = true
+    }
+    
+    
+    func configure(booking: BookingHistoryModel) {
+       
+        hotelIdLabel.text = "\(booking.id ) ᐧ \(booking.roomId)"
+ 
+        datesLabel.text = "\(booking.checkInUtc) - \(booking.checkOutUtc)"
+        totalAmountLabel.text = "₹\(booking.totalAmount)"
+        
+        switch booking.status.lowercased() {
+        case "pending":
+            imgView.image = UIImage(systemName: "clock")
+            pendingLabel.text = "Pending"
+            pendingLabel.backgroundColor = .systemBlue
+           
+            
+        case "cancelled":
+            imgView.image = UIImage(systemName: "xmark.circle")
+            pendingLabel.text = "Cancelled"
+            pendingLabel.backgroundColor = .systemRed
+           
+            
+        case "completed":
+            imgView.image = UIImage(systemName: "checkmark.circle")
+            pendingLabel.text = "Completed"
+            pendingLabel.backgroundColor = .systemGreen
+            
+            
+        default:
+            imgView.image = UIImage(systemName: "house")
+            pendingLabel.text = booking.status
+            pendingLabel.backgroundColor = .darkGray
+            
+        }
     }
     
 }

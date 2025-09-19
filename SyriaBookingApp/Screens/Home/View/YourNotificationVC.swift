@@ -99,18 +99,29 @@ class YourNotificationVC: UIViewController {
     @IBOutlet weak var yourNotificationTV: UITableView!
     @IBOutlet weak var viewAllButton: UIButton!
     
-    let viewModel = HotelViewModel()
+    let viewModel = NotificationViewModel()
     weak var delegate: YourNotificationVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       showLoader()
+        viewModel.onSuccess = { response in
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.yourNotificationTV.reloadData()
+            }
+        }
         
-        viewModel.filteredBookings = [
-            Booking(id: "1", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 300, status: "cancelled"),
-            Booking(id: "2", hotelName: "Dar Al Noor", roomType: "Single Room", checkIn: "05 Sep 2025", checkOut: "10 Sep 2025", totalAmount: 350, status: "pending"),
-            Booking(id: "3", hotelName: "Louis Inn Hotel", roomType: "Double Room", checkIn: "05 Sep 2025", checkOut: "07 Sep 2025", totalAmount: 280, status: "cancelled"),
-            Booking(id: "4", hotelName: "Sea View", roomType: "Single Room", checkIn: "01 Oct 2025", checkOut: "05 Oct 2025", totalAmount: 40, status: "cancelled")
-        ]
+        viewModel.onError = { error in
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.showAlert(error)
+            }
+        }
+        
+        guard let user = UserSessionManager.getUser() else { return }
+        
+        viewModel.fetchNotificationUser(userId: user.id)
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         yourNotificationTV.register(UINib(nibName: "YourNotificationTVC", bundle: nil), forCellReuseIdentifier: "YourNotificationTVC")
@@ -134,12 +145,12 @@ class YourNotificationVC: UIViewController {
 
 extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(3,viewModel.filteredBookings.count)
+        return min(3,viewModel.BookingHistoryArray.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "YourNotificationTVC")as! YourNotificationTVC
-        let booking = viewModel.filteredBookings[indexPath.row]
+        let booking = viewModel.BookingHistoryArray[indexPath.row]
         cell.configure(with: booking)
         return cell
     }

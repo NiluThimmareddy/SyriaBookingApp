@@ -27,7 +27,7 @@ class ReportAnAppVC: UIViewController {
     @IBOutlet weak var enterPhoneNumberTF: UITextField!
     @IBOutlet weak var chevronImgView: UIImageView!
     
-    var comingfrom  = ""
+    var comingfrom : comingFromLogin?
     var hotelViewModel = HotelViewModel()
     var titleText: String?
     
@@ -36,7 +36,7 @@ class ReportAnAppVC: UIViewController {
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
         setupRatingDropdownMenu()
-        if comingfrom == "RightMenu" {
+        if comingfrom == .RightMenu {
             contactTitleLabel.text = titleText ?? "Report an app"
             
             self.selectTypeButton.setTitle("Complaint", for: .normal)
@@ -114,7 +114,7 @@ class ReportAnAppVC: UIViewController {
     
     
     @IBAction func dismissButton(_ sender: Any) {
-        if comingfrom == "RightMenu"{
+        if comingfrom == .RightMenu{
             self.dismiss(animated: true)
         }else{
             UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)

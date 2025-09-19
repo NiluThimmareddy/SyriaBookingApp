@@ -67,7 +67,6 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     var scrolleView: UIScrollView { scrollView }
     var scrollToTopButton = UIButton(type: .system)
     var scrolltoTopHelper : ScrollToTopHelper?
-    var user : BookingModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,7 +140,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
-        guard user != nil else { return }
+        guard let user = UserSessionManager.getUser() else { return }
         guard let selectedHotel = selectedHotel else { return}
         
         guard let name = enterYourNameTF?.text else {
@@ -413,13 +412,16 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     
     func setUpUI() {
         
-//        if let user = UserSessionManager.getUser() {
-//            self.user = user
-//            submitReviewButton.isEnabled = true
-//        }else{
-//            self.user = nil
-//            submitReviewButton.isEnabled = false
-//        }
+        if let user = UserSessionManager.getUser() {
+            enterYourNameTF.text = user.name
+            enterYourNameTF.isUserInteractionEnabled = false
+            addReviewViewHeightConstraint.constant = 450
+            addReviewView.isHidden = false
+        } else {
+            addReviewViewHeightConstraint.constant = 0
+            addReviewView.isHidden = true
+        }
+        
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         
