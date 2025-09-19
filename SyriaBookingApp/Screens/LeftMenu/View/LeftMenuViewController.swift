@@ -21,7 +21,7 @@ struct MenuItem {
     }
 }
 
-class LeftMenuViewController: UIViewController {
+class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -30,6 +30,8 @@ class LeftMenuViewController: UIViewController {
     @IBOutlet weak var personNameLabel: UILabel!
     @IBOutlet weak var personEmailLabel: UILabel!
     @IBOutlet weak var languageButton: UIButton!
+    @IBOutlet weak var loginbutton: UIButton!
+    
     
     let menuItems: [MenuItem] = [
         MenuItem(titleEN: "Hotels", titleAR: "فنادق", icon: "bed.double.fill"),
@@ -41,7 +43,6 @@ class LeftMenuViewController: UIViewController {
         MenuItem(titleEN: "Safety Resource Center", titleAR: "مركز موارد السلامة", icon: "shield.lefthalf.filled.badge.checkmark")
     ]
 
-    
     var onDismiss: (()->Void)?
     let languages = ["English", "العربية"]
      
@@ -53,18 +54,27 @@ class LeftMenuViewController: UIViewController {
             self,selector: #selector(LeftMenuReload),name: .languageChanged,object: nil)
     }
     
-    @objc func LeftMenuReload() {
-        LeftMenuUITableView.reloadData()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.backButtonTitle = ""
         updateLanguageButtonTitle()
+        loadUserDetails()
     }
     
     @IBAction func DismissButtonAction(_ sender: UIButton) {
         onDismiss?()
+    }
+    
+    @IBAction func loginButtonAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        controller.reloadScreenAfterDismiss = {
+            self.viewDidLoad()
+            self.viewWillAppear(true)
+        }
+        self.showPopup(controller, widthMultiplier: 0.9, heightMultiplier: 0.3)
     }
 
     @IBAction func rightArrowButtonAction(_ sender: Any) {
@@ -188,5 +198,23 @@ extension LeftMenuViewController {
 
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
         languageButton.setAttributedTitle(attributedTitle, for: .normal)
+    }
+    
+    func loadUserDetails() {
+        if let user = UserSessionManager.getUser() {
+            personNameLabel.isHidden = false
+            personEmailLabel.isHidden = false
+            loginbutton.isHidden = true
+            personNameLabel.text = user.name
+            personEmailLabel.text = user.email
+        } else {
+            personNameLabel.isHidden = true
+            personEmailLabel.isHidden = true
+            loginbutton.isHidden = false
+        }
+    }
+    
+    @objc func LeftMenuReload() {
+        LeftMenuUITableView.reloadData()
     }
 }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TopHotelsCollectionViewCellDelegate: AnyObject {
+    func didTapBookNow(for hotel: Hotel)
+}
+
 class TopHotelsCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var backView: UIView!
@@ -23,9 +27,12 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var bookNowButton: UIButton!
     @IBOutlet weak var offerView: UIView!
     
+    weak var delegate: TopHotelsCollectionViewCellDelegate?
+    var hotel: Hotel?
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         backView.applyCardStyle()
         reviewsView.applyCardStyle()
         reviewsView.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 15
@@ -35,9 +42,13 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
     }
 
     @IBAction func bookNowButtonAction(_ sender: Any) {
+        if let hotel = hotel {
+            delegate?.didTapBookNow(for: hotel)
+        }
     }
     
     func configuration(with model: Hotel) {
+        self.hotel = model
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             hotelImgView.loadImage(from: firstImageURL)
         } else {
@@ -97,7 +108,4 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
             bookNowButton.setTitle("Book Now", for: .normal)
         }
     }
-    
-   
-
 }
