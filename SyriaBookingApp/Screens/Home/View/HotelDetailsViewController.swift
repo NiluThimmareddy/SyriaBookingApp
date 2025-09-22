@@ -97,6 +97,9 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     
     @IBAction func pleaseClickHereButtonAction(_ sender: Any) {
         let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
+        controller.comingfrom = .HotelDetail
+        controller.hotelID = selectedHotel?.id ?? ""
+        controller.hotelName = selectedHotel?.name ?? ""
         present(controller, animated: true)
     }
     

@@ -163,15 +163,15 @@ class HotelViewModel {
         }
     }
     
-    func submitReporAnApp(type:String,subject:String,message:String,userName:String,UserEmail:String,userPhone:String){
+    func submitReporAnApp(type:String,subject:String,message:String,hotelId:String,hotelName:String = "" ,BookingId:String = "",userName:String,UserEmail:String,userPhone:String){
        
         let params: [String: Any] = [
             "type": type,
             "subject": subject,
             "message": message,
-            "hotelId": "",
-            "hotelName": "",
-            "bookingId": "",
+            "hotelId": hotelId,
+            "hotelName": hotelName,
+            "bookingId": BookingId,
             "userName": userName,
             "userEmail": UserEmail,
             "userPhone": userPhone

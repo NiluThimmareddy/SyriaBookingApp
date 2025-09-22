@@ -31,11 +31,14 @@ class ReportAnAppVC: UIViewController {
     var hotelViewModel = HotelViewModel()
     var titleText: String?
     var type = ""
+    var hotelID = ""
+    var hotelName = ""
+    var BookingID = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
-        setupRatingDropdownMenu()
+        setupContactUsTypeDropdownMenu()
         if comingfrom == .RightMenu {
             contactTitleLabel.text = titleText ?? "Report an app"
             
@@ -53,7 +56,7 @@ class ReportAnAppVC: UIViewController {
         }
     }
     
-    func setupRatingDropdownMenu() {
+    func setupContactUsTypeDropdownMenu() {
         let starOptions: [String] = ["Feedback","Enquiry","Complaint"]
         
         var actions: [UIAction] = []
@@ -87,12 +90,8 @@ class ReportAnAppVC: UIViewController {
             showAlert("Please enter message")
             return
         }
-        
-        // Validate user
-        guard let user = UserSessionManager.getUser() else {
-            showAlert("You are not logged in to send \(subject)")
-            return
-        }
+    
+       
         showLoader()
         hotelViewModel.onReporAnAppSucess = { response in
             self.hideLoader()
@@ -111,25 +110,29 @@ class ReportAnAppVC: UIViewController {
         // API call
         
         if comingfrom == .TabBar  || comingfrom == .RightMenu{
-            //pass type,subject,message,username,email ans phone from textfield
-           
+            //pass type,subject,message,username,email ans phone from textfield           
             if comingfrom == .RightMenu {
                 type = "Complaint"
             }
-            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
-            )
+            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
+            
             
         }else if comingfrom == .HotelDetail {
-            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, userName: user.name, UserEmail: user.email, userPhone: user.mobile
-            )
-        }else {
+           
+            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
+        }else if comingfrom == .BookingHistory{
+            guard let user = UserSessionManager.getUser() else {
+                return
+            }
+            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: hotelID, userName: user.name, UserEmail: user.email, userPhone: user.mobile
+            )
         }
     }
     
     
     @IBAction func dismissButton(_ sender: Any) {
-        if comingfrom == .RightMenu{
+        if comingfrom == .RightMenu, comingfrom == .BookingHistory{
             self.dismiss(animated: true)
         }else{
             UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)

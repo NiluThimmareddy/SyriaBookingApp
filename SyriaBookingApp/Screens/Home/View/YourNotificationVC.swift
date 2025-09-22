@@ -108,6 +108,13 @@ class YourNotificationVC: UIViewController {
         viewModel.onSuccess = { response in
             DispatchQueue.main.async {
                 self.hideLoader()
+                self.viewModel.filteredHistoryArray = self.viewModel.BookingHistoryArray.filter { data in
+                    if let date = data.checkInUtc.toDate() {
+                        return date >= Calendar.current.startOfDay(for: Date()) // today & future
+                    }
+                    
+                    return false
+                }
                 self.yourNotificationTV.reloadData()
             }
         }
@@ -145,13 +152,13 @@ class YourNotificationVC: UIViewController {
 
 extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(3,viewModel.BookingHistoryArray.count)
+        return min(3,viewModel.filteredHistoryArray.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "YourNotificationTVC")as! YourNotificationTVC
-        let booking = viewModel.BookingHistoryArray[indexPath.row]
-        cell.configure(with: booking)
+       
+        cell.configure(with: viewModel.filteredHistoryArray[indexPath.row])
         return cell
     }
     

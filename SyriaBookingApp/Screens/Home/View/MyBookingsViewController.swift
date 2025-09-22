@@ -96,8 +96,12 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
             cell.configure(booking: booking)
-            cell.contactSupprtButtonAction = {
+            cell.contactSupprtButtonAction = { booking in
                 if let contactVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
+                    contactVC.comingfrom = .BookingHistory
+                    contactVC.hotelID = booking.hotelId
+                    contactVC.hotelName = booking.hotelName
+                    contactVC.BookingID = booking.id
                     self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
                 }
             }
