@@ -28,7 +28,7 @@ class MyBookingTableViewCell: UITableViewCell {
     
     weak var delegate: MyBookingCellDelegate?
     var currentBooking: BookingHistoryModel?
-    var contactSupprtButtonAction : (()->Void)?
+    var contactSupprtButtonAction : ((BookingHistoryModel)->Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -85,6 +85,9 @@ class MyBookingTableViewCell: UITableViewCell {
     }
     
     @IBAction func contactSupportButtonAction(_ sender: Any) {
-        self.contactSupprtButtonAction?()
+        if let booking = currentBooking {
+            self.contactSupprtButtonAction?(booking)
+        }
+      
     }
 }
