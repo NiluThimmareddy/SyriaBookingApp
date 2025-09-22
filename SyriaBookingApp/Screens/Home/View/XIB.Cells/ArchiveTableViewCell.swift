@@ -28,29 +28,23 @@ class ArchiveTableViewCell : UITableViewCell {
     func configure(booking: BookingHistoryModel) {
        
         hotelIdLabel.text = "\(booking.id ) ᐧ \(booking.roomId)"
- 
-        datesLabel.text = "\(booking.checkInUtc) - \(booking.checkOutUtc)"
+        datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
         totalAmountLabel.text = "₹\(booking.totalAmount)"
+        featureDateLabel.text = booking.lastUpdatedUtc.toDayMonth()
         
         switch booking.status.lowercased() {
         case "pending":
             imgView.image = UIImage(systemName: "clock")
             pendingLabel.text = "Pending"
-            pendingLabel.backgroundColor = .systemBlue
-           
-            
+            pendingLabel.backgroundColor = .systemBlue    
         case "cancelled":
             imgView.image = UIImage(systemName: "xmark.circle")
             pendingLabel.text = "Cancelled"
             pendingLabel.backgroundColor = .systemRed
-           
-            
         case "completed":
             imgView.image = UIImage(systemName: "checkmark.circle")
             pendingLabel.text = "Completed"
             pendingLabel.backgroundColor = .systemGreen
-            
-            
         default:
             imgView.image = UIImage(systemName: "house")
             pendingLabel.text = booking.status

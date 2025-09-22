@@ -3865,9 +3865,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bkI-cX-jRb">
                                 <rect key="frame" x="0.0" y="768" width="393" height="50"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcC-6S-yuw">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcC-6S-yuw">
+                                        <rect key="frame" x="30" y="0.0" width="363" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -3875,7 +3875,7 @@
                                 <color key="backgroundColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="OcC-6S-yuw" secondAttribute="trailing" id="60f-wp-ya2"/>
-                                    <constraint firstItem="OcC-6S-yuw" firstAttribute="leading" secondItem="bkI-cX-jRb" secondAttribute="leading" id="LYp-vp-XBg"/>
+                                    <constraint firstItem="OcC-6S-yuw" firstAttribute="leading" secondItem="bkI-cX-jRb" secondAttribute="leading" constant="30" id="LYp-vp-XBg"/>
                                     <constraint firstAttribute="bottom" secondItem="OcC-6S-yuw" secondAttribute="bottom" id="N8Q-Do-IRj"/>
                                     <constraint firstAttribute="height" constant="50" id="zSd-r8-1O8"/>
                                     <constraint firstItem="OcC-6S-yuw" firstAttribute="top" secondItem="bkI-cX-jRb" secondAttribute="top" id="zZY-Yg-o3T"/>
@@ -3893,11 +3893,6 @@
                             <constraint firstItem="bkI-cX-jRb" firstAttribute="bottom" secondItem="FDq-tI-wlQ" secondAttribute="bottom" id="vga-1z-Mpe"/>
                             <constraint firstItem="bkI-cX-jRb" firstAttribute="leading" secondItem="FDq-tI-wlQ" secondAttribute="leading" id="wzd-Zz-tfZ"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="bkI-cX-jRb"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="addReviewLabel" destination="dpl-Iw-Sh6" id="cx2-rl-1gd"/>
@@ -3940,6 +3935,8 @@
                         <outlet property="scrollView" destination="quI-Yc-Rc4" id="fh6-xd-wbZ"/>
                         <outlet property="selectratingButton" destination="Kyb-j3-IqF" id="CBz-jj-0VM"/>
                         <outlet property="submitReviewButton" destination="P4T-w7-X9b" id="bKc-e7-hHe"/>
+                        <outlet property="totalAmountLabel" destination="OcC-6S-yuw" id="LNM-k7-NOR"/>
+                        <outlet property="totalPriceView" destination="bkI-cX-jRb" id="FQ4-gf-CNY"/>
                         <outlet property="verticalStackview" destination="jTD-Cn-wtY" id="dY7-CD-q35"/>
                         <outlet property="viewAllButton" destination="vKY-qt-tzm" id="MR7-0l-H7h"/>
                         <outlet property="yourNameLabel" destination="K8Q-qH-DN0" id="Dlm-cO-qYW"/>
@@ -4159,7 +4156,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kuz-Vr-LlU">
-                                <rect key="frame" x="66.666666666666686" y="94" width="300" height="270"/>
+                                <rect key="frame" x="68" y="94" width="300" height="270"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Bookings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXv-dd-FOp">
                                         <rect key="frame" x="10" y="7.9999999999999982" width="95.666666666666671" height="19.333333333333329"/>
@@ -4199,6 +4196,15 @@
                                             <outlet property="delegate" destination="UR9-cg-dnU" id="PGn-6H-0kh"/>
                                         </connections>
                                     </tableView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PlU-yD-IrK">
+                                        <rect key="frame" x="10" y="48.666666666666657" width="280" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Jh5-FG-dDU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -4211,7 +4217,10 @@
                                     <constraint firstAttribute="height" constant="270" id="LKa-LN-EwG"/>
                                     <constraint firstItem="YXv-dd-FOp" firstAttribute="leading" secondItem="Kuz-Vr-LlU" secondAttribute="leading" constant="10" id="VZ8-k5-s19"/>
                                     <constraint firstItem="g3X-SD-QPk" firstAttribute="centerY" secondItem="YXv-dd-FOp" secondAttribute="centerY" id="cLd-ZA-Xe5"/>
+                                    <constraint firstItem="PlU-yD-IrK" firstAttribute="top" secondItem="CbE-fA-81M" secondAttribute="bottom" constant="10" id="dWE-2M-ocf"/>
                                     <constraint firstItem="YXv-dd-FOp" firstAttribute="top" secondItem="Kuz-Vr-LlU" secondAttribute="top" constant="8" id="lQa-1h-n99"/>
+                                    <constraint firstAttribute="trailing" secondItem="PlU-yD-IrK" secondAttribute="trailing" constant="10" id="o3K-VF-dyc"/>
+                                    <constraint firstItem="PlU-yD-IrK" firstAttribute="leading" secondItem="Kuz-Vr-LlU" secondAttribute="leading" constant="10" id="plq-Bd-3yq"/>
                                     <constraint firstAttribute="trailing" secondItem="CbE-fA-81M" secondAttribute="trailing" id="rOf-9X-Emm"/>
                                     <constraint firstAttribute="bottom" secondItem="It1-R3-5GH" secondAttribute="bottom" id="tMz-Zw-fB7"/>
                                     <constraint firstAttribute="width" constant="300" id="yO1-IM-Soa"/>
@@ -4226,12 +4235,14 @@
                         <viewLayoutGuide key="safeArea" id="b6X-pW-RdA"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="b6X-pW-RdA" firstAttribute="trailing" secondItem="Kuz-Vr-LlU" secondAttribute="trailing" constant="25" id="ezf-7S-pEA"/>
                             <constraint firstItem="Kuz-Vr-LlU" firstAttribute="top" secondItem="b6X-pW-RdA" secondAttribute="top" constant="35" id="lcI-gV-mAA"/>
-                            <constraint firstItem="Kuz-Vr-LlU" firstAttribute="centerX" secondItem="b6X-pW-RdA" secondAttribute="centerX" constant="20" id="zVJ-Z2-SZR"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backView" destination="Kuz-Vr-LlU" id="1I4-kT-2Vp"/>
+                        <outlet property="backViewHeightConstraint" destination="LKa-LN-EwG" id="VbE-am-cJY"/>
+                        <outlet property="noNotificationsLabel" destination="PlU-yD-IrK" id="nYw-b7-Ibj"/>
                         <outlet property="viewAllButton" destination="g3X-SD-QPk" id="P7i-5X-H2h"/>
                         <outlet property="yourNotificationTV" destination="It1-R3-5GH" id="PIE-RF-8bv"/>
                     </connections>
@@ -4268,22 +4279,22 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

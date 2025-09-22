@@ -7,18 +7,18 @@
 
 import UIKit
 
-
-
 class RoomsRatesTVC : UITableViewCell {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var checkMarkButton: UIButton!
     @IBOutlet weak var roomPriceLabel: UILabel!
     @IBOutlet weak var selectRoomsButton: UIButton!
+    
     var selectedQty = 1
     var onQuantityChanged: ((Int) -> Void)?
     var onRoomSelected : ((RoomElement) -> Void)?
     var selecteRoomRates = [Rate]()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

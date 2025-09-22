@@ -22,10 +22,10 @@ class YourNotificationTVC: UITableViewCell {
     
     func configure(with booking: BookingHistoryModel) {
         hotelNameLabel.text = booking.hotelName
-        datesLabel.text = "\(booking.checkInUtc.description) - \(booking.checkOutUtc.description)"
+        datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
         statusLabel.text = booking.status.capitalized
-//        upComingDateLabel.text = "Check-in: \(booking.checkIn)"
-        
+        upComingDateLabel.text = booking.lastUpdatedUtc.toDayMonth()
+           
         switch booking.status.lowercased() {
         case "pending":
             imgView.image = UIImage(systemName: "clock")

@@ -41,8 +41,9 @@ class MyBookingTableViewCell: UITableViewCell {
         currentBooking = booking
         hotelNameLabel.text = booking.hotelName
         roomTypeLabel.text = booking.roomType
-        datesLabel.text = "\(booking.checkInUtc) - \(booking.checkOutUtc)"
-        totalAmountLabel.text = "₹\(booking.totalAmount)"
+        datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
+        totalAmountLabel.text = "$\(booking.totalAmount)"
+        upcomingDataLabel.text = booking.lastUpdatedUtc.toDayMonth()
         
         switch booking.status.lowercased() {
         case "pending":

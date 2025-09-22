@@ -52,6 +52,8 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var reviewLabel: UILabel!
     @IBOutlet weak var contactTypesLabel: UILabel!
     @IBOutlet weak var pleseClickHereButton: UIButton!
+    @IBOutlet weak var totalPriceView: UIView!
+    @IBOutlet weak var totalAmountLabel: UILabel!
     
     var  hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -67,6 +69,8 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     var scrolleView: UIScrollView { scrollView }
     var scrollToTopButton = UIButton(type: .system)
     var scrolltoTopHelper : ScrollToTopHelper?
+    
+    var selectedRates: [Rate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -322,6 +326,22 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     }
                 }
             }
+            
+            cell.onRateSelectionChanged = { [weak self] rate in
+                guard let self = self else { return }
+                
+                if rate.isSelected == true {
+                    if let index = self.selectedRates.firstIndex(where: { $0.id == rate.id }) {
+                        self.selectedRates[index] = rate
+                    } else {
+                        self.selectedRates.append(rate)
+                    }
+                } else {
+                    self.selectedRates.removeAll { $0.id == rate.id }
+                }
+                
+                self.updateTotalPrice()
+            }
             cell.configure(with: rooms)
             
             return cell
@@ -410,6 +430,30 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         showAlert("Please select a rate and ensure hotel/room data is present.")
     }
     
+//    func updateTotalPrice() {
+//        let total = selectedRates.reduce(0) { $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1)) }
+//        totalAmountLabel.text = "Total : $\(total)"
+//        totalPriceView.isHidden = total == 0
+//    }
+    
+    func updateTotalPrice() {
+        let total = selectedRates.reduce(0) {
+            $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1))
+        }
+        // Count distinct room rates selected
+        let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity ?? 0) > 0 }.count
+        
+        // Total quantity (all selected rooms added together)
+        let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity ?? 0) }
+        
+        if total > 0 {
+            totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $\(total)"
+        } else {
+            totalAmountLabel.text = ""
+        }
+        totalPriceView.isHidden = total == 0
+    }
+    
     func setUpUI() {
         
         if let user = UserSessionManager.getUser() {
@@ -421,6 +465,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             addReviewViewHeightConstraint.constant = 0
             addReviewView.isHidden = true
         }
+        
+        totalPriceView.isHidden = true
         
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
@@ -711,9 +757,4 @@ class CenteredPresentationController: UIPresentationController {
         presentedView?.layer.cornerRadius = 20
         presentedView?.clipsToBounds = true
     }
-}
-
-
-extension HotelDetailsViewController {
-    
 }

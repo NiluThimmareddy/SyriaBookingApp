@@ -29,6 +29,8 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
     var onBooknowBottonClick : ((RoomElement?)->Void)?
+    var onRateSelectionChanged: ((Rate) -> Void)?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()
@@ -67,20 +69,36 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: selectedRoom) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
+            if let rate = self.selectedRoom?.rates[indexPath.row] {
+                self.onRateSelectionChanged?(rate)
+            }
         }
-        
         return cell
     }
     
     @objc func checkMarkTapped(_ sender: UIButton) {
         let row = sender.tag
+        guard var rate = selectedRoom?.rates[row] else { return }
         
-        selectedRoom?.rates[row].isSelected?.toggle()
+        rate.isSelected?.toggle()
+        selectedRoom?.rates[row] = rate
+        onRateSelectionChanged?(rate)
+        
         roomRatesTableview.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
     }
     
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        selectedRoom?.rates[indexPath.row].isSelected?.toggle()
+//        roomRatesTableview.reloadRows(at: [indexPath], with: .none)
+//    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRoom?.rates[indexPath.row].isSelected?.toggle()
+        guard var rate = selectedRoom?.rates[indexPath.row] else { return }
+        rate.isSelected?.toggle()
+        selectedRoom?.rates[indexPath.row] = rate
+        
+        onRateSelectionChanged?(rate)   // 👈 notify VC
+        
         roomRatesTableview.reloadRows(at: [indexPath], with: .none)
     }
     

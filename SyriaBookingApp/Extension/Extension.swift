@@ -102,3 +102,48 @@ extension UICollectionViewLayoutAttributes {
         }
     }
 }
+
+extension String {
+    
+    /// Converts ISO8601 date string to "dd MMM" format, e.g., "22 Sep"
+    func toDayMonth() -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // handles fractional seconds
+        if let date = isoFormatter.date(from: self) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "dd MMM"
+            displayFormatter.locale = Locale.current
+            return displayFormatter.string(from: date)
+        }
+        return self // fallback to original string if parsing fails
+    }
+    
+    func toDayMonthYear() -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [
+            .withInternetDateTime,
+            .withFractionalSeconds
+        ]
+        
+        // Try parsing with fractional seconds first
+        if let date = isoFormatter.date(from: self) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "dd MMM yyyy"
+            displayFormatter.locale = Locale.current
+            displayFormatter.timeZone = TimeZone.current // convert to local time
+            return displayFormatter.string(from: date)
+        }
+        
+        // Fallback: try parsing without fractional seconds
+        isoFormatter.formatOptions = [.withInternetDateTime]
+        if let date = isoFormatter.date(from: self) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "dd MMM yyyy"
+            displayFormatter.locale = Locale.current
+            displayFormatter.timeZone = TimeZone.current
+            return displayFormatter.string(from: date)
+        }
+        
+        return self // fallback if parsing fails
+    }
+}
