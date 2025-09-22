@@ -91,7 +91,6 @@ class YourNotificationVC: UIViewController {
                 totalHeight += 60
             }
         }
-        
         totalHeight += 51
         backViewHeightConstraint.constant = totalHeight
         view.layoutIfNeeded()

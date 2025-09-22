@@ -60,7 +60,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    static var searchVCReference: HotelSearchVC?
+//    static var searchVCReference: HotelSearchVC?
     static var notificationVCReference: YourNotificationVC?
     func setupAppNavigationBar() {
         let viewModel = NotificationViewModel()
@@ -114,24 +114,24 @@ extension UIViewController {
     }
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {
-        if let existingVC = UIViewController.searchVCReference {
-            // Already showing → dismiss
-            existingVC.dismiss(animated: true) {
-                UIViewController.searchVCReference = nil
-            }
-        } else {
-            // Not showing → present
-            guard let hotelSearchVC = storyboard?.instantiateViewController(withIdentifier: "HotelSearchVC") as? HotelSearchVC else {
-                print("⚠️ Could not find HotelSearchVC in storyboard")
-                return
-            }
-            hotelSearchVC.modalPresentationStyle = .overCurrentContext
-            hotelSearchVC.modalTransitionStyle = .crossDissolve
-            
-            present(hotelSearchVC, animated: true) {
-                UIViewController.searchVCReference = hotelSearchVC
-            }
-        }
+//        if let existingVC = UIViewController.searchVCReference {
+//            // Already showing → dismiss
+//            existingVC.dismiss(animated: true) {
+//                UIViewController.searchVCReference = nil
+//            }
+//        } else {
+//            // Not showing → present
+//            guard let hotelSearchVC = storyboard?.instantiateViewController(withIdentifier: "HotelSearchVC") as? HotelSearchVC else {
+//                print("⚠️ Could not find HotelSearchVC in storyboard")
+//                return
+//            }
+//            hotelSearchVC.modalPresentationStyle = .overCurrentContext
+//            hotelSearchVC.modalTransitionStyle = .crossDissolve
+//            
+//            present(hotelSearchVC, animated: true) {
+//                UIViewController.searchVCReference = hotelSearchVC
+//            }
+//        }
     }
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
