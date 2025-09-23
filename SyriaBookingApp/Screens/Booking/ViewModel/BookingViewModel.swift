@@ -271,4 +271,35 @@ class BookingViewModel {
             }
         }
     }
+    
+    func postCancelBooking(reason:String,userId:String,BookingId:String, completion: @escaping (BookingHistoryDetailsResponseModel) -> Void){
+        
+        guard let urlstr = APIURL.postBooking.url?.absoluteString else { return }
+        var getUrl = ""
+        getUrl = urlstr + "\(userId)/\(BookingId)/cancel"
+        
+        
+        let url = URL(string: getUrl)
+        
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        let params: [String: Any] = [
+            "reason": reason,
+           
+        ]
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: BookingHistoryDetailsResponseModel.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    completion(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                }
+            }
+        }
+    }
 }

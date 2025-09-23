@@ -17,6 +17,7 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
     
     let viewModel = NotificationViewModel()
+    let bookingViewModel = BookingViewModel()
     var selectedSegmentIndex: Int = 0
     //    var selectedHotel: Hotel?
     var isLoginPopupPresented = false
@@ -214,7 +215,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
 }
 
 extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate {
-   
+    
     
     func didTapDetails(for booking: BookingHistoryModel) {
         guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
@@ -238,10 +239,23 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             present(cancelVC, animated: true)
         }
     }
-    func didConfirmCancellation(for booking: BookingHistoryModel) {
-        if let index = viewModel.filteredHistoryArray.firstIndex(where: { $0.id == booking.id }) {
-            viewModel.filteredHistoryArray[index].status = "cancelled"
-            HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    func didConfirmCancellation(for booking: BookingHistoryModel, reason:String) {
+//        if let index = viewModel.filteredHistoryArray.firstIndex(where: { $0.id == booking.id }) {
+//            viewModel.filteredHistoryArray[index].status = "cancelled"
+//            HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+//        }
+        
+        guard let user = UserSessionManager.getUser() else { return }
+      
+        
+        bookingViewModel.postCancelBooking(reason: reason, userId: user.id, BookingId: booking.id) { data in
+            
+                    
+            
+            self.showAlert(title: "Success", message: data.message, onCancel: {
+                self.viewDidLoad()
+                self.viewWillAppear(true)
+            })
         }
     }
     

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CancelBookingDelegate: AnyObject {
-    func didConfirmCancellation(for booking: BookingHistoryModel)
+    func didConfirmCancellation(for booking: BookingHistoryModel,reason:String)
 }
 
 class CancelBookingVC: UIViewController {
@@ -27,6 +27,7 @@ class CancelBookingVC: UIViewController {
     weak var delegate: CancelBookingDelegate?
     var booking: BookingHistoryModel?
     
+    var viewModel = BookingViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlaceholder()
@@ -39,12 +40,43 @@ class CancelBookingVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+//    @IBAction func confirmCancelButtonAction(_ sender: Any) {
+//        
+//        guard let reason = reasonTextView.text else {
+//            self.showAlert("Please enter reason for cancel your booking")
+//            return
+//        }
+//        self.showLoader()
+//        if let booking = booking {
+//            hideLoader()
+//            delegate?.didConfirmCancellation(for: booking,reason: reason)
+//        }
+//        
+//        self.dismiss(animated: true, completion: nil)
+//    }
+    
     @IBAction func confirmCancelButtonAction(_ sender: Any) {
-        if let booking = booking {
-            delegate?.didConfirmCancellation(for: booking)
+        guard let reason = reasonTextView.text, !reason.isEmpty else {
+            self.showAlert("Please enter reason for cancel your booking")
+            return
         }
-        self.dismiss(animated: true, completion: nil)
-    }
+        
+        guard let booking = booking else { return }
+
+        guard let user = UserSessionManager.getUser() else { return}
+        self.showLoader()
+        
+        
+        viewModel.postCancelBooking(reason:reason, userId: booking.id, BookingId: user.id) { [weak self] success in
+            
+            guard let self = self else { return }
+            self.hideLoader()
+            
+            showAlert(title: "Cancel", message: success.message)
+                self.dismiss(animated: true)
+            }
+   
+        }
 }
 
 extension CancelBookingVC : UITextViewDelegate {
@@ -66,6 +98,7 @@ extension CancelBookingVC : UITextViewDelegate {
         placeholderLabel.isHidden = !reasonTextView.text.isEmpty
     }
     
+
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
     }
