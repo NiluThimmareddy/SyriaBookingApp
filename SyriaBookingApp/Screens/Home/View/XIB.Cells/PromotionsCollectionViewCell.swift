@@ -31,7 +31,7 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     }
     
     func configuration(with model: Hotel) {
-        destinationLabel.text = "\(model.localizedCity()), \(model.localizedCity())"
+        destinationLabel.text = "\(model.localizedName()), \(model.localizedCity())"
         activityInfoLabel.text = "\(model.reviewCount) Reviews, \(model.averageRating) Rating"
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             promotionHotelImageView.loadImage(from: firstImageURL)
