@@ -25,29 +25,33 @@ extension UIViewController {
     }
     
     func showLoader(style: UIActivityIndicatorView.Style = .large) {
-        guard defaultActivityIndicator == nil else { return } // Already showing
-        
-        let indicator = UIActivityIndicatorView(style: style)
-        indicator.center = self.view.center
-        indicator.hidesWhenStopped = true
-        indicator.color = .gray
-        indicator.startAnimating()
-        
-        // Optional: dim background
-        let backgroundView = UIView(frame: self.view.bounds)
-        backgroundView.backgroundColor = UIColor(white: 0, alpha: 0.2)
-        backgroundView.tag = 9999
-        backgroundView.addSubview(indicator)
-        indicator.center = backgroundView.center
-        
-        self.view.addSubview(backgroundView)
-        defaultActivityIndicator = indicator
+        DispatchQueue.main.async {
+            guard self.defaultActivityIndicator == nil else { return } // Already showing
+            
+            let indicator = UIActivityIndicatorView(style: style)
+            indicator.hidesWhenStopped = true
+            indicator.color = .gray
+            indicator.startAnimating()
+            
+            // Dim background
+            let backgroundView = UIView(frame: self.view.bounds)
+            backgroundView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+            backgroundView.tag = 9999
+            backgroundView.addSubview(indicator)
+            indicator.center = backgroundView.center
+            
+            self.view.addSubview(backgroundView)
+            self.defaultActivityIndicator = indicator
+        }
     }
+
     
     func hideLoader() {
-        defaultActivityIndicator?.stopAnimating()
-        self.view.viewWithTag(9999)?.removeFromSuperview()
-        defaultActivityIndicator = nil
+        DispatchQueue.main.async {
+            self.defaultActivityIndicator?.stopAnimating()
+            self.view.viewWithTag(9999)?.removeFromSuperview()
+            self.defaultActivityIndicator = nil
+        }
     }
     
     func hideNavigationBar(animated: Bool = true) {
@@ -324,5 +328,14 @@ extension UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func calculateTotalNights(checkIn: String?, checkOut: String?) -> Int {
+        guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        guard let inDate = formatter.date(from: checkIn),
+              let outDate = formatter.date(from: checkOut) else { return 0 }
+        return Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
     }
 }

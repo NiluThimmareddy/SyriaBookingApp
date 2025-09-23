@@ -6,10 +6,16 @@
 //
 
 import UIKit
+struct BookingDetail {
+    let rate: Double
+    let description: String
+    let qty: Int
+    let amount: Double
+}
 
 class ViewBookingConfirmationVC : UIViewController {
     
-    @IBOutlet weak var checkMarkImgView: UIImageView! 
+    @IBOutlet weak var checkMarkImgView: UIImageView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var bookingReferenceLabel: UILabel!
     @IBOutlet weak var bookingDateLabel: UILabel!
@@ -41,30 +47,34 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var descriptionStatusLabel: UILabel!
     @IBOutlet weak var statusView: UIView!
     
+    @IBOutlet weak var tableviewHeightConstraint: NSLayoutConstraint!
+    var bookingId : String = ""
+    var hotelID : String = ""
+    var roomType : String = ""
+    var bookingHistoryData : BookingHistoryDataModel?
+    var hotelViewModel = HotelViewModel()
     var selectedHotel: Hotel?
-    var selectedRoom: RoomElement?
+    var bookingDetails: [BookingDetail] = []
+
+    //    var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
-    
-    var bookingReference: String = UUID().uuidString.prefix(8).uppercased()
-    var bookingDate: String?
-    var checkInDate: String?
-    var checkOutDate: String?
-    var totalNights: Int?
-    var status: String = "Confirmed"
-    var guestName: String?
-    var guestEmail: String?
-    var guestPhone: String?
-    var numberOfGuests: String?
-    var roomType: String?
-    var totalPrice: String?
-    let quantity = 1
-    
+    var viewModel = BookingViewModel()
     var isFromMyBookings: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpUI()
+        if isFromMyBookings {
+            goToHomeButton.setTitle("Close", for: .normal)
+        } else {
+            goToHomeButton.setTitle("Go To Home", for: .normal)
+        }
+        showLoader()
+        FetchBookingDetails {
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.setUpUI()
+            }
+        }
     }
     
     @IBAction func printButtonAction(_ sender: Any) {
@@ -90,78 +100,116 @@ class ViewBookingConfirmationVC : UIViewController {
             }
         }
     }
-
+    
 }
 
 extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedRate.count
+        return bookingDetails.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomRateTVC") as! RoomRateTVC
-        let rate = selectedRate[indexPath.row]
-            let price = rate.price
-            let description = rate.notes ?? "No description available"
-            let quantity = rate.selectedQuantity
-            cell.rateLabel.text = "\(price)"
-            cell.descriptionLabel.text = description
-            cell.qtyLabel.text = "\(quantity)"
-            cell.amountLabel.text = String(format: "$%.2f", Double(price * Double(quantity)))
-//
-        
-        
-        return cell
+        let detail = bookingDetails[indexPath.row]
+            
+            cell.rateLabel.text = "$\(detail.rate)"
+            cell.descriptionLabel.text = detail.description
+            cell.qtyLabel.text = "\(detail.qty)"
+            cell.amountLabel.text = "$\(detail.amount)"
+            
+            return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 30
     }
 }
 
+
+
 extension ViewBookingConfirmationVC {
+    func FetchBookingDetails(completion:@escaping ()->Void) {
+        guard let user = UserSessionManager.getUser() else {
+            DispatchQueue.main.async {
+                self.hideLoader()
+            }
+            return
+        }
+        
+        viewModel.onError = { error in
+            DispatchQueue.main.async {
+            self.hideLoader()
+            self.showAlert(error)
+            }
+        }
+
+        viewModel.getBookingHistory(userId: user.id, BookingId: bookingId) { response in
+            self.bookingHistoryData = response
+            
+            self.hotelViewModel.onError = { error in
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    self.showAlert(error.localizedDescription)
+                }
+            }
+            // Now fetch hotel details using booking response hotelId
+            self.hotelViewModel.fetchSingleHotels(id: response.hotelId) { hotel in
+                self.selectedHotel = hotel
+                
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    completion()
+                }
+            }
+        }
+    }
+
+    
     func setUpUI() {
         backView.applyCardStyle()
+        print("setupUI called")
+       
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
         let calculatedTotal: String
-        var totalAmount : Double = 0.0
-        
-        for i in selectedRate {
-            if i.isSelected == true {
-                totalAmount += Double(i.price * Double(i.selectedQuantity))
-            }
-        }
-        
+        let totalAmount : Double = self.bookingHistoryData?.totalAmount ?? 0.0
         calculatedTotal = String(format: "%.2f", totalAmount)
-        totalPrice = calculatedTotal
-        
-        if isFromMyBookings {
-            goToHomeButton.setTitle("Cancel", for: .normal)
-        } else {
-            goToHomeButton.setTitle("Go To Home", for: .normal)
+ 
+        guard let data = bookingHistoryData else {
+            print("booking history is empty")
+            return
         }
+        
+        guard let  hotelData = self.selectedHotel else {
+            print("Hotel Data is empty")
+            return
+        }
+        
+        bookingDetails = parseBookingDetails(data.bookingDetails)
+        roomRateDetailsTableview.reloadData()
+        
+        tableviewHeightConstraint.constant = CGFloat(30 * bookingDetails.count)
         
         let bookingLabelConfigs: [(UILabel, String, String)] = [
-            (bookingReferenceLabel, "Booking Reference: \(bookingReference)", "Booking Reference:"),
-            (bookingDateLabel, "Booking Date: \(bookingDate ?? "")", "Booking Date:"),
-            (checkInLabel, "Check-In: \(checkInDate ?? "")", "Check-In:"),
-            (checkOutLabel, "Check-Out: \(checkOutDate ?? "")", "Check-Out:"),
-            (totalNightsLabel, "Total Nights: \(totalNights ?? 0)", "Total Nights:"),
-            (statusLabel, "Status: \(status)", "Status:"),
-            (guestLabel, "Guest: \(guestName ?? "")", "Guest:"),
-            (guestEmailLabel, "Email: \(guestEmail ?? "")", "Email:"),
-            (guestPhoneNoLabel, "Phone: \(guestPhone ?? "")", "Phone:"),
-            (numberOfGuestsLabel, "No. of Guests: \(numberOfGuests ?? "")", "No. of Guests:"),
-            (hotelNameLabel, "Hotel Name: \(selectedHotel?.name ?? "No Hotel name")", "Hotel Name:"),
-            (hotelAddressLabel, "Address: \(selectedHotel?.addressLine1 ?? "No Address")", "Address:"),
-            (hotelPhoneNumberLabel, "Phone: \(selectedHotel?.primaryPhone ?? "No Phone Number")", "Phone:"),
-            (hotelEmailLabel, "Email: \(selectedHotel?.email ?? "No Email")", "Email:"),
-            (hotelCheckInTimeLabel, "Check-In Time: \(selectedHotel?.checkInTime ?? "No CheckIn")", "Check-In Time:"),
-            (hotelCheckOutTimeLabel, "Check-Out Time: \(selectedHotel?.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
-            (roomTypeLabel, "Room Type: \(selectedRoom?.room.roomType ?? "Not Room type")", "Room Type:"),
-            (acceptedCurrenciesLabel, "Accepted Currencies: \(selectedHotel?.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
-            (languagesSpokenLabel, "Languages Spoken: \(selectedHotel?.languagesSpoken.rawValue ?? "Not specified")", "Languages Spoken:"),
+            (bookingReferenceLabel, "Booking Reference: SBK-\(data.id)", "Booking Reference:"),
+            (bookingDateLabel, "Booking Date: \(data.timestamp.toDayMonthYear())", "Booking Date:"),
+            (checkInLabel, "Check-In: \(data.checkIn.toDayMonthYear())", "Check-In:"),
+            (checkOutLabel, "Check-Out: \(data.checkOut.toDayMonthYear())", "Check-Out:"),
+            (totalNightsLabel, "Total Nights: (\(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())))", "Total Nights:"),
+            (statusLabel, "Status: \(data.bookingStatus)", "Status:"),
+            (guestLabel, "Guest: \(data.guestName)", "Guest:"),
+            (guestEmailLabel, "Email: \(data.guestEmail)", "Email:"),
+            (guestPhoneNoLabel, "Phone: \(data.guestPhone)", "Phone:"),
+            (numberOfGuestsLabel, "No. of Guests: \(data.numberOfGuests)", "No. of Guests:"),
+            (hotelNameLabel, "Hotel Name: \( hotelData.name)", "Hotel Name:"),
+            (hotelAddressLabel, "Address: \( hotelData.addressLine1  ?? "No Address")", "Address:"),
+            (hotelPhoneNumberLabel, "Phone: \( hotelData.primaryPhone ?? "No Phone Number")", "Phone:"),
+            (hotelEmailLabel, "Email: \(  hotelData.email ?? "No Email")", "Email:"),
+            (hotelCheckInTimeLabel, "Check-In Time: \(hotelData.checkInTime ?? "No CheckIn")", "Check-In Time:"),
+            (hotelCheckOutTimeLabel, "Check-Out Time: \(hotelData.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
+            (roomTypeLabel, "Room Type: \(roomType)", "Room Type:"),
+            (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
+            (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
             (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
             (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
             (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
@@ -178,7 +226,7 @@ extension ViewBookingConfirmationVC {
             )
         }
         
-        switch status.lowercased() {
+        switch data.bookingStatus.lowercased() {
         case "pending":
             messageStatusLabel.text = "Awaiting confirmation"
             descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
@@ -195,13 +243,14 @@ extension ViewBookingConfirmationVC {
             checkMarkImgView.tintColor = UIColor.systemRed
         case "confirmed":
             messageStatusLabel.text = "Your booking is confirmed!"
+            messageStatusLabel.text = "Your booking is confirmed!"
             descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
             statusView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemGreen.cgColor
             checkMarkImgView.image = UIImage(systemName: "checkmark.seal.fill")
             checkMarkImgView.tintColor = UIColor.systemGreen
         default:
-            messageStatusLabel.text = "Booking Status: \(status)"
+            messageStatusLabel.text = "Booking Status: \(data.bookingStatus)"
             descriptionStatusLabel.text = "Contact support for more details."
             statusView.backgroundColor = UIColor.darkGray.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.darkGray.cgColor
@@ -253,7 +302,6 @@ extension ViewBookingConfirmationVC {
                 scrollView.drawHierarchy(in: scrollView.bounds, afterScreenUpdates: true)
                 
                 context.cgContext.restoreGState()
-                
                 currentOffset += pageHeight
             }
         }
@@ -261,5 +309,38 @@ extension ViewBookingConfirmationVC {
         scrollView.bounds = originalBounds
         return data
     }
+    
+    func parseBookingDetails(_ details: String) -> [BookingDetail] {
+        var result: [BookingDetail] = []
+        
+        // Robust regex: optional spaces anywhere, flexible matching
+        let regexPattern = #"^\s*\$([\d.]+)\s*:\s*(.*?)\s*Qty\s*(\d+)\s*-\s*Total\s*\$([\d.]+)\s*$"#
+        
+        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: [.anchorsMatchLines]) else {
+            return result
+        }
+        
+        let nsDetails = details as NSString
+        let matches = regex.matches(in: details, range: NSRange(location: 0, length: nsDetails.length))
+        
+        for match in matches {
+            if match.numberOfRanges == 5 {
+                let rateString = nsDetails.substring(with: match.range(at: 1))
+                let description = nsDetails.substring(with: match.range(at: 2))
+                let qtyString = nsDetails.substring(with: match.range(at: 3))
+                let amountString = nsDetails.substring(with: match.range(at: 4))
+                
+                if let rate = Double(rateString),
+                   let qty = Int(qtyString),
+                   let amount = Double(amountString) {
+                    result.append(BookingDetail(rate: rate, description: description, qty: qty, amount: amount))
+                }
+            }
+        }
+        
+        return result
+    }
+
+
 }
 

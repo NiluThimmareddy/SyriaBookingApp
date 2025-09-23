@@ -99,6 +99,7 @@ class ConfirmYourBookingVC : UIViewController {
             self.hideLoader()
 
             guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
+        
             confirmationVC.guestName = response.guestName
             confirmationVC.guestEmail = response.guestEmail
             confirmationVC.guestPhone = response.guestPhone
@@ -106,10 +107,11 @@ class ConfirmYourBookingVC : UIViewController {
             confirmationVC.checkOutDate = response.checkOut
             confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
             confirmationVC.totalPrice = "\(response.totalAmount ?? 0.0)"
-            confirmationVC.roomType = self.selectedRoomAndRatesLabel.text
+            confirmationVC.roomDetails = response.bookingDetails
             confirmationVC.selectedHotel = self.selectedHotel
             confirmationVC.selectedRoom = self.selectedRoom
             confirmationVC.selectedRate = self.selectedRate
+            confirmationVC.bookingId = response.id
             self.present(confirmationVC, animated: true)
         }
 

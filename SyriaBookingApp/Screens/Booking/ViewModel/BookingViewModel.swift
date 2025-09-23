@@ -11,6 +11,7 @@ class BookingViewModel {
     
     var onSuccess: ((BookingModel) -> Void)?
     var onPostBookingSuccess : ((PostBookingResponse) -> Void)?
+    var onHistorySuccess : ((BookingHistoryDataModel) -> Void)?
     var onError: ((String) -> Void)?
     var onVerifyOTPSucess : ((VerifyOTPModel) -> Void)?
     func FetchUserData(mobile:String? = nil,id:String? = nil){
@@ -18,14 +19,14 @@ class BookingViewModel {
         guard let urlstr = APIURL.BookingURL.url?.absoluteString else { return }
         var getUrl = ""
         if let mobile = mobile, !mobile.isEmpty {
-             getUrl = urlstr + "/mobile/\(mobile)"
+            getUrl = urlstr + "/mobile/\(mobile)"
         } else if let id = id, !id.isEmpty{
             getUrl = urlstr + "/\(id)"
         }else{
             self.onError?("Enter valid data")
         }
         
-       
+        
         
         
         let url = URL(string: getUrl)
@@ -60,7 +61,7 @@ class BookingViewModel {
     func fetchOTP(mobileNumber:String){
         
         guard let urlstr = APIURL.postForOTP.url?.absoluteString else { return }
-//        let getUrl = urlstr + "\(mobileNumber)"
+        //        let getUrl = urlstr + "\(mobileNumber)"
         
         let url = URL(string: urlstr)
         
@@ -74,21 +75,21 @@ class BookingViewModel {
         ]
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: OTPResponseModel.self) { result in
-             DispatchQueue.main.async{
-                 switch result {
-                 case .success(let response):
-                     self.onOTPSuccess?(response)
-                 case .failure(let failure):
-                     self.onError?(failure.localizedDescription)
-                 }
-             }
-         }
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onOTPSuccess?(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                }
+            }
+        }
     }
     
     func verifyOTP(mobile:String,otp:String){
         
         guard let urlstr = APIURL.verifyOTP.url?.absoluteString else { return }
-//        let getUrl = urlstr + "\(mobileNumber)"
+        //        let getUrl = urlstr + "\(mobileNumber)"
         
         let url = URL(string: urlstr)
         
@@ -98,24 +99,24 @@ class BookingViewModel {
         }
         
         let params: [String: Any] = [
-              "mobile": mobile,
-              "code": otp
+            "mobile": mobile,
+            "code": otp
         ]
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: VerifyOTPModel.self) { result in
-             DispatchQueue.main.async{
-                 switch result {
-                 case .success(let response):
-                     self.onVerifyOTPSucess?(response)
-                 case .failure(let failure):
-                     self.onError?(failure.localizedDescription)
-                 }
-             }
-         }
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onVerifyOTPSucess?(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                }
+            }
+        }
     }
     
     func SubmitUserRegistrationInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {
-
+        
         let params: [String: Any] = [
             "name": name,
             "mobile": mobile,
@@ -131,7 +132,7 @@ class BookingViewModel {
             return
         }
         
-       APIManager.shared.postRequest(urlString: url , body: params, responseType: BookingModel.self) { result in
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: BookingModel.self) { result in
             DispatchQueue.main.async{
                 switch result {
                 case .success(let response):
@@ -152,14 +153,14 @@ class BookingViewModel {
                 }
                 return
             }
-
+            
             do {
                 let countries = try JSONDecoder().decode([CountryModel].self, from: data)
                 DispatchQueue.main.async {
                     completion(countries)
                 }
             } catch {
-                print("Decoding error:", error)   
+                print("Decoding error:", error)
                 DispatchQueue.main.async {
                     completion([])
                 }
@@ -244,6 +245,30 @@ class BookingViewModel {
             }
         }
     }
-
     
+    func getBookingHistory(userId:String,BookingId:String, completion: @escaping (BookingHistoryDataModel) -> Void){
+        guard let urlstr = APIURL.postBooking.url?.absoluteString else { return }
+        var getUrl = ""
+        getUrl = urlstr + "\(userId)/\(BookingId)"
+        
+        let url = URL(string: getUrl)
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        APIManager.shared.fetchData(from: url, modelType: BookingHistoryDetailsResponseModel.self) { result  in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let success):
+                    completion(success.data)
+                    print(success)
+                    
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                    print(failure.localizedDescription)
+                }
+            }
+        }
+    }
 }

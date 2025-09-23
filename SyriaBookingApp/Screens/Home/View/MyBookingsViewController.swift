@@ -110,6 +110,19 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let booking = viewModel.filteredHistoryArray[indexPath.row]
+        guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
+            return
+        }
+        viewBookingConfirmationVC.isFromMyBookings = true
+        viewBookingConfirmationVC.hotelID = booking.hotelId
+        viewBookingConfirmationVC.bookingId = booking.id
+        viewBookingConfirmationVC.roomType = booking.roomType
+        viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
+        present(viewBookingConfirmationVC, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if selectedSegmentIndex == 1 {
             return UIDevice.current.userInterfaceIdiom == .pad ? 130 : 110
@@ -143,7 +156,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 }
             }
 
-            viewModel.fetchNotificationUser(userId: user.id)
+            viewModel.fetchNotificationUser(userId: user.id,includePast: true)
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
@@ -207,24 +220,11 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
         }
-        
-        viewBookingConfirmationVC.selectedHotel = selectedHotel
-        viewBookingConfirmationVC.selectedRoom = selectedRoom
-        viewBookingConfirmationVC.selectedRate = selectedRate
-
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        viewBookingConfirmationVC.bookingDate = formatter.string(from: Date())
-
-        viewBookingConfirmationVC.totalNights = calculateTotalNights(checkIn: booking.checkInUtc, checkOut: booking.checkOutUtc)
-        viewBookingConfirmationVC.checkInDate = booking.checkInUtc
-        viewBookingConfirmationVC.checkOutDate = booking.checkOutUtc
-        viewBookingConfirmationVC.guestName = guestName ?? ""
-        viewBookingConfirmationVC.guestEmail = guestEmail ?? ""
-        viewBookingConfirmationVC.guestPhone = guestPhone ?? ""
-        viewBookingConfirmationVC.numberOfGuests = numberOfGuests ?? "0"
-        viewBookingConfirmationVC.totalPrice = "$\(booking.totalAmount)"
         viewBookingConfirmationVC.isFromMyBookings = true
+        
+        viewBookingConfirmationVC.hotelID = booking.hotelId
+        viewBookingConfirmationVC.bookingId = booking.id
+        viewBookingConfirmationVC.roomType = booking.roomType
         viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
     }
@@ -245,14 +245,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         }
     }
     
-    func calculateTotalNights(checkIn: String?, checkOut: String?) -> Int {
-        guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        guard let inDate = formatter.date(from: checkIn),
-              let outDate = formatter.date(from: checkOut) else { return 0 }
-        return Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
-    }
+   
 }
 
 

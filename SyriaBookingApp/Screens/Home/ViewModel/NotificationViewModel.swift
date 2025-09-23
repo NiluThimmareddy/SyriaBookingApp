@@ -13,19 +13,17 @@ class NotificationViewModel {
     var onSuccess : (([BookingHistoryModel])->Void)?
     var onCountSuccess : ((NotificationCountModel) -> Void)?
     
-    func fetchNotificationUser(userId:String){
+    func fetchNotificationUser(userId:String,includePast:Bool = false){
         guard var url = APIURL.notification.url?.absoluteString else { return }
         
-        url += "\(userId)?includePast=true&take=50"
+        url += "\(userId)?includePast=\(includePast)&take=50"
         
         guard let url = URL(string: url) else{
             onError?("Invalid Url")
             return
         }
         
-        
         APIManager.shared.fetchData(from: url, modelType: BookingHistoryResponseModel.self) { [weak self] result in
-            
             guard let self = self else { return }
             switch result {
             case .success(let success):
@@ -38,8 +36,7 @@ class NotificationViewModel {
     }
     
     func fetchNotificationCount(userId:String){
-        guard var url = APIURL.notificationCount.url?.absoluteString else { return }
-        
+        guard var url = APIURL.notificationCount.url?.absoluteString else { return }        
         url += "\(userId)"
         
         guard let url = URL(string: url) else{
@@ -48,8 +45,7 @@ class NotificationViewModel {
         }
         
         
-        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in
-            
+        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in            
             guard let self = self else { return }
             switch result {
             case .success(let success):

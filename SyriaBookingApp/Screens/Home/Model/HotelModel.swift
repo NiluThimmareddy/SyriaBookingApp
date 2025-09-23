@@ -12,6 +12,11 @@ struct HotelResponse: Codable {
     let data: [Hotel]
 }
 
+struct SignleHoteResponseModel : Codable {
+    let message: String
+    let data: Hotel
+}
+
 struct Hotel: Codable {
     let id, name: String
     let city: String

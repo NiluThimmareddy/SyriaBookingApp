@@ -39,7 +39,7 @@ enum APIURL{
         case .verifyOTP:
             return URL(string: baseURL + "UserPublic/verify-otp")
         case .postBooking:
-            return URL(string: baseURL + "BookingPublic")
+            return URL(string: baseURL + "BookingPublic/")
         case .notification:
             return URL(string: baseURL + "BookingPublic/Notifications-by-user/")
         case . notificationCount:

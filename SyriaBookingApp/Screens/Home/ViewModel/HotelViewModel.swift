@@ -30,11 +30,15 @@ class HotelViewModel {
             onError: onError
         ) { [weak self] in
             guard let self = self else { return }
-            guard let url = APIURL.HotelURL.url else {
+            guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+            
+            
+            
+            guard let url = URL(string: urlstr) else {
                 print("Invalid hotel URL")
                 return
             }
- 
+
             APIManager.shared.fetchData(from: url, modelType: HotelResponse.self) { result in
                 switch result {
                 case .success(let response):
@@ -43,12 +47,48 @@ class HotelViewModel {
                     self.filteredHotelsCopy = response.data
                     HotelDataMaganer.shared.allHotels = response.data
                     self.onDataLoaded?()
+                  
                 case .failure(let error):
+                   
                     self.onError?(error)
                 }
             }
         }
     }
+    
+    
+    func fetchSingleHotels(id: String = "", completion: @escaping (Hotel) -> Void) {
+        NetworkRetryManager.executeWithNetworkRetry(
+            observerKey: "FetchHotelsRetry",
+            showAlertOnFail: true,
+            onError: onError
+        ) { [weak self] in
+            guard let self = self else { return }
+            guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+            
+            var str = urlstr
+            if !id.isEmpty {
+                str += "\(id)"
+            }
+            
+            guard let url = URL(string: str) else {
+                print("Invalid hotel URL")
+                return
+            }
+
+            APIManager.shared.fetchData(from: url, modelType: SignleHoteResponseModel.self) { result in
+                switch result {
+                case .success(let response):
+                    completion(response.data)
+                case .failure(let error):
+                    
+                    print("Errot in fetching hotels data...")
+                    self.onError?(error)
+                }
+            }
+        }
+    }
+
     
     func   fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
       NetworkRetryManager.executeWithNetworkRetry(
@@ -64,7 +104,7 @@ class HotelViewModel {
          
         
           guard let url = url else {
-              print("Invalid hotel URL")
+              print("Invalid hotel URL for review")
               return
           }
           

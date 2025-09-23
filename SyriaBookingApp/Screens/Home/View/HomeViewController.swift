@@ -353,7 +353,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else if collectionView == recentlyCollectionView {
             let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-            let selectedHotel = viewModel.filteredHotels[indexPath.row]
+            let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
             let backItem = UIBarButtonItem()

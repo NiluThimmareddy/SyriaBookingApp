@@ -15,12 +15,14 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     var checkOutDate: String?
     var numberOfGuests: String?
     var totalPrice: String?
-    var roomType: String?
+    
+    var roomDetails : String?
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
-    
+    var bookingId : String?
+    var roomtype : String?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,34 +106,17 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
         guard let viewBookingConfirmationVC = storyboard?.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
         }
-        
-        viewBookingConfirmationVC.selectedHotel = selectedHotel
-        viewBookingConfirmationVC.selectedRoom = selectedRoom
-        viewBookingConfirmationVC.selectedRate = selectedRate
-        
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        viewBookingConfirmationVC.bookingDate = formatter.string(from: Date())
-        
-        viewBookingConfirmationVC.totalNights = calculateTotalNights(checkIn: checkInDate, checkOut: checkOutDate)
-        viewBookingConfirmationVC.checkInDate = checkInDate
-        viewBookingConfirmationVC.checkOutDate = checkOutDate
-        viewBookingConfirmationVC.guestName = guestName
-        viewBookingConfirmationVC.guestEmail = guestEmail
-        viewBookingConfirmationVC.guestPhone = guestPhone
-        viewBookingConfirmationVC.numberOfGuests = numberOfGuests
-        viewBookingConfirmationVC.totalPrice = totalPrice
+
+        viewBookingConfirmationVC.isFromMyBookings = false
+        viewBookingConfirmationVC.hotelID = selectedHotel?.id ?? ""
+        viewBookingConfirmationVC.bookingId = bookingId ?? ""
+        viewBookingConfirmationVC.roomType = roomtype ?? ""
+       
+       
         viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
     }
     
-    func calculateTotalNights(checkIn: String?, checkOut: String?) -> Int {
-        guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        guard let inDate = formatter.date(from: checkIn),
-              let outDate = formatter.date(from: checkOut) else { return 0 }
-        return Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
-    }
+   
 }
 
