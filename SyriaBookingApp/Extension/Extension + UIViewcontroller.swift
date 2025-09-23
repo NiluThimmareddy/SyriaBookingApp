@@ -64,11 +64,9 @@ extension UIViewController {
 }
 
 extension UIViewController {
-//    static var searchVCReference: HotelSearchVC?
     static var notificationVCReference: YourNotificationVC?
     func setupAppNavigationBar() {
         let viewModel = NotificationViewModel()
-        self.notificationViewModel = viewModel
         self.notificationViewModel = viewModel
         let logoImageView = UIImageView(image: UIImage(named: "logo"))
         logoImageView.contentMode = .scaleAspectFit
@@ -77,10 +75,14 @@ extension UIViewController {
         containerView.addSubview(logoImageView)
         navigationItem.titleView = containerView
         
-        let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
-                                           style: .plain,
-                                           target: self,
-                                           action: #selector(didTapSearch))
+        var rightButtons: [UIBarButtonItem] = []
+        if self is HomeViewController {
+            let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+                                               style: .plain,
+                                               target: self,
+                                               action: #selector(didTapSearch))
+            rightButtons.append(searchButton)
+        }
         
         let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         badgeButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
@@ -93,49 +95,29 @@ extension UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: #selector(didTapMenu(_:)))
-        
-//        badgeButton.badge = 10
-        if let user =  UserSessionManager.getUser()  {
-            
-            
-            viewModel.onCountSuccess = { data in               
+
+        if let user = UserSessionManager.getUser() {
+            viewModel.onCountSuccess = { data in
                 print("Count: \(data.count)")
-                        badgeButton.badge = data.count
+                badgeButton.badge = data.count
             }
             
             viewModel.onError = { error in
                 print("Notification count error")
                 print(error)
-                
             }
             
             viewModel.fetchNotificationCount(userId: user.id)
-            navigationItem.rightBarButtonItems = [menuButton, notificationButton, searchButton]
-            
-        }else{
-            navigationItem.rightBarButtonItems = [menuButton, searchButton]
+            rightButtons.insert(notificationButton, at: 0)
+            rightButtons.insert(menuButton, at: 0)
+            navigationItem.rightBarButtonItems = rightButtons
+        } else {
+            rightButtons.insert(menuButton, at: 0)
+            navigationItem.rightBarButtonItems = rightButtons
         }
     }
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {
-//        if let existingVC = UIViewController.searchVCReference {
-//            // Already showing → dismiss
-//            existingVC.dismiss(animated: true) {
-//                UIViewController.searchVCReference = nil
-//            }
-//        } else {
-//            // Not showing → present
-//            guard let hotelSearchVC = storyboard?.instantiateViewController(withIdentifier: "HotelSearchVC") as? HotelSearchVC else {
-//                print("⚠️ Could not find HotelSearchVC in storyboard")
-//                return
-//            }
-//            hotelSearchVC.modalPresentationStyle = .overCurrentContext
-//            hotelSearchVC.modalTransitionStyle = .crossDissolve
-//            
-//            present(hotelSearchVC, animated: true) {
-//                UIViewController.searchVCReference = hotelSearchVC
-//            }
-//        }
     }
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {

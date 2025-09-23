@@ -95,9 +95,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
-       
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
@@ -110,7 +109,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-       
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -208,7 +206,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     @IBAction func findDealButtonAction(_ sender: Any) {
     }
-    
     
     @IBAction func tomorrowDateButtonAction(_ sender: UIButton) {
         checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
@@ -577,26 +574,37 @@ extension HomeViewController {
         //        updateTexts()
     }
     
-    
-    func setUpTomorrowDate(){
+    func setUpTomorrowDate() {
         let today = Date()
-        
+        let font = UIFont.systemFont(ofSize: 14)
+
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-            tomorrowDateButton.setTitle(tomorrowDate, for: .normal)
+
+            let attributedTitle = NSAttributedString(
+                string: tomorrowDate,
+                attributes: [.font: font]
+            )
+            tomorrowDateButton.setAttributedTitle(attributedTitle, for: .normal)
         }
         
         if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
             let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
-            dayAfterTomorrowButton.setTitle(dayAfterTomorrowDate, for: .normal)
+
+            let attributedTitle = NSAttributedString(
+                string: dayAfterTomorrowDate,
+                attributes: [.font: font]
+            )
+            dayAfterTomorrowButton.setAttributedTitle(attributedTitle, for: .normal)
         }
     }
+
     
     
     
