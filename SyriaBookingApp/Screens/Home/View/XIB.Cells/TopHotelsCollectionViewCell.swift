@@ -89,10 +89,10 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         //reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
         
         if AppSettings.shared.selectedLanguage == .english {
-            priceLabel.text = "\(model.minRoomPrice) / night"
+            priceLabel.text = "\(model.minRoomPrice) / \n night"
             
         }else{
-            priceLabel.text = "\(model.minRoomPrice) / نان"
+            priceLabel.text = "\(model.minRoomPrice) / \n نان"
         }
         
       
