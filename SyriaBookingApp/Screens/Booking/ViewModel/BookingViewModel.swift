@@ -272,34 +272,42 @@ class BookingViewModel {
         }
     }
     
-    func postCancelBooking(reason:String,userId:String,BookingId:String, completion: @escaping (BookingHistoryDetailsResponseModel) -> Void){
-        
-        guard let urlstr = APIURL.postBooking.url?.absoluteString else { return }
-        var getUrl = ""
-        getUrl = urlstr + "\(userId)/\(BookingId)/cancel"
-        
-        
-        let url = URL(string: getUrl)
-        
-        guard let url = url else{
-            self.onError?("Invalid URL")
+    func postCancelBooking(
+        reason: String,
+        userId: String,
+        bookingId: String,
+        completion: @escaping (BookingHistoryDetailsResponseModel?) -> Void
+    ) {
+        guard let baseURL = APIURL.postBooking.url else {
+            self.onError?("Invalid Base URL")
+            completion(nil)
             return
         }
         
-        let params: [String: Any] = [
-            "reason": reason,
-           
-        ]
+        // Build URL safely
+        let url = baseURL
+            .appendingPathComponent(userId)
+            .appendingPathComponent(bookingId)
+            .appendingPathComponent("cancel")
         
-        APIManager.shared.postRequest(urlString: url , body: params, responseType: BookingHistoryDetailsResponseModel.self) { result in
-            DispatchQueue.main.async{
+        let params: [String: Any] = ["reason": reason]
+        
+        APIManager.shared.postRequest(
+            urlString: url,
+            body: params,
+            responseType: BookingHistoryDetailsResponseModel.self
+        ) { result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     completion(response)
-                case .failure(let failure):
-                    self.onError?(failure.localizedDescription)
+                case .failure(let error):
+                    print("Error in Cancel: \(error.localizedDescription)")
+                    self.onError?(error.localizedDescription)
+                    completion(nil)
                 }
             }
         }
     }
+
 }

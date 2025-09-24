@@ -12,7 +12,7 @@ protocol CancelBookingDelegate: AnyObject {
 }
 
 class CancelBookingVC: UIViewController {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var cancelBookingTitleLabel: UILabel!
@@ -35,50 +35,34 @@ class CancelBookingVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
     }
-
+    
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
-//    @IBAction func confirmCancelButtonAction(_ sender: Any) {
-//        
-//        guard let reason = reasonTextView.text else {
-//            self.showAlert("Please enter reason for cancel your booking")
-//            return
-//        }
-//        self.showLoader()
-//        if let booking = booking {
-//            hideLoader()
-//            delegate?.didConfirmCancellation(for: booking,reason: reason)
-//        }
-//        
-//        self.dismiss(animated: true, completion: nil)
-//    }
+    //    @IBAction func confirmCancelButtonAction(_ sender: Any) {
+    //
+    //        guard let reason = reasonTextView.text else {
+    //            self.showAlert("Please enter reason for cancel your booking")
+    //            return
+    //        }
+    //        self.showLoader()
+    //        if let booking = booking {
+    //            hideLoader()
+    //            delegate?.didConfirmCancellation(for: booking,reason: reason)
+    //        }
+    //
+    //        self.dismiss(animated: true, completion: nil)
+    //    }
     
     @IBAction func confirmCancelButtonAction(_ sender: Any) {
-        guard let reason = reasonTextView.text, !reason.isEmpty else {
-            self.showAlert("Please enter reason for cancel your booking")
-            return
-        }
-        
+
         guard let booking = booking else { return }
-
-        guard let user = UserSessionManager.getUser() else { return}
-        self.showLoader()
-        
-        
-        viewModel.postCancelBooking(reason:reason, userId: booking.id, BookingId: user.id) { [weak self] success in
-            
-            guard let self = self else { return }
-            self.hideLoader()
-            
-            showAlert(title: "Cancel", message: success.message)
-                self.dismiss(animated: true)
-            }
-   
-        }
+        delegate?.didConfirmCancellation(for: booking, reason: reasonTextView.text ?? "")
+       
+    }
+    
 }
-
 extension CancelBookingVC : UITextViewDelegate {
     func setupPlaceholder() {
         reasonTextView.delegate = self        
