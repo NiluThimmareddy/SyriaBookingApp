@@ -9,6 +9,8 @@ import UIKit
 
 class ReportAnAppVC: UIViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
