@@ -321,3 +321,32 @@ extension UIViewController {
         return Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
     }
 }
+
+extension UIViewController {
+    func dismissVerificationFlow(withReload reload: (() -> Void)? = nil) {
+        // First dismiss the VerificationVC itself
+        self.dismiss(animated: true) {
+            if let registerVC = self.presentingViewController as? RegisterMobileNumberVC {
+                // Case: RegisterMobileNumberVC was presented
+                registerVC.dismiss(animated: true) {
+                    reload?()
+                    registerVC.reloadScreenAfterDismiss?()
+                }
+            } else if let nav = self.presentingViewController as? UINavigationController,
+                      let registerVC = nav.viewControllers.last as? RegisterMobileNumberVC {
+                // Case: RegisterMobileNumberVC inside Navigation
+                nav.dismiss(animated: true) {
+                    reload?()
+                    registerVC.reloadScreenAfterDismiss?()
+                }
+            } else {
+                // Case: RegisterMobileNumberVC shown as popup
+                self.dismissPopup()
+                if let popupVC = self.presentingViewController as? RegisterMobileNumberVC {
+                    reload?()
+                    popupVC.reloadScreenAfterDismiss?()
+                }
+            }
+        }
+    }
+}

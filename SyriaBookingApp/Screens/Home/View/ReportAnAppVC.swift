@@ -97,10 +97,13 @@ class ReportAnAppVC: UIViewController {
         showLoader()
         hotelViewModel.onReporAnAppSucess = { response in
             self.hideLoader()
-            self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onCancel: {
-                self.willMove(toParent: nil)
-                self.view.removeFromSuperview()
-                self.removeFromParent()
+            self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onOK: {
+                if self.comingfrom == .RightMenu || self.comingfrom == .HotelDetail{
+                    self.dismiss(animated: true)
+                }else{
+                    self.dismissPopup()
+//                    UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+                }
             })
         }
         
@@ -134,7 +137,7 @@ class ReportAnAppVC: UIViewController {
     
     
     @IBAction func dismissButton(_ sender: Any) {
-        if comingfrom == .RightMenu, comingfrom == .BookingHistory{
+        if comingfrom == .RightMenu || comingfrom == .HotelDetail{
             self.dismiss(animated: true)
         }else{
             UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)

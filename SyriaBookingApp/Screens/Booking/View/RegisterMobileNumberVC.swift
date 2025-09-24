@@ -151,7 +151,7 @@ class RegisterMobileNumberVC : UIViewController {
                     
                     self.present(controller, animated: true)
                 })
-                //                self.reloadScreenAfterDismiss?()
+//                                self.reloadScreenAfterDismiss?()
                 //                self.enterNameTF.text = userDetails.name
                 //                self.enterEmailTF.text = userDetails.email
                 

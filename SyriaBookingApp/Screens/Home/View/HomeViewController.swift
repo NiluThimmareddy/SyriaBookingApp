@@ -321,8 +321,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 controller.transitioningDelegate = self
                 controller.comingFrom = .HomeSliderView
                 controller.reloadScreenAfterDismiss = {
-                    self.viewDidLoad()
-                    self.viewWillAppear(true)
+                    
                 }
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
@@ -350,13 +349,16 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else if collectionView == recentlyCollectionView {
             let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
-            let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
-            vc.selectedHotel = selectedHotel
-            vc.navigationItem.title = "Hotel Details"
-            let backItem = UIBarButtonItem()
-            backItem.title = ""
-            self.navigationItem.backBarButtonItem = backItem
-            self.navigationController?.pushViewController(vc, animated: true)
+            if !viewModel.recentlyViewdHotels.isEmpty {
+                let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
+                
+                vc.selectedHotel = selectedHotel
+                vc.navigationItem.title = "Hotel Details"
+                let backItem = UIBarButtonItem()
+                backItem.title = ""
+                self.navigationItem.backBarButtonItem = backItem
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
             
         } else if collectionView == topHotelsCollectionView {
             let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController

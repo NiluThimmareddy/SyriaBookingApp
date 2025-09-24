@@ -68,11 +68,11 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     @IBAction func loginButtonAction(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+        controller.comingFrom = .HomeSliderView
         controller.modalPresentationStyle = .custom
         controller.transitioningDelegate = self
         controller.reloadScreenAfterDismiss = {
-            self.viewDidLoad()
-            self.viewWillAppear(true)
+           //here i want to dismiss registermobileVC
         }
         self.showPopup(controller, widthMultiplier: 0.9, heightMultiplier: 0.3)
     }

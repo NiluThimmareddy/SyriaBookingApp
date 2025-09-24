@@ -55,6 +55,7 @@ class VerificationVC : UIViewController {
             guard let UserId = UserId else { return }
             self?.viewModel.onSuccess = { response in
                 UserSessionManager.saveUser(response)
+                
             }
             
             self?.viewModel.onError = { error in
