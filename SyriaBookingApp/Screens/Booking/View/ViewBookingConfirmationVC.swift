@@ -100,7 +100,6 @@ class ViewBookingConfirmationVC : UIViewController {
             }
         }
     }
-    
 }
 
 extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource {
@@ -119,13 +118,10 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
             
             return cell
     }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30
     }
 }
-
-
 
 extension ViewBookingConfirmationVC {
     func FetchBookingDetails(completion:@escaping ()->Void) {

@@ -239,30 +239,35 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             present(cancelVC, animated: true)
         }
     }
-    func didConfirmCancellation(for booking: BookingHistoryModel, reason:String) {
-//        if let index = viewModel.filteredHistoryArray.firstIndex(where: { $0.id == booking.id }) {
-//            viewModel.filteredHistoryArray[index].status = "cancelled"
-//            HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-//        }
+    
+    func didConfirmCancellation(for booking: BookingHistoryModel, reason: String) {
+        guard let user = UserSessionManager.getUser() else { return }        
+        bookingViewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(error)
+        }
         
-        guard let user = UserSessionManager.getUser() else { return }
-      
+        showLoader()
         
-        bookingViewModel.postCancelBooking(reason: reason, userId: user.id, BookingId: booking.id) { data in
-            
-                    
+        bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { data in
+            guard let data = data else {
+                self.hideLoader()
+                return
+            }
             
             self.showAlert(title: "Success", message: data.message, onCancel: {
-                self.viewDidLoad()
-                self.viewWillAppear(true)
+                self.hideLoader()
+                if let index = self.viewModel.filteredHistoryArray.firstIndex(where: { $0.id == data.data.id }) {
+                    self.viewModel.filteredHistoryArray[index].status = "cancelled"
+                    self.HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                }
+                
+                self.presentedViewController?.dismiss(animated: true, completion: nil)
             })
         }
     }
-    
-   
+
 }
-
-
 
 extension String {
     func toDate() -> Date? {
