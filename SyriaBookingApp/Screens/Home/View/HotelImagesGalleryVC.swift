@@ -97,6 +97,7 @@ extension HotelImagesGalleryVC: UICollectionViewDelegate, UICollectionViewDataSo
 
         if let indexPath = hotelImagesCollectionView.indexPathForItem(at: center) {
             hotelThumbnailCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+            hotelThumbnailCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
     }
 

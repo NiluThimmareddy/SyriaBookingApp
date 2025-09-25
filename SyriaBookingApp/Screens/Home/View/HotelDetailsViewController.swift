@@ -432,13 +432,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func showAlertForRateSelection() {
         showAlert("Please select a rate and ensure hotel/room data is present.")
     }
-    
-//    func updateTotalPrice() {
-//        let total = selectedRates.reduce(0) { $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1)) }
-//        totalAmountLabel.text = "Total : $\(total)"
-//        totalPriceView.isHidden = total == 0
-//    }
-    
+
     func updateTotalPrice() {
         let total = selectedRates.reduce(0) {
             $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1))

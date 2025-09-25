@@ -15,8 +15,8 @@ class HotelThumbnailImagesCVC : UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             backView.applyCardStyle()
-            thumbnailImgView.layer.borderWidth = isSelected ? 3 : 0
-            thumbnailImgView.layer.borderColor = isSelected ? UIColor.label.cgColor : UIColor.clear.cgColor
+            backView.layer.borderWidth = isSelected ? 3 : 0
+            backView.layer.borderColor = isSelected ? UIColor.label.cgColor : UIColor.clear.cgColor
         }
     }
     

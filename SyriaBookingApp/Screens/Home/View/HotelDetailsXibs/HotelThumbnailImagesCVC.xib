@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="80" height="61"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VHr-kO-eC1">
-                                <rect key="frame" x="0.0" y="0.0" width="80" height="61"/>
+                                <rect key="frame" x="2" y="2" width="76" height="57"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="5"/>
@@ -31,10 +31,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="VHr-kO-eC1" firstAttribute="leading" secondItem="0Ro-r3-0U7" secondAttribute="leading" id="DV5-nN-4Jw"/>
-                            <constraint firstAttribute="bottom" secondItem="VHr-kO-eC1" secondAttribute="bottom" id="EYM-bP-eNu"/>
-                            <constraint firstAttribute="trailing" secondItem="VHr-kO-eC1" secondAttribute="trailing" id="vPL-8i-C1t"/>
-                            <constraint firstItem="VHr-kO-eC1" firstAttribute="top" secondItem="0Ro-r3-0U7" secondAttribute="top" id="wLq-yb-8lx"/>
+                            <constraint firstItem="VHr-kO-eC1" firstAttribute="leading" secondItem="0Ro-r3-0U7" secondAttribute="leading" constant="2" id="DV5-nN-4Jw"/>
+                            <constraint firstAttribute="bottom" secondItem="VHr-kO-eC1" secondAttribute="bottom" constant="2" id="EYM-bP-eNu"/>
+                            <constraint firstAttribute="trailing" secondItem="VHr-kO-eC1" secondAttribute="trailing" constant="2" id="vPL-8i-C1t"/>
+                            <constraint firstItem="VHr-kO-eC1" firstAttribute="top" secondItem="0Ro-r3-0U7" secondAttribute="top" constant="2" id="wLq-yb-8lx"/>
                         </constraints>
                     </view>
                 </subviews>
