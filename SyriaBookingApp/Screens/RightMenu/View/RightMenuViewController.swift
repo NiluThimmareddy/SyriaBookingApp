@@ -64,9 +64,10 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             controller.titleText = "Report an app"
             present(controller, animated: true)
         case 5 :
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
-            present(controller, animated: true)
+            break
+//            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//            let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
+//            present(controller, animated: true)
         case 6 :
             showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
                 UserSessionManager.clearUser()

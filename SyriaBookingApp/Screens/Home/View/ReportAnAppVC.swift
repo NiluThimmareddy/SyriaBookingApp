@@ -36,6 +36,7 @@ class ReportAnAppVC: UIViewController {
     var hotelID = ""
     var hotelName = ""
     var BookingID = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         topView.layer.cornerRadius = 10
@@ -97,13 +98,16 @@ class ReportAnAppVC: UIViewController {
         showLoader()
         hotelViewModel.onReporAnAppSucess = { response in
             self.hideLoader()
+//            self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onOK: {
+//                if self.comingfrom == .RightMenu || self.comingfrom == .HotelDetail{
+//                    self.dismiss(animated: true)
+//                }else{
+//                    self.dismissPopup()
+////                    UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+//                }
+//            })
             self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onOK: {
-                if self.comingfrom == .RightMenu || self.comingfrom == .HotelDetail{
-                    self.dismiss(animated: true)
-                }else{
-                    self.dismissPopup()
-//                    UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
-                }
+                self.goToHomeTab()
             })
         }
         
@@ -122,7 +126,7 @@ class ReportAnAppVC: UIViewController {
             hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
             
-        }else if comingfrom == .HotelDetail {
+        } else if comingfrom == .HotelDetail {
            
             hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
@@ -134,7 +138,17 @@ class ReportAnAppVC: UIViewController {
             )
         }
     }
-    
+    func goToHomeTab() {
+        if let window = UIApplication.shared.windows.first {
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            guard let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? CustomTabBarController else {
+                return
+            }
+            tabBarVC.selectedIndex = 0 // Home tab
+            window.rootViewController = tabBarVC
+            window.makeKeyAndVisible()
+        }
+    }
     
     @IBAction func dismissButton(_ sender: Any) {
         if comingfrom == .RightMenu || comingfrom == .HotelDetail{

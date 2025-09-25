@@ -115,8 +115,7 @@ class BookingViewModel {
         }
     }
     
-    func SubmitUserRegistrationInfo(name: String, mobile: String, address: String = "", gender: String, email: String, country: String, dob: String) {
-        
+    func SubmitUserRegistrationInfo(name: String,mobile: String,address: String = "",gender: String,email: String,country: String,dob: String) {
         let params: [String: Any] = [
             "name": name,
             "mobile": mobile,
@@ -127,23 +126,23 @@ class BookingViewModel {
             "dob": dob
         ]
         
-        guard let url =  APIURL.BookingURL.url else {
+        guard let url = APIURL.BookingURL.url else {
             self.onError?("Invalid URL")
             return
         }
         
-        APIManager.shared.postRequest(urlString: url , body: params, responseType: BookingModel.self) { result in
-            DispatchQueue.main.async{
+        APIManager.shared.postRequest(urlString: url,body: params,responseType: BookingResponse.self) { result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self.onSuccess?(response)
+                    self.onSuccess?(response.data)
                 case .failure(let failure):
                     self.onError?(failure.localizedDescription)
                 }
             }
         }
     }
-    
+
     func loadCountries(completion: @escaping ([CountryModel]) -> Void) {
         DispatchQueue.global().async {
             guard let url = Bundle.main.url(forResource: "countries_with_lengths", withExtension: "json"),

@@ -434,8 +434,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 extension HomeViewController {
     
     func reloadDataOnHomeScreen(){
-        
-        self.sliderCollectionView.reloadData()
+        self.viewWillAppear(true)
+//        self.sliderCollectionView.reloadData()
     }
     func setupUI() {
         searchView.isHidden = true

@@ -11,6 +11,7 @@ enum comingFromLogin {
 }
 
 class VerificationVC : UIViewController {
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var mobileNumberTF: UITextField!
@@ -62,7 +63,6 @@ class VerificationVC : UIViewController {
                 self?.showAlert(title: "Success",
                                 message: "Your mobile number has been verified successfully.", type: .success, onOK
                                 : {
-                  
                         self?.dismissVerificationFlow()
                 })
             }
