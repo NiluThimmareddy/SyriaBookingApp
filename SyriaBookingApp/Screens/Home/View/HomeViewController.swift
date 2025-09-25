@@ -23,6 +23,8 @@ struct WhereToNextList{
     }
 }
 
+var selectedCheckInDate: Date?
+var selectedCheckOutDate: Date?
 
 protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
@@ -72,8 +74,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
-    var selectedCheckInDate: Date?
-    var selectedCheckOutDate: Date?
+   
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
     var cities = [String]()
@@ -209,11 +210,12 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     @IBAction func tomorrowDateButtonAction(_ sender: UIButton) {
         checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
+       
         let formater = DateFormatter()
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
-        
+       
         guard let date = date else { return }
         selectedCheckInDate = date
         currentDatePickerMode = .checkOut
@@ -228,6 +230,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
         selectedCheckInDate = date
+        
         guard let date = date else { return }
         setNextDateInCkechout(checkInDate: date)
         currentDatePickerMode = .checkOut

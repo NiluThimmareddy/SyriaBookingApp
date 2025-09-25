@@ -29,7 +29,7 @@ class ConfirmYourBookingVC : UIViewController {
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
-    var selectedCheckInDate: Date?
+   
     var isDatePickerShown = false
     var formattedTotal = ""
     var total : Double = 0.0
