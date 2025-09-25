@@ -70,7 +70,7 @@ class ConfirmYourBookingVC : UIViewController {
             return
         }
 
-        guard let checkInDate = selectedCheckInDate else {
+        guard let  checkInDate = selectedCheckInDate else {
             showAlert("Please select a check-in date.")
             return
         }
@@ -242,10 +242,19 @@ extension ConfirmYourBookingVC {
         switch currentDatePickerMode {
         case .checkIn:
             datePicker.minimumDate = now
-            datePicker.date = selectedCheckInDate ?? now
+            if let  selectedCheckInDate = selectedCheckInDate {
+               
+                datePicker.date = selectedCheckInDate
+            }else{
+                datePicker.date = now
+                selectedCheckInDate = now
+               
+            }
+           
         case .checkOut:
             guard let checkIn = selectedCheckInDate else {
                 datePicker.minimumDate = now
+                
                 datePicker.date = now
                 return
             }

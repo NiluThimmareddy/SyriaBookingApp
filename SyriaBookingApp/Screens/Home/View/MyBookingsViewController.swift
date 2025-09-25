@@ -204,10 +204,11 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                 }
                 //                controller.
                 controller.comingFrom = .tabbarBooking
-                //                controller.reloadScreenAfterDismiss = {
-                //                    self.viewDidLoad()
-                //                    self.viewWillAppear(true)
-                //                }
+                controller.reloadScreenAfterDismiss = {
+                    DispatchQueue.main.async{
+                        self.setupUI()
+                    }
+                }
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
         }
@@ -241,7 +242,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     }
     
     func didConfirmCancellation(for booking: BookingHistoryModel, reason: String) {
-        guard let user = UserSessionManager.getUser() else { return }        
+        guard let user = UserSessionManager.getUser() else { return }
         bookingViewModel.onError = { error in
             self.hideLoader()
             self.showAlert(error)

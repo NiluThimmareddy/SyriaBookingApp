@@ -337,7 +337,7 @@ extension UIViewController {
                 // Case: RegisterMobileNumberVC inside Navigation
                 nav.dismiss(animated: true) {
                     reload?()
-                    registerVC.reloadScreenAfterDismiss?()
+                    registerVC.reloadScreenAfterDismiss?() 
                 }
             } else {
                 // Case: RegisterMobileNumberVC shown as popup

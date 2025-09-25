@@ -13,14 +13,14 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         delegate = self
         
-        // ✅ Force bottom tab bar on iPad (iOS 18+)
-//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-//            self.traitOverrides.horizontalSizeClass = .compact
-//        }
-// 
-        // ✅ Setup TabBar appearance
-        setUpTabBarAppearance()
+        if #available(iOS 15.0, *) {
+                    let appearance = UITabBarAppearance()
+                    appearance.configureWithDefaultBackground()
+                    tabBar.standardAppearance = appearance
+                    tabBar.scrollEdgeAppearance = appearance
+                }
  
+        setUpTabBarAppearance()
         updateTabBarTitles()
  
         NotificationCenter.default.addObserver(
@@ -30,6 +30,26 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             object: nil
         )
     }
+    
+        override func overrideTraitCollection(
+            forChild childViewController: UIViewController
+        ) -> UITraitCollection? {
+            if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+                // Force compact horizontal size for the tab bar (bottom)
+                return UITraitCollection(horizontalSizeClass: .compact)
+            }
+            return super.overrideTraitCollection(forChild: childViewController)
+        }
+        
+        // Optional: Support rotation for iPad to keep bottom tab bar
+        override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+            super.viewWillTransition(to: size, with: coordinator)
+            
+            if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+                // Re-apply trait override on rotation
+                self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChild: self)
+            }
+        }
  
     // MARK: - Setup TabBar UI
     private func setUpTabBarAppearance() {
@@ -59,7 +79,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             tabBar.items?[3].title = "اتصل بنا"
         }
     }
-    
   
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {

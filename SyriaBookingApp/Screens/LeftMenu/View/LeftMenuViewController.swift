@@ -72,7 +72,8 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         controller.modalPresentationStyle = .custom
         controller.transitioningDelegate = self
         controller.reloadScreenAfterDismiss = {
-           //here i want to dismiss registermobileVC
+            self.dismissPopup()
+            
         }
         self.showPopup(controller, widthMultiplier: 0.9, heightMultiplier: 0.3)
     }

@@ -298,7 +298,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 if indexPath.row == 0{
                     cell.greetingMessageLabel.isHidden = false
                     let greeting = updateGreetingMessage()
-                    cell.greetingMessageLabel.text = "\(greeting) \(user.name)!"
+                    cell.greetingMessageLabel.text = "\(greeting) \n \(user.name)!"
                 }
             } else {
                 if indexPath.row == 0{
@@ -309,9 +309,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             }
             cell.imageView.image = UIImage(named: sliderItems[indexPath.row])
             
-            //also write the confition for check user is login or not
-            
-            
             cell.loginClicked = {
 
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
@@ -321,7 +318,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 controller.transitioningDelegate = self
                 controller.comingFrom = .HomeSliderView
                 controller.reloadScreenAfterDismiss = {
-                    
+                    self.reloadDataOnHomeScreen()
                 }
                 self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
@@ -374,6 +371,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
         }
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -434,6 +433,10 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 
 extension HomeViewController {
     
+    func reloadDataOnHomeScreen(){
+        
+        self.sliderCollectionView.reloadData()
+    }
     func setupUI() {
         searchView.isHidden = true
         searchView.applyCardStyle()
@@ -685,7 +688,7 @@ extension HomeViewController {
         case 16..<24:
             greeting = "Good Evening"
         default:
-            greeting = ""
+            greeting = "Good Evening"
         }
         return  "\(greeting)"
     }
