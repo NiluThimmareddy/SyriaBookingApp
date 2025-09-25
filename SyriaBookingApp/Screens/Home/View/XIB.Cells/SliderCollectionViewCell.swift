@@ -16,5 +16,7 @@ class SliderCollectionViewCell: UICollectionViewCell {
     
     @IBAction func LoginButtonAction(_ sender: UIButton) {
         self.loginClicked?()
+       
+        
     }
 }

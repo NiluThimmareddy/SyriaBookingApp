@@ -82,7 +82,7 @@ class RegisterMobileNumberVC : UIViewController {
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         if comingFrom == .HomeSliderView {
-            //            self.reloadScreenAfterDismiss?()
+            
             UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
             
         } else if comingFrom == .tabbarBooking{
@@ -151,7 +151,16 @@ class RegisterMobileNumberVC : UIViewController {
                     
                     self.present(controller, animated: true)
                 })
-//                                self.reloadScreenAfterDismiss?()
+                self.reloadScreenAfterDismiss = {
+                    self.dismiss(animated: true) {
+                       
+                        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                        if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                            tabBarVC.modalPresentationStyle = .fullScreen
+                            self.present(tabBarVC, animated: true)
+                        }
+                    }
+                }
                 //                self.enterNameTF.text = userDetails.name
                 //                self.enterEmailTF.text = userDetails.email
                 

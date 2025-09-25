@@ -313,8 +313,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                                                              height: UIScreen.main.bounds.height * 0.5)
                     controller.isFullScreenIfMobileNotRegistered = false
                     controller.reloadScreenAfterDismiss = {
-                        self.viewDidLoad()
-                        self.viewWillAppear(true)
+                        collectionView.reloadData()
                     }
                     self.present(controller, animated: true)
                 }else{
@@ -415,7 +414,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.guestName = user.name
             controller.guestEmail = user.email
             controller.guestMobileNumber = user.mobile
-           
+            
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRate = room.rates

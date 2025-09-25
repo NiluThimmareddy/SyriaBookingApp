@@ -53,13 +53,29 @@ class VerificationVC : UIViewController {
        
         self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
             guard let UserId = UserId else { return }
+           
             self?.viewModel.onSuccess = { response in
                 UserSessionManager.saveUser(response)
                 
+               
+                
+                self?.showAlert(title: "Success",
+                                message: "Your mobile number has been verified successfully.", type: .success, onOK
+                                : {
+                  
+                        self?.dismissVerificationFlow()
+                })
             }
             
             self?.viewModel.onError = { error in
-                self?.showAlert(error.description)
+                self?.showAlert(title: "Error",
+                                message: error,
+                                type: .success, onOK:{
+                    self?.otpTF.forEach { textField in
+                        textField.text = ""
+                    }
+                   
+                })
             }
             
             self?.viewModel.FetchUserData(id: UserId.data.userId)
