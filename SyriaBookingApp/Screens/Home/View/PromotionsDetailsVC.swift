@@ -19,7 +19,6 @@ class PromotionsDetailsVC: UIViewController {
     
     var promotionsList: [Hotel] = []
     var selectedHotel: Hotel?
-    
     var gotoDetails : (() -> Void)?
     
     override func viewDidLoad() {

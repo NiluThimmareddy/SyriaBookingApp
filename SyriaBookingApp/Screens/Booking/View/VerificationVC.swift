@@ -111,7 +111,11 @@ class VerificationVC : UIViewController {
         }
         viewModel.onError = { error in
             self.hideLoader()
-            self.showAlert(error.description)
+            self.showAlert(title:"SyriaBooking", message: error.description, onOK: {
+                self.otpTF.forEach { textfield in
+                    textfield.text = ""
+                }
+            })
         }
         viewModel.verifyOTP(mobile: mobile, otp: otp)
     }

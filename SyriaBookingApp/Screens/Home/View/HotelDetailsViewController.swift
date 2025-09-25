@@ -315,7 +315,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     controller.reloadScreenAfterDismiss = {
                         collectionView.reloadData()
                     }
-                    self.present(controller, animated: true)
+                    self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
+                
                 }else{
                     guard let room = selectedRoom else { return }
                     self.selectedRoom = room

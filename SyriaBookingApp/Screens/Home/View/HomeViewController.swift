@@ -435,6 +435,7 @@ extension HomeViewController {
     
     func reloadDataOnHomeScreen(){
         self.viewWillAppear(true)
+        self.viewDidLoad()
 //        self.sliderCollectionView.reloadData()
     }
     func setupUI() {
