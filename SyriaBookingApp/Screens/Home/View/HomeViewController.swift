@@ -464,10 +464,23 @@ extension HomeViewController {
         
         sliderCollectionView.register(UINib(nibName: "SliderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SliderCollectionViewCell")
         
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        let todayDate = formatter.string(from: Date())
-        checkInButton.setTitle(todayDate, for: .normal)
+        
+        let font = UIFont.systemFont(ofSize: 14)
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+            formatter.dateStyle = .medium
+            let tomorrowDate = formatter.string(from: tomorrow)
+
+            let attributedTitle = NSAttributedString(
+                string: tomorrowDate,
+                attributes: [.font: font]
+            )
+            
+            selectedCheckInDate = tomorrow
+            checkInButton.setTitle(tomorrowDate, for: .normal)
+        }
+        
         setUpTomorrowDate()
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
@@ -587,7 +600,7 @@ extension HomeViewController {
         let today = Date()
         let font = UIFont.systemFont(ofSize: 14)
 
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
@@ -600,7 +613,7 @@ extension HomeViewController {
             tomorrowDateButton.setAttributedTitle(attributedTitle, for: .normal)
         }
         
-        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
+        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 3, to: today) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
@@ -769,6 +782,7 @@ extension HomeViewController {
             }
             datePicker.minimumDate = checkIn
             datePicker.date = checkIn
+            
         }
     }
     

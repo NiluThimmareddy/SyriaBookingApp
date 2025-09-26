@@ -38,7 +38,7 @@ class ConfirmYourBookingVC : UIViewController {
     var selectedRate = [Rate]()
     var viewModel = BookingViewModel()
     
-    var selectedCheckOutDate: Date?
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,10 +148,16 @@ extension ConfirmYourBookingVC {
         guestMobileNumberTF.text = guestMobileNumber
         
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        let todayDate = formatter.string(from: Date())
-        checkInTF.text = todayDate
+        formatter.dateFormat = "dd-MM-yyyy"
+
+        let selectedCheckin = selectedCheckInDate.map { formatter.string(from: $0) } ?? "Not Selected"
+        let selectedCheckout = selectedCheckOutDate.map { formatter.string(from: $0) } ?? "Not Selected"
+
         
+
+        //checkInTF.text = todayDate
+        checkInTF.text = selectedCheckin
+        checkOutTF.text = selectedCheckout
         var roomRatesData = ""
        
         for i in selectedRate {
@@ -238,30 +244,40 @@ extension ConfirmYourBookingVC {
     }
     
     func updateDatePickerLimits() {
-        let now = Date()
+        // Safely calculate tomorrow
+        guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) else {
+            return
+        }
+        
         switch currentDatePickerMode {
         case .checkIn:
-            datePicker.minimumDate = now
-            if let  selectedCheckInDate = selectedCheckInDate {
-               
-                datePicker.date = selectedCheckInDate
-            }else{
-                datePicker.date = now
-                selectedCheckInDate = now
-               
+            // Minimum check-in = tomorrow
+            datePicker.minimumDate = tomorrow
+            
+            if let checkInDate = selectedCheckInDate {
+                datePicker.date = checkInDate
+            } else {
+                datePicker.date = tomorrow
+                selectedCheckInDate = tomorrow
             }
-           
+            
         case .checkOut:
-            guard let checkIn = selectedCheckInDate else {
-                datePicker.minimumDate = now
-                
-                datePicker.date = now
-                return
+            if let checkIn = selectedCheckInDate {
+                // Checkout must be AT LEAST 1 day after check-in
+                let minCheckout = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) ?? tomorrow
+                datePicker.minimumDate = minCheckout
+                datePicker.date = selectedCheckOutDate ?? minCheckout
+                selectedCheckOutDate = datePicker.date
+            } else {
+                // No check-in yet → default to tomorrow + 1
+                let minCheckout = Calendar.current.date(byAdding: .day, value: 1, to: tomorrow) ?? tomorrow
+                datePicker.minimumDate = minCheckout
+                datePicker.date = minCheckout
+                selectedCheckOutDate = minCheckout
             }
-            datePicker.minimumDate = checkIn
-            datePicker.date = selectedCheckOutDate ?? checkIn
         }
     }
+
 
     func iso8601String(from date: Date) -> String {
         let formatter = ISO8601DateFormatter()
@@ -281,6 +297,7 @@ extension ConfirmYourBookingVC {
             checkOutTF.text = ""
             selectedCheckOutDate = nil
         case .checkOut:
+            
             selectedCheckOutDate = sender.date
             checkOutTF.text = selectedDateString
         }
