@@ -14,7 +14,8 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var myBookigsTitleLabel: UILabel!
-    @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
+    @IBOutlet weak var myBookingsDescriptionLabel: UILabel!    
+    @IBOutlet weak var noBookingsLabel: UILabel!
     
     let viewModel = NotificationViewModel()
     let bookingViewModel = BookingViewModel()
@@ -34,7 +35,8 @@ class MyBookingsViewController: UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate = [Rate]()
+//    var selectedRate = [Rate]()
+    var selectedRates: [Rate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +66,6 @@ class MyBookingsViewController: UIViewController {
                if let date = data.checkInUtc.toDate() {
                    return date >= Calendar.current.startOfDay(for: Date()) // today & future
                }
-               
                return false
            }
        } else {
@@ -76,7 +77,14 @@ class MyBookingsViewController: UIViewController {
                return false
            }
        }
-       
+        if viewModel.filteredHistoryArray.isEmpty {
+            noBookingsLabel.isHidden = false
+            noBookingsLabel.applyCardStyle()
+            HistoryTableView.isHidden = true
+        } else {
+            noBookingsLabel.isHidden = true
+            HistoryTableView.isHidden = false
+        }
        completion()
         
     }

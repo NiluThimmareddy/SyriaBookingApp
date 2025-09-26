@@ -43,7 +43,7 @@ class YourNotificationVC: UIViewController {
                 if rowCount == 0 {
                     self?.noNotificationsLabel.isHidden = false
                     self?.yourNotificationTV.isHidden = true
-                    self?.noNotificationsLabel.text = "No bookings found"
+                    self?.noNotificationsLabel.text = "No Upcoming bookings found"
                     self?.backViewHeightConstraint.constant = 100
                 } else {
                     self?.noNotificationsLabel.isHidden = true

@@ -2672,21 +2672,39 @@
                                     <constraint firstAttribute="trailing" secondItem="JTD-if-doo" secondAttribute="trailing" constant="20" id="rs3-ci-aSd"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Upcoming Bookings Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yJy-SJ-zMP">
+                                <rect key="frame" x="20" y="444" width="353" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="bN5-gW-ZYF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="iLM-xy-BoU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="9Ly-AC-UJN" firstAttribute="trailing" secondItem="iLM-xy-BoU" secondAttribute="trailing" id="131-oa-bZn"/>
                             <constraint firstItem="iLM-xy-BoU" firstAttribute="trailing" secondItem="Ubp-eU-UAQ" secondAttribute="trailing" constant="20" id="7b1-gc-8na"/>
+                            <constraint firstItem="yJy-SJ-zMP" firstAttribute="trailing" secondItem="JTD-if-doo" secondAttribute="trailing" id="8Jb-3e-CDT"/>
                             <constraint firstItem="iLM-xy-BoU" firstAttribute="trailing" secondItem="IVb-HN-A3B" secondAttribute="trailing" id="8zU-bF-9kG"/>
+                            <constraint firstItem="yJy-SJ-zMP" firstAttribute="centerY" secondItem="9Ly-AC-UJN" secondAttribute="centerY" constant="-40" id="Cml-Ms-tHt"/>
                             <constraint firstItem="9Ly-AC-UJN" firstAttribute="leading" secondItem="iLM-xy-BoU" secondAttribute="leading" id="Cvh-y4-MWI"/>
                             <constraint firstItem="0Oc-Eg-Di9" firstAttribute="bottom" secondItem="Ubp-eU-UAQ" secondAttribute="bottom" id="EJA-6e-gxq"/>
+                            <constraint firstItem="yJy-SJ-zMP" firstAttribute="centerX" secondItem="9Ly-AC-UJN" secondAttribute="centerX" id="RzA-gF-J6o"/>
                             <constraint firstAttribute="bottom" secondItem="9Ly-AC-UJN" secondAttribute="bottom" id="SIj-y0-isb"/>
                             <constraint firstItem="Ubp-eU-UAQ" firstAttribute="leading" secondItem="iLM-xy-BoU" secondAttribute="leading" constant="20" id="ZUt-Kl-Uwx"/>
                             <constraint firstItem="BJg-ze-ods" firstAttribute="top" secondItem="iLM-xy-BoU" secondAttribute="top" constant="5" id="a5i-l7-mzS"/>
                             <constraint firstItem="IVb-HN-A3B" firstAttribute="top" secondItem="BJg-ze-ods" secondAttribute="bottom" constant="5" id="eZN-GA-dus"/>
                             <constraint firstItem="IVb-HN-A3B" firstAttribute="leading" secondItem="iLM-xy-BoU" secondAttribute="leading" id="fNI-6e-q61"/>
                             <constraint firstItem="9Ly-AC-UJN" firstAttribute="top" secondItem="Ubp-eU-UAQ" secondAttribute="bottom" constant="10" id="fyF-bR-HiV"/>
+                            <constraint firstItem="yJy-SJ-zMP" firstAttribute="leading" secondItem="JTD-if-doo" secondAttribute="leading" id="fz4-8V-V8O"/>
                             <constraint firstItem="0Oc-Eg-Di9" firstAttribute="leading" secondItem="Ubp-eU-UAQ" secondAttribute="leading" id="jlp-8y-eJ4"/>
                             <constraint firstItem="0Oc-Eg-Di9" firstAttribute="top" secondItem="Ubp-eU-UAQ" secondAttribute="top" id="qMc-98-bLN"/>
                             <constraint firstItem="0Oc-Eg-Di9" firstAttribute="trailing" secondItem="Ubp-eU-UAQ" secondAttribute="trailing" id="sT0-B0-aLr"/>
@@ -2702,6 +2720,7 @@
                         <outlet property="messageLabel" destination="0Oc-Eg-Di9" id="Dr5-s5-LYm"/>
                         <outlet property="myBookigsTitleLabel" destination="BJg-ze-ods" id="pLP-28-zkK"/>
                         <outlet property="myBookingsDescriptionLabel" destination="IVb-HN-A3B" id="0cd-Xp-H3V"/>
+                        <outlet property="noBookingsLabel" destination="yJy-SJ-zMP" id="h1z-BF-1xb"/>
                         <outlet property="segmentControl" destination="Ubp-eU-UAQ" id="61x-cq-bFG"/>
                     </connections>
                 </viewController>

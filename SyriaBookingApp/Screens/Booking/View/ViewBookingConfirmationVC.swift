@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 struct BookingDetail {
     let rate: Double
     let description: String
@@ -46,8 +47,8 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var messageStatusLabel: UILabel!
     @IBOutlet weak var descriptionStatusLabel: UILabel!
     @IBOutlet weak var statusView: UIView!
-    
     @IBOutlet weak var tableviewHeightConstraint: NSLayoutConstraint!
+    
     var bookingId : String = ""
     var hotelID : String = ""
     var roomType : String = ""
@@ -55,7 +56,7 @@ class ViewBookingConfirmationVC : UIViewController {
     var hotelViewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var bookingDetails: [BookingDetail] = []
-
+    
     //    var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
     var viewModel = BookingViewModel()
@@ -110,16 +111,17 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomRateTVC") as! RoomRateTVC
         let detail = bookingDetails[indexPath.row]
-            
-            cell.rateLabel.text = "$\(detail.rate)"
-            cell.descriptionLabel.text = detail.description
-            cell.qtyLabel.text = "\(detail.qty)"
-            cell.amountLabel.text = "$\(detail.amount)"
-            
-            return cell
+        
+        cell.rateLabel.text = "$\(detail.rate)"
+        cell.descriptionLabel.text = detail.description
+        cell.descriptionLabel.numberOfLines = 0
+        cell.qtyLabel.text = "\(detail.qty)"
+        cell.amountLabel.text = "$\(detail.amount)"
+        
+        return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        return 44
     }
 }
 
@@ -134,11 +136,11 @@ extension ViewBookingConfirmationVC {
         
         viewModel.onError = { error in
             DispatchQueue.main.async {
-            self.hideLoader()
-            self.showAlert(error)
+                self.hideLoader()
+                self.showAlert(error)
             }
         }
-
+        
         viewModel.getBookingHistory(userId: user.id, BookingId: bookingId) { response in
             self.bookingHistoryData = response
             
@@ -159,18 +161,18 @@ extension ViewBookingConfirmationVC {
             }
         }
     }
-
+    
     
     func setUpUI() {
         backView.applyCardStyle()
         print("setupUI called")
-       
+        
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
         let calculatedTotal: String
         let totalAmount : Double = self.bookingHistoryData?.totalAmount ?? 0.0
         calculatedTotal = String(format: "%.2f", totalAmount)
- 
+        
         guard let data = bookingHistoryData else {
             print("booking history is empty")
             return
@@ -184,7 +186,7 @@ extension ViewBookingConfirmationVC {
         bookingDetails = parseBookingDetails(data.bookingDetails)
         roomRateDetailsTableview.reloadData()
         
-        tableviewHeightConstraint.constant = CGFloat(30 * bookingDetails.count)
+        tableviewHeightConstraint.constant = CGFloat(44 * bookingDetails.count)
         
         let bookingLabelConfigs: [(UILabel, String, String)] = [
             (bookingReferenceLabel, "Booking Reference: SBK-\(data.id)", "Booking Reference:"),
@@ -309,10 +311,12 @@ extension ViewBookingConfirmationVC {
     func parseBookingDetails(_ details: String) -> [BookingDetail] {
         var result: [BookingDetail] = []
         
-        // Robust regex: optional spaces anywhere, flexible matching
-        let regexPattern = #"^\s*\$([\d.]+)\s*:\s*(.*?)\s*Qty\s*(\d+)\s*-\s*Total\s*\$([\d.]+)\s*$"#
+        let regexPattern = #"\$\s*([\d.]+)\s*:\s*((?:(?!Qty\s*\d+\s*-\s*Total).)*)Qty\s*(\d+)\s*-\s*Total\s*\$\s*([\d.]+)"#
         
-        guard let regex = try? NSRegularExpression(pattern: regexPattern, options: [.anchorsMatchLines]) else {
+        guard let regex = try? NSRegularExpression(
+            pattern: regexPattern,
+            options: [.anchorsMatchLines, .dotMatchesLineSeparators]
+        ) else {
             return result
         }
         
@@ -322,7 +326,7 @@ extension ViewBookingConfirmationVC {
         for match in matches {
             if match.numberOfRanges == 5 {
                 let rateString = nsDetails.substring(with: match.range(at: 1))
-                let description = nsDetails.substring(with: match.range(at: 2))
+                let description = nsDetails.substring(with: match.range(at: 2)).trimmingCharacters(in: .whitespacesAndNewlines)
                 let qtyString = nsDetails.substring(with: match.range(at: 3))
                 let amountString = nsDetails.substring(with: match.range(at: 4))
                 
@@ -336,7 +340,5 @@ extension ViewBookingConfirmationVC {
         
         return result
     }
-
-
+    
 }
-

@@ -20,7 +20,8 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate = [Rate]()
+//    var selectedRate = [Rate]()
+    var selectedRates: [Rate] = []
     var bookingId : String?
     var roomtype : String?
     override func viewDidLoad() {
@@ -86,7 +87,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
                     myBookingsVC.totalPrice = totalPrice
                     myBookingsVC.selectedHotel = selectedHotel
                     myBookingsVC.selectedRoom = selectedRoom
-                    myBookingsVC.selectedRate = selectedRate
+                    myBookingsVC.selectedRates = selectedRates
                 }
 
                 tabBarController.modalPresentationStyle = .fullScreen

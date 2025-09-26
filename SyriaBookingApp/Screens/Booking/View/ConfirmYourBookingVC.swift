@@ -35,7 +35,8 @@ class ConfirmYourBookingVC : UIViewController {
     var total : Double = 0.0
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    var selectedRate = [Rate]()
+//    var selectedRate = [Rate]()
+    var selectedRates: [Rate] = []  
     var viewModel = BookingViewModel()
     
    
@@ -110,7 +111,7 @@ class ConfirmYourBookingVC : UIViewController {
             confirmationVC.roomDetails = response.bookingDetails
             confirmationVC.selectedHotel = self.selectedHotel
             confirmationVC.selectedRoom = self.selectedRoom
-            confirmationVC.selectedRate = self.selectedRate
+            confirmationVC.selectedRates = self.selectedRates
             confirmationVC.bookingId = response.id
             self.present(confirmationVC, animated: true)
         }
@@ -160,7 +161,7 @@ extension ConfirmYourBookingVC {
         checkOutTF.text = selectedCheckout
         var roomRatesData = ""
        
-        for i in selectedRate {
+        for i in selectedRates {
             if i.isSelected == true {
                 let price = i.price
                 let quantity = i.selectedQuantity

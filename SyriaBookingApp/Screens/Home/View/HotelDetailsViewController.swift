@@ -418,7 +418,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
-            controller.selectedRate = room.rates
+//            controller.selectedRate = room.rates
+            controller.selectedRates = self.selectedRates
             self.present(controller, animated: true)
         }
     }
