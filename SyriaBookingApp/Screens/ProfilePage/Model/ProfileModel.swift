@@ -1,9 +1,6 @@
-//
 //  ProfileModel.swift
 //  HotelBooking
-//
 //  Created by praveenkumar on 26/06/25.
-//
 
 import Foundation
 import UIKit
@@ -55,7 +52,6 @@ struct Guest {
     var gender: String
 }
 
-
 struct NotificationData{
     var date: String
     var viewYourBooking: String
@@ -94,7 +90,6 @@ enum ChatSuggestionStage {
     case postBookingID 
     case none
 }
-
 
 struct Address {
     var streetAddress: String

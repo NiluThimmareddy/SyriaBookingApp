@@ -14,6 +14,7 @@ enum ComingFromToLogin {
     case tabbarBooking
     case HomeSliderView
     case HotelDetails
+    case profile
 }
 
 class RegisterMobileNumberVC : UIViewController {
@@ -181,8 +182,10 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-        guard let gender = selectGenderButton.title(for: .normal), gender != "Select Gender" else {
-            showAlert("Please select your gender.")
+        var gendr = "Others"
+        
+        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
+            gendr = gender
             return
         }
         
@@ -199,10 +202,10 @@ class RegisterMobileNumberVC : UIViewController {
         guard let  countryCode = countryCode else { return }
        let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
         
-        guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
-            showAlert("Please enter your date of birth.")
-            return
-        }
+//        guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
+//            showAlert("Please enter your date of birth.")
+//            return
+//        }
         
         viewModel.onSuccess = { [weak self] response in
         
@@ -227,13 +230,16 @@ class RegisterMobileNumberVC : UIViewController {
             self.showAlert(error)
         }
         
-        viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gender, email: email, country: country, dob: dob)
+        let dummydob = getDummyDOB()
+        viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gendr , email: email, country: country, dob: selectDateofBirthTF.text ?? dummydob )
     }
+    
+   
 }
 
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
-        changeTheLoginViewDesing()
+      
         setupGenderPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
         
@@ -253,22 +259,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
     }
     
-    func changeTheLoginViewDesing(){
-        switch comingFrom{
-        case .HotelDetails :
-            //
-            break
-        case .tabbarBooking:
-            //disable dismissbutton
-            //            self.dismissButton.isHidden = true
-            break
-        case .HomeSliderView :
-            break
-        case .none:
-            break
-            
-        }
-    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == enterMobileNumberTF {

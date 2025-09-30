@@ -38,9 +38,7 @@ class ConfirmYourBookingVC : UIViewController {
 //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []  
     var viewModel = BookingViewModel()
-    
-   
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -280,11 +278,6 @@ extension ConfirmYourBookingVC {
     }
 
 
-    func iso8601String(from date: Date) -> String {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter.string(from: date)
-    }
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()

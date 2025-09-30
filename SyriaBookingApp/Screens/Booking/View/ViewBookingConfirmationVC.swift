@@ -208,7 +208,7 @@ extension ViewBookingConfirmationVC {
             (roomTypeLabel, "Room Type: \(roomType)", "Room Type:"),
             (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
             (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
-            (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
+            (totalPriceLabel, "Total Price: $\(calculatedTotal)", "Total Price:"),
             (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
             (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
         ]

@@ -76,7 +76,7 @@ class PersonalDetailsEditVC: UIViewController {
     var selectedExpectationIndex: Int? = nil
     var selectedOption: ProfileOptions = .name
     let countryViewModel = CountryListViewModel()
-    var personalData: PersonalDetails?
+    var personalData: BookingModel?
     var genderData = ["Male","Female","Others","Prefer not to say"]
     var color = UIColor(named: "defaultColor")
     var selectedGender: String {
@@ -203,24 +203,24 @@ class PersonalDetailsEditVC: UIViewController {
     func getData(){
         if let data = personalData{
             selectedCountryNameLbl.text = data.country
-            townTF.text = data.address.city
-            postCodeTF.text = data.address.postCode
-            adressTF.text = data.address.streetAddress
-            firstNameTF.text = data.firstName
-            lastName.text = data.lastName
-            emailTF.text = data.emailAddress
-            let fullNumber = data.phoneNumber
+            townTF.text = ""
+            postCodeTF.text = ""
+            adressTF.text = data.address
+            firstNameTF.text = data.name
+            lastName.text = ""
+            emailTF.text = data.email
+            let fullNumber = data.mobile
             let digitsOnly = fullNumber.components(separatedBy: " ").last ?? fullNumber
             phoneNumberTypeTF.text = digitsOnly
             let countryCode = fullNumber.components(separatedBy: " ").first ?? ""
-            phoneNumberCountryCodeLbl.text = countryCode
+            phoneNumberCountryCodeLbl.text = data.country
         }
     }
     func setupDOBPicker() {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM yyyy"
         
-        if let dobString = personalData?.dateOfBirth, !dobString.isEmpty,
+        if let dobString = personalData?.dob, !dobString.isEmpty,
            let dobDate = formatter.date(from: dobString) {
             dobDatePicker.date = dobDate
         } else {

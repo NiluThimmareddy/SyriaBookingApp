@@ -32,27 +32,15 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
    }()
     var infoDataTitle = ["Name", "Gender", "Date of Birth"]
     var contactDataTitle = ["Email Address", "Phone Number", "Address"]
-    var personalData = [
-        PersonalDetails(
-            firstName: "John",
-            lastName: "Doe",
-            gender: "Male",
-            dateOfBirth: "15 Dec 2001",
-            emailAddress: "johndoe@example.com",
-            phoneNumber: "+91 9876543210",
-            country: "India",
-            address: Address(
-                streetAddress: "123, MG Road",
-                postCode: "600034",
-                city: "Chennai"
-            )
-        )
-    ]
-
+    
+    var personalData : BookingModel?
    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let user = UserSessionManager.getUser() {
+            personalData = user
+        }
         fontText()
         imageBackView.layer.cornerRadius = imageBackView.frame.size.height / 2
         profileImage.layer.cornerRadius = profileImage.frame.size.height / 2
@@ -82,7 +70,9 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
       
     }
 
-  
+    func fetchUSerData(){
+       
+    }
     
 
     @IBAction func choosePhotoButton(_ sender: Any) {
@@ -120,7 +110,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InfoAndContactTVC") as! InfoAndContactTVC
-        let data = personalData[0]
+        let data = personalData
 
         if tableView == infoTableView {
             let dataTitle = infoDataTitle[indexPath.row]
@@ -128,13 +118,13 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
             switch indexPath.row {
             case 0:
-                cell.contentLbl.text = "\(data.firstName) \(data.lastName)"
+                cell.contentLbl.text = data?.name ?? ""
             case 1:
-                cell.contentLbl.text = data.gender
+                cell.contentLbl.text = data?.gender ?? ""
             case 2:
-                cell.contentLbl.text = data.dateOfBirth
+                cell.contentLbl.text = data?.dob ?? ""
             default:
-                cell.contentLbl.text = ""
+                cell.contentLbl.text = data?.mobile ?? ""
             }
 
         } else {
@@ -143,11 +133,11 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
             switch indexPath.row {
             case 0:
-                cell.contentLbl.text = data.emailAddress
+                cell.contentLbl.text = data?.email
             case 1:
-                cell.contentLbl.text = data.phoneNumber
+                cell.contentLbl.text = data?.mobile
             case 2:
-                cell.contentLbl.text = "\(data.address.streetAddress), \(data.address.city), \(data.address.postCode)"
+                cell.contentLbl.text = " \(data?.address ?? ""), \(data?.country ?? "")"
             default:
                 cell.contentLbl.text = ""
             }
@@ -166,7 +156,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .name
                 controller.delegate = self
@@ -182,7 +172,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             }else if indexPath.row == 1{
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .gender
                 controller.delegate = self
@@ -190,7 +180,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             }else if indexPath.row == 2{
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .dob
                 controller.delegate = self
@@ -201,7 +191,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .email
                 controller.delegate = self
@@ -218,7 +208,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .number
                 controller.delegate = self
@@ -235,7 +225,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
-                let data = personalData[0]
+                let data = personalData
                 controller.selectedOption = .address
                 controller.personalData = data
                 controller.delegate = self
@@ -255,38 +245,34 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
 extension PersonalDetailsViewController: PersonalDetailsEditVCDelegate {
     func didUpdateName(firstName: String, lastName: String) {
-        personalData[0].firstName = firstName
-        personalData[0].lastName = lastName
+        personalData?.name = firstName
+       // personalData[0].lastName = lastName
         infoTableView.reloadData()
     }
 
     func didUpdateGender(_ gender: String) {
-        personalData[0].gender = gender
+        personalData?.gender = gender
         infoTableView.reloadData()
     }
 
     func didUpdateDOB(_ dob: String) {
-        personalData[0].dateOfBirth = dob
+        personalData?.dob = dob
         infoTableView.reloadData()
     }
 
     func didUpdateEmail(_ email: String) {
-        personalData[0].emailAddress = email
+        personalData?.email = email
         contactTableView.reloadData()
     }
 
     func didUpdatePhoneNumber(_ phoneNumber: String, countryCode: String) {
-        personalData[0].phoneNumber = "\(countryCode) \(phoneNumber)"
+        personalData?.mobile = "\(countryCode) \(phoneNumber)"
         contactTableView.reloadData()
     }
 
     func didUpdateAddress(street: String, city: String, postCode: String, country: String) {
-        personalData[0].country = country
-        personalData[0].address = Address(
-            streetAddress: street,
-            postCode: postCode,
-            city: city
-        )
+        personalData?.country = country
+        personalData?.address = street
         contactTableView.reloadData()
     }
 }

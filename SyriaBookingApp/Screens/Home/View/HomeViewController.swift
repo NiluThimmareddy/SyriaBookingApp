@@ -120,6 +120,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         //        searchView.applyCardStyle()
+        setupAppNavigationBar()
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
@@ -437,8 +438,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 extension HomeViewController {
     
     func reloadDataOnHomeScreen(){
-        self.viewWillAppear(true)
-        self.viewDidLoad()
+        print("HomeAge reloading")
+       setupAppNavigationBar()
+       
 //        self.sliderCollectionView.reloadData()
     }
     func setupUI() {

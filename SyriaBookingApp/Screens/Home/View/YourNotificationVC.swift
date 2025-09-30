@@ -32,6 +32,7 @@ class YourNotificationVC: UIViewController {
         viewModel.onSuccess = { [weak self] response in
             DispatchQueue.main.async {
                 self?.hideLoader()
+               
                 self?.viewModel.filteredHistoryArray = response.filter { data in
                     if let date = data.checkInUtc.toDate() {
                         return date >= Calendar.current.startOfDay(for: Date())
@@ -80,20 +81,24 @@ class YourNotificationVC: UIViewController {
         var totalHeight: CGFloat = 0
         let rowCount = min(3, viewModel.filteredHistoryArray.count)
         
+        // Use the first 'rowCount' items from the reversed array
+        let reversedArray = Array(viewModel.filteredHistoryArray.reversed())
+        
         for row in 0..<rowCount {
             let indexPath = IndexPath(row: row, section: 0)
             if let cell = yourNotificationTV.dequeueReusableCell(withIdentifier: "YourNotificationTVC") as? YourNotificationTVC {
-                cell.configure(with: viewModel.filteredHistoryArray[row])
+                cell.configure(with: reversedArray[row])
                 cell.layoutIfNeeded()
                 totalHeight += cell.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
             } else {
                 totalHeight += 60
             }
         }
-        totalHeight += 51
+        totalHeight += 51 // Extra padding for the backView
         backViewHeightConstraint.constant = totalHeight
         view.layoutIfNeeded()
     }
+
 }
 
 extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource {
