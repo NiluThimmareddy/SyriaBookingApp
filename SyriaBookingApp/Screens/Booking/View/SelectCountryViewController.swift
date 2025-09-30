@@ -50,7 +50,6 @@ class SelectCountryViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
         filteredList = countryList
     }
 

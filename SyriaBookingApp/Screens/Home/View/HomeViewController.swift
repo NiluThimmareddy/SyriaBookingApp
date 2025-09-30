@@ -68,6 +68,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var selectCityView: UIView!
     @IBOutlet weak var selectCheckInView: UIView!
     @IBOutlet weak var selectCheckOutView: UIView!
+    @IBOutlet weak var newYearTitleLabel: UILabel!
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -593,7 +594,7 @@ extension HomeViewController {
         selectCityView.addBottomShadow()
         selectCheckInView.addBottomShadow()
         selectCheckOutView.addBottomShadow()
-        //        updateTexts()
+        updateTexts()
     }
     
     func setUpTomorrowDate() {
@@ -667,6 +668,10 @@ extension HomeViewController {
         recentlyCollectionView.reloadData()
         
         if lang == .english {
+            newYearTitleLabel.text = "New Year, New Adventures"
+            dealOfferLabel.text = "Save 15% or more when you book and stay before 31 Decembe 2025"
+            handPickedHotelsDescriptionLabel.text = "Experience the finest stays with our handpicked hotels, selected for their exceptional comfort, service, and location."
+            handpickedHotelsLabel.text = "Handpicked Hotels"
             navigationTitleNameLabel.title = "SyriaBooking"
             //            messageLabel.text = "Good Morning User!"
             //            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
@@ -678,7 +683,12 @@ extension HomeViewController {
             checkOutButton.setTitle("Check Out", for: .normal)
             searchButton.setTitle("Search", for: .normal)
             viewAllButton.setTitle("View All", for: .normal)
+            findDealButton.setTitle("Find early 2025 deals", for: .normal)
         } else {
+            dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
+            newYearTitleLabel.text = "عام جديد، مغامرات جديدة"
+            handPickedHotelsDescriptionLabel.text = "ختبر أرقى الإقامات مع فنادقنا المختارة بعناية، والتي تم اختيارها لراحتها الاستثنائية وخدماتها ومواقعها المميزة."
+            handpickedHotelsLabel.text = "فنادق مختارة بعناية"
             navigationTitleNameLabel.title = "سيريا بوكينغ"
             //            messageLabel.text = "صباح الخير المستخدم!"
             //            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
@@ -690,6 +700,12 @@ extension HomeViewController {
             checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
             searchButton.setTitle("بحث", for: .normal)
             viewAllButton.setTitle("عرض الكل", for: .normal)
+            let title = "ابحث مبكرًا 2025 عن عروض"
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
+            ]
+            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+            findDealButton.setAttributedTitle(attributedTitle, for: .normal)
         }
     }
     

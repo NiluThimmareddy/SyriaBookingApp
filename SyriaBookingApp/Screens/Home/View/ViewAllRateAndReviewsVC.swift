@@ -18,6 +18,7 @@ class ViewAllRateAndReviewsVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
 
     @IBAction func dismissButton(_ sender: Any) {
@@ -48,7 +49,12 @@ extension ViewAllRateAndReviewsVC {
         
         guard let hotel = selectedHotel else { return }
         
-        rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+//        rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        if AppSettings.shared.selectedLanguage == .arabic {
+            rateAndReviewsLabel.text = "التقييمات والمراجعات \(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
+        } else {
+            rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        }
         rateAndReviewsTableView.reloadData()
         
         backView.applyCardStyle()

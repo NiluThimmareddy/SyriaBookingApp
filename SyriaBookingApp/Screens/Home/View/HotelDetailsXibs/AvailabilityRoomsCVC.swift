@@ -25,6 +25,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var roomRatesTableview: UITableView!
     @IBOutlet weak var bookNowButton: UIButton!
     @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rateTitleLabel: UILabel!
     
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
@@ -118,6 +119,62 @@ extension AvailabilityRoomsCVC {
         }
     }
     
+//    func configure(with rooms: RoomElement) {
+//        self.selectedRoom = rooms
+//        roomRatesTableview.reloadData()
+//        
+//        let rateCount = rooms.rates.count
+//        let rowHeight: CGFloat = 40
+//        roomRatesTableviewheightConstraint.constant = CGFloat(rateCount) * rowHeight
+//        self.layoutIfNeeded()
+//        
+//        if let imageUrlString = rooms.coverImage, !imageUrlString.isEmpty {
+//            roomImageView.loadImage(from: imageUrlString)
+//        } else {
+//            roomImageView.image = UIImage(named: "HotelPlaceholder 1")
+//        }
+//        
+//        let roomType = rooms.room.roomType
+//        let bedType = rooms.room.bedType
+//        let roomSize = rooms.room.roomSize ?? "N/A"
+//        let maxAdults = rooms.room.maxAdults
+//        let maxChildren = rooms.room.maxChildren
+//        let breakfastIncluded = rooms.room.breakfastIncluded
+//        let amenities = rooms.room.amenities ?? "N/A"
+//        let refundPolicy = rooms.room.refundPolicy ?? "N/A"
+//        
+//        let roomsizeText = "Size: \(roomSize)"
+//        let guestText = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
+//        let refundPolicyText = "Refund Policy: \(refundPolicy)"
+//        let aminitiesText = "Amenities: \(amenities)"
+//        let breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
+//        
+//        roomNameLabel.text = "\(roomType) (\(bedType))"
+//        roomSizeLabel.text = roomsizeText
+//        maxGuestsLabel.text = guestText
+//        breakfastLabel.text = breakfastText
+//        amenitiesLabel.text = aminitiesText
+//        refundPolicyLabel.text = refundPolicyText
+//        
+//        let labelConfigs: [(UILabel, String, String, UIColor)] = [
+//            (roomSizeLabel, roomsizeText, "Size:", .darkGray),
+//            (maxGuestsLabel, guestText, "Max Guests:", .darkGray),
+//            (refundPolicyLabel, refundPolicyText, "Refund Policy:", .darkGray),
+//            (amenitiesLabel, aminitiesText, "Amenities:", .systemBlue),
+//            (breakfastLabel, breakfastText, "Breakfast Included:", .darkGray)
+//        ]
+//        
+//        labelConfigs.forEach { label, fullText, highlightText, normalColor in
+//            label.setHighlightedText(
+//                fullText: fullText,
+//                highlightText: highlightText,
+//                normalFont: .systemFont(ofSize: 12),
+//                highlightFont: .boldSystemFont(ofSize: 13),
+//                normalColor: normalColor,
+//                highlightColor: .label
+//            )
+//        }
+//    }
     func configure(with rooms: RoomElement) {
         self.selectedRoom = rooms
         roomRatesTableview.reloadData()
@@ -142,12 +199,29 @@ extension AvailabilityRoomsCVC {
         let amenities = rooms.room.amenities ?? "N/A"
         let refundPolicy = rooms.room.refundPolicy ?? "N/A"
         
-        let roomsizeText = "Size: \(roomSize)"
-        let guestText = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
-        let refundPolicyText = "Refund Policy: \(refundPolicy)"
-        let aminitiesText = "Amenities: \(amenities)"
-        let breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
-        
+        let roomsizeText: String
+        let guestText: String
+        let refundPolicyText: String
+        let aminitiesText: String
+        let breakfastText: String
+
+        if AppSettings.shared.selectedLanguage == .arabic {
+            roomsizeText = "الحجم: \(roomSize)"
+            guestText = "الحد الأقصى للنزلاء: \(maxAdults) بالغين، \(maxChildren) أطفال"
+            refundPolicyText = "سياسة الاسترجاع: \(refundPolicy)"
+            aminitiesText = "المرافق: \(amenities)"
+            breakfastText = "يشمل الإفطار: \(breakfastIncluded ? "نعم" : "لا")"
+            rateTitleLabel.text = "الأسعار"
+            bookNowButton.setTitle("احجز الآن", for: .normal)
+        } else {
+            roomsizeText = "Size: \(roomSize)"
+            guestText = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
+            refundPolicyText = "Refund Policy: \(refundPolicy)"
+            aminitiesText = "Amenities: \(amenities)"
+            breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
+            rateTitleLabel.text = "Rates"
+            bookNowButton.setTitle("Book Now", for: .normal)
+        }
         roomNameLabel.text = "\(roomType) (\(bedType))"
         roomSizeLabel.text = roomsizeText
         maxGuestsLabel.text = guestText

@@ -18,6 +18,15 @@ class FrequentlyAskedTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.semanticContentAttribute = .forceLeftToRight
+        headLineLabel.semanticContentAttribute = .forceLeftToRight
+        headLineLabel.textAlignment = .left
+        
+        descriptionLabel.semanticContentAttribute = .forceLeftToRight
+        descriptionLabel.textAlignment = .left
+        
+        serialNumLabel.semanticContentAttribute = .forceLeftToRight
+        serialNumLabel.textAlignment = .left
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

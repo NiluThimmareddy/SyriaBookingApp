@@ -48,6 +48,21 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var descriptionStatusLabel: UILabel!
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var tableviewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var hotelBookingConfirmationTitleLabel: UILabel!
+    @IBOutlet weak var hotelAndStayTitleLabel: UILabel!
+    @IBOutlet weak var roomDetailsTitleLabel: UILabel!
+    @IBOutlet weak var rateTitleLabel: UILabel!
+    @IBOutlet weak var descriptionTitleLabel: UILabel!
+    @IBOutlet weak var qtyTitleLabel: UILabel!
+    @IBOutlet weak var amountTitleLabel: UILabel!
+    @IBOutlet weak var paymentSummaryTitleLabel: UILabel!
+    @IBOutlet weak var reservationNotesTitleLabel: UILabel!    
+    @IBOutlet weak var earlyCheckInTextLabel: UILabel!
+    @IBOutlet weak var presentAValidIdTextLabel: UILabel!
+    @IBOutlet weak var taxesFeesTextLabel: UILabel!
+    @IBOutlet weak var needHelpTitleLabel: UILabel!
+    @IBOutlet weak var thanksMessageTextLabel: UILabel!
+    @IBOutlet weak var guestInformationTitleLabel: UILabel!
     
     var bookingId : String = ""
     var hotelID : String = ""
@@ -74,8 +89,10 @@ class ViewBookingConfirmationVC : UIViewController {
             DispatchQueue.main.async {
                 self.hideLoader()
                 self.setUpUI()
+                self.setUpLanguage()
             }
         }
+        
     }
     
     @IBAction func printButtonAction(_ sender: Any) {
@@ -188,31 +205,60 @@ extension ViewBookingConfirmationVC {
         
         tableviewHeightConstraint.constant = CGFloat(44 * bookingDetails.count)
         
-        let bookingLabelConfigs: [(UILabel, String, String)] = [
-            (bookingReferenceLabel, "Booking Reference: SBK-\(data.id)", "Booking Reference:"),
-            (bookingDateLabel, "Booking Date: \(data.timestamp.toDayMonthYear())", "Booking Date:"),
-            (checkInLabel, "Check-In: \(data.checkIn.toDayMonthYear())", "Check-In:"),
-            (checkOutLabel, "Check-Out: \(data.checkOut.toDayMonthYear())", "Check-Out:"),
-            (totalNightsLabel, "Total Nights: (\(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())))", "Total Nights:"),
-            (statusLabel, "Status: \(data.bookingStatus)", "Status:"),
-            (guestLabel, "Guest: \(data.guestName)", "Guest:"),
-            (guestEmailLabel, "Email: \(data.guestEmail)", "Email:"),
-            (guestPhoneNoLabel, "Phone: \(data.guestPhone)", "Phone:"),
-            (numberOfGuestsLabel, "No. of Guests: \(data.numberOfGuests)", "No. of Guests:"),
-            (hotelNameLabel, "Hotel Name: \( hotelData.name)", "Hotel Name:"),
-            (hotelAddressLabel, "Address: \( hotelData.addressLine1  ?? "No Address")", "Address:"),
-            (hotelPhoneNumberLabel, "Phone: \( hotelData.primaryPhone ?? "No Phone Number")", "Phone:"),
-            (hotelEmailLabel, "Email: \(  hotelData.email ?? "No Email")", "Email:"),
-            (hotelCheckInTimeLabel, "Check-In Time: \(hotelData.checkInTime ?? "No CheckIn")", "Check-In Time:"),
-            (hotelCheckOutTimeLabel, "Check-Out Time: \(hotelData.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
-            (roomTypeLabel, "Room Type: \(roomType)", "Room Type:"),
-            (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
-            (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
-            (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
-            (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
-            (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
-        ]
-        
+        let bookingLabelConfigs: [(UILabel, String, String)] = {
+            if AppSettings.shared.selectedLanguage == .english {
+                return [
+                    (bookingReferenceLabel, "Booking Reference: SBK-\(data.id)", "Booking Reference:"),
+                    (bookingDateLabel, "Booking Date: \(data.timestamp.toDayMonthYear())", "Booking Date:"),
+                    (checkInLabel, "Check-In: \(data.checkIn.toDayMonthYear())", "Check-In:"),
+                    (checkOutLabel, "Check-Out: \(data.checkOut.toDayMonthYear())", "Check-Out:"),
+                    (totalNightsLabel, "Total Nights: (\(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())))", "Total Nights:"),
+                    (statusLabel, "Status: \(data.bookingStatus)", "Status:"),
+                    (guestLabel, "Guest: \(data.guestName)", "Guest:"),
+                    (guestEmailLabel, "Email: \(data.guestEmail)", "Email:"),
+                    (guestPhoneNoLabel, "Phone: \(data.guestPhone)", "Phone:"),
+                    (numberOfGuestsLabel, "No. of Guests: \(data.numberOfGuests)", "No. of Guests:"),
+                    (hotelNameLabel, "Hotel Name: \(hotelData.name)", "Hotel Name:"),
+                    (hotelAddressLabel, "Address: \(hotelData.addressLine1 ?? "No Address")", "Address:"),
+                    (hotelPhoneNumberLabel, "Phone: \(hotelData.primaryPhone ?? "No Phone Number")", "Phone:"),
+                    (hotelEmailLabel, "Email: \(hotelData.email ?? "No Email")", "Email:"),
+                    (hotelCheckInTimeLabel, "Check-In Time: \(hotelData.checkInTime ?? "No CheckIn")", "Check-In Time:"),
+                    (hotelCheckOutTimeLabel, "Check-Out Time: \(hotelData.checkOutTime ?? "No CheckOut")", "Check-Out Time:"),
+                    (roomTypeLabel, "Room Type: \(roomType)", "Room Type:"),
+                    (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
+                    (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
+                    (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
+                    (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
+                    (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
+                ]
+            } else {
+                return [
+                    (bookingReferenceLabel, "المرجع: SBK-\(data.id)", "المرجع:"),
+                    (bookingDateLabel, "تاريخ الحجز: \(data.timestamp.toDayMonthYear())", "تاريخ الحجز:"),
+                    (checkInLabel, "تسجيل الوصول: \(data.checkIn.toDayMonthYear())", "تسجيل الوصول:"),
+                    (checkOutLabel, "تسجيل المغادرة: \(data.checkOut.toDayMonthYear())", "تسجيل المغادرة:"),
+                    (totalNightsLabel, "إجمالي الليالي: (\(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())))", "إجمالي الليالي:"),
+                    (statusLabel, "الحالة: \(data.bookingStatus)", "الحالة:"),
+                    (guestLabel, "الضيف: \(data.guestName)", "الضيف:"),
+                    (guestEmailLabel, "البريد الإلكتروني: \(data.guestEmail)", "البريد الإلكتروني:"),
+                    (guestPhoneNoLabel, "الهاتف: \(data.guestPhone)", "الهاتف:"),
+                    (numberOfGuestsLabel, "عدد الضيوف: \(data.numberOfGuests)", "عدد الضيوف:"),
+                    (hotelNameLabel, "اسم الفندق: \(hotelData.name)", "اسم الفندق:"),
+                    (hotelAddressLabel, "العنوان: \(hotelData.addressLine1 ?? "لا يوجد عنوان")", "العنوان:"),
+                    (hotelPhoneNumberLabel, "الهاتف: \(hotelData.primaryPhone ?? "لا يوجد هاتف")", "الهاتف:"),
+                    (hotelEmailLabel, "البريد الإلكتروني: \(hotelData.email ?? "لا يوجد بريد")", "البريد الإلكتروني:"),
+                    (hotelCheckInTimeLabel, "وقت تسجيل الوصول: \(hotelData.checkInTime ?? "غير متوفر")", "وقت تسجيل الوصول:"),
+                    (hotelCheckOutTimeLabel, "وقت تسجيل المغادرة: \(hotelData.checkOutTime ?? "غير متوفر")", "وقت تسجيل المغادرة:"),
+                    (roomTypeLabel, "نوع الغرفة: \(roomType)", "نوع الغرفة:"),
+                    (acceptedCurrenciesLabel, "العملات المقبولة: \(hotelData.acceptedCurrencies ?? "لا توجد عملات")", "العملات المقبولة:"),
+                    (languagesSpokenLabel, "اللغات المتحدثة: \(hotelData.languagesSpoken.rawValue)", "اللغات المتحدثة:"),
+                    (totalPriceLabel, "السعر الإجمالي: \(calculatedTotal)", "السعر الإجمالي:"),
+                    (paymentMethodLabel, "طريقة الدفع: الدفع في الفندق", "طريقة الدفع:"),
+                    (contactEmailLabel, "للحصول على الدعم أو إجراء تغييرات على الحجز، تواصل عبر support@syriabooking.sy","support@syriabooking.sy")
+                ]
+            }
+        }()
+
         bookingLabelConfigs.forEach { label, fullText, highlightText in
             label.setHighlightedText(
                 fullText: fullText,
@@ -226,23 +272,22 @@ extension ViewBookingConfirmationVC {
         
         switch data.bookingStatus.lowercased() {
         case "pending":
-            messageStatusLabel.text = "Awaiting confirmation"
-            descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
+//            messageStatusLabel.text = "Awaiting confirmation"
+//            descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
             statusView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemBlue.cgColor
             checkMarkImgView.image = UIImage(systemName: "clock")
             checkMarkImgView.tintColor = UIColor.systemBlue
         case "cancelled":
-            messageStatusLabel.text = "Booking cancelled"
-            descriptionStatusLabel.text = "This booking has been cancelled. If you believe this is a mistake, please contact support."
+//            messageStatusLabel.text = "Booking cancelled"
+//            descriptionStatusLabel.text = "This booking has been cancelled. If you believe this is a mistake, please contact support."
             statusView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemRed.cgColor
             checkMarkImgView.image = UIImage(systemName: "xmark.circle")
             checkMarkImgView.tintColor = UIColor.systemRed
         case "confirmed":
-            messageStatusLabel.text = "Your booking is confirmed!"
-            messageStatusLabel.text = "Your booking is confirmed!"
-            descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
+//            messageStatusLabel.text = "Your booking is confirmed!"
+//            descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
             statusView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemGreen.cgColor
             checkMarkImgView.image = UIImage(systemName: "checkmark.seal.fill")
@@ -341,4 +386,73 @@ extension ViewBookingConfirmationVC {
         return result
     }
     
+}
+
+extension ViewBookingConfirmationVC {
+    func setUpLanguage() {
+        if AppSettings.shared.selectedLanguage == .english {
+            hotelBookingConfirmationTitleLabel.text = "Hotel Booking Confirmation"
+            hotelAndStayTitleLabel.text = "Hotel & Stay Details:"
+            roomDetailsTitleLabel.text = "Room Details:"
+            rateTitleLabel.text = "Rate"
+            descriptionTitleLabel.text = "Description"
+            qtyTitleLabel.text = "QTY"
+            amountTitleLabel.text = "Amount"
+            paymentSummaryTitleLabel.text = "Payment Summary:"
+            reservationNotesTitleLabel.text = "Reservation Notes:"
+            earlyCheckInTextLabel.text = "- Early check-in or late checkout may be subject to availability."
+            presentAValidIdTextLabel.text = "- Please present a valid ID or passport at check-in."
+            taxesFeesTextLabel.text = "- Taxes and fees included in total price."
+            needHelpTitleLabel.text = "Need Help?"
+            thanksMessageTextLabel.text = "Thank you for booking with Syriabooking.sy. We wish you a pleasant stay."
+            guestInformationTitleLabel.text = "Guest Information:"
+            
+            // Status messages
+            if bookingHistoryData?.bookingStatus.lowercased() == "pending" {
+                messageStatusLabel.text = "Awaiting confirmation"
+                descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
+            } else if bookingHistoryData?.bookingStatus.lowercased() == "cancelled" {
+                messageStatusLabel.text = "Booking cancelled"
+                descriptionStatusLabel.text = "This booking has been cancelled. If you believe this is a mistake, please contact support."
+            } else if bookingHistoryData?.bookingStatus.lowercased() == "confirmed" {
+                messageStatusLabel.text = "Your booking is confirmed!"
+                descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
+            }
+
+            printButton.setTitle("Print", for: .normal)
+            goToHomeButton.setTitle(isFromMyBookings ? "Close" : "Go To Home", for: .normal)
+            
+        } else {
+            hotelBookingConfirmationTitleLabel.text = "تأكيد حجز الفندق"
+            hotelAndStayTitleLabel.text = "تفاصيل الفندق والإقامة:"
+            roomDetailsTitleLabel.text = "تفاصيل الغرفة:"
+            rateTitleLabel.text = "السعر"
+            descriptionTitleLabel.text = "الوصف"
+            qtyTitleLabel.text = "الكمية"
+            amountTitleLabel.text = "المبلغ"
+            paymentSummaryTitleLabel.text = "ملخص الدفع:"
+            reservationNotesTitleLabel.text = "ملاحظات الحجز:"
+            earlyCheckInTextLabel.text = "- قد يخضع تسجيل الوصول المبكر أو المغادرة المتأخرة للتوافر."
+            presentAValidIdTextLabel.text = "- يرجى تقديم بطاقة هوية صالحة أو جواز سفر عند تسجيل الوصول."
+            taxesFeesTextLabel.text = "- الضرائب والرسوم مشمولة في السعر الإجمالي."
+            needHelpTitleLabel.text = "هل تحتاج إلى مساعدة؟"
+            thanksMessageTextLabel.text = "شكرًا لحجزك عبر Syriabooking.sy. نتمنى لك إقامة ممتعة."
+            guestInformationTitleLabel.text = "معلومات الضيف:"
+            
+            // Status messages in Arabic
+            if bookingHistoryData?.bookingStatus.lowercased() == "pending" {
+                messageStatusLabel.text = "في انتظار التأكيد"
+                descriptionStatusLabel.text = "تم استلام الحجز وهو قيد التأكيد. سنخطرك بمجرد تأكيده."
+            } else if bookingHistoryData?.bookingStatus.lowercased() == "cancelled" {
+                messageStatusLabel.text = "تم إلغاء الحجز"
+                descriptionStatusLabel.text = "تم إلغاء هذا الحجز. إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم."
+            } else if bookingHistoryData?.bookingStatus.lowercased() == "confirmed" {
+                messageStatusLabel.text = "تم تأكيد الحجز!"
+                descriptionStatusLabel.text = "نتطلع إلى استضافتك. نتمنى لك رحلة سعيدة!"
+            }
+
+            printButton.setTitle("طباعة", for: .normal)
+            goToHomeButton.setTitle(isFromMyBookings ? "إغلاق" : "الذهاب إلى الصفحة الرئيسية", for: .normal)
+        }
+    }
 }

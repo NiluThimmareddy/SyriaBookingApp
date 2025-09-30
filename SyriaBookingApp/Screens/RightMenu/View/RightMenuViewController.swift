@@ -25,6 +25,7 @@ class RightMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
+        rightMenuTableView.semanticContentAttribute = .forceLeftToRight
     }
 }
 
@@ -36,6 +37,8 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = rightMenuTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = menuArray[indexPath.row]
+        cell.textLabel?.semanticContentAttribute = .forceLeftToRight
+        cell.textLabel?.textAlignment = .left
         return cell
     }
     

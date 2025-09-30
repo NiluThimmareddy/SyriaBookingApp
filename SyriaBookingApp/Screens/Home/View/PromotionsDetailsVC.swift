@@ -16,6 +16,7 @@ class PromotionsDetailsVC: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var averageRatingsLabel: UILabel!
     @IBOutlet weak var totalReviewsLabel: UILabel!
+    @IBOutlet weak var promotionsTitleLabel: UILabel!
     
     var promotionsList: [Hotel] = []
     var selectedHotel: Hotel?
@@ -45,8 +46,13 @@ extension PromotionsDetailsVC {
         hotelNameLabel.text = hotel.localizedName()
         cityNameLabel.text = hotel.localizedCity()
         averageRatingsLabel.text = "\(hotel.averageRating)/5"
-        totalReviewsLabel.text = "\(hotel.reviewCount) reviews"
-        
+        if AppSettings.shared.selectedLanguage == .english {
+            totalReviewsLabel.text = "\(hotel.reviewCount) reviews"
+            promotionsTitleLabel.text = "Promotions"
+        } else {
+            totalReviewsLabel.text = "\(hotel.reviewCount) تقييمات"
+            promotionsTitleLabel.text = "عروض"
+        }
         if let imageUrl = hotel.images.first, !imageUrl.isEmpty {
             hotelImageView.loadImage(from: imageUrl)
         } else {
@@ -55,7 +61,6 @@ extension PromotionsDetailsVC {
         hotelImageView.applyFullBlackGradientOverlay()
         subdiscriptionTextView.layer.cornerRadius = 10
         subdiscriptionTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        subdiscriptionTextView.clipsToBounds = true
-        
+        subdiscriptionTextView.clipsToBounds = true 
     }
 }

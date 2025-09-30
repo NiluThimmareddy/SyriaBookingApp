@@ -38,6 +38,14 @@ class RegisterMobileNumberVC : UIViewController {
     @IBOutlet weak var mobileNumberCountryCodeButton: UIButton!
     @IBOutlet weak var countryNameButton: UIButton!
     @IBOutlet weak var countryMobileNoCountLabel: UILabel!
+    @IBOutlet weak var enterYourMobileTitleLabel: UILabel!
+    @IBOutlet weak var mobileNumberTitleLabel: UILabel!
+    @IBOutlet weak var mobileNumberNoteLabel: UILabel!
+    @IBOutlet weak var nameTitleLabel: UILabel!
+    @IBOutlet weak var emailTitleLabel: UILabel!
+    @IBOutlet weak var genderTitleLabel: UILabel!
+    @IBOutlet weak var countryTitleLabel: UILabel!
+    @IBOutlet weak var dateOfBirthTitleLabel: UILabel!
     
     var shouldShowBottomView = false
     var prefilledMobileNumber: String?
@@ -250,7 +258,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             self.configureCountryNameMenu()
         }
         enterMobileNumberTF.delegate = self
-        
+        setUpLanguage()
     }
     
     func changeTheLoginViewDesing(){
@@ -346,20 +354,26 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     }
     
     func setupGenderPullDownMenu() {
-        let male = UIAction(title: "Male") { _ in
-            self.selectGenderButton.setTitle("Male", for: .normal)
+        let maleTitle = AppSettings.shared.selectedLanguage == .english ? "Male" : "ذكر"
+        let femaleTitle = AppSettings.shared.selectedLanguage == .english ? "Female" : "أنثى"
+        let otherTitle = AppSettings.shared.selectedLanguage == .english ? "Other" : "آخر"
+        let selectGenderTitle = AppSettings.shared.selectedLanguage == .english ? "Select Gender" : "اختر الجنس"
+        
+        selectGenderButton.setTitle(selectGenderTitle, for: .normal)
+
+        let male = UIAction(title: maleTitle) { _ in
+            self.selectGenderButton.setTitle(maleTitle, for: .normal)
         }
         
-        let female = UIAction(title: "Female") { _ in
-            self.selectGenderButton.setTitle("Female", for: .normal)
+        let female = UIAction(title: femaleTitle) { _ in
+            self.selectGenderButton.setTitle(femaleTitle, for: .normal)
         }
         
-        let other = UIAction(title: "Other") { _ in
-            self.selectGenderButton.setTitle("Other", for: .normal)
+        let other = UIAction(title: otherTitle) { _ in
+            self.selectGenderButton.setTitle(otherTitle, for: .normal)
         }
         
         let genderMenu = UIMenu(title: "", children: [male, female, other])
-        
         selectGenderButton.menu = genderMenu
         selectGenderButton.showsMenuAsPrimaryAction = true
     }
@@ -469,23 +483,58 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         countryNameButton.menu = menu
         countryNameButton.showsMenuAsPrimaryAction = true
     }
+    
+    @objc func setUpLanguage() {
+        if AppSettings.shared.selectedLanguage == .english {
+            enterYourMobileTitleLabel.text = "Enter Your Mobile Number"
+            mobileNumberTitleLabel.text = "Mobile Number"
+            mobileNumberNoteLabel.text = "Mobile number not registered. Please register below."
+            nameTitleLabel.text = "Name"
+            emailTitleLabel.text = "Email"
+            genderTitleLabel.text = "Gender"
+            countryTitleLabel.text = "Country"
+            dateOfBirthTitleLabel.text = "Date of Birth"
+            mobileNumberCountryCodeButton.setTitle("Select Code", for: .normal)
+            continueButton.setTitle("Continue", for: .normal)
+            continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+            registerButton.setTitle("Register & Continue", for: .normal)
+            registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        } else {
+            enterYourMobileTitleLabel.text = "أدخل رقم هاتفك المحمول"
+            mobileNumberTitleLabel.text = "رقم الجوال"
+            mobileNumberNoteLabel.text = "رقم الجوال غير مسجل. الرجاء التسجيل أدناه."
+            nameTitleLabel.text = "الاسم"
+            emailTitleLabel.text = "البريد الإلكتروني"
+            genderTitleLabel.text = "الجنس"
+            countryTitleLabel.text = "البلد"
+            dateOfBirthTitleLabel.text = "تاريخ الميلاد"
+            mobileNumberCountryCodeButton.setTitle("اختر الرمز", for: .normal)
+            continueButton.setTitle("متابعة", for: .normal)
+            continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+            registerButton.setTitle("التسجيل والمتابعة", for: .normal)
+            registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        }
+        mobileNumberNoteLabel.textAlignment = .center
+        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 9, weight: .regular)
+    }
 }
 
 extension RegisterMobileNumberVC : SelectCountryDelegate {
     func didSelectCountry(_ country: CountryModel) {
         mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
         mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        countryMobileNoCountLabel.text = "Please enter a \(country.max_length ?? 10)-digit mobile number"
-        
+        if AppSettings.shared.selectedLanguage == .english {
+            countryMobileNoCountLabel.text = "Please enter a \(country.max_length ?? 10)-digit mobile number"
+        } else {
+            countryMobileNoCountLabel.text = "الرجاء إدخال رقم جوال مكون من \(country.max_length ?? 10) أرقام"
+        }
         countryNameButton.setTitle(country.flag, for: .normal)
         countryNameButton.setImage(nil, for: .normal)
         enterCountryTF.text = country.name
-        
         selectedCountryFlag = country.flag
         selectedCountryName = country.name
         maxMobileNumberLength = country.max_length ?? 10
     }
-    
     
     func validateMobileNumber(_ number: String, countryCode: String) -> Bool {
         guard let phoneUtil = NBPhoneNumberUtil.sharedInstance() else {

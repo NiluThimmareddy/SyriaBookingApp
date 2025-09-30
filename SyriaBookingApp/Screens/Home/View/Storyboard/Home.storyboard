@@ -1190,6 +1190,7 @@
                         <outlet property="leftMenuBarButton" destination="ms0-8R-01k" id="RnX-sp-wDD"/>
                         <outlet property="messageLabel" destination="XjG-ym-8B7" id="pfQ-7P-LvY"/>
                         <outlet property="navigationTitleNameLabel" destination="QP6-l1-nwY" id="nml-5r-fzH"/>
+                        <outlet property="newYearTitleLabel" destination="dfY-yp-HEQ" id="aJk-H2-2SW"/>
                         <outlet property="promotionsCollectionView" destination="86H-kM-eB5" id="Qaa-pP-QrJ"/>
                         <outlet property="propertyTypeCollectionView" destination="MnH-kc-1zp" id="hTn-xk-Um2"/>
                         <outlet property="recentlyCollectionView" destination="q1i-My-Sy7" id="nhq-WS-4Rj"/>
@@ -1411,6 +1412,7 @@
                         <outlet property="cityNameLabel" destination="zqv-BX-w9a" id="pki-3Z-l3G"/>
                         <outlet property="hotelImageView" destination="38i-FI-wjU" id="KVn-UN-muT"/>
                         <outlet property="hotelNameLabel" destination="6Qz-90-tQK" id="jFu-wv-GOl"/>
+                        <outlet property="promotionsTitleLabel" destination="frN-8c-WoC" id="XmG-sN-sYn"/>
                         <outlet property="subdiscriptionTextView" destination="qov-an-X9X" id="HfI-Hp-AyI"/>
                         <outlet property="totalReviewsLabel" destination="2x0-Ge-muG" id="xPo-sg-Sqn"/>
                     </connections>
@@ -2502,9 +2504,14 @@
                         <outlet property="bottomView" destination="dLN-be-Ujl" id="m7D-vr-T5D"/>
                         <outlet property="clearButton" destination="jk9-H1-odp" id="BV9-4x-7ql"/>
                         <outlet property="dismissButton" destination="Qx3-b6-i6y" id="fVv-ut-gGP"/>
+                        <outlet property="filterPriceTitleLabel" destination="swY-qu-Ev6" id="U2L-yT-lmt"/>
                         <outlet property="filterPriceView" destination="c2e-1M-x8K" id="EIc-PF-dGU"/>
+                        <outlet property="filterTitleLabel" destination="0L5-VY-mbW" id="XHX-3G-Wge"/>
+                        <outlet property="hotelTypeLabel" destination="cWK-S2-dbx" id="Tft-Fk-TuL"/>
                         <outlet property="priceRangeSlider" destination="cU6-M0-487" id="hbO-GY-lgD"/>
+                        <outlet property="reviewScoreTitleLabel" destination="DmQ-D0-Tw1" id="R7j-xM-NIe"/>
                         <outlet property="seeResultButton" destination="c5d-L4-xCh" id="PDK-vi-5vi"/>
+                        <outlet property="starRatingTitleLabel" destination="LWT-rh-E6N" id="4qV-hw-W1K"/>
                         <outletCollection property="hotelTypesButton" destination="aZR-zk-Aim" collectionClass="NSMutableArray" id="tld-Ns-Cfn"/>
                         <outletCollection property="hotelTypesButton" destination="UeT-XJ-jVw" collectionClass="NSMutableArray" id="Cq0-Go-x8m"/>
                         <outletCollection property="hotelTypesButton" destination="cbm-Xg-TeJ" collectionClass="NSMutableArray" id="bKw-YK-45j"/>
@@ -3734,7 +3741,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5mv-HS-X4T">
-                                <rect key="frame" x="20" y="69" width="353" height="739"/>
+                                <rect key="frame" x="20" y="109" width="353" height="649"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Rate &amp; Reviews 3.7 (6 reviews)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGj-GB-jE3">
                                         <rect key="frame" x="10" y="15" width="219.33333333333334" height="30"/>
@@ -3772,7 +3779,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="nan-Bm-pWp">
-                                        <rect key="frame" x="10" y="66" width="333" height="663"/>
+                                        <rect key="frame" x="10" y="66" width="333" height="573"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <connections>
                                             <outlet property="dataSource" destination="lz0-W5-8PM" id="Fux-60-NyO"/>
@@ -3810,9 +3817,9 @@
                         <viewLayoutGuide key="safeArea" id="X19-1K-qmE"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="5mv-HS-X4T" firstAttribute="top" secondItem="X19-1K-qmE" secondAttribute="top" constant="10" id="3gI-6p-74v"/>
+                            <constraint firstItem="5mv-HS-X4T" firstAttribute="top" secondItem="X19-1K-qmE" secondAttribute="top" constant="50" id="3gI-6p-74v"/>
                             <constraint firstItem="5mv-HS-X4T" firstAttribute="trailing" secondItem="X19-1K-qmE" secondAttribute="trailing" constant="-20" id="9C5-7C-TnL"/>
-                            <constraint firstItem="X19-1K-qmE" firstAttribute="bottom" secondItem="5mv-HS-X4T" secondAttribute="bottom" constant="10" id="Iud-xL-tCs"/>
+                            <constraint firstItem="X19-1K-qmE" firstAttribute="bottom" secondItem="5mv-HS-X4T" secondAttribute="bottom" constant="60" id="Iud-xL-tCs"/>
                             <constraint firstItem="5mv-HS-X4T" firstAttribute="leading" secondItem="X19-1K-qmE" secondAttribute="leading" constant="20" id="sPQ-dd-JcS"/>
                         </constraints>
                     </view>
@@ -4023,6 +4030,7 @@
                     <connections>
                         <outlet property="backView" destination="Kuz-Vr-LlU" id="1I4-kT-2Vp"/>
                         <outlet property="backViewHeightConstraint" destination="LKa-LN-EwG" id="VbE-am-cJY"/>
+                        <outlet property="myBookingsTitleLabel" destination="YXv-dd-FOp" id="Ykv-6l-NCl"/>
                         <outlet property="noNotificationsLabel" destination="PlU-yD-IrK" id="nYw-b7-Ibj"/>
                         <outlet property="viewAllButton" destination="g3X-SD-QPk" id="P7i-5X-H2h"/>
                         <outlet property="yourNotificationTV" destination="It1-R3-5GH" id="PIE-RF-8bv"/>

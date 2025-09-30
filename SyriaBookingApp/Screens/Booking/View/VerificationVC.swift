@@ -18,6 +18,9 @@ class VerificationVC : UIViewController {
     @IBOutlet var otpTF: [UITextField]!
     @IBOutlet weak var verifyAndContinueButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var enterYourMobileTitleLabel: UILabel!
+    @IBOutlet weak var mobileNumberTitleLabel: UILabel!
+    @IBOutlet weak var enterOtpTitleLabel: UILabel!
     
     var mobileNumber: String?
     var guestName: String?
@@ -157,7 +160,7 @@ extension VerificationVC : UITextFieldDelegate {
 extension VerificationVC {
     func setUpUI() {
         mobileNumberTF.text = mobileNumber
-        messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
+//        messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
         for (index, textField) in otpTF.enumerated() {
             textField.delegate = self
             textField.keyboardType = .numberPad
@@ -165,5 +168,23 @@ extension VerificationVC {
             textField.tag = index
             textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         }
+        setUpLanguage()
+    }
+    func setUpLanguage() {
+        if AppSettings.shared.selectedLanguage == .english {
+            verifyAndContinueButton.setTitle("Verify & Continue", for: .normal)
+            messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
+            enterYourMobileTitleLabel.text = "Enter Your Mobile Number"
+            mobileNumberTitleLabel.text = "Mobile Number"
+            enterOtpTitleLabel.text = "Enter OTP"
+        } else {
+            verifyAndContinueButton.setTitle("تحقق واستمر", for: .normal)
+            messageLabel.text = "عزيزي \(guestName ?? "المستخدم")، تم تسجيل رقم هاتفك. تم إرسال رمز التحقق إلى \(OptResponse?.data.to ?? "بريدك الإلكتروني"). الرجاء إدخاله أدناه للمتابعة."
+            enterYourMobileTitleLabel.text = "أدخل رقم هاتفك المحمول"
+            mobileNumberTitleLabel.text = "رقم الجوال"
+            enterOtpTitleLabel.text = "أدخل رمز التحقق"
+        }
+        enterYourMobileTitleLabel.textAlignment = .center
+        verifyAndContinueButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
     }
 }

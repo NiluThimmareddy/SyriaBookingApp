@@ -7,6 +7,9 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var confirmationMessageTextView: UITextView!
     @IBOutlet weak var viewBookingConfirmationButton: UIButton!
+    @IBOutlet weak var bookingConfirmationTitleLabel: UILabel!
+    @IBOutlet weak var bookingQueueTitleLabel: UILabel!
+    
     
     var guestName: String?
     var guestEmail: String?
@@ -15,32 +18,40 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     var checkOutDate: String?
     var numberOfGuests: String?
     var totalPrice: String?
-    
     var roomDetails : String?
-    
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
 //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []
     var bookingId : String?
     var roomtype : String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupConfirmationMessage()
+        setUpLanguage()
     }
     
     private func setupConfirmationMessage() {
         guard let name = guestName else { return }
-        
-        let fullText = """
-        Thanks, \(name)! We've received your booking request and placed it in our processing queue.
-        We'll finalize your booking shortly and it will appear in your booking list.
-        You can check your bookings in My Bookings
-        """
-        
+
+        let fullText: String
+        if AppSettings.shared.selectedLanguage == .english {
+            fullText = """
+            Thanks, \(name)! We've received your booking request and placed it in our processing queue.
+            We'll finalize your booking shortly and it will appear in your booking list.
+            You can check your bookings in My Bookings
+            """
+        } else {
+            fullText = """
+            شكرًا، \(name)! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة.
+            سنقوم بتأكيد حجزك قريبًا وسيظهر في قائمة حجوزاتك.
+            يمكنك مراجعة حجوزاتك في حجوزاتي
+            """
+        }
+
         let attributedString = NSMutableAttributedString(string: fullText)
-        
+
         let nameRange = (fullText as NSString).range(of: name)
         if nameRange.location != NSNotFound {
             attributedString.addAttributes([
@@ -49,19 +60,19 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
             ], range: nameRange)
         }
 
-        let bookingsRange = (fullText as NSString).range(of: "My Bookings")
+        let bookingsRange = (fullText as NSString).range(of: AppSettings.shared.selectedLanguage == .english ? "My Bookings" : "حجوزاتي")
         if bookingsRange.location != NSNotFound {
             attributedString.addAttributes([
                 .link: "mybookings://open"
             ], range: bookingsRange)
         }
-        
+
         confirmationMessageTextView.attributedText = attributedString
         confirmationMessageTextView.isEditable = false
         confirmationMessageTextView.isScrollEnabled = false
         confirmationMessageTextView.dataDetectorTypes = []
         confirmationMessageTextView.delegate = self
-        
+
         confirmationMessageTextView.linkTextAttributes = [
             .foregroundColor: UIColor.systemGreen,
             .underlineStyle: NSUnderlineStyle.single.rawValue
@@ -98,6 +109,15 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
         return true
     }
 
+    @objc func setUpLanguage() {
+        if AppSettings.shared.selectedLanguage == .english {
+            bookingConfirmationTitleLabel.text = "Booking Confirmation"
+            bookingQueueTitleLabel.text = "⏳ Booking Request Queued"
+        } else {
+            bookingConfirmationTitleLabel.text = "تأكيد الحجز"
+            bookingQueueTitleLabel.text = "⏳ تم وضع طلب الحجز في القائمة"
+        }
+    }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true)
@@ -112,12 +132,9 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
         viewBookingConfirmationVC.hotelID = selectedHotel?.id ?? ""
         viewBookingConfirmationVC.bookingId = bookingId ?? ""
         viewBookingConfirmationVC.roomType = roomtype ?? ""
-       
-       
         viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
     }
-    
-   
 }
+
 

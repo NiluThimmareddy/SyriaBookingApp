@@ -18,6 +18,8 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var activityInfoLabel: UILabel!
     @IBOutlet weak var exploreMoreButton: UIButton!
+    @IBOutlet weak var promotionsLabel: UILabel!
+    
     
     weak var delegate: PromotionsCollectionViewCellDelegate?
     
@@ -32,7 +34,14 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     
     func configuration(with model: Hotel) {
         destinationLabel.text = "\(model.localizedName()), \(model.localizedCity())"
-        activityInfoLabel.text = "\(model.reviewCount) Reviews, \(model.averageRating) Rating"
+        if AppSettings.shared.selectedLanguage == .english {
+            activityInfoLabel.text = "\(model.reviewCount) Reviews, \(model.averageRating) Rating"
+            promotionsLabel.text = "Promotions"
+        } else {
+            activityInfoLabel.text = "\(model.reviewCount) مراجعات، \(model.averageRating) تقييم"
+            promotionsLabel.text = "عروض"
+        }
+       
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             promotionHotelImageView.loadImage(from: firstImageURL)
         } else {

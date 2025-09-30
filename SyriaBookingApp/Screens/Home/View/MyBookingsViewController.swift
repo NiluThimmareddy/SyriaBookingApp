@@ -47,8 +47,8 @@ class MyBookingsViewController: UIViewController {
         super.viewWillAppear(animated)
         setupUI()
         setupAppNavigationBar()
+        setupLanguage()
         segmentControl.selectedSegmentIndex = 0
-        
     }
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
@@ -289,6 +289,25 @@ extension String {
         // Try with fractional seconds as a fallback
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter.date(from: self)
+    }
+}
+extension MyBookingsViewController {
+    func setupLanguage() {
+        let isArabic = AppSettings.shared.selectedLanguage == .arabic
+
+        myBookigsTitleLabel.text = isArabic ? "حجوزاتي" : "My Bookings"
+        myBookingsDescriptionLabel.text = isArabic ? "راجع إقاماتك القادمة والحجوزات المؤرشفة" : "Review your upcoming stays and archived bookings"
+        noBookingsLabel.text = isArabic ? "لم يتم العثور على حجوزات قادمة" : "No Upcoming Bookings Found"
+        messageLabel.text = isArabic ? "يرجى تسجيل الدخول لعرض سجل الحجوزات الخاصة بك" : "Please Login to view your booking history"
+
+        segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming", forSegmentAt: 0)
+        segmentControl.setTitle(isArabic ? "الأرشيف" : "Archive", forSegmentAt: 1)
+
+        myBookigsTitleLabel.textAlignment = isArabic ? .center : .center
+        myBookingsDescriptionLabel.textAlignment = isArabic ? .center : .center
+        noBookingsLabel.textAlignment = isArabic ? .center : .center
+        messageLabel.textAlignment = isArabic ? .center : .center
+        segmentControl.semanticContentAttribute = isArabic ? .forceLeftToRight : .forceLeftToRight
     }
 }
 

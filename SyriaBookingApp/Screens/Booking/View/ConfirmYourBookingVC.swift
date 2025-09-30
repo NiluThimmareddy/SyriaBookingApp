@@ -19,7 +19,17 @@ class ConfirmYourBookingVC : UIViewController {
     @IBOutlet weak var increaseNoButton: UIButton!
     @IBOutlet weak var decreaseNoButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var confirmYourBookingTitleLabel: UILabel!
     
+    @IBOutlet weak var guestNameTitleLabel: UILabel!
+    @IBOutlet weak var guestEmailTitleLabel: UILabel!
+    @IBOutlet weak var guestPhoneTitleLabel: UILabel!
+    @IBOutlet weak var numberOfGuestsTitleLabel: UILabel!
+    @IBOutlet weak var checkInTitleLabel: UILabel!
+    @IBOutlet weak var checkOutTitleLabel: UILabel!
+    @IBOutlet weak var selectedRoomsAndRatesLabel: UILabel!
+    
+    @IBOutlet weak var totalAmountTitleLabel: UILabel!
     
     var guestName: String?
     var guestEmail: String?
@@ -188,6 +198,14 @@ extension ConfirmYourBookingVC {
         bottomView.layer.cornerRadius = 10
         bottomView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         bottomView.clipsToBounds = true
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(Arabic),
+            name: .languageChanged,
+            object: nil
+        )
+        Arabic()
     }
     
     func setupDatePickerUI() {
@@ -303,5 +321,31 @@ extension ConfirmYourBookingVC {
             checkOutTF.text = selectedDateString
         }
         datePickerContainerView.isHidden = true
+    }
+    
+    @objc func Arabic() {
+        if AppSettings.shared.selectedLanguage == .english {
+            confirmYourBookingTitleLabel.text = "Confirm Your Booking"
+            guestNameTitleLabel.text = "Guest Name"
+            guestEmailTitleLabel.text = "Guest Email"
+            guestPhoneTitleLabel.text = "Guest Phone"
+            checkOutTitleLabel.text = "Check-Out"
+            checkInTitleLabel.text = "Check-In"
+            numberOfGuestsTitleLabel.text = "Number of Guests"
+            selectedRoomsAndRatesLabel.text = "Selected Rooms & Rate"
+            totalAmountTitleLabel.text = "Total Amount"
+            submitBookingButton.setTitle("Submit Booking", for: .normal)
+        } else {
+            confirmYourBookingTitleLabel.text = "تأكيد الحجز"
+            guestNameTitleLabel.text = "اسم الضيف"
+            guestEmailTitleLabel.text = "بريد الضيف الإلكتروني"
+            guestPhoneTitleLabel.text = "هاتف الضيف"
+            checkOutTitleLabel.text = "تسجيل الخروج"
+            checkInTitleLabel.text = "تسجيل الوصول"
+            numberOfGuestsTitleLabel.text = "عدد الضيوف"
+            selectedRoomsAndRatesLabel.text = "الغرف والأسعار المحددة"
+            totalAmountTitleLabel.text = "المبلغ الإجمالي"
+            submitBookingButton.setTitle("إرسال الحجز", for: .normal)
+        }
     }
 }

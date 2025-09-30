@@ -27,6 +27,7 @@ class HotelListTVC : UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
+        SeeButton()
     }
     
     @IBAction func seeAvailabilityButtonAction(_ sender: Any) {
@@ -34,6 +35,7 @@ class HotelListTVC : UITableViewCell {
     }
     
     func configuration(with model: Hotel) {
+        
         if let firstImageURL = model.images.first, !firstImageURL.isEmpty {
             hotelImgView.loadImage(from: firstImageURL)
         } else {
@@ -71,8 +73,15 @@ class HotelListTVC : UITableViewCell {
         distanceLabel.text = model.landmarkDescription
         cityLabel.text = model.localizedCity()
         let price = model.minRoomPrice
-        let fullText = "From \(price) / night"
+        var fullText = ""
+        if AppSettings.shared.selectedLanguage == .arabic{
+            let fullText = "من \(price) / ليلة"
 
+        }else{
+            let fullText = "From \(price) / night"
+
+        }
+       
         priceLabel.setHighlightedText(
             fullText: fullText,
             highlightText: price,
@@ -81,7 +90,23 @@ class HotelListTVC : UITableViewCell {
             normalColor: .darkGray,
             highlightColor: .label
         )
-        reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+       // reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        
+        if AppSettings.shared.selectedLanguage == .english {
+            reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        } else {
+            reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) مراجعات)"
+        }
+        
+    }
+    func SeeButton() {
+        
+        if AppSettings.shared.selectedLanguage == .english{
+            seeAvailabilityButton.setTitle("See Availability", for: .normal)
+        }else{
+            
+            seeAvailabilityButton.setTitle("شاهد التوافر", for: .normal)
+        }
     }
     
 }

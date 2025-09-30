@@ -26,14 +26,15 @@ class CancelBookingVC: UIViewController {
     private var placeholderLabel: UILabel!
     weak var delegate: CancelBookingDelegate?
     var booking: BookingHistoryModel?
-    
     var viewModel = BookingViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlaceholder()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
+        setupLanguage()
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -82,7 +83,21 @@ extension CancelBookingVC : UITextViewDelegate {
         placeholderLabel.isHidden = !reasonTextView.text.isEmpty
     }
     
-
+    func setupLanguage() {
+        if AppSettings.shared.selectedLanguage == .arabic {
+            cancelBookingTitleLabel.text = "إلغاء الحجز"
+            reasonLabel.text = "السبب (اختياري)"
+            noteLabel.text = "سيتم وضع علامة على حجزك كمُلغى. لا يمكنك التراجع عن هذا الإجراء."
+            confirmCancelButton.setTitle("تأكيد الإلغاء", for: .normal)
+            confirmCancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        } else {
+            cancelBookingTitleLabel.text = "Cancel Booking"
+            reasonLabel.text = "Reason (optional)"
+            noteLabel.text = "This will mark your booking as Cancelled. You can't undo this action."
+            confirmCancelButton.setTitle("Confirm Cancel", for: .normal)
+            confirmCancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        }
+    }
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
     }

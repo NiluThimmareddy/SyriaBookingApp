@@ -5,6 +5,7 @@
 //  Created by toqsoft on 04/09/25.
 //
 
+
 import UIKit
 
 class ReportAnAppVC: UIViewController {
@@ -42,41 +43,70 @@ class ReportAnAppVC: UIViewController {
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
         setupContactUsTypeDropdownMenu()
+        setupLanguage()
+        
         if comingfrom == .RightMenu {
-            contactTitleLabel.text = titleText ?? "Report an app"
-            
-            self.selectTypeButton.setTitle("Complaint", for: .normal)
+            if AppSettings.shared.selectedLanguage == .arabic {
+                contactTitleLabel.text = "الإبلاغ عن تطبيق"
+                self.selectTypeButton.setTitle("شكوى", for: .normal)
+            } else {
+                contactTitleLabel.text = titleText ?? "Report an app"
+                self.selectTypeButton.setTitle("Complaint", for: .normal)
+            }
             self.selectTypeButton.isEnabled = false
             self.typeLabel.isHidden = true
             self.selectTypeButton.isHidden = true
             self.chevronImgView.isHidden = true
-            
             self.typeLabel.heightAnchor.constraint(equalToConstant: 0).isActive = true
             self.selectTypeButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
             self.chevronImgView.heightAnchor.constraint(equalToConstant: 0).isActive = true
         } else {
-            contactTitleLabel.text = "Contact Us"
+            contactTitleLabel.text = AppSettings.shared.selectedLanguage == .arabic ? "اتصل بنا" : "Contact Us"
         }
+        contactTitleLabel.textAlignment = .center
+
     }
     
     func setupContactUsTypeDropdownMenu() {
-        let starOptions: [String] = ["Feedback","Enquiry","Complaint"]
+        let starOptions: [String]
+        if AppSettings.shared.selectedLanguage == .arabic {
+            starOptions = ["ملاحظات", "استفسار", "شكوى"]
+        } else {
+            starOptions = ["Feedback", "Enquiry", "Complaint"]
+        }
         
         var actions: [UIAction] = []
         
         for title in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
-                self?.selectTypeButton.setTitle(title, for: .normal)
+                let attributedTitle = NSAttributedString(
+                    string: title,
+                    attributes: [
+                        .font: UIFont.systemFont(ofSize: 15, weight: .medium)
+                    ]
+                )
+                self?.selectTypeButton.setAttributedTitle(attributedTitle, for: .normal)
                 self?.type = title
             })
             actions.append(action)
         }
         
-        let menu = UIMenu(title: "Select Subject", children: actions)
+        let menuTitle = AppSettings.shared.selectedLanguage == .arabic ? "اختر الموضوع" : "Select Subject"
+        let menu = UIMenu(title: menuTitle, children: actions)
         
         selectTypeButton.showsMenuAsPrimaryAction = true
         selectTypeButton.menu = menu
+        
+          let defaultTitle = AppSettings.shared.selectedLanguage == .arabic ? "اختر الموضوع" : "Select Subject"
+        let attributedTitle = NSAttributedString(
+            string: defaultTitle,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 15, weight: .medium)
+            ]
+        )
+        selectTypeButton.setAttributedTitle(attributedTitle, for: .normal)
     }
+
     
     @IBAction func submitButtonAction(_ sender: Any) {
         // Validate subject
@@ -157,4 +187,42 @@ class ReportAnAppVC: UIViewController {
             UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
         }
     }
+}
+
+extension ReportAnAppVC {
+    func setupLanguage() {
+        if AppSettings.shared.selectedLanguage == .arabic {
+            subjectLabel.text = "الموضوع"
+            typeLabel.text = "النوع"
+            messageLabel.text = "الرسالة"
+            yourNameLabel.text = "اسمك"
+            yourEmailLabel.text = "بريدك الإلكتروني"
+            phoneNoLabel.text = "رقم الهاتف"
+            submitButton.setTitle("إرسال", for: .normal)
+            
+        } else {
+            subjectLabel.text = "Subject"
+            typeLabel.text = "Type"
+            messageLabel.text = "Message"
+            yourNameLabel.text = "Your Name"
+            yourEmailLabel.text = "Your Email"
+            phoneNoLabel.text = "Phone"
+            submitButton.setTitle("Send", for: .normal)
+            
+        }
+        
+        subjectLabel.textAlignment = .left
+        typeLabel.textAlignment = .left
+        messageLabel.textAlignment = .left
+        contactTitleLabel.textAlignment = .left
+        yourNameLabel.textAlignment = .left
+        yourEmailLabel.textAlignment = .left
+        phoneNoLabel.textAlignment = .left
+        enterMessageTextView.textAlignment = .left
+        enterSubjectTF.textAlignment = .left
+        enterYourNameTF.textAlignment = .left
+        enterEmailTF.textAlignment = .left
+        enterPhoneNumberTF.textAlignment = .left
+    }
+    
 }

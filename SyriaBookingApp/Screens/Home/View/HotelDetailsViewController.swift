@@ -227,7 +227,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBAction func viewAllRateAndReviewsButtonAction(_ sender: Any) {
         let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
         viewAllVC.selectedHotel = selectedHotel
-        viewAllVC.modalPresentationStyle = .fullScreen
+        viewAllVC.modalPresentationStyle = .overFullScreen
         present(viewAllVC, animated: true)
     }
     
@@ -513,11 +513,18 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotelNameAttributed.append(starAttributed)
         }
         hotelNameLabel.attributedText = hotelNameAttributed
-        averageRatingsLabel.text = "\(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        
         descriptionLabel.text = hotel.description
         rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
-        contactTypesLabel.text = "To contact directly \(hotel.name) in case of any enquiry / feedback / complaint,"
-        
+        if AppSettings.shared.selectedLanguage == .arabic {
+            averageRatingsLabel.text = "\(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
+            contactTypesLabel.text = "للتواصل مباشرة مع \(hotel.name) في حالة وجود أي استفسار / ملاحظات / شكوى،"
+            rateAndReviewsLabel.text = "التقييمات والمراجعات \(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
+        } else {
+            averageRatingsLabel.text = "\(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+            contactTypesLabel.text = "To contact directly \(hotel.name) in case of any enquiry / feedback / complaint,"
+            rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        }
         setupAmenities(hotel.amenities)
         
         rateAndReviewsTableview.rowHeight = UITableView.automaticDimension
@@ -542,6 +549,15 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         [yourNameLabel,ratingLabel,reviewLabel].forEach { fontSize in
             fontSize?.font = .bodyFont
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(setUpLanguage),
+            name: .languageChanged,
+            object: nil
+        )
+        
+        setUpLanguage()
     }
     
     func hideViewAllButton() {
@@ -697,6 +713,36 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         let yOffset = max(targetPoint.y - 10, 0)
         
         scrollView.setContentOffset(CGPoint(x: 0, y: yOffset), animated: true)
+    }
+    
+    @objc func setUpLanguage() {
+        if AppSettings.shared.selectedLanguage == .english{
+            facilitiesLabel.text = "What this place offers (Facilities)"
+            availabilityLabel.text = "Availability"
+            yourNameLabel.text = "Your Name"
+            addReviewLabel.text = " Add a review"
+            ratingLabel.text = "Rates"
+            submitReviewButton.setTitle("Submit Review", for: .normal)
+            viewAllButton.setTitle("View all", for: .normal)
+            selectratingButton.setTitle("Select rating", for: .normal)
+            reviewLabel.text = "Review"
+            overViewLabel.text = "Overview"
+            pleseClickHereButton.setTitle("Please click here", for: .normal)
+            pleseClickHereButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        } else {
+            facilitiesLabel.text = "ما يقدمه هذا المكان (المرافق)"
+            availabilityLabel.text = " التوافر"
+            yourNameLabel.text = "اسمك"
+            addReviewLabel.text = " أضف مراجعة"
+            ratingLabel.text = "التقييم"
+            submitReviewButton.setTitle( "إرسال المراجعة", for: .normal)
+            viewAllButton.setTitle( "عرض الكل", for: .normal)
+            selectratingButton.setTitle("اختر التقييم", for: .normal) // Arabic
+            reviewLabel.text = "مراجعة"
+            overViewLabel.text = "نظرة عامة"
+            pleseClickHereButton.setTitle("يرجى النقر هنا", for: .normal)
+            pleseClickHereButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        }
     }
 
 }

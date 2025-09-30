@@ -460,7 +460,7 @@
                                                         </variation>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRB-fU-b9m">
-                                                        <rect key="frame" x="10" y="480" width="195.33333333333334" height="35.666666666666629"/>
+                                                        <rect key="frame" x="10" y="480" width="186.33333333333334" height="35.666666666666629"/>
                                                         <color key="backgroundColor" red="0.25098039220000001" green="0.52156862749999999" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="35.670000000000002" id="HJB-Be-cT1"/>
@@ -470,7 +470,7 @@
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="Register &amp; Continue"/>
                                                         <buttonConfiguration key="configuration" style="plain" title="Register &amp; Continue">
-                                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="18"/>
+                                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="17"/>
                                                         </buttonConfiguration>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -543,14 +543,22 @@
                         <outlet property="continueButton" destination="3p5-70-Hor" id="0lI-RE-SYx"/>
                         <outlet property="countryMobileNoCountLabel" destination="Nzp-91-Uz1" id="xmf-Gz-4BI"/>
                         <outlet property="countryNameButton" destination="RPW-Lz-vbG" id="fMd-jU-xRS"/>
+                        <outlet property="countryTitleLabel" destination="Vpr-Qp-TKm" id="n2O-n5-sVx"/>
+                        <outlet property="dateOfBirthTitleLabel" destination="sSF-uh-peE" id="nzx-v8-H6C"/>
                         <outlet property="dismissButton" destination="pPh-Hk-QLk" id="ZN5-KL-bKa"/>
+                        <outlet property="emailTitleLabel" destination="FUb-MZ-vZu" id="2zd-fp-2IG"/>
                         <outlet property="enterAddressTF" destination="N3z-6t-tFI" id="zNo-64-OVF"/>
                         <outlet property="enterCountryTF" destination="kAq-pk-dKq" id="7G7-NF-o2F"/>
                         <outlet property="enterEmailTF" destination="biZ-HT-hor" id="xaF-5x-0HA"/>
                         <outlet property="enterMobileNumberTF" destination="Sga-DI-LeB" id="MA7-aT-YTH"/>
                         <outlet property="enterNameTF" destination="Q7j-W9-ae3" id="auC-2X-3Lh"/>
+                        <outlet property="enterYourMobileTitleLabel" destination="qhQ-bB-eke" id="yME-u8-4Ge"/>
+                        <outlet property="genderTitleLabel" destination="m7r-tq-Zvj" id="QIf-w5-5C7"/>
                         <outlet property="mobileNumberCountryCodeButton" destination="snc-vv-35g" id="Rf3-10-81G"/>
+                        <outlet property="mobileNumberNoteLabel" destination="gBT-RV-ify" id="LSh-wK-2VJ"/>
                         <outlet property="mobileNumberTF" destination="Zl9-A6-5sc" id="S4p-rU-PSg"/>
+                        <outlet property="mobileNumberTitleLabel" destination="qFX-0y-kjw" id="Ws5-kH-F13"/>
+                        <outlet property="nameTitleLabel" destination="iFC-lN-Dbp" id="S6G-KN-7fL"/>
                         <outlet property="registerButton" destination="iRB-fU-b9m" id="kmA-KR-oU3"/>
                         <outlet property="scrollView" destination="XXX-69-eqP" id="tQL-Q4-avr"/>
                         <outlet property="selectDateofBirthTF" destination="HWy-gL-qhB" id="UM8-ge-X1H"/>
@@ -769,8 +777,11 @@
                     <connections>
                         <outlet property="backView" destination="FnG-uP-sll" id="Jae-1S-ynI"/>
                         <outlet property="dismissButton" destination="jns-cu-8FW" id="1d6-CG-i2K"/>
+                        <outlet property="enterOtpTitleLabel" destination="A08-Aw-jIO" id="G7x-dC-PV4"/>
+                        <outlet property="enterYourMobileTitleLabel" destination="ggw-a6-vHY" id="3cA-J9-gDv"/>
                         <outlet property="messageLabel" destination="e4u-2M-Fzy" id="3NW-Zf-9E1"/>
                         <outlet property="mobileNumberTF" destination="dh8-WT-AsI" id="kcg-KT-MSf"/>
+                        <outlet property="mobileNumberTitleLabel" destination="JQP-65-7AY" id="B8M-of-Y5w"/>
                         <outlet property="verifyAndContinueButton" destination="GN5-Hh-OBB" id="TdF-Tr-515"/>
                         <outletCollection property="otpTF" destination="5nc-Rm-SK0" collectionClass="NSMutableArray" id="yFW-DQ-A0G"/>
                         <outletCollection property="otpTF" destination="kAU-Os-G9k" collectionClass="NSMutableArray" id="0kn-25-PNY"/>
@@ -944,6 +955,8 @@ You can check your bookings in My Bookings</string>
                     </view>
                     <connections>
                         <outlet property="backView" destination="vPW-TN-uhK" id="x56-66-MhK"/>
+                        <outlet property="bookingConfirmationTitleLabel" destination="krw-SG-LfE" id="664-D9-qjk"/>
+                        <outlet property="bookingQueueTitleLabel" destination="oRl-jz-g3l" id="WHD-D0-ACC"/>
                         <outlet property="confirmationMessageTextView" destination="iOt-wq-oMs" id="yMH-K2-yWy"/>
                         <outlet property="dismissButton" destination="7Lx-w1-CS0" id="Tod-SZ-AnH"/>
                         <outlet property="viewBookingConfirmationButton" destination="jFr-dd-tMG" id="u7D-ht-vKJ"/>
@@ -1528,6 +1541,7 @@ You can check your bookings in My Bookings</string>
                     </view>
                     <connections>
                         <outlet property="acceptedCurrenciesLabel" destination="OXy-KT-BtJ" id="ehR-Ra-63Y"/>
+                        <outlet property="amountTitleLabel" destination="QQh-a5-bne" id="jA6-eR-yFl"/>
                         <outlet property="backView" destination="DlA-SV-NBO" id="IWX-K6-YvS"/>
                         <outlet property="bookingDateLabel" destination="8Kw-Dp-eLZ" id="GRF-5s-5Af"/>
                         <outlet property="bookingReferenceLabel" destination="cBJ-mC-jka" id="FJx-Rf-fwS"/>
@@ -1536,11 +1550,16 @@ You can check your bookings in My Bookings</string>
                         <outlet property="checkOutLabel" destination="5LW-O6-MiW" id="HzT-hB-ft1"/>
                         <outlet property="contactEmailLabel" destination="T14-ZF-5je" id="VZ6-kn-kJQ"/>
                         <outlet property="descriptionStatusLabel" destination="YuD-H5-iYa" id="KtU-8v-stZ"/>
+                        <outlet property="descriptionTitleLabel" destination="b0d-EF-KrH" id="RDr-tS-lLq"/>
+                        <outlet property="earlyCheckInTextLabel" destination="6ag-7o-arS" id="hit-XS-lDX"/>
                         <outlet property="goToHomeButton" destination="L9Z-d7-cZe" id="XEW-v9-GpK"/>
                         <outlet property="guestEmailLabel" destination="a8C-fC-GJQ" id="nnB-pP-DSY"/>
+                        <outlet property="guestInformationTitleLabel" destination="A81-s1-SzC" id="9we-bR-mS6"/>
                         <outlet property="guestLabel" destination="jxg-ml-pAp" id="5S9-O7-2E5"/>
                         <outlet property="guestPhoneNoLabel" destination="Npp-sX-boz" id="s1Y-6U-ZJd"/>
                         <outlet property="hotelAddressLabel" destination="5eP-rC-g55" id="pa2-uK-EF5"/>
+                        <outlet property="hotelAndStayTitleLabel" destination="bdL-fL-qWQ" id="RlJ-3I-Kkz"/>
+                        <outlet property="hotelBookingConfirmationTitleLabel" destination="uwp-UB-gdA" id="lDj-D9-vWo"/>
                         <outlet property="hotelCheckInTimeLabel" destination="Nnu-Md-4F0" id="cNs-Wi-mNp"/>
                         <outlet property="hotelCheckOutTimeLabel" destination="AAT-oH-4lk" id="ZBv-YP-ZBT"/>
                         <outlet property="hotelEmailLabel" destination="tg9-vk-mmR" id="u9M-BF-8KG"/>
@@ -1548,15 +1567,24 @@ You can check your bookings in My Bookings</string>
                         <outlet property="hotelPhoneNumberLabel" destination="cWQ-bf-QEe" id="1ws-Da-4nN"/>
                         <outlet property="languagesSpokenLabel" destination="n3z-D8-EHN" id="rHp-xM-v8K"/>
                         <outlet property="messageStatusLabel" destination="kD5-E7-RvK" id="u7C-ft-n06"/>
+                        <outlet property="needHelpTitleLabel" destination="yBm-lM-les" id="UbV-mS-Lr5"/>
                         <outlet property="numberOfGuestsLabel" destination="oWv-0R-7pZ" id="LSX-LU-gY7"/>
                         <outlet property="paymentMethodLabel" destination="Svw-mr-8fv" id="crD-Zs-pKB"/>
+                        <outlet property="paymentSummaryTitleLabel" destination="lMe-Cf-6Ze" id="JAM-HG-Eyl"/>
+                        <outlet property="presentAValidIdTextLabel" destination="mnf-n9-37l" id="wlc-OP-eap"/>
                         <outlet property="printButton" destination="68p-K2-BU7" id="DQH-Ee-Sas"/>
+                        <outlet property="qtyTitleLabel" destination="b6M-xC-Ih6" id="aPS-x2-Evm"/>
+                        <outlet property="rateTitleLabel" destination="ghp-aS-atC" id="M5x-fE-Rhl"/>
+                        <outlet property="reservationNotesTitleLabel" destination="BN5-1t-s4Z" id="7Y5-fE-O47"/>
+                        <outlet property="roomDetailsTitleLabel" destination="Kz0-yl-oY5" id="UjM-46-oLf"/>
                         <outlet property="roomRateDetailsTableview" destination="KeL-BZ-SlO" id="toF-Nz-2Nr"/>
                         <outlet property="roomTypeLabel" destination="hkn-EV-LCl" id="lhK-Hw-hKe"/>
                         <outlet property="scrollView" destination="u7j-98-9WN" id="7AW-68-o8l"/>
                         <outlet property="statusLabel" destination="TUP-E8-qcJ" id="c5O-hk-Y30"/>
                         <outlet property="statusView" destination="fqj-eY-MVS" id="RaB-Km-u1U"/>
                         <outlet property="tableviewHeightConstraint" destination="PVa-C4-QUP" id="7Yt-5d-zYW"/>
+                        <outlet property="taxesFeesTextLabel" destination="B5Q-UN-4nZ" id="UKh-We-H7d"/>
+                        <outlet property="thanksMessageTextLabel" destination="Kqn-jf-7gN" id="4wL-Mi-SdQ"/>
                         <outlet property="totalNightsLabel" destination="bd3-h7-FhZ" id="Fr1-SL-d40"/>
                         <outlet property="totalPriceLabel" destination="ONj-6G-yOc" id="h8u-xs-UWn"/>
                     </connections>
@@ -2230,18 +2258,27 @@ You can check your bookings in My Bookings</string>
                         <outlet property="bottomView" destination="J74-Nw-zl2" id="oK5-5B-2N2"/>
                         <outlet property="checkInButton" destination="RP7-2X-7qH" id="cah-Bt-HeJ"/>
                         <outlet property="checkInTF" destination="MLl-FC-s52" id="Qce-Hx-VO2"/>
+                        <outlet property="checkInTitleLabel" destination="QIz-YH-WE6" id="34j-RO-qza"/>
                         <outlet property="checkOutButton" destination="Rhy-aH-Ait" id="E6X-7a-m6u"/>
                         <outlet property="checkOutTF" destination="gFD-1v-hnX" id="HKn-rU-cq5"/>
+                        <outlet property="checkOutTitleLabel" destination="oAY-dz-UbR" id="Ayw-nM-CS1"/>
+                        <outlet property="confirmYourBookingTitleLabel" destination="J4s-Rr-jOp" id="IM5-v7-RNj"/>
                         <outlet property="decreaseNoButton" destination="Dk2-gs-Z0I" id="sst-qY-IH6"/>
                         <outlet property="dismissButton" destination="2oN-xG-mZf" id="VWn-gz-srD"/>
                         <outlet property="guestEmailLabel" destination="ozx-ts-oVe" id="iMM-2a-qij"/>
+                        <outlet property="guestEmailTitleLabel" destination="vwS-Cq-UKl" id="oX0-PQ-e81"/>
                         <outlet property="guestMobileNumberTF" destination="1dS-ok-joI" id="MO9-gm-ExD"/>
                         <outlet property="guestNameLabel" destination="4G8-YB-iif" id="v5b-Qb-50L"/>
+                        <outlet property="guestNameTitleLabel" destination="4Xy-Sp-o0J" id="C0e-2t-fpg"/>
+                        <outlet property="guestPhoneTitleLabel" destination="HsM-Sz-w4z" id="wHG-bZ-im9"/>
                         <outlet property="increaseNoButton" destination="Leb-9G-j3Q" id="HHr-8I-Zhi"/>
                         <outlet property="numberOfGuestsTF" destination="BHg-0b-TlW" id="6s7-uA-Kp0"/>
+                        <outlet property="numberOfGuestsTitleLabel" destination="diO-Ns-VaL" id="l1d-ll-uCl"/>
                         <outlet property="selectedRoomAndRatesLabel" destination="iDJ-2L-SAQ" id="Itf-vC-CHX"/>
+                        <outlet property="selectedRoomsAndRatesLabel" destination="bM6-Nc-W3Q" id="lhc-Wb-1Ik"/>
                         <outlet property="submitBookingButton" destination="pfG-7X-OSv" id="L8B-T8-gOF"/>
                         <outlet property="totalAmountLabel" destination="pYG-fk-huQ" id="ixW-8z-nJ6"/>
+                        <outlet property="totalAmountTitleLabel" destination="RRO-M5-Bbv" id="Pus-LJ-nch"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nft-cS-noq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

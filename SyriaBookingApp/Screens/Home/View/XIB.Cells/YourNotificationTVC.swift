@@ -21,7 +21,7 @@ class YourNotificationTVC: UITableViewCell {
     }
     
     func configure(with booking: BookingHistoryModel) {
-        hotelNameLabel.text = booking.hotelName
+        hotelNameLabel.text = "\(booking.hotelName) • \(booking.roomType)"
         datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
         statusLabel.text = booking.status.capitalized
         upComingDateLabel.text = booking.lastUpdatedUtc.toDayMonth()
