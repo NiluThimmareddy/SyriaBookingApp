@@ -168,17 +168,7 @@ class ReportAnAppVC: UIViewController {
             )
         }
     }
-    func goToHomeTab() {
-        if let window = UIApplication.shared.windows.first {
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            guard let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? CustomTabBarController else {
-                return
-            }
-            tabBarVC.selectedIndex = 0 // Home tab
-            window.rootViewController = tabBarVC
-            window.makeKeyAndVisible()
-        }
-    }
+    
     
     @IBAction func dismissButton(_ sender: Any) {
         if comingfrom == .RightMenu || comingfrom == .HotelDetail{

@@ -22,23 +22,14 @@ class ProfilePageVC: UIViewController {
     @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var signOutBackView: UIView!
     @IBOutlet weak var manageAccountsCV: UICollectionView!
-    @IBOutlet weak var completeProfileButton: UIButton!
+  
     @IBOutlet weak var completeProfileLabel: UILabel!
     @IBOutlet weak var completeProfileImage: UIImageView!
     @IBOutlet weak var completeProfileImageBackView: UIView!
     @IBOutlet weak var completeProfileBackView: UIView!
     @IBOutlet weak var profileTV: UITableView!
     
-    let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.text = "Profile"
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
-    var messageButton: UIBarButtonItem!
-    var bellButton: UIBarButtonItem!
+ 
     let profileSections: [ProfileSection] = [
         
         ProfileSection(
@@ -47,28 +38,33 @@ class ProfilePageVC: UIViewController {
                 ProfileOption(listData: "Email Preferences", imageName: "envelope.fill")
             ]
         ),
-        ProfileSection(
-            sectionTitle: "Help and Privacy",
-            options: [
-                ProfileOption(listData: "FAQ", imageName: "questionmark.circle"),
-                ProfileOption(listData: "About Us", imageName: "info.circle"),
-                ProfileOption(listData: "Terms of Use", imageName: "doc.text"),
-                ProfileOption(listData: "Privacy and Data Management", imageName: "lock.shield"),
-                ProfileOption(listData: "Customer Service", imageName: "person.crop.circle.badge.questionmark")
-            ]
-        )
+//        ProfileSection(
+//            sectionTitle: "Help and Privacy",
+//            options: [
+//                ProfileOption(listData: "FAQ", imageName: "questionmark.circle"),
+//                ProfileOption(listData: "About Us", imageName: "info.circle"),
+//                ProfileOption(listData: "Terms of Use", imageName: "doc.text"),
+//                ProfileOption(listData: "Privacy and Data Management", imageName: "lock.shield"),
+//                ProfileOption(listData: "Customer Service", imageName: "person.crop.circle.badge.questionmark")
+//            ]
+//        )
     ]
 
     let manageAccountsData = [
         ProfileOption(listData: "Personal details", imageName: "person"),
-        ProfileOption(listData: "Security Settings", imageName: "lock"),
-        ProfileOption(listData: "Other travellers", imageName: "person.2"),
+        ProfileOption(listData: "My Bookings", imageName: "calendar"),
+        ProfileOption(listData: "Other Guests", imageName: "person.2"),
         ProfileOption(listData: "My reviews", imageName: "bubble.left.and.bubble.right")
     ]
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        
+       
         profileTV.register(UINib(nibName: "ProfileTVC", bundle: nil), forCellReuseIdentifier: "ProfileTVC")
         profileTV.showsVerticalScrollIndicator = false
         profileTV.showsHorizontalScrollIndicator = false
@@ -81,15 +77,28 @@ class ProfilePageVC: UIViewController {
         signOutBackView.layer.cornerRadius = 10
         fontStyle()
         mixedText()
-        navigationProcess()
-        userName.text = "Hi,\("Ram")"
-        userEmail.text = "\("Usermail@gmail.com")"
-        navigationItem.titleView = topNameLbl
+//        navigationProcess()
+        guard let username = UserSessionManager.getUser() else { return }
+        userName.text = "Hi,\(username.name)"
+        userEmail.text = "\(username.email)"
+        
+        
+//        navigationItem.titleView = topNameLbl
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateProfileTableViewHeight()
         roundCornersOfTopProfileView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
+        self.navigationItem.backButtonTitle = ""
+        setupAppNavigationBar()
     }
     func mixedText() {
         let fullText = "Complete your profile and use this informations for your next booking"
@@ -113,12 +122,7 @@ class ProfilePageVC: UIViewController {
         userName.font = UIFont.poppinsBold(16)
         userEmail.font = UIFont.poppinsMedium(12)
         manageAccountTitleLbl.font = UIFont.poppinsBold(14)
-        
-        let signOut = NSAttributedString(
-            string: "Sign out",
-            attributes: [.font: UIFont.poppinsBold(12), .foregroundColor: UIColor.red]
-        )
-        signOutButton.setAttributedTitle(signOut, for: .normal)
+
     }
     
     func updateProfileTableViewHeight() {
@@ -182,27 +186,6 @@ class ProfilePageVC: UIViewController {
         topProfileView.layer.mask = shape
     }
 
-    func navigationProcess() {
-        messageButton = UIBarButtonItem(
-            image: UIImage(systemName: "message"),
-            style: .plain,
-            target: self,
-            action: #selector(messageButtonTapped)
-        )
-
-        bellButton = UIBarButtonItem(
-            image: UIImage(systemName:  "bell"),
-            style: .plain,
-            target: self,
-            action: #selector(bellButtonTapped)
-        )
-
-        if let messageBarButton = messageButton, let bellBarButton = bellButton {
-            navigationItem.rightBarButtonItems = [messageBarButton, bellBarButton]
-        }
-
-        navigationController?.navigationBar.tintColor = .white
-    }
 
 
     @objc func messageButtonTapped() {
@@ -225,15 +208,26 @@ class ProfilePageVC: UIViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    @IBAction func completeProfileButton(_ sender: Any) {
+        print("Button tapped....")
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
+        navigationItem.backButtonTitle = ""
+        navigationController?.pushViewController(controller, animated: true)
+    }
   
 
     @IBAction func signOutButton(_ sender: Any) {
-        
-    }
-    @IBAction func completeProfileButton(_ sender: Any) {
+        showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
+            UserSessionManager.clearUser()
+            self.dismiss(animated: true){
+                self.goToHomeTab()
+            }
+        })
     }
     
-    
+ 
+  
 }
 
 extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
@@ -370,6 +364,7 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
                 navigationItem.backButtonTitle = ""
                 navigationController?.pushViewController(controller, animated: true)
 
+           
             default:
                 break
             }
@@ -400,20 +395,24 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
         }else if indexPath.row == 1{
-            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "SecurityVC")as! SecurityVC
-            navigationItem.backButtonTitle = ""
-            navigationController?.pushViewController(controller, animated: true)
+//            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+//            let controller = storyboard.instantiateViewController(identifier: "SecurityVC")as! SecurityVC
+//            navigationItem.backButtonTitle = ""
+//            navigationController?.pushViewController(controller, animated: true)
+            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
+            self.navigationController?.pushViewController(controller, animated: true)
+            
         }else  if indexPath.row == 2{
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "OtherGuestVC")as! OtherGuestVC
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(vc, animated: true)
         }else  if indexPath.row == 3{
-//            let storyboard = UIStoryboard(name: "UserFeedBack", bundle: nil)
-//            let vc = storyboard.instantiateViewController(identifier: "UserFeedBackListVC")as! UserFeedBackListVC
-//            navigationItem.backButtonTitle = ""
-//            navigationController?.pushViewController(vc, animated: true)
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+            viewAllVC.comingFrom = .profile
+            viewAllVC.modalPresentationStyle = .fullScreen
+            present(viewAllVC, animated: true)
         }
     }
 }

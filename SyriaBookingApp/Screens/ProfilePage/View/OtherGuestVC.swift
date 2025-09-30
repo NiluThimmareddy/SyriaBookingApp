@@ -13,13 +13,12 @@ class OtherGuestVC: UIViewController {
     @IBOutlet weak var otherGuestListTV: UITableView!
 
     var otherGuests: [Guest] = [
-        Guest(firstName: "John", lastName: "Doe", dob: "08/10/1990", gender: "Male"),
-        Guest(firstName: "Jane", lastName: "Smith", dob: "15/06/1985", gender: "Female")
+       
     ]
     let topNameLbl: UILabel = {
        let label = UILabel()
        label.textColor = .white
-       label.text = "Other Travellers"
+       label.text = "Other Guest"
        label.font = UIFont.poppinsBold(16)
        label.textAlignment = .center
        return label

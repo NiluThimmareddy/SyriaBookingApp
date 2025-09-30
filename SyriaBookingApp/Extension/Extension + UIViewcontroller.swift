@@ -151,7 +151,7 @@ extension UIViewController {
             
             controller.modalPresentationStyle = .popover
             controller.navnController = self.navigationController
-            
+            self.navigationItem.backButtonTitle = ""
             
             if AppSettings.shared.selectedLanguage == .arabic {
                 if UserSessionManager.getUser() == nil {
@@ -358,4 +358,35 @@ extension UIViewController {
             }
         }
     }
+    
+    func goToHomeTab() {
+        if let window = UIApplication.shared.windows.first {
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            guard let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? CustomTabBarController else {
+                return
+            }
+            tabBarVC.selectedIndex = 0 // Home tab
+            window.rootViewController = tabBarVC
+            window.makeKeyAndVisible()
+        }
+    }
+    
+    
+    func iso8601String(from date: Date) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.string(from: date)
+    }
+    
+    func getDummyDOB() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let date = formatter.date(from: "1900-01-01") {
+            return iso8601String(from: date) // 👉 "1900-01-01T00:00:00.000Z"
+        }
+        return "1900-01-01T00:00:00.000Z" // fallback hardcoded
+    }
+
 }

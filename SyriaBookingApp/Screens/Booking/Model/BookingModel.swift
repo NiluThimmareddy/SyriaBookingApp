@@ -13,13 +13,13 @@ struct BookingResponse : Codable{
 
 struct BookingModel: Codable {
     let id: String
-    let name: String
-    let mobile: String
-    let address: String
-    let gender: String
-    let email: String
-    let country: String
-    let dob: String
+    var name: String
+    var mobile: String
+    var address: String
+    var gender: String
+    var email: String
+    var country: String
+    var dob: String
     
     enum CodingKeys: String, CodingKey {
         case id, name, mobile, address, gender, email, country, dob

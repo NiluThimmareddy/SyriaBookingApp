@@ -115,7 +115,27 @@ class BookingViewModel {
         }
     }
     
+    func getDummyDOB() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        if let date = formatter.date(from: "1900-01-01") {
+            return iso8601String(from: date) // 👉 "1900-01-01T00:00:00.000Z"
+        }
+        return "1900-01-01T00:00:00.000Z" // fallback hardcoded
+    }
+    
+    func iso8601String(from date: Date) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.string(from: date)
+    }
+    
+    
     func SubmitUserRegistrationInfo(name: String,mobile: String,address: String = "",gender: String,email: String,country: String,dob: String) {
+        
+        let finalDob = (dob.isEmpty) ? getDummyDOB() : dob
         let params: [String: Any] = [
             "name": name,
             "mobile": mobile,
@@ -123,7 +143,7 @@ class BookingViewModel {
             "gender": gender,
             "email": email,
             "country": country,
-            "dob": dob
+            "dob": finalDob
         ]
         
         guard let url = APIURL.BookingURL.url else {

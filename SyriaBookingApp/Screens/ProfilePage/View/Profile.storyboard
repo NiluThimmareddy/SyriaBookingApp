@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,7 +12,7 @@
         <!--SecurityVC-->
         <scene sceneID="rvY-Pi-hRW">
             <objects>
-                <viewController storyboardIdentifier="SecurityVC" modalPresentationStyle="fullScreen" id="vRY-9Z-SX3" customClass="SecurityVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SecurityVC" modalPresentationStyle="fullScreen" id="vRY-9Z-SX3" customClass="SecurityVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ndJ-zj-IsB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -65,6 +64,11 @@
                             <constraint firstItem="Prb-I9-HLk" firstAttribute="top" secondItem="dST-Dw-h0D" secondAttribute="bottom" id="y1W-Mw-Md2"/>
                             <constraint firstItem="Prb-I9-HLk" firstAttribute="top" secondItem="g1c-t7-1Ub" secondAttribute="top" id="zWL-ys-Ysx"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="dST-Dw-h0D"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="securityTV" destination="RS8-ZQ-A9H" id="aJq-pt-ykz"/>
@@ -73,12 +77,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hjY-GW-x9L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1043.5114503816794" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="1970.2290076335878" y="-35.211267605633807"/>
         </scene>
         <!--Help CentreVC-->
         <scene sceneID="ijF-bo-xix">
             <objects>
-                <viewController storyboardIdentifier="HelpCentreVC" id="PPH-v0-GlA" customClass="HelpCentreVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HelpCentreVC" id="PPH-v0-GlA" customClass="HelpCentreVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vYx-WY-CgB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -242,6 +246,11 @@
                             <constraint firstItem="HK5-tA-Bf8" firstAttribute="bottom" secondItem="HSR-Ex-ajv" secondAttribute="bottom" id="hUI-ms-bbu"/>
                             <constraint firstItem="HSR-Ex-ajv" firstAttribute="top" secondItem="HK5-tA-Bf8" secondAttribute="top" id="sJa-Nv-OLO"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="ibE-kI-oTp"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="browseByCategoryTV" destination="Cf5-bC-VZN" id="50B-7p-8Ra"/>
@@ -261,12 +270,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LWf-9n-nv7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802.2900763358778" y="-34.507042253521128"/>
+            <point key="canvasLocation" x="2729.0076335877861" y="-34.507042253521128"/>
         </scene>
         <!--Privacy PolicyVC-->
         <scene sceneID="INP-M7-9gS">
             <objects>
-                <viewController storyboardIdentifier="PrivacyPolicyVC" modalPresentationStyle="fullScreen" id="UuY-0K-omq" customClass="PrivacyPolicyVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PrivacyPolicyVC" modalPresentationStyle="fullScreen" id="UuY-0K-omq" customClass="PrivacyPolicyVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TrM-4G-lGJ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -308,6 +317,11 @@
                             <constraint firstItem="tFF-ZR-mwu" firstAttribute="top" secondItem="TrM-4G-lGJ" secondAttribute="top" id="qq9-Kn-PkQ"/>
                             <constraint firstItem="a4L-j9-rSr" firstAttribute="top" secondItem="tFF-ZR-mwu" secondAttribute="bottom" id="xNJ-fe-4g4"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="tFF-ZR-mwu"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="webViewData" destination="sup-K3-Nb7" id="iDh-6j-I05"/>
@@ -315,12 +329,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="705-lU-HNY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2569" y="-35"/>
+            <point key="canvasLocation" x="3495.419847328244" y="-35.211267605633807"/>
         </scene>
         <!--Customer Service ChatVC-->
         <scene sceneID="Vrc-Sp-um5">
             <objects>
-                <viewController storyboardIdentifier="CustomerServiceChatVC" modalPresentationStyle="fullScreen" id="Ocq-RY-Rjg" customClass="CustomerServiceChatVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CustomerServiceChatVC" modalPresentationStyle="fullScreen" id="Ocq-RY-Rjg" customClass="CustomerServiceChatVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="I0P-sC-El9">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -419,6 +433,11 @@
                             <constraint firstItem="9nu-S5-p1G" firstAttribute="top" secondItem="I0P-sC-El9" secondAttribute="top" id="flj-IX-kjj"/>
                             <constraint firstItem="dYP-wg-ZWg" firstAttribute="leading" secondItem="oDw-cn-HFh" secondAttribute="leading" id="wbZ-Aj-LOW"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="9nu-S5-p1G"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="centreView" destination="dYP-wg-ZWg" id="XYq-vc-BSw"/>
@@ -432,12 +451,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hKY-nf-8OT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3427" y="-35"/>
+            <point key="canvasLocation" x="4353.4351145038163" y="-35.211267605633807"/>
         </scene>
         <!--Customer ServiceVC-->
         <scene sceneID="NwA-z6-q9Y">
             <objects>
-                <viewController storyboardIdentifier="CustomerServiceVC" modalPresentationStyle="fullScreen" id="dZu-D8-snc" customClass="CustomerServiceVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CustomerServiceVC" modalPresentationStyle="fullScreen" id="dZu-D8-snc" customClass="CustomerServiceVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RBv-gR-LfP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -787,6 +806,11 @@
                             <constraint firstItem="Pqf-RK-hdZ" firstAttribute="top" secondItem="RBv-gR-LfP" secondAttribute="top" id="rKx-kJ-2Us"/>
                             <constraint firstItem="8Y8-Kq-h87" firstAttribute="trailing" secondItem="vTh-Nh-K9W" secondAttribute="trailing" id="uev-bg-oj5"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Pqf-RK-hdZ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="attachmentTitle" destination="GFq-WN-GQD" id="mt2-Op-g8e"/>
@@ -817,12 +841,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e7H-Q2-Vth" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4196.1832061068699" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="5122.900763358778" y="-35.211267605633807"/>
         </scene>
         <!--Email PreferencesVC-->
         <scene sceneID="yk7-d2-wCL">
             <objects>
-                <viewController storyboardIdentifier="EmailPreferencesVC" modalPresentationStyle="fullScreen" id="sp2-Pq-Cys" customClass="EmailPreferencesVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmailPreferencesVC" modalPresentationStyle="fullScreen" id="sp2-Pq-Cys" customClass="EmailPreferencesVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1Hk-LH-kkn">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -961,6 +985,11 @@
                             <constraint firstAttribute="trailing" secondItem="8t1-ox-iWm" secondAttribute="trailing" id="Vs1-bi-bmD"/>
                             <constraint firstItem="8t1-ox-iWm" firstAttribute="top" secondItem="1Hk-LH-kkn" secondAttribute="top" id="aF6-yr-m6u"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="8t1-ox-iWm"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="checkBox" destination="cl9-w3-oZW" id="vCZ-0s-Y3s"/>
@@ -974,12 +1003,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnl-lv-lDm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4925.9541984732823" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="5852.6717557251905" y="-35.211267605633807"/>
         </scene>
         <!--Details Bookings View Controller-->
         <scene sceneID="U7d-5g-dVW">
             <objects>
-                <viewController storyboardIdentifier="DetailsBookingsViewController" modalPresentationStyle="fullScreen" id="2ay-8L-bok" customClass="DetailsBookingsViewController" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsBookingsViewController" modalPresentationStyle="fullScreen" id="2ay-8L-bok" customClass="DetailsBookingsViewController" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YRO-ZH-sOD">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="1350"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1640,12 +1669,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wCT-oz-x6G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5771.7557251908393" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="6698.4732824427474" y="-35.211267605633807"/>
         </scene>
         <!--Add New TravellerVC-->
         <scene sceneID="4kL-2g-RkZ">
             <objects>
-                <viewController storyboardIdentifier="AddNewTravellerVC" modalPresentationStyle="overCurrentContext" id="o3n-6r-kAx" customClass="AddNewTravellerVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddNewTravellerVC" modalPresentationStyle="overCurrentContext" id="o3n-6r-kAx" customClass="AddNewTravellerVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qzc-0E-zwg">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="990"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2005,12 +2034,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2w-wP-yu6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6504.5801526717551" y="-20.422535211267608"/>
+            <point key="canvasLocation" x="7431.2977099236641" y="-20.422535211267608"/>
         </scene>
         <!--Other GuestVC-->
         <scene sceneID="5EG-6I-G34">
             <objects>
-                <viewController storyboardIdentifier="OtherGuestVC" modalPresentationStyle="fullScreen" id="MeK-bg-tyd" customClass="OtherGuestVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OtherGuestVC" modalPresentationStyle="fullScreen" id="MeK-bg-tyd" customClass="OtherGuestVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nqT-fR-UNu">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2076,12 +2105,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SCK-Cg-Ry9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7284.7328244274804" y="-20.422535211267608"/>
+            <point key="canvasLocation" x="8211.4503816793895" y="-20.422535211267608"/>
         </scene>
         <!--Your NotificationVC-->
         <scene sceneID="Yzn-Df-vbT">
             <objects>
-                <viewController storyboardIdentifier="YourNotificationVC" modalPresentationStyle="fullScreen" id="ft2-jF-Qj5" customClass="YourNotificationVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="YourNotificationVC" modalPresentationStyle="fullScreen" id="ft2-jF-Qj5" customClass="YourNotificationVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="juz-8d-ITA">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2130,12 +2159,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CHo-f2-yXG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8022" y="-20"/>
+            <point key="canvasLocation" x="8947.3282442748095" y="-20.422535211267608"/>
         </scene>
         <!--MessagesVC-->
         <scene sceneID="DEj-rU-Td2">
             <objects>
-                <viewController storyboardIdentifier="MessagesVC" modalPresentationStyle="fullScreen" id="oD1-G8-zHd" customClass="MessagesVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MessagesVC" modalPresentationStyle="fullScreen" id="oD1-G8-zHd" customClass="MessagesVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Pxd-eB-vqB">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2310,12 +2339,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="flS-Pe-QbS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8788.5496183206105" y="-20.422535211267608"/>
+            <point key="canvasLocation" x="9715.2671755725187" y="-20.422535211267608"/>
         </scene>
         <!--Personal Details View Controller-->
         <scene sceneID="zMk-Pd-9PT">
             <objects>
-                <viewController storyboardIdentifier="PersonalDetailsViewController" modalPresentationStyle="fullScreen" id="17Q-Sa-ukB" customClass="PersonalDetailsViewController" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonalDetailsViewController" modalPresentationStyle="fullScreen" id="17Q-Sa-ukB" customClass="PersonalDetailsViewController" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LX1-P0-xp1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="1140"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2334,14 +2363,14 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="954"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tC-PD-50P">
-                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
-                                                        <color key="backgroundColor" name="defaultColor"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="130"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="100" id="qvy-mx-9Rf"/>
+                                                            <constraint firstAttribute="height" constant="130" id="qvy-mx-9Rf"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CuK-YG-meA">
-                                                        <rect key="frame" x="0.0" y="50" width="393" height="904"/>
+                                                        <rect key="frame" x="0.0" y="80" width="393" height="874"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hrx-0g-3uw">
                                                                 <rect key="frame" x="136.66666666666666" y="-50" width="119.99999999999997" height="120"/>
@@ -2349,8 +2378,9 @@
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="30g-3p-Bpe">
                                                                         <rect key="frame" x="10" y="10" width="100" height="100"/>
                                                                         <subviews>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="11" translatesAutoresizingMaskIntoConstraints="NO" id="vL9-Xp-hzs">
-                                                                                <rect key="frame" x="2.3333333333333428" y="2.6666666666666572" width="95" height="95"/>
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vL9-Xp-hzs">
+                                                                                <rect key="frame" x="2.3333333333333428" y="3.3333333333333215" width="95" height="93.666666666666686"/>
+                                                                                <color key="tintColor" systemColor="labelColor"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="95" id="1CA-Mv-Puo"/>
                                                                                     <constraint firstAttribute="height" constant="95" id="xaI-2m-SE0"/>
@@ -2362,7 +2392,7 @@
                                                                                     <constraint firstAttribute="height" constant="30" id="lJf-7a-Eko"/>
                                                                                     <constraint firstAttribute="width" constant="30" id="v2Z-LK-VUF"/>
                                                                                 </constraints>
-                                                                                <color key="tintColor" name="defaultLight"/>
+                                                                                <color key="tintColor" systemColor="systemGray3Color"/>
                                                                                 <state key="normal" title="Button"/>
                                                                                 <buttonConfiguration key="configuration" style="plain" image="camera.fill" catalog="system" title=""/>
                                                                                 <connections>
@@ -2381,7 +2411,7 @@
                                                                         </constraints>
                                                                     </view>
                                                                 </subviews>
-                                                                <color key="backgroundColor" name="defaultColor"/>
+                                                                <color key="backgroundColor" systemColor="labelColor"/>
                                                                 <constraints>
                                                                     <constraint firstItem="30g-3p-Bpe" firstAttribute="centerX" secondItem="Hrx-0g-3uw" secondAttribute="centerX" id="7E5-tE-yXa"/>
                                                                     <constraint firstAttribute="height" constant="120" id="GwA-1P-g8f"/>
@@ -2450,7 +2480,7 @@
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
-                                                        <color key="backgroundColor" name="backgroundColor"/>
+                                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                         <constraints>
                                                             <constraint firstItem="aKw-Fk-P4H" firstAttribute="top" secondItem="Hrx-0g-3uw" secondAttribute="bottom" constant="10" id="3nw-wF-Sqy"/>
                                                             <constraint firstAttribute="trailing" secondItem="aKw-Fk-P4H" secondAttribute="trailing" constant="10" id="97m-JL-DdI"/>
@@ -2470,7 +2500,7 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" name="backgroundColor"/>
+                                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="6tC-PD-50P" secondAttribute="trailing" id="00D-UD-prZ"/>
                                                     <constraint firstItem="CuK-YG-meA" firstAttribute="leading" secondItem="Xda-cI-VR8" secondAttribute="leading" id="3Ah-Rz-1Ns"/>
@@ -2483,7 +2513,7 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" name="backgroundColor"/>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <constraints>
                                             <constraint firstItem="Xda-cI-VR8" firstAttribute="width" secondItem="sJT-Cs-7ge" secondAttribute="width" id="7kO-uu-Mrc"/>
                                             <constraint firstItem="Xda-cI-VR8" firstAttribute="top" secondItem="sJT-Cs-7ge" secondAttribute="top" id="Bbl-bO-9HW"/>
@@ -2493,7 +2523,7 @@
                                         </constraints>
                                     </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" name="backgroundColor"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="sJT-Cs-7ge" secondAttribute="bottom" id="Hu3-Fl-dOP"/>
                                     <constraint firstItem="sJT-Cs-7ge" firstAttribute="leading" secondItem="QGu-Fu-vYI" secondAttribute="leading" id="jZG-ue-olC"/>
@@ -2514,6 +2544,11 @@
                             <constraint firstItem="M0k-QB-NG0" firstAttribute="leading" secondItem="LX1-P0-xp1" secondAttribute="leading" id="iWL-j5-NbO"/>
                             <constraint firstItem="QGu-Fu-vYI" firstAttribute="leading" secondItem="BIu-eA-d56" secondAttribute="leading" id="pLI-Sw-McU"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="M0k-QB-NG0"/>
+                            </mask>
+                        </variation>
                     </view>
                     <size key="freeformSize" width="393" height="1140"/>
                     <connections>
@@ -2533,12 +2568,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q43-Ki-EDz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9568.702290076335" y="-20.422535211267608"/>
+            <point key="canvasLocation" x="10495.419847328243" y="-20.422535211267608"/>
         </scene>
         <!--Personal Details EditVC-->
         <scene sceneID="JIL-ZF-Nd4">
             <objects>
-                <viewController storyboardIdentifier="PersonalDetailsEditVC" modalPresentationStyle="overFullScreen" id="vEN-3d-27T" customClass="PersonalDetailsEditVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonalDetailsEditVC" modalPresentationStyle="overFullScreen" id="vEN-3d-27T" customClass="PersonalDetailsEditVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kjS-U1-I85">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3230,24 +3265,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dq3-bq-3VO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10467.938931297709" y="-14.084507042253522"/>
+            <point key="canvasLocation" x="11394.656488549617" y="-14.084507042253522"/>
         </scene>
-        <!--Profile-->
+        <!--Profile PageVC-->
         <scene sceneID="ZDl-Pf-eZB">
             <objects>
-                <viewController storyboardIdentifier="ProfilePageVC" modalPresentationStyle="fullScreen" id="h2D-g9-m7y" customClass="ProfilePageVC" customModule="HotelBooking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfilePageVC" modalPresentationStyle="fullScreen" id="h2D-g9-m7y" customClass="ProfilePageVC" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UDN-ye-Yk6">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kQ4-3o-3B1">
-                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <rect key="frame" x="0.0" y="162" width="393" height="622"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWe-08-eap">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="RVn-sF-JY5">
-                                                <rect key="frame" x="40" y="10" width="60" height="60"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="RVn-sF-JY5">
+                                                <rect key="frame" x="40" y="20.666666666666668" width="60" height="58.666666666666657"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="60" id="Keo-Gq-xcJ"/>
                                                     <constraint firstAttribute="height" constant="60" id="RMr-lE-12r"/>
@@ -3266,10 +3302,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" name="defaultColor"/>
+                                        <color key="backgroundColor" systemColor="labelColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="MHG-ZS-dFE" secondAttribute="trailing" constant="20" id="2Mb-Aj-A91"/>
-                                            <constraint firstAttribute="height" constant="80" id="4QU-gi-6eW"/>
+                                            <constraint firstAttribute="height" constant="100" id="4QU-gi-6eW"/>
                                             <constraint firstAttribute="trailing" secondItem="enJ-po-0To" secondAttribute="trailing" constant="20" id="79k-QS-xSe"/>
                                             <constraint firstItem="MHG-ZS-dFE" firstAttribute="top" secondItem="sWe-08-eap" secondAttribute="top" constant="15" id="99X-RV-6fd"/>
                                             <constraint firstItem="RVn-sF-JY5" firstAttribute="leading" secondItem="sWe-08-eap" secondAttribute="leading" constant="40" id="KGX-UD-Gdy"/>
@@ -3280,7 +3316,7 @@
                                         </constraints>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkN-NS-RIC">
-                                        <rect key="frame" x="0.0" y="80" width="393" height="586"/>
+                                        <rect key="frame" x="0.0" y="100" width="393" height="522"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f9n-ha-xkp">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="571"/>
@@ -3306,8 +3342,8 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Ghb-f7-l2X">
-                                                                <rect key="frame" x="308" y="29.666666666666657" width="25" height="21.333333333333329"/>
-                                                                <color key="tintColor" name="defaultColor"/>
+                                                                <rect key="frame" x="308" y="29.666666666666686" width="25" height="21.333333333333329"/>
+                                                                <color key="tintColor" systemColor="labelColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="D6E-lu-hUd"/>
                                                                     <constraint firstAttribute="width" constant="25" id="UOe-fx-bBM"/>
@@ -3324,7 +3360,7 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                 </subviews>
-                                                                <color key="backgroundColor" name="defaultColor"/>
+                                                                <color key="backgroundColor" systemColor="labelColor"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstItem="32m-pA-9LC" firstAttribute="centerX" secondItem="4F8-Rz-gGN" secondAttribute="centerX" id="2p9-Mh-QQb"/>
@@ -3338,7 +3374,7 @@
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain"/>
                                                                 <connections>
-                                                                    <action selector="completeProfileButton:" destination="h2D-g9-m7y" eventType="touchUpInside" id="50p-N1-7vV"/>
+                                                                    <action selector="completeProfileButton:" destination="h2D-g9-m7y" eventType="touchUpInside" id="Mb4-Dh-vdo"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -3357,11 +3393,6 @@
                                                             <constraint firstItem="Ghb-f7-l2X" firstAttribute="leading" secondItem="q0n-uB-yF2" secondAttribute="trailing" constant="10" id="ykJ-6m-mbq"/>
                                                             <constraint firstItem="QNv-n4-7wt" firstAttribute="leading" secondItem="ezk-sW-Ez2" secondAttribute="leading" id="zoN-B1-VnK"/>
                                                         </constraints>
-                                                        <variation key="default">
-                                                            <mask key="subviews">
-                                                                <exclude reference="QNv-n4-7wt"/>
-                                                            </mask>
-                                                        </variation>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dka-12-zS3">
                                                         <rect key="frame" x="10" y="105" width="145.66666666666666" height="21"/>
@@ -3392,11 +3423,15 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2bt-FV-iXp">
                                                         <rect key="frame" x="20" y="501" width="353" height="50"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojl-R6-eCN">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojl-R6-eCN">
                                                                 <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                                 <color key="tintColor" systemColor="systemRedColor"/>
-                                                                <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="Sign out"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                                                                <state key="normal" title="Sign out" image="escape" catalog="system"/>
+                                                                <buttonConfiguration key="configuration" style="plain" image="escape" catalog="system" title="Sign out" imagePadding="10">
+                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                                </buttonConfiguration>
                                                                 <connections>
                                                                     <action selector="signOutButton:" destination="h2D-g9-m7y" eventType="touchUpInside" id="ckq-8o-FiR"/>
                                                                 </connections>
@@ -3454,8 +3489,8 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZVX-uC-j8P">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="118"/>
-                                <color key="backgroundColor" name="defaultColor"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="162"/>
+                                <color key="backgroundColor" name="blackColor"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="PS0-9s-UuV"/>
@@ -3470,11 +3505,15 @@
                             <constraint firstItem="ZVX-uC-j8P" firstAttribute="leading" secondItem="UDN-ye-Yk6" secondAttribute="leading" id="X3y-hH-KRv"/>
                             <constraint firstItem="kQ4-3o-3B1" firstAttribute="top" secondItem="PS0-9s-UuV" secondAttribute="top" id="dJ7-kW-KKC"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="ZVX-uC-j8P"/>
+                            </mask>
+                        </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" id="66E-sP-1gq"/>
+                    <navigationItem key="navigationItem" id="6nm-Pc-43Q"/>
                     <connections>
                         <outlet property="completeProfileBackView" destination="ezk-sW-Ez2" id="dDw-vd-Lv9"/>
-                        <outlet property="completeProfileButton" destination="QNv-n4-7wt" id="hEU-LE-aNg"/>
                         <outlet property="completeProfileImage" destination="32m-pA-9LC" id="eFr-9I-e5z"/>
                         <outlet property="completeProfileImageBackView" destination="4F8-Rz-gGN" id="3wf-qF-Ogl"/>
                         <outlet property="completeProfileLabel" destination="q0n-uB-yF2" id="Gms-1r-l2f"/>
@@ -3496,48 +3535,75 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiG-pl-PIb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="182" y="-35"/>
+            <point key="canvasLocation" x="1107.6335877862596" y="-35.211267605633807"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="hXl-Mx-YcL">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RW9-iv-1Ti" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" id="66E-sP-1gq"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="chevron.backward" catalog="system" id="wHq-J6-AF2">
+                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="h2D-g9-m7y" kind="relationship" relationship="rootViewController" id="TZ1-kJ-qLy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WAB-Rp-Zm6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="180.91603053435114" y="-35.211267605633807"/>
         </scene>
     </scenes>
     <resources>
         <image name="1" width="682" height="360"/>
-        <image name="11" width="740" height="476"/>
         <image name="arrow.trianglehead.turn.up.right.diamond" catalog="system" width="128" height="124"/>
         <image name="bell" catalog="system" width="125" height="128"/>
         <image name="bot-message-square" width="24" height="24"/>
         <image name="camera.fill" catalog="system" width="128" height="93"/>
         <image name="checkmark.square" catalog="system" width="128" height="114"/>
+        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="chevron.down" catalog="system" width="128" height="70"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="envelope.circle" catalog="system" width="128" height="123"/>
         <image name="envelope.circle.fill" catalog="system" width="128" height="123"/>
         <image name="envelope.fill" catalog="system" width="128" height="85"/>
+        <image name="escape" catalog="system" width="128" height="123"/>
         <image name="exclamationmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="iconmonstr-caret-down-filled" width="24" height="24"/>
         <image name="lock.fill" catalog="system" width="111" height="128"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="person" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="123"/>
+        <image name="person.circle.fill" catalog="system" width="128" height="123"/>
         <image name="phone.circle" catalog="system" width="128" height="123"/>
         <image name="phone.circle.fill" catalog="system" width="128" height="123"/>
         <image name="phone.fill" catalog="system" width="128" height="114"/>
         <image name="plus" catalog="system" width="128" height="113"/>
-        <image name="profile" width="512" height="512"/>
         <image name="square" catalog="system" width="128" height="114"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="backgroundColor">
             <color red="0.93300002813339233" green="0.93300002813339233" blue="0.93300002813339233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="blackColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="defaultColor">
             <color red="0.0" green="0.23100000619888306" blue="0.58399999141693115" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="defaultLight">
-            <color red="0.89399999380111694" green="0.94499999284744263" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
