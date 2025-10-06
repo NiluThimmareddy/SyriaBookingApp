@@ -4,19 +4,17 @@
 //
 //  Created by toqsoft on 04/08/25.
 //
-
-
-
+ 
 import UIKit
 import libPhoneNumber
-
+ 
 enum ComingFromToLogin {
     case tabbarBooking
     case HomeSliderView
     case HotelDetails
     case profile
 }
-
+ 
 class RegisterMobileNumberVC : UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -54,7 +52,7 @@ class RegisterMobileNumberVC : UIViewController {
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var isDatePickerShown = false
-    var  selectedCountryName : String?
+    var selectedCountryName : String?
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
     var registerUserDetails : BookingModel?
@@ -70,7 +68,13 @@ class RegisterMobileNumberVC : UIViewController {
         setUpUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 9, weight: .regular)
+    }
+    
     @IBAction func mobileNumberCountryCodeButtonAction(_ sender: Any) {
+        updateMobileNumberCountryCodeFont()
         let vc = storyboard?.instantiateViewController(withIdentifier: "SelectCountryViewController") as! SelectCountryViewController
         vc.countryList = countryCodeList
         vc.delegate = self
@@ -140,9 +144,6 @@ class RegisterMobileNumberVC : UIViewController {
         
         getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
             guard let self = self else { return }
-            
-            //post for get otp
-            
             if let userDetails = user {
                 
                 self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
@@ -165,9 +166,6 @@ class RegisterMobileNumberVC : UIViewController {
                         }
                     }
                 }
-                //                self.enterNameTF.text = userDetails.name
-                //                self.enterEmailTF.text = userDetails.email
-                
                 
             } else {
                 hideLoader()
@@ -190,12 +188,12 @@ class RegisterMobileNumberVC : UIViewController {
             return
         }
         
-        var gendr = "Others"
+        var gendr = ""
         
-        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
-            gendr = gender
-            return
-        }
+//        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
+//            gendr = gender
+//            return
+//        }
         
         guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert("Please enter your country.")
@@ -209,12 +207,7 @@ class RegisterMobileNumberVC : UIViewController {
         
         guard let  countryCode = countryCode else { return }
        let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
-        
-//        guard let dob = selectDateofBirthTF.text, !dob.trimmingCharacters(in: .whitespaces).isEmpty else {
-//            showAlert("Please enter your date of birth.")
-//            return
-//        }
-        
+ 
         viewModel.onSuccess = { [weak self] response in
         
             guard let self = self else { return }
@@ -241,10 +234,8 @@ class RegisterMobileNumberVC : UIViewController {
         let dummydob = getDummyDOB()
         viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gendr , email: email, country: country, dob: selectDateofBirthTF.text ?? dummydob )
     }
-    
-   
 }
-
+ 
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
       
@@ -291,12 +282,10 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     }
     
     func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void) {
-        viewModel.onSuccess = { [weak self] response in
+        viewModel.onSuccess = {  response in
             print("Response: \(response)")
             
             DispatchQueue.main.async{
-                //
-                
                 completion(response)
             }
         }
@@ -350,7 +339,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let selectGenderTitle = AppSettings.shared.selectedLanguage == .english ? "Select Gender" : "اختر الجنس"
         
         selectGenderButton.setTitle(selectGenderTitle, for: .normal)
-
+ 
         let male = UIAction(title: maleTitle) { _ in
             self.selectGenderButton.setTitle(maleTitle, for: .normal)
         }
@@ -505,25 +494,28 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             registerButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         }
         mobileNumberNoteLabel.textAlignment = .center
-        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 9, weight: .regular)
     }
 }
-
+ 
 extension RegisterMobileNumberVC : SelectCountryDelegate {
     func didSelectCountry(_ country: CountryModel) {
         mobileNumberCountryCodeButton.setTitle(country.code, for: .normal)
-        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        updateMobileNumberCountryCodeFont()
         if AppSettings.shared.selectedLanguage == .english {
-            countryMobileNoCountLabel.text = "Please enter a \(country.max_length ?? 10)-digit mobile number"
+            countryMobileNoCountLabel.text = "Please enter a \(country.max_length)-digit mobile number"
         } else {
-            countryMobileNoCountLabel.text = "الرجاء إدخال رقم جوال مكون من \(country.max_length ?? 10) أرقام"
+            countryMobileNoCountLabel.text = "الرجاء إدخال رقم جوال مكون من \(country.max_length) أرقام"
         }
         countryNameButton.setTitle(country.flag, for: .normal)
         countryNameButton.setImage(nil, for: .normal)
         enterCountryTF.text = country.name
         selectedCountryFlag = country.flag
         selectedCountryName = country.name
-        maxMobileNumberLength = country.max_length ?? 10
+        maxMobileNumberLength = country.max_length
+    }
+    
+    func updateMobileNumberCountryCodeFont() {
+        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 9, weight: .regular)
     }
     
     func validateMobileNumber(_ number: String, countryCode: String) -> Bool {
@@ -568,7 +560,7 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
         }
     }
 }
-
+ 
 extension UITabBarController {
     func presentVerificationVC(otpResponse: OTPResponseModel, mobileNumber: String, guestName: String, guestEmail: String) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
@@ -582,3 +574,4 @@ extension UITabBarController {
         }
     }
 }
+ 

@@ -60,7 +60,6 @@ extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource {
         viewBookingConfirmationVC.roomType = bookingdetails.roomType
         viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -144,16 +143,8 @@ extension YourNotificationVC {
 
 }
 
-extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(3, viewModel.filteredHistoryArray.count)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "YourNotificationTVC", for: indexPath) as! YourNotificationTVC
-        cell.configure(with: viewModel.filteredHistoryArray[indexPath.row])
-        return cell
-    }
+extension YourNotificationVC {
+
     func setupLanguage() {
         if AppSettings.shared.selectedLanguage == .arabic {
             viewAllButton.setTitle("عرض الكل", for: .normal)

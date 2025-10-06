@@ -50,59 +50,68 @@ class VerificationVC : UIViewController {
             showAlert("Please enter the OTP.")
             return
         }
-        
+
         guard let mobileNumber = mobileNumber else {
             return
         }
-       
+
         self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
-            guard let UserId = UserId else { return }
-           
-            self?.viewModel.onSuccess = { response in
+            guard let self = self, let UserId = UserId else { return }
+
+            self.viewModel.onSuccess = { response in
                 UserSessionManager.saveUser(response)
-                
-               
-                
-                self?.showAlert(title: "Success",
-                                message: "Your mobile number has been verified successfully.", type: .success, onOK
-                                : {
-                        self?.dismissVerificationFlow()
-                })
-            }
-            
-            self?.viewModel.onError = { error in
-                self?.showAlert(title: "Error",
-                                message: error,
-                                type: .success, onOK:{
-                    self?.otpTF.forEach { textField in
-                        textField.text = ""
+
+                let isNewUser = !self.isMobileRegistered(response.mobile)
+                if isNewUser {
+                    self.registerMobile(response.mobile)
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your mobile number has been Registered successfully.",
+                            type: .success,
+                            onOK: {
+                                self.dismissVerificationFlow()
+                                self.performNavigationAfterVerification()
+                            }
+                        )
                     }
-                   
-                })
+                } else {
+                    self.performNavigationAfterVerification()
+                }
             }
-            
-            self?.viewModel.FetchUserData(id: UserId.data.userId)
-            
-            switch self?.comingFrom {
-            case .Home:
-                //Reload HomePage
-                self?.dismiss(animated: true)
-                self?.dismissPopup()
-            case .BookingHistory:
-                    //Reload BookingHistory
-                self?.dismiss(animated: true)
-                self?.dismissPopup()
-            case .HotelDetail:
-                //Move to confirm page
-                self?.dismiss(animated: true)
-            case .none:
-                self?.dismissPopup()
-                self?.dismiss(animated: true)
-            case .some(.RightMenu):
-                break
-            case .some(.TabBar):
-                break
+
+            self.viewModel.onError = { error in
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Error",
+                        message: error,
+                        type: .success,
+                        onOK:{
+                            self.otpTF.forEach { $0.text = "" }
+                        }
+                    )
+                }
             }
+
+            self.viewModel.FetchUserData(id: UserId.data.userId)
+        }
+    }
+
+    func performNavigationAfterVerification() {
+        switch self.comingFrom {
+        case .Home:
+            self.dismiss(animated: true)
+            self.dismissPopup()
+        case .BookingHistory:
+            self.dismiss(animated: true)
+            self.dismissPopup()
+        case .HotelDetail:
+            self.dismiss(animated: true)
+        case .none:
+            self.dismissPopup()
+            self.dismiss(animated: true)
+        case .some(.RightMenu), .some(.TabBar):
+            break
         }
     }
 
@@ -122,6 +131,18 @@ class VerificationVC : UIViewController {
         }
         viewModel.verifyOTP(mobile: mobile, otp: otp)
     }
+    
+    func isMobileRegistered(_ mobile: String) -> Bool {
+        let registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
+        return registeredNumbers.contains(mobile)
+    }
+
+    func registerMobile(_ mobile: String) {
+        var registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
+        registeredNumbers.append(mobile)
+        UserDefaults.standard.set(registeredNumbers, forKey: "registeredMobileNumbers")
+    }
+
 }
 
 extension VerificationVC : UITextFieldDelegate {

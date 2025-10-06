@@ -167,12 +167,11 @@ extension UIViewController {
                 }
             }
 
+            let rowHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 44.0 : 51.0
+            let totalHeight = rowHeight * CGFloat(controller.menuArray.count)
+            let width: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 250.0 : 210.0
             
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                controller.contentSize = CGSize(width: 250.0, height: (44.0 * Double(controller.menuArray.count)))
-            } else {
-                controller.contentSize = CGSize(width: 210.0, height: (51.0 * Double(controller.menuArray.count)))
-            }
+            controller.contentSize = CGSize(width: width, height: totalHeight)
             
             controller.sourceView = self.view
             controller.barbuttonItem = sender
@@ -180,9 +179,9 @@ extension UIViewController {
             if let popoverPresentationController = controller.popoverPresentationController {
                 popoverPresentationController.delegate = controller
                 popoverPresentationController.barButtonItem = sender
-                popoverPresentationController.permittedArrowDirections = .any
+                popoverPresentationController.permittedArrowDirections = .up
                 popoverPresentationController.sourceView = self.view
-                controller.preferredContentSize = controller.contentSize ?? CGSize(width: 200, height: 200)
+                controller.preferredContentSize = controller.contentSize ?? CGSize(width: width, height: totalHeight)
             }
             
             DispatchQueue.main.async {

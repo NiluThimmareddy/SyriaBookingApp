@@ -26,6 +26,11 @@ class RightMenuViewController: UIViewController {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
         rightMenuTableView.semanticContentAttribute = .forceLeftToRight
+//        rightMenuTableView.isScrollEnabled = true
+        rightMenuTableView.rowHeight = UITableView.automaticDimension
+        rightMenuTableView.estimatedRowHeight = 50
+        let rowHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 44.0 : 51.0
+        rightMenuTableView.rowHeight = rowHeight
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,24 +96,27 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
     }
 }
 
-extension RightMenuViewController: UIPopoverPresentationControllerDelegate{
+extension RightMenuViewController: UIPopoverPresentationControllerDelegate {
     func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         if self.barbuttonItem != nil {
-            self.popoverPresentationController?.barButtonItem = barbuttonItem
+            popoverPresentationController.barButtonItem = barbuttonItem
         } else {
-            self.popoverPresentationController?.sourceRect = self.sourceRect!
+            popoverPresentationController.sourceRect = self.sourceRect ?? CGRect.zero
         }
-        self.popoverPresentationController?.permittedArrowDirections = []
-        self.popoverPresentationController?.sourceView = self.sourceView!
-        preferredContentSize = self.contentSize!
+        popoverPresentationController.permittedArrowDirections = .up
+        popoverPresentationController.sourceView = self.sourceView
+        preferredContentSize = self.contentSize ?? CGSize(width: 210, height: 300)
     }
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
-    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool{
+    
+    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return true
     }
 }
