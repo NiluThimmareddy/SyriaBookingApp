@@ -153,20 +153,24 @@ extension UIViewController {
             controller.navnController = self.navigationController
             self.navigationItem.backButtonTitle = ""
             
-            if AppSettings.shared.selectedLanguage == .arabic {
-                if UserSessionManager.getUser() == nil {
-                    controller.menuArray = ["الأسئلة الشائعة", "سياسة الخصوصية", "الشروط والأحكام", "معلومات عنا", "الإبلاغ عن التطبيق", "الملف الشخصي"]
+            let isArabic = AppSettings.shared.selectedLanguage == .arabic
+            let isLoggedIn = UserSessionManager.getUser() != nil
+            
+            if isArabic {
+                if isLoggedIn {
+                    controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا","الإبلاغ عن التطبيق","الملف الشخصي","تسجيل الخروج"]
                 } else {
-                    controller.menuArray = ["الأسئلة الشائعة", "سياسة الخصوصية", "الشروط والأحكام", "معلومات عنا", "الإبلاغ عن التطبيق", "الملف الشخصي", "تسجيل الخروج"]
+                    controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا",
+                        "الإبلاغ عن التطبيق"]
                 }
             } else {
-                if UserSessionManager.getUser() == nil {
-                    controller.menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions", "About Us", "Report an App", "Profile"]
+                if isLoggedIn {
+                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App","Profile","Logout"]
                 } else {
-                    controller.menuArray = ["FAQ", "Privacy Policy", "Terms and Conditions", "About Us", "Report an App", "Profile", "Logout"]
+                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App"]
                 }
             }
-
+            
             let rowHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 44.0 : 51.0
             let totalHeight = rowHeight * CGFloat(controller.menuArray.count)
             let width: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 250.0 : 210.0

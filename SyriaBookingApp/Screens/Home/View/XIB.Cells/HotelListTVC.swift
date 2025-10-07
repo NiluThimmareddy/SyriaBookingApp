@@ -75,11 +75,10 @@ class HotelListTVC : UITableViewCell {
         let price = model.minRoomPrice
         var fullText = ""
         if AppSettings.shared.selectedLanguage == .arabic{
-            let fullText = "من \(price) / ليلة"
+            fullText = "من \(price) / ليلة"
 
-        }else{
-            let fullText = "From \(price) / night"
-
+        } else {
+            fullText = "From \(price) / night"
         }
        
         priceLabel.setHighlightedText(
