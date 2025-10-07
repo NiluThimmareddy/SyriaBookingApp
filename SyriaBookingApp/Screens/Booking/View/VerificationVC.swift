@@ -28,7 +28,7 @@ class VerificationVC : UIViewController {
     var OptResponse : OTPResponseModel?
     var viewModel = BookingViewModel()
     var comingFrom : comingFromLogin?
-    
+    var isNewUser = false
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -61,9 +61,9 @@ class VerificationVC : UIViewController {
             self.viewModel.onSuccess = { response in
                 UserSessionManager.saveUser(response)
 
-                let isNewUser = !self.isMobileRegistered(response.mobile)
-                if isNewUser {
-                    self.registerMobile(response.mobile)
+               
+                if self.isNewUser {
+//                    self.registerMobile(response.mobile)
                     DispatchQueue.main.async {
                         self.showAlert(
                             title: "Success",
@@ -132,16 +132,16 @@ class VerificationVC : UIViewController {
         viewModel.verifyOTP(mobile: mobile, otp: otp)
     }
     
-    func isMobileRegistered(_ mobile: String) -> Bool {
-        let registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
-        return registeredNumbers.contains(mobile)
-    }
-
-    func registerMobile(_ mobile: String) {
-        var registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
-        registeredNumbers.append(mobile)
-        UserDefaults.standard.set(registeredNumbers, forKey: "registeredMobileNumbers")
-    }
+//    func isMobileRegistered(_ mobile: String) -> Bool {
+//        let registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
+//        return registeredNumbers.contains(mobile)
+//    }
+//
+//    func registerMobile(_ mobile: String) {
+//        var registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
+//        registeredNumbers.append(mobile)
+//        UserDefaults.standard.set(registeredNumbers, forKey: "registeredMobileNumbers")
+//    }
 
 }
 

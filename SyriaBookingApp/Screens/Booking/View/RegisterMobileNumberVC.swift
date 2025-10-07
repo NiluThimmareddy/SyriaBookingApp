@@ -152,7 +152,7 @@ class RegisterMobileNumberVC : UIViewController {
                         if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                             tabBarVC.modalPresentationStyle = .fullScreen
                             UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                            tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: userDetails.mobile, guestName: userDetails.name, guestEmail: userDetails.email)
+                            tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: userDetails.mobile, guestName: userDetails.name, guestEmail: userDetails.email,isNewUser:false)
                         }
                     }
                 })
@@ -221,7 +221,7 @@ class RegisterMobileNumberVC : UIViewController {
                     if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                         tabBarVC.modalPresentationStyle = .fullScreen
                         UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                        tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: response.mobile, guestName: response.name, guestEmail: response.email)
+                        tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: response.mobile, guestName: response.name, guestEmail: response.email,isNewUser:true)
                     }
                 }
             }
@@ -474,6 +474,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             countryTitleLabel.text = "Country"
             dateOfBirthTitleLabel.text = "Date of Birth"
             mobileNumberCountryCodeButton.setTitle("Select Code", for: .normal)
+            updateMobileNumberCountryCodeFont()
             continueButton.setTitle("Continue", for: .normal)
             continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
             registerButton.setTitle("Register & Continue", for: .normal)
@@ -488,6 +489,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             countryTitleLabel.text = "البلد"
             dateOfBirthTitleLabel.text = "تاريخ الميلاد"
             mobileNumberCountryCodeButton.setTitle("اختر الرمز", for: .normal)
+            updateMobileNumberCountryCodeFont()
             continueButton.setTitle("متابعة", for: .normal)
             continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
             registerButton.setTitle("التسجيل والمتابعة", for: .normal)
@@ -562,9 +564,10 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
 }
  
 extension UITabBarController {
-    func presentVerificationVC(otpResponse: OTPResponseModel, mobileNumber: String, guestName: String, guestEmail: String) {
+    func presentVerificationVC(otpResponse: OTPResponseModel, mobileNumber: String, guestName: String, guestEmail: String,isNewUser:Bool) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         if let verificationVC = storyboard.instantiateViewController(withIdentifier: "VerificationVC") as? VerificationVC {
+            verificationVC.isNewUser = isNewUser
             verificationVC.OptResponse = otpResponse
             verificationVC.mobileNumber = mobileNumber
             print("******\(mobileNumber)")

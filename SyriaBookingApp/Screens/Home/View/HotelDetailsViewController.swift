@@ -18,7 +18,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var overView: UIView!
     @IBOutlet weak var overViewButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var descriptionLabelHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var descriptionLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var facilitiesView: UIView!
     @IBOutlet weak var facilitiesButton: UIButton!
     @IBOutlet weak var verticalStackview: UIStackView!
@@ -92,7 +92,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         isDescriptionVisible.toggle()
         
         descriptionLabel.isHidden = !isDescriptionVisible
-        descriptionLabelHeightConstraint.constant = isDescriptionVisible ? 300 : 40
+//        descriptionLabelHeightConstraint.constant = isDescriptionVisible ? 300 : 40
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
