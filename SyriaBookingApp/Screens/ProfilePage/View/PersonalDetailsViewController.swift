@@ -30,7 +30,7 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
        label.textAlignment = .center
        return label
    }()
-    var infoDataTitle = ["Name", "Gender", "Date of Birth"]
+    var infoDataTitle = ["Name"]
     var contactDataTitle = ["Email Address", "Phone Number", "Address"]
     
     var personalData : BookingModel?
@@ -250,15 +250,15 @@ extension PersonalDetailsViewController: PersonalDetailsEditVCDelegate {
         infoTableView.reloadData()
     }
 
-    func didUpdateGender(_ gender: String) {
-        personalData?.gender = gender
-        infoTableView.reloadData()
-    }
-
-    func didUpdateDOB(_ dob: String) {
-        personalData?.dob = dob
-        infoTableView.reloadData()
-    }
+//    func didUpdateGender(_ gender: String) {
+//        personalData?.gender = gender
+//        infoTableView.reloadData()
+//    }
+//
+//    func didUpdateDOB(_ dob: String) {
+//        personalData?.dob = dob
+//        infoTableView.reloadData()
+//    }
 
     func didUpdateEmail(_ email: String) {
         personalData?.email = email

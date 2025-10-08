@@ -8,7 +8,7 @@
 import UIKit
 
 class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
-  
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImagesCollectionView: UICollectionView!
@@ -18,7 +18,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     @IBOutlet weak var overView: UIView!
     @IBOutlet weak var overViewButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
-//    @IBOutlet weak var descriptionLabelHeightConstraint: NSLayoutConstraint!
+    //    @IBOutlet weak var descriptionLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var facilitiesView: UIView!
     @IBOutlet weak var facilitiesButton: UIButton!
     @IBOutlet weak var verticalStackview: UIStackView!
@@ -92,7 +92,7 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         isDescriptionVisible.toggle()
         
         descriptionLabel.isHidden = !isDescriptionVisible
-//        descriptionLabelHeightConstraint.constant = isDescriptionVisible ? 300 : 40
+        //        descriptionLabelHeightConstraint.constant = isDescriptionVisible ? 300 : 40
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -137,13 +137,13 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     
     @IBAction func addReviewImgButtonAction(_ sender: Any) {
-//        isAddReviewVisible.toggle()
-//
-//        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
-//
-//        UIView.animate(withDuration: 0.3) {
-//            self.view.layoutIfNeeded()
-//        }
+        //        isAddReviewVisible.toggle()
+        //
+        //        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
+        //
+        //        UIView.animate(withDuration: 0.3) {
+        //            self.view.layoutIfNeeded()
+        //        }
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
@@ -164,29 +164,28 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
             showAlert("Please enter review")
             return
         }
-  
+        
         self.hotelviewModel.onSuccess = { [weak self] review in
+            
+            guard let self = self else { return }
+            showAlert(title: "Syriabooking", message: "thank you for your valueable review ", onOK:  {
+                //fisrt fetch the particular hotels reviews
+                self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
                 
-                guard let self = self else { return }
-                showAlert(title: "Syriabooking", message: "thank you for your valueable review ", onOK:  {
-                    //fisrt fetch the particular hotels reviews
-                    self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
-                    
-                    self.hotelviewModel.onSuccess = {[weak self] response in
-                        self?.selectedHotel?.reviews.insert(response, at: 0)
-                        //here main hotelviewmodel hotel variable i want to add review means i whhole application i want to add this review where review is using
-                        if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: {$0.id == selectedHotel.id}){
-                            HotelDataMaganer.shared.allHotels[index].reviews.insert(response, at: 0)
-                        }
-                        DispatchQueue.main.async {
-                            self?.rateAndReviewsTableview.reloadData()
-                        }
-                        // then Reload revie Tableview
+                self.hotelviewModel.onSuccess = {[weak self] response in
+                    self?.selectedHotel?.reviews.insert(response, at: 0)
+                    //here main hotelviewmodel hotel variable i want to add review means i whole application i want to add this review where review is using
+                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: {$0.id == selectedHotel.id}){
+                        HotelDataMaganer.shared.allHotels[index].reviews.insert(response, at: 0)
                     }
-                })
-                
-            }
-
+                    DispatchQueue.main.async {
+                        self?.rateAndReviewsTableview.reloadData()
+                    }
+                }
+            })
+            
+        }
+        
         self.hotelviewModel.onReviewError = { error in
             
             self.showAlert("something went wrong try again! : \(error.description)")
@@ -197,31 +196,31 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     
     @IBAction func rateAndReviewsDownButtonAction(_ sender: Any) {
         isRateAndReviewVisible.toggle()
-          
-          if isRateAndReviewVisible {
-              rateAndReviewsTableview.isHidden = false
-              
-              let labelHeight: CGFloat = 18
-              let buttonHeight: CGFloat = 25
-              let padding: CGFloat = 10
-              
-              let tableHeight = rateAndReviewsTableview.contentSize.height
-              let totalHeight = labelHeight + buttonHeight + padding + tableHeight
-              rateAndReviewsContainerHeightConstraint.constant = totalHeight
-              
-          } else {
-              let labelHeight: CGFloat = 18
-              let buttonHeight: CGFloat = 25
-              let padding: CGFloat = 10
-              
-              let totalHeight = labelHeight + buttonHeight + padding
-              rateAndReviewsContainerHeightConstraint.constant = totalHeight
-              rateAndReviewsTableview.isHidden = true
-          }
-          
-          UIView.animate(withDuration: 0.3) {
-              self.view.layoutIfNeeded()
-          }
+        
+        if isRateAndReviewVisible {
+            rateAndReviewsTableview.isHidden = false
+            
+            let labelHeight: CGFloat = 18
+            let buttonHeight: CGFloat = 25
+            let padding: CGFloat = 10
+            
+            let tableHeight = rateAndReviewsTableview.contentSize.height
+            let totalHeight = labelHeight + buttonHeight + padding + tableHeight
+            rateAndReviewsContainerHeightConstraint.constant = totalHeight
+            
+        } else {
+            let labelHeight: CGFloat = 18
+            let buttonHeight: CGFloat = 25
+            let padding: CGFloat = 10
+            
+            let totalHeight = labelHeight + buttonHeight + padding
+            rateAndReviewsContainerHeightConstraint.constant = totalHeight
+            rateAndReviewsTableview.isHidden = true
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @IBAction func viewAllRateAndReviewsButtonAction(_ sender: Any) {
@@ -316,8 +315,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                         collectionView.reloadData()
                     }
                     self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
-                
-                }else{
+                    
+                } else {
                     guard let room = selectedRoom else { return }
                     self.selectedRoom = room
                     self.selectedRoomRates = room.rates
@@ -346,7 +345,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                 self.updateTotalPrice()
             }
             cell.configure(with: rooms)
-            
             return cell
         }
     }
@@ -354,7 +352,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == hotelImagesCollectionView {
             let totalWidth = collectionView.bounds.width
-            return CGSize(width: totalWidth, height: totalWidth * 0.6)
+            let height: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 450 : 250
+            return CGSize(width: totalWidth, height: height)
         } else {
             if let room = selectedHotel?.rooms[indexPath.row] {
                 let height = calculateRoomCellHeight(for: room)
@@ -415,35 +414,28 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.guestName = user.name
             controller.guestEmail = user.email
             controller.guestMobileNumber = user.mobile
-            
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
-//            controller.selectedRate = room.rates
+            //            controller.selectedRate = room.rates
             controller.selectedRates = self.selectedRates
             self.present(controller, animated: true)
         }
     }
     
-    func presentationController(forPresented presented: UIViewController,
-                                presenting: UIViewController?,
-                                source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
         return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
     func showAlertForRateSelection() {
         showAlert("Please select a rate and ensure hotel/room data is present.")
     }
-
+    
     func updateTotalPrice() {
         let total = selectedRates.reduce(0) {
             $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1))
         }
-        // Count distinct room rates selected
         let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity ?? 0) > 0 }.count
-        
-        // Total quantity (all selected rooms added together)
         let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity ?? 0) }
-        
         if total > 0 {
             totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $\(total)"
         } else {
@@ -563,8 +555,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func hideViewAllButton() {
         if selectedHotel?.reviews.count ?? 0 > 5 {
             viewAllButton.isHidden = false
-        }else{
-            
+        } else {
             viewAllButton.isHidden = true
         }
     }
@@ -593,7 +584,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 verticalStackview.addArrangedSubview(currentRow)
                 currentRowWidth = 0
             }
-            
             currentRow.addArrangedSubview(label)
             currentRowWidth += labelWidth + currentRow.spacing
         }
@@ -634,7 +624,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         }
         
         var totalHeight: CGFloat = 0
-        
         for room in rooms {
             let cellHeight = calculateRoomCellHeight(for: room)
             totalHeight += cellHeight
@@ -662,7 +651,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         let contentHeight = rateAndReviewsTableview.contentSize.height
         rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 50
     }
-
+    
     func updateRateAndReviewsContainerHeight() {
         let labelHeight: CGFloat = 18
         let buttonHeight: CGFloat = 25
@@ -689,7 +678,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         ]
         
         var actions: [UIAction] = []
-        
         for (rating, title) in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
                 self?.selectratingButton.setTitle(title, for: .normal)
@@ -697,9 +685,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             })
             actions.append(action)
         }
-
-        let menu = UIMenu(title: "Select Rating", children: actions)
         
+        let menu = UIMenu(title: "Select Rating", children: actions)
         selectratingButton.showsMenuAsPrimaryAction = true
         selectratingButton.menu = menu
     }
@@ -708,7 +695,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         if !isRateAndReviewVisible {
             rateAndReviewsDownButtonAction(rateAndReviewsDownButton)
         }
-
+        
         let targetPoint = scrollView.convert(rateAndReviewsView.frame.origin, from: rateAndReviewsView.superview)
         let yOffset = max(targetPoint.y - 10, 0)
         
@@ -744,7 +731,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             pleseClickHereButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         }
     }
-
+    
 }
 
 extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {

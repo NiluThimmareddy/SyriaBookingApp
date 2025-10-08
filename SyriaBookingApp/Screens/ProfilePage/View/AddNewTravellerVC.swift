@@ -48,7 +48,6 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
     var otherGuestsEdit: Guest?
     var otherGuestsDelete: Guest?
     private var isChecked = false
-    let color = UIColor(named: "defaultColor")
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +131,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             genderButton.setAttributedTitle(gender, for: .normal)
             
             let add = NSAttributedString(
-                string: "Edit Traveller",
+                string: "Edit Guest",
                 attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
             )
             addNewTravellerButton.setAttributedTitle(add, for: .normal)
@@ -156,7 +155,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             genderButton.setAttributedTitle(gender, for: .normal)
             
             let add = NSAttributedString(
-                string: "Delete Traveller",
+                string: "Delete Guest",
                 attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
             )
             addNewTravellerButton.setAttributedTitle(add, for: .normal)
@@ -194,7 +193,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         genderButton.setAttributedTitle(gender, for: .normal)
         
         let add = NSAttributedString(
-            string: "Add New Traveller",
+            string: "Add New Guest",
             attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
         )
         addNewTravellerButton.setAttributedTitle(add, for: .normal)
@@ -273,7 +272,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
 
         case .edit:
             showConfirmationAlert(
-                title: "Edit Traveller",
+                title: "Edit Guest",
                 message: "Are you sure you want to update this traveller?",
                 actionTitle: "Edit"
             ) {
@@ -291,9 +290,9 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
     
     private func updateAddTravellerButtonColor() {
         if isChecked {
-            addNewTravellerButton.backgroundColor = color
+            addNewTravellerButton.backgroundColor = UIColor.label
         } else {
-            addNewTravellerButton.backgroundColor = UIColor(named: "bicolour.lightgray") ?? .lightGray
+            addNewTravellerButton.backgroundColor = UIColor(named: "bicolour.lightgray") ?? .label
         }
     }
     

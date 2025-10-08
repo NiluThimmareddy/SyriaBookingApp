@@ -685,7 +685,12 @@ extension HomeViewController {
             checkOutButton.setTitle("Check Out", for: .normal)
             searchButton.setTitle("Search", for: .normal)
             viewAllButton.setTitle("View All", for: .normal)
-            findDealButton.setTitle("Find early 2025 deals", for: .normal)
+            let title = "Find early 2025 deals"
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
+            ]
+            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+            findDealButton.setAttributedTitle(attributedTitle, for: .normal)
         } else {
             dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
             newYearTitleLabel.text = "عام جديد، مغامرات جديدة"

@@ -9,8 +9,8 @@ import UIKit
 
 protocol PersonalDetailsEditVCDelegate: AnyObject {
     func didUpdateName(firstName: String, lastName: String)
-    func didUpdateGender(_ gender: String)
-    func didUpdateDOB(_ dob: String)
+//    func didUpdateGender(_ gender: String)
+//    func didUpdateDOB(_ dob: String)
     func didUpdateEmail(_ email: String)
     func didUpdatePhoneNumber(_ phoneNumber: String, countryCode: String)
     func didUpdateAddress(street: String, city: String, postCode: String, country: String)
@@ -345,6 +345,7 @@ class PersonalDetailsEditVC: UIViewController {
                     self.phoneNumberFlageImage.image = image
                 }
             } else {
+                
                 DispatchQueue.main.async {
                     print("❌ Failed to load image from \(urlString)")
                     self.selectedCountryImage.image = UIImage(systemName: "photo")
@@ -540,7 +541,7 @@ class PersonalDetailsEditVC: UIViewController {
     }
     
     @IBAction func genderSaveButton(_ sender: Any) {
-        delegate?.didUpdateGender(selectedGender)
+//        delegate?.didUpdateGender(selectedGender)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let transition = CATransition()
             transition.duration = 0.3
@@ -554,7 +555,7 @@ class PersonalDetailsEditVC: UIViewController {
     }
     
     @IBAction func dobSaveButton(_ sender: Any) {
-        delegate?.didUpdateDOB(dobFormattedString)
+//        delegate?.didUpdateDOB(dobFormattedString)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let transition = CATransition()
             transition.duration = 0.3
