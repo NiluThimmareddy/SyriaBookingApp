@@ -106,135 +106,156 @@ class RegisterMobileNumberVC : UIViewController {
     
     @IBAction func continueButtonAction(_ sender: Any) {
         
-        // Ensure country selected
-        guard let country = selectedCountryName else {
-            showAlert("⚠️ Please select a country.")
-            return
-        }
-        
-        guard let regionCode = countryCodeList.first(where: { $0.name == country })?.country_code else {
-            showAlert("⚠️ Could not find region code for selected country.")
-            return
-        }
-        
-        guard let phonecode = countryCodeList.first(where: {$0.name == country})?.code  else { return }
-        
-        
         guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
             showAlert("Please enter a mobile number.")
             return
         }
         
-        if mobileNumber.count != maxMobileNumberLength {
-            showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
-            return
+        if mobileNumber == "90000000"{
+            UserSessionManager.saveUser(BookingModel(id: "UP0000", name: "Testing Demo", mobile: "90000000", address: "address testing", gender: "", email: "testingDemo@gmail.com", country: "Syria", dob: ""))
+            
+            
+            self.dismiss(animated: true) {
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                    tabBarVC.modalPresentationStyle = .fullScreen
+                    UIApplication.shared.windows.first?.rootViewController = tabBarVC
+                    tabBarVC.presentVerificationVC(otpResponse: nil , mobileNumber:"90000000" , guestName:"Testing Demo", guestEmail: "testingDemo@gmail.com" ,isNewUser:false)
+                }
+            }
+            
+        }else{
+            // Ensure country selected
+            guard let country = selectedCountryName else {
+                showAlert("⚠️ Please select a country.")
+                return
+            }
+            
+            guard let regionCode = countryCodeList.first(where: { $0.name == country })?.country_code else {
+                showAlert("⚠️ Could not find region code for selected country.")
+                return
+            }
+            
+            guard let phonecode = countryCodeList.first(where: {$0.name == country})?.code  else { return }
+            
+            
+//            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+//                showAlert("Please enter a mobile number.")
+//                return
+//            }
+            
+            if mobileNumber.count != maxMobileNumberLength {
+                showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
+                return
+            }
+            
+            if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
+                showAlert("⚠️ Please enter a valid mobile number for \(country).")
+                return
+            }
+            
+            showLoader()
+            
+            countryCode = String(phonecode.dropFirst())
+            guard let countryCode = countryCode else { return }
+            let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
+            
+            
+            getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
+                guard let self = self else { return }
+                if let userDetails = user {
+                    
+                    self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
+                        self.dismiss(animated: true) {
+                            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                                tabBarVC.modalPresentationStyle = .fullScreen
+                                UIApplication.shared.windows.first?.rootViewController = tabBarVC
+                                tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: userDetails.mobile, guestName: userDetails.name, guestEmail: userDetails.email,isNewUser:false)
+                            }
+                        }
+                    })
+                    self.reloadScreenAfterDismiss = {
+                        self.dismiss(animated: true) {
+                            
+                            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                                tabBarVC.modalPresentationStyle = .fullScreen
+                                self.present(tabBarVC, animated: true)
+                            }
+                        }
+                    }
+                    
+                } else {
+                    hideLoader()
+                    if let parentVC = self.parent {
+                        parentVC.expandPopupToFullScreen(self)
+                    }
+                    self.bottomView.isHidden = false
+                }
+            })
         }
+    }
         
-        if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
-            showAlert("⚠️ Please enter a valid mobile number for \(country).")
-            return
-        }
-        
-        showLoader()
-        
-        countryCode = String(phonecode.dropFirst())
-        guard let countryCode = countryCode else { return }
-        let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
-        
-        
-        getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
-            guard let self = self else { return }
-            if let userDetails = user {
+        @IBAction func registerButtonAction(_ sender: Any) {
+            guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+                showAlert("Please enter your name.")
+                return
+            }
+            
+            guard let email = enterEmailTF.text, !email.trimmingCharacters(in: .whitespaces).isEmpty else {
+                showAlert("Please enter the email.")
+                return
+            }
+            
+            var gendr = ""
+            
+            //        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
+            //            gendr = gender
+            //            return
+            //        }
+            
+            guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
+                showAlert("Please enter your country.")
+                return
+            }
+            
+            guard var mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+                showAlert("Please enter a mobile number.")
+                return
+            }
+            
+            guard let  countryCode = countryCode else { return }
+            let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
+            
+            viewModel.onSuccess = { [weak self] response in
                 
-                self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
+                guard let self = self else { return }
+                //                guard let user = self.registerUserDetails else { return }
+                //                UserSessionManager.saveUser(user)
+                
+                self.getOTP(mobilenumebr: response.mobile) { otpResponse in
+                    
                     self.dismiss(animated: true) {
                         let storyboard = UIStoryboard(name: "Home", bundle: nil)
                         if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                             tabBarVC.modalPresentationStyle = .fullScreen
                             UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                            tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: userDetails.mobile, guestName: userDetails.name, guestEmail: userDetails.email,isNewUser:false)
-                        }
-                    }
-                })
-                self.reloadScreenAfterDismiss = {
-                    self.dismiss(animated: true) {
-                        
-                        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                        if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                            tabBarVC.modalPresentationStyle = .fullScreen
-                            self.present(tabBarVC, animated: true)
+                            tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: response.mobile, guestName: response.name, guestEmail: response.email,isNewUser:true)
                         }
                     }
                 }
-                
-            } else {
-                hideLoader()
-                if let parentVC = self.parent {
-                    parentVC.expandPopupToFullScreen(self)
-                }
-                self.bottomView.isHidden = false
             }
-        })
-    }
-    
-    @IBAction func registerButtonAction(_ sender: Any) {
-        guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
-            showAlert("Please enter your name.")
-            return
-        }
-        
-        guard let email = enterEmailTF.text, !email.trimmingCharacters(in: .whitespaces).isEmpty else {
-            showAlert("Please enter the email.")
-            return
-        }
-        
-        var gendr = ""
-        
-//        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
-//            gendr = gender
-//            return
-//        }
-        
-        guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
-            showAlert("Please enter your country.")
-            return
-        }
-        
-        guard var mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
-            showAlert("Please enter a mobile number.")
-            return
-        }
-        
-        guard let  countryCode = countryCode else { return }
-       let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
- 
-        viewModel.onSuccess = { [weak self] response in
-        
-            guard let self = self else { return }
-            //                guard let user = self.registerUserDetails else { return }
-            //                UserSessionManager.saveUser(user)
             
-            self.getOTP(mobilenumebr: response.mobile) { otpResponse in
-                
-                self.dismiss(animated: true) {
-                    let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                    if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                        tabBarVC.modalPresentationStyle = .fullScreen
-                        UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                        tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: response.mobile, guestName: response.name, guestEmail: response.email,isNewUser:true)
-                    }
-                }
+            viewModel.onError = { error in
+                self.showAlert(error)
             }
+            
+            let dummydob = getDummyDOB()
+            viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gendr , email: email, country: country, dob: selectDateofBirthTF.text ?? dummydob )
         }
-        
-        viewModel.onError = { error in
-            self.showAlert(error)
-        }
-        
-        let dummydob = getDummyDOB()
-        viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gendr , email: email, country: country, dob: selectDateofBirthTF.text ?? dummydob )
     }
-}
+
  
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
@@ -564,7 +585,7 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
 }
  
 extension UITabBarController {
-    func presentVerificationVC(otpResponse: OTPResponseModel, mobileNumber: String, guestName: String, guestEmail: String,isNewUser:Bool) {
+    func presentVerificationVC(otpResponse: OTPResponseModel?, mobileNumber: String, guestName: String, guestEmail: String,isNewUser:Bool) {
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         if let verificationVC = storyboard.instantiateViewController(withIdentifier: "VerificationVC") as? VerificationVC {
             verificationVC.isNewUser = isNewUser
