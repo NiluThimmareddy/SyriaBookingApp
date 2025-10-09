@@ -158,14 +158,14 @@ extension UIViewController {
             
             if isArabic {
                 if isLoggedIn {
-                    controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا","الإبلاغ عن التطبيق","الملف الشخصي","تسجيل الخروج"]
+                    controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا","الإبلاغ عن التطبيق","الملف الشخصي","تسجيل الخروج","ديليت أن أكاونت"]
                 } else {
                     controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا",
                         "الإبلاغ عن التطبيق"]
                 }
             } else {
                 if isLoggedIn {
-                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App","Profile","Logout"]
+                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App","Profile","Logout","Delete Account"]
                 } else {
                     controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App"]
                 }

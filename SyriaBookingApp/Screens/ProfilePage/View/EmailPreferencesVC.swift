@@ -1,14 +1,10 @@
-//
 //  EmailPreferencesVC.swift
 //  HotelBooking
-//
 //  Created by praveenkumar on 03/07/25.
-//
 
 import UIKit
-
 class EmailPreferencesVC: UIViewController {
-
+    
     @IBOutlet weak var lottieView: UIView!
     @IBOutlet weak var emailPreferenceButton: UIButton!
     @IBOutlet weak var youLlStillContent: UILabel!
@@ -24,6 +20,7 @@ class EmailPreferencesVC: UIViewController {
         SecurityData(securityTitle: "Special Offer & Promotions", securityContent: "Get exclusive deals, discounts and limited-time offers tailored to your interests."),
         SecurityData(securityTitle: "Account updates & Security Alerts", securityContent: "Important notification about your account security and policy changes.")
     ]
+    
     let topNameLbl: UILabel = {
        let label = UILabel()
        label.textColor = .white

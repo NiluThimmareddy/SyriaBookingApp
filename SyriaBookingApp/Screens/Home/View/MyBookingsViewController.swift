@@ -297,7 +297,9 @@ extension MyBookingsViewController {
 
         myBookigsTitleLabel.text = isArabic ? "حجوزاتي" : "My Bookings"
         myBookingsDescriptionLabel.text = isArabic ? "راجع إقاماتك القادمة والحجوزات المؤرشفة" : "Review your upcoming stays and archived bookings"
-        noBookingsLabel.text = isArabic ? "لم يتم العثور على حجوزات قادمة" : "No Upcoming Bookings Found"
+        
+        noBookingsLabel.text = isArabic ? "لا توجد حجوزات" : "No Bookings Found"
+
         messageLabel.text = isArabic ? "يرجى تسجيل الدخول لعرض سجل الحجوزات الخاصة بك" : "Please Login to view your booking history"
 
         segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming", forSegmentAt: 0)
