@@ -440,10 +440,10 @@ extension HomeViewController {
     
     func reloadDataOnHomeScreen(){
         print("HomeAge reloading")
-       setupAppNavigationBar()
-       
-//        self.sliderCollectionView.reloadData()
+        setupAppNavigationBar()
+        self.sliderCollectionView.reloadData()
     }
+    
     func setupUI() {
         searchView.isHidden = true
         searchView.applyCardStyle()

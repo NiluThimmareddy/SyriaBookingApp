@@ -79,6 +79,8 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     }
 
     @IBAction func rightArrowButtonAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
+        self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
     @IBAction func languagesButtonAction(_ sender: Any) {

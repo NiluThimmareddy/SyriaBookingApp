@@ -1,6 +1,7 @@
 //  Constant.swift
 //  SyriaBookingApp
 //  Created by ToqSoft on 25/07/25.
+
 import Foundation
 
 enum APIURL{
@@ -15,6 +16,7 @@ enum APIURL{
     case postBooking
     case notification
     case notificationCount
+    case updateProfile(userId: String)
     
     var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
@@ -44,6 +46,8 @@ enum APIURL{
             return URL(string: baseURL + "BookingPublic/Notifications-by-user/")
         case . notificationCount:
             return URL(string: baseURL + "BookingPublic/Notifications-count-by-user/")
+        case .updateProfile(let userId):
+            return URL(string: baseURL + "UserPublic/\(userId)")
         }
     }
 }

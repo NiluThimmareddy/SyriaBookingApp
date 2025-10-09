@@ -38,9 +38,7 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user = UserSessionManager.getUser() {
-            personalData = user
-        }
+        
         fontText()
         imageBackView.layer.cornerRadius = imageBackView.frame.size.height / 2
         profileImage.layer.cornerRadius = profileImage.frame.size.height / 2
@@ -51,6 +49,15 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
         infoTableBackView.layer.cornerRadius = 10
         contactTableBackView.layer.cornerRadius = 10
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let user = UserSessionManager.getUser() {
+            personalData = user
+            infoTableView.reloadData()
+            contactTableView.reloadData()
+        }
     }
     
     func fontText(){
@@ -151,7 +158,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == infoTableView{
+        if tableView == infoTableView {
             if indexPath.row == 0{
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
@@ -245,8 +252,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
 extension PersonalDetailsViewController: PersonalDetailsEditVCDelegate {
     func didUpdateName(firstName: String, lastName: String) {
-        personalData?.name = firstName
-       // personalData[0].lastName = lastName
+//        personalData?.name = "\(firstName) \(lastName)" 
         infoTableView.reloadData()
     }
 

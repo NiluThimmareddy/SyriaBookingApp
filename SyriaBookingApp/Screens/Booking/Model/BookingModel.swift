@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct BookingResponse : Codable{
     let message: String
     let data: BookingModel

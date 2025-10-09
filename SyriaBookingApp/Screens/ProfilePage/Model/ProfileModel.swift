@@ -107,3 +107,9 @@ struct PersonalDetails {
     var country: String
     var address: Address
 }
+
+struct ProfileResponse : Codable{
+    let message: String
+    let data: BookingModel
+}
+

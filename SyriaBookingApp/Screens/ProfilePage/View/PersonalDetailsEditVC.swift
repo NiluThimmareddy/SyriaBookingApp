@@ -14,6 +14,7 @@ protocol PersonalDetailsEditVCDelegate: AnyObject {
     func didUpdateEmail(_ email: String)
     func didUpdatePhoneNumber(_ phoneNumber: String, countryCode: String)
     func didUpdateAddress(street: String, city: String, postCode: String, country: String)
+    
 }
 
 
@@ -71,14 +72,17 @@ class PersonalDetailsEditVC: UIViewController {
     @IBOutlet weak var firstNameTF: UITextField!
     @IBOutlet weak var nameTitle: UILabel!
     
+    let viewModel = ProfileViewModel()
+
     let CountryNameViewModel = CountryCodeDataSourceViewModel()
     weak var delegate: PersonalDetailsEditVCDelegate?
     var selectedExpectationIndex: Int? = nil
     var selectedOption: ProfileOptions = .name
     let countryViewModel = CountryListViewModel()
     var personalData: BookingModel?
-    var genderData = ["Male","Female","Others","Prefer not to say"]
+    var genderData = ["Male","Female","Others"]
     var color = UIColor(named: "defaultColor")
+    
     var selectedGender: String {
         guard let index = selectedExpectationIndex, index >= 0, index < genderData.count else {
             return ""
@@ -455,6 +459,18 @@ class PersonalDetailsEditVC: UIViewController {
         dobBackView.layer.cornerRadius = 10
         dobBackView.clipsToBounds = true
     }
+    
+    func dismissWithAnimation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let transition = CATransition()
+            transition.duration = 0.3
+            transition.type = .push
+            transition.subtype = .fromLeft
+            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            self.view.window?.layer.add(transition, forKey: kCATransition)
+            self.dismiss(animated: false)
+        }
+    }
 
     @IBAction func closeButton(_ sender: Any) {
         let transition = CATransition()
@@ -468,35 +484,93 @@ class PersonalDetailsEditVC: UIViewController {
     }
     
     @IBAction func emailSaveButton(_ sender: Any) {
-        guard let email = emailTF.text, !email.isEmpty else {
+        guard let email = emailTF.text, !email.isEmpty else { return }
+        guard let userId = personalData?.id else { return }
+        
+        let updatedProfile = BookingModel (
+            id: userId,
+            name: personalData?.name ?? "",
+            mobile: personalData?.mobile ?? "",
+            address: personalData?.address ?? "",
+            gender: personalData?.gender ?? "",
+            email: email,
+            country: personalData?.country ?? "",
+            dob: personalData?.dob ?? ""
+        )
+        
+        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+        
+        viewModel.onProfileUpdated = { success, message, profile in
+            if success {
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Success",
+                        message: "Your Email has been Updated successfully.",
+                        type: .success,
+                        onOK: {
+                            guard let profile = profile else {
+                                return
+                            }
+                            UserSessionManager.saveUser(profile)
+                            self.dismissWithAnimation()
+                        }
+                    )
+                }
+            } else {
+                self.showAlert(
+                    title: "Fail",
+                    message: message ?? "Somthing went wrong",
+                    type: .error,
+                    onOK: {}
+                )
+            }
             
-            return
-        }
-        delegate?.didUpdateEmail(email)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            
-            self.view.window?.layer.add(transition, forKey: kCATransition)
-            self.dismiss(animated: false)
         }
     }
     
     @IBAction func saveButton(_ sender: Any) {
-        delegate?.didUpdateName(firstName: firstNameTF.text ?? "", lastName: lastName.text ?? "")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        let firstName = firstNameTF.text ?? ""
+        let lastName = lastName.text ?? ""
+        guard let userId = personalData?.id else { return }
+
+        let updatedProfile = BookingModel(
+            id: userId,
+            name: "\(firstName) \(lastName)",
+            mobile: personalData?.mobile ?? "",
+            address: personalData?.address ?? "",
+            gender: personalData?.gender ?? "",
+            email: personalData?.email ?? "",
+            country: personalData?.country ?? "",
+            dob: personalData?.dob ?? ""
+        )
+
+        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+
+        viewModel.onProfileUpdated = { success, message, profile in
+            if success {
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Success",
+                        message: "Your Name has been Updated successfully.",
+                        type: .success,
+                        onOK: {
+                            guard let profile = profile else {
+                                return
+                            }
+                            UserSessionManager.saveUser(profile)
+                            self.dismissWithAnimation()
+                        }
+                    )
+                }
+            } else {
+                self.showAlert(
+                    title: "Fail",
+                    message: message ?? "Somthing went wrong",
+                    type: .error,
+                    onOK: {}
+                )
+            }
             
-            self.view.window?.layer.add(transition, forKey: kCATransition)
-            self.dismiss(animated: false)
         }
     }
     
@@ -505,16 +579,47 @@ class PersonalDetailsEditVC: UIViewController {
     }
     
     @IBAction func addressSaveButton(_ sender: Any) {
-        delegate?.didUpdateAddress(street: adressTF.text ?? "", city: townTF.text ?? "", postCode: postCodeTF.text ?? "", country: selectedCountryNameLbl.text ?? "")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        let address = adressTF.text ?? ""
+        guard let userId = personalData?.id else { return }
+
+        let updatedProfile = BookingModel(
+            id: userId,
+            name: personalData?.name ?? "",
+            mobile: personalData?.mobile ?? "",
+            address: address,
+            gender: personalData?.gender ?? "",
+            email: personalData?.email ?? "",
+            country: personalData?.country ?? "",
+            dob: personalData?.dob ?? ""
+        )
+
+        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+
+        viewModel.onProfileUpdated = { success, message, profile in
+            if success {
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Success",
+                        message: "Your Address has been Updated successfully.",
+                        type: .success,
+                        onOK: {
+                            guard let profile = profile else {
+                                return
+                            }
+                            UserSessionManager.saveUser(profile)
+                            self.dismissWithAnimation()
+                        }
+                    )
+                }
+            } else {
+                self.showAlert(
+                    title: "Fail",
+                    message: message ?? "Somthing went wrong",
+                    type: .error,
+                    onOK: {}
+                )
+            }
             
-            self.view.window?.layer.add(transition, forKey: kCATransition)
-            self.dismiss(animated: false)
         }
     }
     
@@ -523,22 +628,50 @@ class PersonalDetailsEditVC: UIViewController {
     }
     
     @IBAction func phoneNumberSaveButton(_ sender: Any) {
-        validatePhoneNumber()
-        
-        if phoneNumberErrorMessage.isHidden {
-            delegate?.didUpdatePhoneNumber(phoneNumberTypeTF.text ?? "", countryCode: phoneNumberCountryCodeLbl.text ?? "")
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        guard let phone = phoneNumberTypeTF.text, !phone.isEmpty else { return }
+        guard let userId = personalData?.id else { return }
+
+        let updatedProfile = BookingModel(
+            id: userId,
+            name: personalData?.name ?? "",
+            mobile: phone,
+            address: personalData?.address ?? "",
+            gender: personalData?.gender ?? "",
+            email: personalData?.email ?? "",
+            country: personalData?.country ?? "",
+            dob: personalData?.dob ?? ""
+        )
+
+        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+
+        viewModel.onProfileUpdated = { success, message, profile in
+            if success {
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Success",
+                        message: "Your Mobile Number has been Updated successfully.",
+                        type: .success,
+                        onOK: {
+                            guard let profile = profile else {
+                                return
+                            }
+                            UserSessionManager.saveUser(profile)
+                            self.dismissWithAnimation()
+                        }
+                    )
+                }
+            } else {
+                self.showAlert(
+                    title: "Fail",
+                    message: message ?? "Somthing went wrong",
+                    type: .error,
+                    onOK: {}
+                )
+            }
             
-            self.view.window?.layer.add(transition, forKey: kCATransition)
-            self.dismiss(animated: false)
         }
     }
+
     
     @IBAction func genderSaveButton(_ sender: Any) {
 //        delegate?.didUpdateGender(selectedGender)
