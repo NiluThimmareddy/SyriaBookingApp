@@ -59,6 +59,7 @@ class CancelBookingVC: UIViewController {
     @IBAction func confirmCancelButtonAction(_ sender: Any) {
 
         guard let booking = booking else { return }
+        showLoader()
         delegate?.didConfirmCancellation(for: booking, reason: reasonTextView.text ?? "")
        
     }

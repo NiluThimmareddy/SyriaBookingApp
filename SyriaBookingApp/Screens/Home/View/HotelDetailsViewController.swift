@@ -81,6 +81,12 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
         setUpUI()
         roomsAvailabilityCollectionView.reloadData()
         setupAppNavigationBar()
+        
+        if let hotelId = selectedHotel?.id,
+               let updatedHotel = HotelDataMaganer.shared.allHotels.first(where: { $0.id == hotelId }) {
+                self.selectedHotel = updatedHotel
+                rateAndReviewsTableview.reloadData()
+            }
     }
     
     override func viewDidLayoutSubviews() {
@@ -137,13 +143,6 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
     }
     
     @IBAction func addReviewImgButtonAction(_ sender: Any) {
-        //        isAddReviewVisible.toggle()
-        //
-        //        addReviewViewHeightConstraint.constant = isAddReviewVisible ? 450 : 40
-        //
-        //        UIView.animate(withDuration: 0.3) {
-        //            self.view.layoutIfNeeded()
-        //        }
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
@@ -175,9 +174,13 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
                 self.hotelviewModel.onSuccess = {[weak self] response in
                     self?.selectedHotel?.reviews.insert(response, at: 0)
                     //here main hotelviewmodel hotel variable i want to add review means i whole application i want to add this review where review is using
-                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: {$0.id == selectedHotel.id}){
-                        HotelDataMaganer.shared.allHotels[index].reviews.insert(response, at: 0)
+                    
+                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: { $0.id == selectedHotel.id }) {
+                        var updatedHotel = HotelDataMaganer.shared.allHotels[index]
+                        updatedHotel.reviews.insert(response, at: 0)
+                        HotelDataMaganer.shared.allHotels[index] = updatedHotel
                     }
+                    
                     DispatchQueue.main.async {
                         self?.rateAndReviewsTableview.reloadData()
                     }

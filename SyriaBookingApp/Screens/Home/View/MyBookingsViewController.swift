@@ -14,7 +14,7 @@ class MyBookingsViewController: UIViewController {
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var myBookigsTitleLabel: UILabel!
-    @IBOutlet weak var myBookingsDescriptionLabel: UILabel!    
+    @IBOutlet weak var myBookingsDescriptionLabel: UILabel!
     @IBOutlet weak var noBookingsLabel: UILabel!
     
     let viewModel = NotificationViewModel()
@@ -35,21 +35,62 @@ class MyBookingsViewController: UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-//    var selectedRate = [Rate]()
+    //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       setupUI()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupUI()
+        
         setupAppNavigationBar()
         setupLanguage()
+        
+        // Reset to "Upcoming" tab every time user visits MyBookings
         segmentControl.selectedSegmentIndex = 0
+        
+        // Refresh UI + fetch bookings
+        refreshBookingData()
     }
+
+    private func refreshBookingData() {
+        // Optional: prevent duplicate calls
+        guard presentedViewController == nil else { return }
+
+        if let user = UserSessionManager.getUser() {
+            showLoader()
+            
+            viewModel.onSuccess = { [weak self] _ in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    self.configureSelectedSegment {
+                        self.HistoryTableView.reloadData()
+                    }
+                }
+            }
+            
+            viewModel.onError = { [weak self] error in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    self.showAlert(error)
+                }
+            }
+            
+            // Re-fetch booking list
+            viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+            
+        } else {
+            // User not logged in — show login popup
+            setupUI()
+        }
+    }
+
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
@@ -60,23 +101,23 @@ class MyBookingsViewController: UIViewController {
     }
     
     func configureSelectedSegment(completion: @escaping ()->Void){
-       if selectedSegmentIndex == 0 {
-           // UPCOMING: today or future dates
-           viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
-               if let date = data.checkInUtc.toDate() {
-                   return date >= Calendar.current.startOfDay(for: Date()) // today & future
-               }
-               return false
-           }
-       } else {
-           // PAST: before today
-           viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
-               if let date = data.checkInUtc.toDate() {
-                   return date < Calendar.current.startOfDay(for: Date()) // strictly past
-               }
-               return false
-           }
-       }
+        if selectedSegmentIndex == 0 {
+            // UPCOMING: today or future dates
+            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+                if let date = data.checkInUtc.toDate() {
+                    return date >= Calendar.current.startOfDay(for: Date()) // today & future
+                }
+                return false
+            }
+        } else {
+            // PAST: before today
+            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+                if let date = data.checkInUtc.toDate() {
+                    return date < Calendar.current.startOfDay(for: Date()) // strictly past
+                }
+                return false
+            }
+        }
         if viewModel.filteredHistoryArray.isEmpty {
             noBookingsLabel.isHidden = false
             noBookingsLabel.applyCardStyle()
@@ -85,7 +126,7 @@ class MyBookingsViewController: UIViewController {
             noBookingsLabel.isHidden = true
             HistoryTableView.isHidden = false
         }
-       completion()
+        completion()
         
     }
 }
@@ -145,7 +186,7 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
 extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     func setupUI() {
         navigationController?.setNavigationBarBlack()
-
+        
         if let  user = UserSessionManager.getUser() {
             self.showLoader()
             viewModel.onSuccess = { response in
@@ -164,7 +205,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                     self.showAlert(error)
                 }
             }
-
+            
             viewModel.fetchNotificationUser(userId: user.id,includePast: true)
             
             messageLabel.isHidden = true
@@ -225,20 +266,20 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
 
 extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate {
     
-    
     func didTapDetails(for booking: BookingHistoryModel) {
-        guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
+        guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil)
+            .instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
         }
-        viewBookingConfirmationVC.isFromMyBookings = true
         
+        viewBookingConfirmationVC.isFromMyBookings = true
         viewBookingConfirmationVC.hotelID = booking.hotelId
         viewBookingConfirmationVC.bookingId = booking.id
         viewBookingConfirmationVC.roomType = booking.roomType
         viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
         present(viewBookingConfirmationVC, animated: true)
     }
-
+    
     func didTapCancel(for booking: BookingHistoryModel) {
         if let cancelVC = storyboard?.instantiateViewController(withIdentifier: "CancelBookingVC") as? CancelBookingVC {
             cancelVC.modalPresentationStyle = .overFullScreen
@@ -251,32 +292,62 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     
     func didConfirmCancellation(for booking: BookingHistoryModel, reason: String) {
         guard let user = UserSessionManager.getUser() else { return }
-        bookingViewModel.onError = { error in
-            self.hideLoader()
-            self.showAlert(error)
+        
+        bookingViewModel.onError = { [weak self] error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.showAlert(error)
+            }
         }
         
         showLoader()
         
-        bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { data in
-            guard let data = data else {
+        bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { [weak self] data in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
                 self.hideLoader()
-                return
-            }
-            
-            self.showAlert(title: "Success", message: data.message, onCancel: {
-                self.hideLoader()
-                if let index = self.viewModel.filteredHistoryArray.firstIndex(where: { $0.id == data.data.id }) {
-                    self.viewModel.filteredHistoryArray[index].status = "cancelled"
-                    self.HistoryTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-                }
                 
-                self.presentedViewController?.dismiss(animated: true, completion: nil)
-            })
+                guard let data = data else { return }
+                
+                // Dismiss cancel popup before showing success alert
+                self.presentedViewController?.dismiss(animated: true) {
+                    self.showAlert(title: "Success", message: data.message, onOK: {
+                        self.fetchUpdatedBookings()
+                    })
+                }
+            }
         }
     }
-
+    
+    private func fetchUpdatedBookings() {
+        guard let user = UserSessionManager.getUser() else { return }
+        
+        showLoader()
+        
+        viewModel.onSuccess = { [weak self] _ in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.configureSelectedSegment {
+                    self.HistoryTableView.reloadData()
+                }
+            }
+        }
+        
+        viewModel.onError = { [weak self] error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.hideLoader()
+                self.showAlert(error)
+            }
+        }
+        
+        // Re-fetch bookings (both upcoming & past)
+        viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+    }
 }
+
 
 extension String {
     func toDate() -> Date? {
@@ -285,7 +356,7 @@ extension String {
         if let date = formatter.date(from: self) {
             return date
         }
-
+        
         // Try with fractional seconds as a fallback
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter.date(from: self)
@@ -294,17 +365,17 @@ extension String {
 extension MyBookingsViewController {
     func setupLanguage() {
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
-
+        
         myBookigsTitleLabel.text = isArabic ? "حجوزاتي" : "My Bookings"
         myBookingsDescriptionLabel.text = isArabic ? "راجع إقاماتك القادمة والحجوزات المؤرشفة" : "Review your upcoming stays and archived bookings"
         
         noBookingsLabel.text = isArabic ? "لا توجد حجوزات" : "No Bookings Found"
-
+        
         messageLabel.text = isArabic ? "يرجى تسجيل الدخول لعرض سجل الحجوزات الخاصة بك" : "Please Login to view your booking history"
-
+        
         segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming", forSegmentAt: 0)
         segmentControl.setTitle(isArabic ? "الأرشيف" : "Archive", forSegmentAt: 1)
-
+        
         myBookigsTitleLabel.textAlignment = isArabic ? .center : .center
         myBookingsDescriptionLabel.textAlignment = isArabic ? .center : .center
         noBookingsLabel.textAlignment = isArabic ? .center : .center
