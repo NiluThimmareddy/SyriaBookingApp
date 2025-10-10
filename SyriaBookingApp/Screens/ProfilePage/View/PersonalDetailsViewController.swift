@@ -22,6 +22,7 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     @IBOutlet weak var imageBackView: UIView!
     @IBOutlet weak var bottomView: UIView!
     
+   
     let topNameLbl: UILabel = {
        let label = UILabel()
        label.textColor = .white
@@ -48,7 +49,6 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
         infoTableView.register(UINib(nibName: "InfoAndContactTVC", bundle: nil), forCellReuseIdentifier: "InfoAndContactTVC")
         infoTableBackView.layer.cornerRadius = 10
         contactTableBackView.layer.cornerRadius = 10
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +57,16 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
             personalData = user
             infoTableView.reloadData()
             contactTableView.reloadData()
+        }
+        
+       
+    }
+    
+    func updatePersonalData() {
+        if let user = UserSessionManager.getUser() {
+            self.personalData = user
+            self.infoTableView.reloadData()
+            self.contactTableView.reloadData()
         }
     }
     
@@ -165,6 +175,9 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
                 let data = personalData
                 controller.personalData = data
+                controller.updatePersonalData = { [weak self] in
+                    self?.updatePersonalData()
+                }
                 controller.selectedOption = .name
                 controller.delegate = self
                 let transition = CATransition()
@@ -183,6 +196,9 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 controller.personalData = data
                 controller.selectedOption = .gender
                 controller.delegate = self
+                controller.updatePersonalData = { [weak self] in
+                    self?.updatePersonalData()
+                }
                 present(controller, animated: false)
             }else if indexPath.row == 2{
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
@@ -191,6 +207,9 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 controller.personalData = data
                 controller.selectedOption = .dob
                 controller.delegate = self
+                controller.updatePersonalData = { [weak self] in
+                    self?.updatePersonalData()
+                }
                 present(controller, animated: false)
             }
         }else if tableView == contactTableView{
@@ -202,6 +221,9 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 controller.personalData = data
                 controller.selectedOption = .email
                 controller.delegate = self
+                controller.updatePersonalData = { [weak self] in
+                    self?.updatePersonalData()
+                }
                 let transition = CATransition()
                 transition.duration = 0.3
                 transition.type = .push

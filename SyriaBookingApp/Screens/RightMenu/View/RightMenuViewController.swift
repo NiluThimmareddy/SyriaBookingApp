@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class RightMenuViewController: UIViewController {
     
@@ -20,6 +21,7 @@ class RightMenuViewController: UIViewController {
     var contentSize: CGSize?
     var popoverdirection: UIPopoverArrowDirection = .any
     
+    var profileViewModle = ProfileViewModel()
    
     
     override func viewDidLoad() {
@@ -87,9 +89,11 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
                 UserSessionManager.clearUser()
                 self.dismiss(animated: true){
-                   
+                    self.goToHomeTab()
                 }
             })
+        case 7:
+            self.showDeleteAccountOptions()
         default :
             break
         }
@@ -120,3 +124,112 @@ extension RightMenuViewController: UIPopoverPresentationControllerDelegate {
         return true
     }
 }
+
+extension RightMenuViewController{
+    func showDeleteAccountOptions() {
+        let alert = UIAlertController(
+            title: "Delete Account",
+            message: "Choose an option to delete your account.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { _ in
+            self.confirmPermanentDeletion()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Request to Delete Account", style: .default, handler: { _ in
+            self.openGoogleSheetForDeletion()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
+    }
+
+    
+    private func confirmPermanentDeletion() {
+        let confirmAlert = UIAlertController(
+            title: "Are you sure?",
+            message: "This will permanently delete your account and all related data.",
+            preferredStyle: .alert
+        )
+        
+        confirmAlert.addAction(UIAlertAction(title: "Yes, Delete", style: .destructive, handler: { _ in
+            self.callDeleteAccountAPI()
+        }))
+        
+        confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(confirmAlert, animated: true)
+    }
+    
+    private func callDeleteAccountAPI() {
+       
+        if let user = UserSessionManager.getUser() {
+            let usermobile = "\(user.mobile)-Block"
+            let useremail = "\(user.email)-Block"
+            
+            let deleteUser = BookingModel(id: user.id, name: user.name, mobile: usermobile, address: user.address, gender: user.gender, email: useremail, country: user.country, dob: user.dob)
+            
+            if user.mobile == "90000000" {
+                self.showAlert(
+                    title: "Success",
+                    message: "Your account has been deleted successfully.",
+                    type: .success,
+                    onOK: {
+                        UserSessionManager.clearUser()
+                        self.goToHomeTab()
+                    }
+                )
+            }else{
+                profileViewModle.updateProfile(userId: user.id, profile: deleteUser)
+                
+                
+                profileViewModle.onProfileUpdated = { result, message, bookingModel in
+                    if result {
+                        //account deleted
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your  account has been deleted successfully.",
+                            type: .success,
+                            onOK: {
+                                UserSessionManager.clearUser()
+                                self.goToHomeTab()
+                            }
+                        )
+                    }else{
+                        self.showAlert(
+                            title: "Fail",
+                            message: "Somthing went wrong",
+                            type: .error,
+                            onOK: {}
+                        )
+                    }
+                }
+            }
+        }
+       
+    }
+
+    
+    private func openGoogleSheetForDeletion() {
+        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSdCgN1fhtcpoyD7yqhQIc3SKukItcUEWwWeLj-ytpH_VHn6mw/formResponse") else { return }
+        
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.delegate = self
+        safariVC.dismissButtonStyle = .close
+        present(safariVC, animated: true)
+    }
+
+
+}
+
+extension RightMenuViewController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true) {
+            self.goToHomeTab()
+        }
+    }
+    
+}
+

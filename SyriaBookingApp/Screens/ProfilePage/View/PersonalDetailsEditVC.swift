@@ -82,7 +82,7 @@ class PersonalDetailsEditVC: UIViewController {
     var personalData: BookingModel?
     var genderData = ["Male","Female","Others"]
     var color = UIColor(named: "defaultColor")
-    
+    var updatePersonalData : ( () -> Void)?
     var selectedGender: String {
         guard let index = selectedExpectationIndex, index >= 0, index < genderData.count else {
             return ""
@@ -469,7 +469,9 @@ class PersonalDetailsEditVC: UIViewController {
             transition.subtype = .fromLeft
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             self.view.window?.layer.add(transition, forKey: kCATransition)
-            self.dismiss(animated: false)
+            self.dismiss(animated: false) {
+               
+            }
         }
     }
 
@@ -488,6 +490,7 @@ class PersonalDetailsEditVC: UIViewController {
         guard let email = emailTF.text, !email.isEmpty else { return }
         guard let userId = personalData?.id else { return }
         
+        
         let updatedProfile = BookingModel (
             id: userId,
             name: personalData?.name ?? "",
@@ -499,31 +502,52 @@ class PersonalDetailsEditVC: UIViewController {
             dob: personalData?.dob ?? ""
         )
         
+        if personalData?.mobile == "90000000"{
+            DispatchQueue.main.async {
+                
+                self.showAlert(
+                    title: "Success",
+                    message: "Your profile email has been Updated successfully.",
+                    type: .success,
+                    onOK: {
+                       
+                        UserSessionManager.saveUser(updatedProfile)
+                        self.dismissWithAnimation()
+                        self.updatePersonalData?()
+                        
+                    }
+                )
+            }
+        }else{
+        
         viewModel.updateProfile(userId: userId, profile: updatedProfile)
         
-        viewModel.onProfileUpdated = { success, message, profile in
-            if success {
-                DispatchQueue.main.async {
-                    self.showAlert(
-                        title: "Success",
-                        message: "Your Email has been Updated successfully.",
-                        type: .success,
-                        onOK: {
-                            guard let profile = profile else {
-                                return
+            viewModel.onProfileUpdated = { success, message, profile in
+                if success {
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your Email has been Updated successfully.",
+                            type: .success,
+                            onOK: {
+                                guard let profile = profile else {
+                                    return
+                                }
+                                UserSessionManager.saveUser(profile)
+                                self.dismissWithAnimation()
+                                self.updatePersonalData?()
+                                
                             }
-                            UserSessionManager.saveUser(profile)
-                            self.dismissWithAnimation()
-                        }
+                        )
+                    }
+                } else {
+                    self.showAlert(
+                        title: "Fail",
+                        message: message ?? "Somthing went wrong",
+                        type: .error,
+                        onOK: {}
                     )
                 }
-            } else {
-                self.showAlert(
-                    title: "Fail",
-                    message: message ?? "Somthing went wrong",
-                    type: .error,
-                    onOK: {}
-                )
             }
         }
     }
@@ -543,34 +567,55 @@ class PersonalDetailsEditVC: UIViewController {
             country: personalData?.country ?? "",
             dob: personalData?.dob ?? ""
         )
-
-        viewModel.updateProfile(userId: userId, profile: updatedProfile)
-
-        viewModel.onProfileUpdated = { success, message, profile in
-            if success {
-                DispatchQueue.main.async {
-                    self.showAlert(
-                        title: "Success",
-                        message: "Your Name has been Updated successfully.",
-                        type: .success,
-                        onOK: {
-                            guard let profile = profile else {
-                                return
-                            }
-                            UserSessionManager.saveUser(profile)
-                            self.dismissWithAnimation()
-                        }
-                    )
-                }
-            } else {
+        
+        if personalData?.mobile == "90000000"{
+            DispatchQueue.main.async {
+                
                 self.showAlert(
-                    title: "Fail",
-                    message: message ?? "Somthing went wrong",
-                    type: .error,
-                    onOK: {}
+                    title: "Success",
+                    message: "Your name has been Updated successfully.",
+                    type: .success,
+                    onOK: {
+                       
+                        UserSessionManager.saveUser(updatedProfile)
+                        self.dismissWithAnimation()
+                        self.updatePersonalData?()
+                        
+                    }
                 )
             }
+        }else{
             
+            viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            
+            viewModel.onProfileUpdated = { success, message, profile in
+                if success {
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your name has been Updated successfully.",
+                            type: .success,
+                            onOK: {
+                                guard let profile = profile else {
+                                    return
+                                }
+                                UserSessionManager.saveUser(profile)
+                                self.dismissWithAnimation()
+                                self.updatePersonalData?()
+                                
+                            }
+                        )
+                    }
+                } else {
+                    self.showAlert(
+                        title: "Fail",
+                        message: message ?? "Somthing went wrong",
+                        type: .error,
+                        onOK: {}
+                    )
+                }
+                
+            }
         }
     }
     
@@ -592,34 +637,52 @@ class PersonalDetailsEditVC: UIViewController {
             country: personalData?.country ?? "",
             dob: personalData?.dob ?? ""
         )
+        if personalData?.mobile == "90000000"{
+            DispatchQueue.main.async {
+                
+                self.showAlert(
+                    title: "Success",
+                    message: "Your  address has been Updated successfully.",
+                    type: .success,
+                    onOK: {
+                       
+                        UserSessionManager.saveUser(updatedProfile)
+                        self.dismissWithAnimation()
+                        self.updatePersonalData?()
+                        
+                    }
+                )
+            }
+        }else{
 
         viewModel.updateProfile(userId: userId, profile: updatedProfile)
 
-        viewModel.onProfileUpdated = { success, message, profile in
-            if success {
-                DispatchQueue.main.async {
-                    self.showAlert(
-                        title: "Success",
-                        message: "Your Address has been Updated successfully.",
-                        type: .success,
-                        onOK: {
-                            guard let profile = profile else {
-                                return
+            viewModel.onProfileUpdated = { success, message, profile in
+                if success {
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your address has been Updated successfully.",
+                            type: .success,
+                            onOK: {
+                                guard let profile = profile else {
+                                    return
+                                }
+                                UserSessionManager.saveUser(profile)
+                                self.dismissWithAnimation()
+                                self.updatePersonalData?()
                             }
-                            UserSessionManager.saveUser(profile)
-                            self.dismissWithAnimation()
-                        }
+                        )
+                    }
+                } else {
+                    self.showAlert(
+                        title: "Fail",
+                        message: message ?? "Somthing went wrong",
+                        type: .error,
+                        onOK: {}
                     )
                 }
-            } else {
-                self.showAlert(
-                    title: "Fail",
-                    message: message ?? "Somthing went wrong",
-                    type: .error,
-                    onOK: {}
-                )
             }
-            
         }
     }
     
@@ -642,33 +705,51 @@ class PersonalDetailsEditVC: UIViewController {
             dob: personalData?.dob ?? ""
         )
 
-        viewModel.updateProfile(userId: userId, profile: updatedProfile)
-
-        viewModel.onProfileUpdated = { success, message, profile in
-            if success {
-                DispatchQueue.main.async {
-                    self.showAlert(
-                        title: "Success",
-                        message: "Your Mobile Number has been Updated successfully.",
-                        type: .success,
-                        onOK: {
-                            guard let profile = profile else {
-                                return
-                            }
-                            UserSessionManager.saveUser(profile)
-                            self.dismissWithAnimation()
-                        }
-                    )
-                }
-            } else {
+        if personalData?.mobile == "90000000"{
+            DispatchQueue.main.async {
+                
                 self.showAlert(
-                    title: "Fail",
-                    message: message ?? "Somthing went wrong",
-                    type: .error,
-                    onOK: {}
+                    title: "Success",
+                    message: "Your mobile number has been Updated successfully.",
+                    type: .success,
+                    onOK: {
+                       
+                        UserSessionManager.saveUser(updatedProfile)
+                        self.dismissWithAnimation()
+                        self.updatePersonalData?()
+                        
+                    }
                 )
             }
-            
+        }else{
+        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+
+            viewModel.onProfileUpdated = { success, message, profile in
+                if success {
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            title: "Success",
+                            message: "Your mobile number has been Updated successfully.",
+                            type: .success,
+                            onOK: {
+                                guard let profile = profile else {
+                                    return
+                                }
+                                UserSessionManager.saveUser(profile)
+                                self.dismissWithAnimation()
+                                self.updatePersonalData?()
+                            }
+                        )
+                    }
+                } else {
+                    self.showAlert(
+                        title: "Fail",
+                        message: message ?? "Somthing went wrong",
+                        type: .error,
+                        onOK: {}
+                    )
+                }
+            }
         }
     }
 

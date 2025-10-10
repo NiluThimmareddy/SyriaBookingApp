@@ -78,9 +78,7 @@ class ProfilePageVC: UIViewController {
         fontStyle()
         mixedText()
 //        navigationProcess()
-        guard let username = UserSessionManager.getUser() else { return }
-        userName.text = "Hi,\(username.name)"
-        userEmail.text = "\(username.email)"
+       
         
         
 //        navigationItem.titleView = topNameLbl
@@ -99,6 +97,9 @@ class ProfilePageVC: UIViewController {
         
         self.navigationItem.backButtonTitle = ""
         setupAppNavigationBar()
+        guard let username = UserSessionManager.getUser() else { return }
+        userName.text = "Hi, \(username.name)"
+        userEmail.text = "\(username.email)"
     }
     func mixedText() {
         let fullText = "Complete your profile and use this informations for your next booking"
@@ -212,6 +213,7 @@ class ProfilePageVC: UIViewController {
         print("Button tapped....")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
+       
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }

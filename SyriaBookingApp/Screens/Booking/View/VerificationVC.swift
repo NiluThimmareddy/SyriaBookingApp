@@ -120,16 +120,26 @@ class VerificationVC : UIViewController {
     func performNavigationAfterVerification() {
         switch self.comingFrom {
         case .Home:
-            self.dismiss(animated: true)
+            self.dismiss(animated: true){
+                self.goToHomeTab()
+            }
             self.dismissPopup()
+            
         case .BookingHistory:
-            self.dismiss(animated: true)
+            self.dismiss(animated: true){
+                self.goToHomeTab()
+            }
             self.dismissPopup()
         case .HotelDetail:
             self.dismiss(animated: true)
+            {
+                self.goToHomeTab()
+            }
         case .none:
             self.dismissPopup()
-            self.dismiss(animated: true)
+            self.dismiss(animated: true){
+                self.goToHomeTab()
+            }
         case .some(.RightMenu), .some(.TabBar):
             break
         }

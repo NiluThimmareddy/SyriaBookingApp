@@ -92,8 +92,7 @@ class RegisterMobileNumberVC : UIViewController {
             }
         }
         present(vc, animated: true)
-    }
-    
+    }    
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         if comingFrom == .HomeSliderView || comingFrom == .tabbarBooking || comingFrom == .HotelDetails {
@@ -112,7 +111,7 @@ class RegisterMobileNumberVC : UIViewController {
         }
         
         if mobileNumber == "90000000"{
-            UserSessionManager.saveUser(BookingModel(id: "UP0000", name: "Testing Demo", mobile: "90000000", address: "address testing", gender: "", email: "testingDemo@gmail.com", country: "Syria", dob: ""))
+            UserSessionManager.saveUser(BookingModel(id: "UP0000", name: "Testing Demo User", mobile: "90000000", address: "address testing", gender: "", email: "testingDemo@gmail.com", country: "Syria", dob: ""))
             
             
             self.dismiss(animated: true) {
@@ -120,7 +119,7 @@ class RegisterMobileNumberVC : UIViewController {
                 if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                     tabBarVC.modalPresentationStyle = .fullScreen
                     UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                    tabBarVC.presentVerificationVC(otpResponse: nil , mobileNumber:"90000000" , guestName:"Testing Demo", guestEmail: "testingDemo@gmail.com" ,isNewUser:false)
+                    tabBarVC.presentVerificationVC(otpResponse: nil , mobileNumber:"90000000" , guestName:"Testing Demo User", guestEmail: "testingDemo@gmail.com" ,isNewUser:false)
                 }
             }
             
@@ -137,12 +136,6 @@ class RegisterMobileNumberVC : UIViewController {
             }
             
             guard let phonecode = countryCodeList.first(where: {$0.name == country})?.code  else { return }
-            
-            
-//            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
-//                showAlert("Please enter a mobile number.")
-//                return
-//            }
             
             if mobileNumber.count != maxMobileNumberLength {
                 showAlert("Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long.")
