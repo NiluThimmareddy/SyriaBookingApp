@@ -66,6 +66,11 @@ class RegisterMobileNumberVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        hideKeyboardWhenTappedAround()
+        enterMobileNumberTF.delegate = self
+        enterNameTF.delegate = self
+        enterEmailTF.delegate = self
+        enterCountryTF.delegate = self
     }
     
     override func viewDidLayoutSubviews() {

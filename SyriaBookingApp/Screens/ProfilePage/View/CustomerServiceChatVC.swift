@@ -41,9 +41,9 @@ class CustomerServiceChatVC: UIViewController, UITableViewDelegate, UITableViewD
         chatTableView.register(UINib(nibName: "CustomerServiceChatTVC", bundle: nil), forCellReuseIdentifier: "CustomerServiceChatTVC")
         setupKeyboardObservers()
         suggestionCV.register(UINib(nibName: "SuggestionCVC", bundle: nil), forCellWithReuseIdentifier: "SuggestionCVC")
-        let tableTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tableTapGesture.cancelsTouchesInView = false
-        chatTableView.addGestureRecognizer(tableTapGesture)
+//        let tableTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tableTapGesture.cancelsTouchesInView = false
+//        chatTableView.addGestureRecognizer(tableTapGesture)
         navigationItem.titleView = topNameLbl
         messageTextField.layer.cornerRadius = 5
         messageTextField.layer.borderWidth = 1
@@ -128,11 +128,11 @@ class CustomerServiceChatVC: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true, completion: nil)
     }
 
-    @objc func dismissKeyboard() {
-        if messageTextField.isFirstResponder {
-            messageTextField.resignFirstResponder()
-        }
-    }
+//    @objc func dismissKeyboard() {
+//        if messageTextField.isFirstResponder {
+//            messageTextField.resignFirstResponder()
+//        }
+//    }
 
     func sendMessage(_ text: String) {
             guard !text.isEmpty else { return }

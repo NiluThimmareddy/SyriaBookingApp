@@ -75,17 +75,17 @@ class CustomerServiceVC: UIViewController, UIImagePickerControllerDelegate, UINa
         messageTextView.layer.borderWidth = 1
         messageTextView.layer.borderColor = bgColor?.cgColor
         
-        let tableTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tableTapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tableTapGesture)
+//        let tableTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tableTapGesture.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tableTapGesture)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         navigationItem.titleView = topNameLbl
     }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
+//    @objc func dismissKeyboard() {
+//        view.endEditing(true)
+//    }
     
     
     override func viewDidLayoutSubviews() {
