@@ -60,7 +60,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         switch indexPath.row {
         case 0 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
-            controller.modalPresentationStyle = .fullScreen
+//            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true)
         case 1 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController

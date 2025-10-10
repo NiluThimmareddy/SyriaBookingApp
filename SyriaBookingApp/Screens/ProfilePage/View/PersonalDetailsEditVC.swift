@@ -306,6 +306,7 @@ class PersonalDetailsEditVC: UIViewController {
             emailBacView.isHidden = true
             phoneNumberView.isHidden = true
             addressView.isHidden = true
+            
             genderBackView.isHidden = true
             dobBackView.isHidden = false
             
@@ -524,7 +525,6 @@ class PersonalDetailsEditVC: UIViewController {
                     onOK: {}
                 )
             }
-            
         }
     }
     
