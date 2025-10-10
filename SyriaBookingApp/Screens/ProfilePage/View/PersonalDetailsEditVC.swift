@@ -17,7 +17,6 @@ protocol PersonalDetailsEditVCDelegate: AnyObject {
     
 }
 
-
 class PersonalDetailsEditVC: UIViewController {
 
     @IBOutlet weak var addressCountryNameTV: UITableView!
@@ -97,6 +96,7 @@ class PersonalDetailsEditVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
         getFlagData()
         flagProcess()
         selectContent()
@@ -187,9 +187,9 @@ class PersonalDetailsEditVC: UIViewController {
         addressCountryNameTV.register(UINib(nibName: "FlagNameWithImageTVC", bundle: nil), forCellReuseIdentifier: "FlagNameWithImageTVC")
         FlagTV.isHidden = true
         addressCountryNameTV.isHidden = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tapGesture.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tapGesture)
         saveButton.layer.cornerRadius = 10
         genderSaveButton.layer.cornerRadius = 10
         dobSaveButton.layer.cornerRadius = 10
@@ -200,9 +200,9 @@ class PersonalDetailsEditVC: UIViewController {
         phoneNumberTypeTF.keyboardType = .numberPad
     }
     
-    @objc func dismissKeyboard() {
-         view.endEditing(true)
-    }
+//    @objc func dismissKeyboard() {
+//         view.endEditing(true)
+//    }
     
     func getData(){
         if let data = personalData{
@@ -518,7 +518,7 @@ class PersonalDetailsEditVC: UIViewController {
                     }
                 )
             }
-        }else{
+        } else {
         
         viewModel.updateProfile(userId: userId, profile: updatedProfile)
         

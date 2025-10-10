@@ -40,6 +40,7 @@ class ReportAnAppVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
         setupContactUsTypeDropdownMenu()

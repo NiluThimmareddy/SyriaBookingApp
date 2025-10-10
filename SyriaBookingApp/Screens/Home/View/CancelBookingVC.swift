@@ -35,6 +35,8 @@ class CancelBookingVC: UIViewController {
         backView.layer.cornerRadius = 10
         backView.clipsToBounds = true
         setupLanguage()
+        hideKeyboardWhenTappedAround()
+        reasonTextView.delegate = self
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {

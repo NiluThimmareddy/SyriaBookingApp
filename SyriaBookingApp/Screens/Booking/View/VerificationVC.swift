@@ -29,9 +29,11 @@ class VerificationVC : UIViewController {
     var viewModel = BookingViewModel()
     var comingFrom : comingFromLogin?
     var isNewUser = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewDidAppear(_ animated: Bool) {

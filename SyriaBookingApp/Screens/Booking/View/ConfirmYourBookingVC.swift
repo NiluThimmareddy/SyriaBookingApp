@@ -342,7 +342,7 @@ extension ConfirmYourBookingVC {
 
 import UIKit
 
-class ConfirmYourBookingVC : UIViewController {
+class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
@@ -391,6 +391,9 @@ class ConfirmYourBookingVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        numberOfGuestsTF.delegate = self
+        checkInTF.delegate = self
+        checkOutTF.delegate = self
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {

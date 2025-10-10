@@ -71,9 +71,9 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         lastNameTF.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        tapGesture.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tapGesture)
     }
     
     private func setCheckboxState() {
@@ -163,9 +163,9 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         }
     }
    
-    @objc func dismissKeyboard() {
-         view.endEditing(true)
-    }
+//    @objc func dismissKeyboard() {
+//         view.endEditing(true)
+//    }
     
     func buttonBoldText(){
         let ok = NSAttributedString(
