@@ -362,18 +362,30 @@ extension UIViewController {
         }
     }
     
+    
     func goToHomeTab() {
-        if let window = UIApplication.shared.windows.first {
+        // Get the active window
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             guard let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? CustomTabBarController else {
                 return
             }
-            tabBarVC.selectedIndex = 0 // Home tab
+            
+            tabBarVC.selectedIndex = 0 // Set default Home tab
             window.rootViewController = tabBarVC
             window.makeKeyAndVisible()
+            
+            // Optional: Smooth transition
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: .transitionCrossDissolve,
+                              animations: nil,
+                              completion: nil)
         }
     }
-    
+
     
     func iso8601String(from date: Date) -> String {
         let formatter = ISO8601DateFormatter()

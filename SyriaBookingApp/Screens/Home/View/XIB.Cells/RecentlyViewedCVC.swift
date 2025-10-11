@@ -19,7 +19,7 @@ class RecentlyViewedCVC: UICollectionViewCell {
     }
     
     func configure(with hotel: Hotel) {
-        hotelNameLabel.text = "\(hotel.localizedName()),\n\(hotel.localizedCity())"
+        hotelNameLabel.text = "\(hotel.localizedName())\n\(hotel.localizedCity())"
         if let firstImageURL = hotel.images.first, !firstImageURL.isEmpty {
             hotelImgView.loadImage(from: firstImageURL)
         } else {
