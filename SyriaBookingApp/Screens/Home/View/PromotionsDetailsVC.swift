@@ -16,7 +16,7 @@ class PromotionsDetailsVC: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var averageRatingsLabel: UILabel!
     @IBOutlet weak var totalReviewsLabel: UILabel!
-    @IBOutlet weak var promotionsTitleLabel: UILabel!
+//    @IBOutlet weak var promotionsTitleLabel: UILabel!
     
     var promotionsList: [Hotel] = []
     var selectedHotel: Hotel?
@@ -48,10 +48,10 @@ extension PromotionsDetailsVC {
         averageRatingsLabel.text = "\(hotel.averageRating)/5"
         if AppSettings.shared.selectedLanguage == .english {
             totalReviewsLabel.text = "\(hotel.reviewCount) reviews"
-            promotionsTitleLabel.text = "Promotions"
+//            promotionsTitleLabel.text = "Promotions"
         } else {
             totalReviewsLabel.text = "\(hotel.reviewCount) تقييمات"
-            promotionsTitleLabel.text = "عروض"
+//            promotionsTitleLabel.text = "عروض"
         }
         if let imageUrl = hotel.images.first, !imageUrl.isEmpty {
             hotelImageView.loadImage(from: imageUrl)

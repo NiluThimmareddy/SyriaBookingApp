@@ -12,21 +12,21 @@ extension UIFont {
     
     // Title font - big size
     static var titleFont: UIFont {
-        return UIFont.systemFont(ofSize: 18, weight: .bold) // Change size and weight as needed
+        return UIFont.systemFont(ofSize: 16, weight: .bold) // Change size and weight as needed
     }
     
     // Subtitle font - medium size
     static var subtitleFont: UIFont {
-        return UIFont.systemFont(ofSize: 16, weight: .semibold)
+        return UIFont.systemFont(ofSize: 14, weight: .semibold)
     }
     
     // Body font - small size
     static var bodyFont: UIFont {
-        return UIFont.systemFont(ofSize: 14, weight: .regular)
+        return UIFont.systemFont(ofSize: 12, weight: .regular)
     }
     
     // Optional: You can add more styles like caption, footnote, etc.
     static var captionFont: UIFont {
-        return UIFont.systemFont(ofSize: 13, weight: .light)
+        return UIFont.systemFont(ofSize: 11, weight: .medium)
     }
 }

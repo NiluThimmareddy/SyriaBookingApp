@@ -39,6 +39,7 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         hotelImgView.clipsToBounds = true
         hotelImgView.layer.cornerRadius = 20
         hotelImgView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        priceLabel.font = .captionFont
     }
 
     @IBAction func bookNowButtonAction(_ sender: Any) {
@@ -71,6 +72,7 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
             attributes: [.foregroundColor: UIColor.label]
         )
 
+    
         if intRating > 0 && intRating <= 5 {
             let stars = String(repeating: "★", count: intRating)
             let starAttributed = NSAttributedString(
@@ -89,10 +91,11 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         //reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
         
         if AppSettings.shared.selectedLanguage == .english {
-            priceLabel.text = "\(model.minRoomPrice) / \n night"
+            priceLabel.text = "From \(model.minRoomPrice) / night"
             
         }else{
-            priceLabel.text = "\(model.minRoomPrice) / \n نان"
+            
+            priceLabel.text = "\(model.minRoomPrice) / نان"
         }
         
       

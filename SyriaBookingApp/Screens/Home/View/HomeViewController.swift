@@ -75,7 +75,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
-    
+   
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
     var cities = [String]()
@@ -91,7 +91,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var sliderCurrentIndex = 0
     var isUserInteracting = false
     var delegate : recentlyViewdHotelsProtocol?
-    var BookingviewModel = BookingViewModel()
+    
     var isScrollingForward = true
     
     override func viewDidLoad() {
@@ -101,32 +101,13 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        setupAppNavigationBar()
+        setupAppNavigationBar()
         setupUI()
-        
-        // Fetch hotels only if data is empty
-        if HotelDataMaganer.shared.allHotels.isEmpty {
+        if HotelDataMaganer.shared.allHotels.isEmpty{
             viewModel.fetchHotels()
         }
-        
-        // Fetch user data
-        guard let user = UserSessionManager.getUser() else { return }
-        
-        BookingviewModel.onSuccess = { [weak self] response in
-            guard let self = self else { return }
-            UserSessionManager.saveUser(response)
-            DispatchQueue.main.async {
-                self.sliderCollectionView.reloadData()
-            }
-        }
-        
-        BookingviewModel.FetchUserData(id: user.id)
-        
-        // Reload collection view (initial load)
         sliderCollectionView.reloadData()
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -231,12 +212,12 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     @IBAction func tomorrowDateButtonAction(_ sender: UIButton) {
         checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
-        
+       
         let formater = DateFormatter()
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
-        
+       
         guard let date = date else { return }
         selectedCheckInDate = date
         currentDatePickerMode = .checkOut
@@ -322,7 +303,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 if indexPath.row == 0{
                     cell.greetingMessageLabel.isHidden = false
                     let greeting = updateGreetingMessage()
-                    cell.greetingMessageLabel.text = "\(greeting) \n \(user.name)!"
+                    cell.greetingMessageLabel.text = "\(greeting) \(user.name)"
                 }
             } else {
                 if indexPath.row == 0{
@@ -334,7 +315,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             cell.imageView.image = UIImage(named: sliderItems[indexPath.row])
             
             cell.loginClicked = {
-                
+
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
                 controller.comingFrom = .HomeSliderView
@@ -409,13 +390,13 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
             let availableWidth = collectionView.bounds.width - spacing
             let widthPerItem = availableWidth / numberOfItemsPerRow
-            let heightMultiplier: CGFloat = isIpad ? 1 : 1.4
+            let heightMultiplier: CGFloat = isIpad ? 1 : 1.5
             return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
         } else if collectionView == recentlyCollectionView {
             if viewModel.recentlyViewdHotels.isEmpty {
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
             } else {
-                let itemWidth = collectionView.frame.width * 0.3
+                let itemWidth = collectionView.frame.width * 0.4
                 let itemHeight = collectionView.frame.height
                 return CGSize(width: itemWidth, height: itemHeight)
             }
@@ -459,7 +440,7 @@ extension HomeViewController {
     
     func reloadDataOnHomeScreen(){
         print("HomeAge reloading")
-//        setupAppNavigationBar()
+        setupAppNavigationBar()
         self.sliderCollectionView.reloadData()
     }
     
@@ -468,14 +449,14 @@ extension HomeViewController {
         searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
         startSliderAutoScroll()
-        //        sliderView.applyCardStyle()
+//        sliderView.applyCardStyle()
         sliderItems = sliderImages
         
         if UIDevice.current.userInterfaceIdiom != .pad{
             sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         }
-        
+       
         DispatchQueue.main.async {
             self.sliderCollectionView.reloadData()
             let middleIndex = IndexPath(item: self.sliderImages.count, section: 0)
@@ -493,7 +474,7 @@ extension HomeViewController {
             formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-            
+
             let attributedTitle = NSAttributedString(
                 string: tomorrowDate,
                 attributes: [.font: font]
@@ -558,7 +539,7 @@ extension HomeViewController {
                         Cityar: cityAR     // Arabic
                     )
                 } ?? []
-                
+               
             }
         }
         
@@ -618,39 +599,79 @@ extension HomeViewController {
         updateTexts()
     }
     
+//    func setUpTomorrowDate() {
+//        let today = Date()
+//        let font = UIFont.systemFont(ofSize: 14)
+//
+//        if let tomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "dd-MM-yyyy"
+//            formatter.dateStyle = .medium
+//            let tomorrowDate = formatter.string(from: tomorrow)
+//
+//            let attributedTitle = NSAttributedString(
+//                string: tomorrowDate,
+//                attributes: [.font: font]
+//            )
+//            tomorrowDateButton.setAttributedTitle(attributedTitle, for: .normal)
+//        }
+//        
+//        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 3, to: today) {
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "dd-MM-yyyy"
+//            formatter.dateStyle = .medium
+//            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
+//
+//            let attributedTitle = NSAttributedString(
+//                string: dayAfterTomorrowDate,
+//                attributes: [.font: font]
+//            )
+//            dayAfterTomorrowButton.setAttributedTitle(attributedTitle, for: .normal)
+//        }
+//    }
+    
     func setUpTomorrowDate() {
         let today = Date()
-        let font = UIFont.systemFont(ofSize: 14)
         
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy"
-            formatter.dateStyle = .medium
-            let tomorrowDate = formatter.string(from: tomorrow)
-            
-            let attributedTitle = NSAttributedString(
-                string: tomorrowDate,
-                attributes: [.font: font]
-            )
-            tomorrowDateButton.setAttributedTitle(attributedTitle, for: .normal)
+        let dayFont = UIFont.boldSystemFont(ofSize: 18) // Bigger font for day
+        let restFont = UIFont.systemFont(ofSize: 14)    // Smaller font for month/year
+        let dayColor = UIColor.label                      // Color for day
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        
+        func setButton(_ button: UIButton, daysToAdd: Int) {
+            if let targetDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: today) {
+                let fullDate = formatter.string(from: targetDate) // e.g. "Oct 12, 2025"
+                
+                // Extract day component safely
+                let calendar = Calendar.current
+                let day = calendar.component(.day, from: targetDate)
+                
+                if let dayRange = fullDate.range(of: "\(day)") {
+                    let attributedTitle = NSMutableAttributedString(
+                        string: fullDate,
+                        attributes: [.font: restFont]
+                    )
+                    
+                    // Make only day bigger and colored
+                    let nsRange = NSRange(dayRange, in: fullDate)
+                    attributedTitle.addAttributes([.font: dayFont, .foregroundColor: dayColor], range: nsRange)
+                    
+                    button.setAttributedTitle(attributedTitle, for: .normal)
+                } else {
+                    // Fallback if day not found
+                    button.setTitle(fullDate, for: .normal)
+                }
+            }
         }
         
-        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 3, to: today) {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy"
-            formatter.dateStyle = .medium
-            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
-            
-            let attributedTitle = NSAttributedString(
-                string: dayAfterTomorrowDate,
-                attributes: [.font: font]
-            )
-            dayAfterTomorrowButton.setAttributedTitle(attributedTitle, for: .normal)
-        }
+        setButton(tomorrowDateButton, daysToAdd: 1)
+        setButton(dayAfterTomorrowButton, daysToAdd: 2)
     }
-    
-    
-    
+
+
     
     func NavigationBackGroundColour(){
         navigationController?.navigationBar.barTintColor = .white
@@ -925,12 +946,12 @@ extension HomeViewController {
         sliderAutoScrollTimer?.invalidate()
         sliderAutoScrollTimer = nil
     }
-    
+         
     @objc func scrollToNextItem() {
         guard let collectionView = sliderCollectionView else { return }
         let totalItems = sliderImages.count
         if totalItems == 0 { return }
-        
+     
         if isScrollingForward {
             if sliderCurrentIndex < totalItems - 1 {
                 sliderCurrentIndex += 1
@@ -948,7 +969,7 @@ extension HomeViewController {
                 sliderCurrentIndex += 1
             }
         }
-        
+     
         let indexPath = IndexPath(item: sliderCurrentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath,
                                     at: .centeredHorizontally,
@@ -1004,14 +1025,14 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
         
         print("Search tapped")
         if searchView.isHidden {
-            
+ 
             
             if UIDevice.current.userInterfaceIdiom == .pad {
-                searchViewHeightConstraint.constant = 280
-            } else {
-                searchViewHeightConstraint.constant = 210
-            }
-            
+                            searchViewHeightConstraint.constant = 280
+                        } else {
+                            searchViewHeightConstraint.constant = 210
+                        }
+    
             UIView.animate(withDuration: 0.4,
                            delay: 0,
                            options: .curveEaseInOut) {

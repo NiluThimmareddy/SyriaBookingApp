@@ -26,6 +26,7 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         backView.applyCardStyle()
+        activityInfoLabel.font = .captionFont
     }
 
     @IBAction func exploreMoreButtonAction(_ sender: Any) {
@@ -35,7 +36,7 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     func configuration(with model: Hotel) {
         destinationLabel.text = "\(model.localizedName()), \(model.localizedCity())"
         if AppSettings.shared.selectedLanguage == .english {
-            activityInfoLabel.text = "\(model.reviewCount) Reviews, \(model.averageRating) Rating"
+            activityInfoLabel.text = "\(model.reviewCount) Reviews ⎸ \(model.averageRating) Rating"
             promotionsLabel.text = "Promotions"
         } else {
             activityInfoLabel.text = "\(model.reviewCount) مراجعات، \(model.averageRating) تقييم"

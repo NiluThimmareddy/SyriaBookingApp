@@ -17,21 +17,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Slider1" translatesAutoresizingMaskIntoConstraints="NO" id="Myd-p4-laj">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Slider1" translatesAutoresizingMaskIntoConstraints="NO" id="Myd-p4-laj">
                         <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="20"/>
+                                <real key="value" value="0.0"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good morning User" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-sv-XiE">
-                        <rect key="frame" x="15" y="15" width="182.33333333333334" height="24"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <rect key="frame" x="15" y="15" width="105" height="12"/>
+                        <fontDescription key="fontDescription" name="ZapfDingbatsITC" family="Zapf Dingbats" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kik-Xf-hdt">
-                        <rect key="frame" x="60" y="60" width="100" height="40"/>
+                        <rect key="frame" x="20" y="30" width="100" height="40"/>
                         <color key="backgroundColor" red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="100" id="Hjb-FG-pbG"/>
@@ -57,9 +57,9 @@
                     <constraint firstItem="Myd-p4-laj" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" id="Ce2-wm-BfE"/>
                     <constraint firstItem="bVc-sv-XiE" firstAttribute="top" secondItem="8M3-ob-RKg" secondAttribute="top" constant="15" id="Sbv-Ch-94V"/>
                     <constraint firstItem="bVc-sv-XiE" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" constant="15" id="Xqg-xU-yS0"/>
-                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" constant="60" id="kot-Ay-Ii2"/>
+                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="leading" secondItem="8M3-ob-RKg" secondAttribute="leading" constant="20" id="kot-Ay-Ii2"/>
                     <constraint firstAttribute="trailing" secondItem="Myd-p4-laj" secondAttribute="trailing" id="sOU-kc-S5H"/>
-                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="top" secondItem="Myd-p4-laj" secondAttribute="top" constant="60" id="x4O-WC-Hac"/>
+                    <constraint firstItem="Kik-Xf-hdt" firstAttribute="top" secondItem="Myd-p4-laj" secondAttribute="top" constant="30" id="x4O-WC-Hac"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="502" height="319"/>
@@ -72,7 +72,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Slider1" width="640" height="283.33334350585938"/>
+        <image name="Slider1" width="1920" height="850"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
