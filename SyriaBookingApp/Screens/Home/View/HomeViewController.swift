@@ -85,8 +85,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var scrolltoTopHelper : ScrollToTopHelper?
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
-    var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
-    var sliderItems : [String] = []
+    var sliderImages = ["Slider1","Slider2","Slider3","Slider4","Slider4"]
+   
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
@@ -266,7 +266,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         } else if collectionView == promotionsCollectionView {
             return min(5, promotionsList.count)
         } else if collectionView == sliderCollectionView{
-            return sliderItems.count
+            return sliderImages.count
         } else  {
             return min(10, viewModel.filteredHotels.count)
         }
@@ -312,7 +312,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                     cell.loginButton.isHidden = true
                 }
             }
-            cell.imageView.image = UIImage(named: sliderItems[indexPath.row])
+            cell.imageView.image = UIImage(named: sliderImages[indexPath.row])
             
             cell.loginClicked = {
 
@@ -450,8 +450,7 @@ extension HomeViewController {
         searchViewHeightConstraint.constant = 0
         startSliderAutoScroll()
 //        sliderView.applyCardStyle()
-        sliderItems = sliderImages
-        
+       
         if UIDevice.current.userInterfaceIdiom != .pad{
             sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
@@ -688,20 +687,7 @@ extension HomeViewController {
         leftMenuBarButton.tintColor = .white
         navigationController?.setNavigationBarBlack()
     }
-    
-    @objc func scrollToNext() {
-        guard sliderItems.count > 0 else { return }
-        
-        let currentIndex = Int(sliderCollectionView.contentOffset.x / sliderCollectionView.bounds.width)
-        var nextIndex = currentIndex + 1
-        
-        if nextIndex >= sliderItems.count {
-            nextIndex = sliderImages.count
-        }
-        
-        let indexPath = IndexPath(item: nextIndex, section: 0)
-        sliderCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-    }
+
     
     @objc func updateTexts() {
         let lang = AppSettings.shared.selectedLanguage
@@ -926,18 +912,17 @@ extension HomeViewController {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == sliderCollectionView {
-            isUserInteracting = false
-            
-            // find the current visible index
-            let page = Int(scrollView.contentOffset.x / scrollView.frame.width)
-            sliderCurrentIndex = page
-            
+            let visibleRect = CGRect(origin: sliderCollectionView.contentOffset, size: sliderCollectionView.bounds.size)
+                   let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+                   if let visibleIndexPath = sliderCollectionView.indexPathForItem(at: visiblePoint) {
+                       sliderCurrentIndex = visibleIndexPath.item
+                   }
             // restart auto scroll after 3 sec
-            startSliderAutoScroll(after: 3.0)
+            startSliderAutoScroll(after: 2.0)
         }
     }
     
-    func startSliderAutoScroll(after delay: TimeInterval = 3.0) {
+    func startSliderAutoScroll(after delay: TimeInterval = 2.0) {
         stopSliderAutoScroll() // avoid multiple timers
         sliderAutoScrollTimer = Timer.scheduledTimer(timeInterval: delay,target: self,selector: #selector(scrollToNextItem),userInfo: nil,repeats: true)
     }
@@ -947,28 +932,30 @@ extension HomeViewController {
         sliderAutoScrollTimer = nil
     }
          
-    @objc func scrollToNextItem() {
+ @objc func scrollToNextItem() {
         guard let collectionView = sliderCollectionView else { return }
         let totalItems = sliderImages.count
         if totalItems == 0 { return }
      
-        if isScrollingForward {
-            if sliderCurrentIndex < totalItems - 1 {
-                sliderCurrentIndex += 1
-            } else {
-                // reached last → reverse direction
-                isScrollingForward = false
-                sliderCurrentIndex -= 1
-            }
-        } else {
-            if sliderCurrentIndex > 0 {
-                sliderCurrentIndex -= 1
-            } else {
-                // reached first → reverse direction
-                isScrollingForward = true
-                sliderCurrentIndex += 1
-            }
-        }
+     // Check for the end or beginning of the collection view
+         if isScrollingForward {
+             if sliderCurrentIndex < totalItems - 1 {
+                 sliderCurrentIndex += 1
+             } else {
+                 // Reached the end, reverse direction
+                 isScrollingForward = false
+                 sliderCurrentIndex -= 1
+             }
+         } else {
+             if sliderCurrentIndex > 0 {
+                 sliderCurrentIndex -= 1
+             } else {
+                 // Reached the beginning, reverse direction
+                 isScrollingForward = true
+                 sliderCurrentIndex += 1
+             }
+         }
+    
      
         let indexPath = IndexPath(item: sliderCurrentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath,
