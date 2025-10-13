@@ -70,6 +70,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var selectCheckOutView: UIView!
     @IBOutlet weak var newYearTitleLabel: UILabel!
     
+    @IBOutlet weak var recentlyViewedHeightConstraint: NSLayoutConstraint!
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
     var datePicker: UIDatePicker!
@@ -397,7 +398,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
             } else {
                 let itemWidth = collectionView.frame.width * 0.4
-                let itemHeight = collectionView.frame.height
+                let itemHeight =  collectionView.frame.height
+                recentlyViewedHeightConstraint.constant = itemHeight
                 return CGSize(width: itemWidth, height: itemHeight)
             }
         } else if collectionView == propertyTypeCollectionView {

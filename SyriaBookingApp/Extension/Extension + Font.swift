@@ -8,25 +8,34 @@
 import Foundation
 import UIKit
 
+import UIKit
+
 extension UIFont {
     
-    // Title font - big size
+    /// Title font - large size
     static var titleFont: UIFont {
-        return UIFont.systemFont(ofSize: 16, weight: .bold) // Change size and weight as needed
+        UIFont.dynamicFont(baseSize: 16, iPadSize: 18, weight: .bold)
     }
     
-    // Subtitle font - medium size
+    /// Subtitle font - medium size
     static var subtitleFont: UIFont {
-        return UIFont.systemFont(ofSize: 14, weight: .semibold)
+        UIFont.dynamicFont(baseSize: 14, iPadSize: 16, weight: .semibold)
     }
     
-    // Body font - small size
+    /// Body font - regular size
     static var bodyFont: UIFont {
-        return UIFont.systemFont(ofSize: 12, weight: .regular)
+        UIFont.dynamicFont(baseSize: 12, iPadSize: 14, weight: .medium)
     }
     
-    // Optional: You can add more styles like caption, footnote, etc.
+    /// Caption font - smaller size
     static var captionFont: UIFont {
-        return UIFont.systemFont(ofSize: 11, weight: .medium)
+        UIFont.dynamicFont(baseSize: 11, iPadSize: 13, weight: .medium)
+    }
+    
+    /// Helper function for dynamic font creation
+    private static func dynamicFont(baseSize: CGFloat, iPadSize: CGFloat, weight: UIFont.Weight) -> UIFont {
+        let size = UIDevice.current.userInterfaceIdiom == .pad ? iPadSize : baseSize
+        return UIFont.systemFont(ofSize: size, weight: weight)
     }
 }
+

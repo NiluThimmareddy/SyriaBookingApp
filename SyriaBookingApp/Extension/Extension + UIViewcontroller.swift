@@ -30,12 +30,12 @@ extension UIViewController {
             
             let indicator = UIActivityIndicatorView(style: style)
             indicator.hidesWhenStopped = true
-            indicator.color = .gray
+            indicator.color = .label
             indicator.startAnimating()
             
             // Dim background
             let backgroundView = UIView(frame: self.view.bounds)
-            backgroundView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+            backgroundView.backgroundColor = UIColor(white: 0, alpha: 0.3)
             backgroundView.tag = 9999
             backgroundView.addSubview(indicator)
             indicator.center = backgroundView.center
