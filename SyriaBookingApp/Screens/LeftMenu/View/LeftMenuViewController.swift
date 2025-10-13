@@ -31,7 +31,10 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     @IBOutlet weak var personEmailLabel: UILabel!
     @IBOutlet weak var languageButton: UIButton!
     @IBOutlet weak var loginbutton: UIButton!
-    
+    @IBOutlet weak var englishButton: UIButton!
+    @IBOutlet weak var arabicButton: UIButton!
+    @IBOutlet weak var rightArrow: UIButton!
+    @IBOutlet weak var topViewHeightConstraint: NSLayoutConstraint!
     
     let menuItems: [MenuItem] = [
         MenuItem(titleEN: "Hotels", titleAR: "فنادق", icon: "bed.double.fill"),
@@ -49,7 +52,11 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
-        configureLanguage()
+        if AppSettings.shared.selectedLanguage == nil {
+            AppSettings.shared.selectedLanguage = .english
+        }
+        
+        updateLanguageButtonsUI()
         NotificationCenter.default.addObserver(
             self,selector: #selector(LeftMenuReload),name: .languageChanged,object: nil)
     }
@@ -57,10 +64,9 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.backButtonTitle = ""
-        updateLanguageButtonTitle()
         loadUserDetails()
     }
-    
+
     @IBAction func DismissButtonAction(_ sender: UIButton) {
         onDismiss?()
     }
@@ -69,13 +75,13 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         let storyboard = UIStoryboard(name: "Booking", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
         controller.comingFrom = .HomeSliderView
-        controller.modalPresentationStyle = .custom
+        controller.modalPresentationStyle = .overFullScreen
         controller.transitioningDelegate = self
         controller.reloadScreenAfterDismiss = {
             self.dismissPopup()
             
         }
-        self.showPopup(controller, widthMultiplier: 0.9, heightMultiplier: 0.3)
+        self.present(controller, animated: true)
     }
 
     @IBAction func rightArrowButtonAction(_ sender: Any) {
@@ -84,6 +90,18 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @IBAction func languagesButtonAction(_ sender: Any) {
+    }
+    
+    @IBAction func englishLanguageButtonAction(_ sender: Any) {
+        AppSettings.shared.selectedLanguage = .english
+        NotificationCenter.default.post(name: .languageChanged, object: nil)
+        updateLanguageButtonsUI()
+    }
+    
+    @IBAction func arabicLanguageButtonAction(_ sender: Any) {
+        AppSettings.shared.selectedLanguage = .arabic
+        NotificationCenter.default.post(name: .languageChanged, object: nil)
+        updateLanguageButtonsUI()
     }
     
 }
@@ -150,57 +168,52 @@ extension LeftMenuViewController {
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
         
-        [backView,topView].forEach { shadow in
+        [backView].forEach { shadow in
             shadow?.applyCardStyle()
             shadow?.layer.cornerRadius = 20
             shadow?.layer.maskedCorners = [.layerMaxXMinYCorner]
         }
         LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
-        
+        applyCornerRadiusToLanguageButtons()
+
         languageButton.applyTopRightLightGreyGradient()
-        configureLanguage()
     }
     
-    func configureLanguage() {
-        let menuItems = languages.map { language in
-            UIAction(title: language) { [weak self] _ in
-                guard let self = self else { return }
-                
-                switch language {
-                case "English":
-                    AppSettings.shared.selectedLanguage = .english
-                case "العربية":
-                    AppSettings.shared.selectedLanguage = .arabic
-                default: break
-                }
-
-                NotificationCenter.default.post(name: .languageChanged, object: nil)
-                self.updateLanguageButtonTitle()
-            }
-        }
-
-        languageButton.menu = UIMenu(title: "", children: menuItems)
-        languageButton.showsMenuAsPrimaryAction = true
+    func applyCornerRadiusToLanguageButtons() {
+        let cornerRadius: CGFloat = 5
         
-        updateLanguageButtonTitle()
+        englishButton.layer.cornerRadius = cornerRadius
+        englishButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        englishButton.clipsToBounds = true
+        
+        arabicButton.layer.cornerRadius = cornerRadius
+        arabicButton.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        arabicButton.clipsToBounds = true
     }
-
-    func updateLanguageButtonTitle() {
-        let font = UIFont.boldSystemFont(ofSize: 13)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font]
-
+    
+    func updateLanguageButtonsUI() {
         let selectedLanguage = AppSettings.shared.selectedLanguage
-        let title: String
 
+        englishButton.layer.borderWidth = 1
+        arabicButton.layer.borderWidth = 1
+        englishButton.layer.borderColor = UIColor.lightGray.cgColor
+        arabicButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        englishButton.backgroundColor = .white
+        arabicButton.backgroundColor = .white
+        englishButton.setTitleColor(.black, for: .normal)
+        arabicButton.setTitleColor(.black, for: .normal)
+        
         switch selectedLanguage {
         case .english:
-            title = "English"
+            englishButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+            englishButton.setTitleColor(.white, for: .normal)
         case .arabic:
-            title = "العربية"
+            arabicButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+            arabicButton.setTitleColor(.white, for: .normal)
+        default:
+            break
         }
-
-        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-        languageButton.setAttributedTitle(attributedTitle, for: .normal)
     }
     
     func loadUserDetails() {
@@ -208,12 +221,18 @@ extension LeftMenuViewController {
             personNameLabel.isHidden = false
             personEmailLabel.isHidden = false
             loginbutton.isHidden = true
+            profileImgView.isHidden = false
+            rightArrow.isHidden = false
             personNameLabel.text = user.name
             personEmailLabel.text = user.email
+            topViewHeightConstraint.constant = 150
         } else {
             personNameLabel.isHidden = true
             personEmailLabel.isHidden = true
             loginbutton.isHidden = false
+            profileImgView.isHidden = true
+            rightArrow.isHidden = true
+            topViewHeightConstraint.constant = 75
         }
     }
     

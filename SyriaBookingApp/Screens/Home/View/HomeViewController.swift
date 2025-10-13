@@ -69,14 +69,14 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var selectCheckInView: UIView!
     @IBOutlet weak var selectCheckOutView: UIView!
     @IBOutlet weak var newYearTitleLabel: UILabel!
-    
     @IBOutlet weak var recentlyViewedHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topHotelsCollectionViewHeightConstraint: NSLayoutConstraint!
+    
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
     var datePicker: UIDatePicker!
     var activeButton: UIButton?
     var currentDatePickerMode: DatePickerMode = .checkIn
-   
     var isDatePickerShown = false
     var promotionScrollTimer: Timer?
     var cities = [String]()
@@ -86,13 +86,11 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var scrolltoTopHelper : ScrollToTopHelper?
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
-    var sliderImages = ["Slider1","Slider2","Slider3","Slider4","Slider4"]
-   
+    var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
     var delegate : recentlyViewdHotelsProtocol?
-    
     var isScrollingForward = true
     
     override func viewDidLoad() {
@@ -121,7 +119,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //        searchView.applyCardStyle()
         setupAppNavigationBar()
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
@@ -213,12 +210,12 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     @IBAction func tomorrowDateButtonAction(_ sender: UIButton) {
         checkInButton.setTitle(sender.titleLabel?.text, for: .normal)
-       
+        
         let formater = DateFormatter()
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
-       
+        
         guard let date = date else { return }
         selectedCheckInDate = date
         currentDatePickerMode = .checkOut
@@ -246,12 +243,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-            
-            
             selectedCheckOutDate = tomorrow
-            
             checkOutButton.setTitle(tomorrowDate, for: .normal)
-            
         }
     }
 }
@@ -316,17 +309,18 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             cell.imageView.image = UIImage(named: sliderImages[indexPath.row])
             
             cell.loginClicked = {
-
+                
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
                 controller.comingFrom = .HomeSliderView
-                controller.modalPresentationStyle = .custom
+                controller.modalPresentationStyle = .overFullScreen
                 controller.transitioningDelegate = self
                 controller.comingFrom = .HomeSliderView
                 controller.reloadScreenAfterDismiss = {
                     self.reloadDataOnHomeScreen()
                 }
-                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
+                self.present(controller, animated: true)
+//                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
             return cell
         } else {
@@ -362,7 +356,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 self.navigationItem.backBarButtonItem = backItem
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            
         } else if collectionView == topHotelsCollectionView {
             let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
             let selectedHotel = viewModel.filteredHotels[indexPath.row]
@@ -374,11 +367,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(vc, animated: true)
-            
         }
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -392,6 +382,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let availableWidth = collectionView.bounds.width - spacing
             let widthPerItem = availableWidth / numberOfItemsPerRow
             let heightMultiplier: CGFloat = isIpad ? 1 : 1.5
+            topHotelsCollectionViewHeightConstraint.constant = CGFloat((widthPerItem * heightMultiplier) * 5) + 10
             return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
         } else if collectionView == recentlyCollectionView {
             if viewModel.recentlyViewdHotels.isEmpty {
@@ -451,13 +442,12 @@ extension HomeViewController {
         searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
         startSliderAutoScroll()
-//        sliderView.applyCardStyle()
-       
+        
         if UIDevice.current.userInterfaceIdiom != .pad{
             sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         }
-       
+        
         DispatchQueue.main.async {
             self.sliderCollectionView.reloadData()
             let middleIndex = IndexPath(item: self.sliderImages.count, section: 0)
@@ -468,14 +458,13 @@ extension HomeViewController {
         
         sliderCollectionView.register(UINib(nibName: "SliderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SliderCollectionViewCell")
         
-        
         let font = UIFont.systemFont(ofSize: 14)
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-
+            
             let attributedTitle = NSAttributedString(
                 string: tomorrowDate,
                 attributes: [.font: font]
@@ -540,7 +529,6 @@ extension HomeViewController {
                         Cityar: cityAR     // Arabic
                     )
                 } ?? []
-               
             }
         }
         
@@ -600,37 +588,6 @@ extension HomeViewController {
         updateTexts()
     }
     
-//    func setUpTomorrowDate() {
-//        let today = Date()
-//        let font = UIFont.systemFont(ofSize: 14)
-//
-//        if let tomorrow = Calendar.current.date(byAdding: .day, value: 2, to: today) {
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "dd-MM-yyyy"
-//            formatter.dateStyle = .medium
-//            let tomorrowDate = formatter.string(from: tomorrow)
-//
-//            let attributedTitle = NSAttributedString(
-//                string: tomorrowDate,
-//                attributes: [.font: font]
-//            )
-//            tomorrowDateButton.setAttributedTitle(attributedTitle, for: .normal)
-//        }
-//        
-//        if let dayAfterTomorrow = Calendar.current.date(byAdding: .day, value: 3, to: today) {
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "dd-MM-yyyy"
-//            formatter.dateStyle = .medium
-//            let dayAfterTomorrowDate = formatter.string(from: dayAfterTomorrow)
-//
-//            let attributedTitle = NSAttributedString(
-//                string: dayAfterTomorrowDate,
-//                attributes: [.font: font]
-//            )
-//            dayAfterTomorrowButton.setAttributedTitle(attributedTitle, for: .normal)
-//        }
-//    }
-    
     func setUpTomorrowDate() {
         let today = Date()
         
@@ -671,25 +628,17 @@ extension HomeViewController {
         setButton(tomorrowDateButton, daysToAdd: 1)
         setButton(dayAfterTomorrowButton, daysToAdd: 2)
     }
-
-
     
     func NavigationBackGroundColour(){
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
-        
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white
         ]
-        
-        // ✅ Navigation bar icons (back button, etc.) white
         navigationController?.navigationBar.tintColor = .white
-        
-        // ✅ Specific bar button icons white
         leftMenuBarButton.tintColor = .white
         navigationController?.setNavigationBarBlack()
     }
-
     
     @objc func updateTexts() {
         let lang = AppSettings.shared.selectedLanguage
@@ -815,7 +764,6 @@ extension HomeViewController {
         datePickerContainerView.isHidden.toggle()
     }
     
-    
     func updateDatePickerLimits() {
         let now = Date()
         switch currentDatePickerMode {
@@ -826,17 +774,14 @@ extension HomeViewController {
             
         case .checkOut:
             guard let checkIn = selectedCheckInDate else {
-                
                 datePicker.minimumDate = now
                 datePicker.date = now
                 return
             }
             datePicker.minimumDate = checkIn
             datePicker.date = checkIn
-            
         }
     }
-    
     
     @objc private func dateChanged(_ sender: UIDatePicker) {
         switch currentDatePickerMode {
@@ -870,21 +815,17 @@ extension HomeViewController {
     }
     
     func startPromotionAutoScroll() {
-        promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+        promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
             guard let self = self,
                   let collectionView = self.promotionsCollectionView else { return }
             
-            let currentOffset = collectionView.contentOffset.x
-            let contentWidth = collectionView.contentSize.width
-            let frameWidth = collectionView.frame.size.width
-            let nextOffset = currentOffset + frameWidth
+            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+            guard let currentIndexPath = visibleIndexPaths.sorted().first else { return }
             
-            if nextOffset >= contentWidth {
-                collectionView.setContentOffset(.zero, animated: false)
-            } else {
-                let newOffset = CGPoint(x: nextOffset, y: 0)
-                collectionView.setContentOffset(newOffset, animated: true)
-            }
+            let nextItem = (currentIndexPath.item + 1) % self.promotionsList.count
+            let nextIndexPath = IndexPath(item: nextItem, section: 0)
+            
+            collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
         }
     }
     
@@ -915,16 +856,16 @@ extension HomeViewController {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == sliderCollectionView {
             let visibleRect = CGRect(origin: sliderCollectionView.contentOffset, size: sliderCollectionView.bounds.size)
-                   let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-                   if let visibleIndexPath = sliderCollectionView.indexPathForItem(at: visiblePoint) {
-                       sliderCurrentIndex = visibleIndexPath.item
-                   }
+            let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+            if let visibleIndexPath = sliderCollectionView.indexPathForItem(at: visiblePoint) {
+                sliderCurrentIndex = visibleIndexPath.item
+            }
             // restart auto scroll after 3 sec
-            startSliderAutoScroll(after: 2.0)
+            startSliderAutoScroll(after: 3.0)
         }
     }
     
-    func startSliderAutoScroll(after delay: TimeInterval = 2.0) {
+    func startSliderAutoScroll(after delay: TimeInterval = 3.0) {
         stopSliderAutoScroll() // avoid multiple timers
         sliderAutoScrollTimer = Timer.scheduledTimer(timeInterval: delay,target: self,selector: #selector(scrollToNextItem),userInfo: nil,repeats: true)
     }
@@ -933,39 +874,35 @@ extension HomeViewController {
         sliderAutoScrollTimer?.invalidate()
         sliderAutoScrollTimer = nil
     }
-         
- @objc func scrollToNextItem() {
+    
+    @objc func scrollToNextItem() {
         guard let collectionView = sliderCollectionView else { return }
         let totalItems = sliderImages.count
         if totalItems == 0 { return }
-     
-     // Check for the end or beginning of the collection view
-         if isScrollingForward {
-             if sliderCurrentIndex < totalItems - 1 {
-                 sliderCurrentIndex += 1
-             } else {
-                 // Reached the end, reverse direction
-                 isScrollingForward = false
-                 sliderCurrentIndex -= 1
-             }
-         } else {
-             if sliderCurrentIndex > 0 {
-                 sliderCurrentIndex -= 1
-             } else {
-                 // Reached the beginning, reverse direction
-                 isScrollingForward = true
-                 sliderCurrentIndex += 1
-             }
-         }
-    
-     
+        
+        // Check for the end or beginning of the collection view
+        if isScrollingForward {
+            if sliderCurrentIndex < totalItems - 1 {
+                sliderCurrentIndex += 1
+            } else {
+                // Reached the end, reverse direction
+                isScrollingForward = false
+                sliderCurrentIndex -= 1
+            }
+        } else {
+            if sliderCurrentIndex > 0 {
+                sliderCurrentIndex -= 1
+            } else {
+                // Reached the beginning, reverse direction
+                isScrollingForward = true
+                sliderCurrentIndex += 1
+            }
+        }
         let indexPath = IndexPath(item: sliderCurrentIndex, section: 0)
         collectionView.scrollToItem(at: indexPath,
                                     at: .centeredHorizontally,
                                     animated: true)
     }
-    
-    
 }
 
 extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate , TopHotelsCollectionViewCellDelegate {
@@ -1014,14 +951,14 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
         
         print("Search tapped")
         if searchView.isHidden {
- 
+            
             
             if UIDevice.current.userInterfaceIdiom == .pad {
-                            searchViewHeightConstraint.constant = 280
-                        } else {
-                            searchViewHeightConstraint.constant = 210
-                        }
-    
+                searchViewHeightConstraint.constant = 280
+            } else {
+                searchViewHeightConstraint.constant = 210
+            }
+            
             UIView.animate(withDuration: 0.4,
                            delay: 0,
                            options: .curveEaseInOut) {

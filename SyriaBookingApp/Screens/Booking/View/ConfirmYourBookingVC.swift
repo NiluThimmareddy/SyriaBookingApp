@@ -391,6 +391,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        hideKeyboardWhenTappedAround()
         numberOfGuestsTF.delegate = self
         checkInTF.delegate = self
         checkOutTF.delegate = self
@@ -462,7 +463,15 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             confirmationVC.selectedRoom = self.selectedRoom
             confirmationVC.selectedRates = self.selectedRates
             confirmationVC.bookingId = response.id
-            self.present(confirmationVC, animated: true)
+            
+            // Dismiss current VC and replace root with BookingConfirmationVC
+            self.dismiss(animated: true) {
+                // Get root window
+                if let window = UIApplication.shared.windows.first {
+                    confirmationVC.modalPresentationStyle = .fullScreen
+                    window.rootViewController = confirmationVC
+                }
+            }
         }
         
         viewModel.onError = { error in

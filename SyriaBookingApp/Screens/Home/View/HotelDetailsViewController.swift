@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
+class HotelDetailsViewController : UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
@@ -173,18 +173,18 @@ class HotelDetailsViewController : UIViewController, ScrollToTopCapable {
                 self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
                 
                 self.hotelviewModel.onSuccess = {[weak self] response in
-                    self?.selectedHotel?.reviews.insert(response, at: 0)
+//                    self?.selectedHotel?.reviews.insert(response, at: 0)
                     //here main hotelviewmodel hotel variable i want to add review means i whole application i want to add this review where review is using
                     
-                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: { $0.id == selectedHotel.id }) {
-                        var updatedHotel = HotelDataMaganer.shared.allHotels[index]
-                        updatedHotel.reviews.insert(response, at: 0)
-                        HotelDataMaganer.shared.allHotels[index] = updatedHotel
-                    }
+//                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: { $0.id == selectedHotel.id }) {
+//                        var updatedHotel = HotelDataMaganer.shared.allHotels[index]
+//                        updatedHotel.reviews.insert(response, at: 0)
+//                        HotelDataMaganer.shared.allHotels[index] = updatedHotel
+//                    }
                     
-                    DispatchQueue.main.async {
-                        self?.rateAndReviewsTableview.reloadData()
-                    }
+//                    DispatchQueue.main.async {
+//                        self?.rateAndReviewsTableview.reloadData()
+//                    }
                 }
             })
             
@@ -309,16 +309,16 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     // open loginin
                     let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                     guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
-                    controller.comingFrom = .HotelDetails
-                    controller.modalPresentationStyle = .custom
+                    controller.comingFrom = .HomeSliderView
+                    controller.modalPresentationStyle = .overFullScreen
                     controller.transitioningDelegate = self
-                    controller.preferredContentSize = CGSize(width: UIScreen.main.bounds.width * 0.8,
-                                                             height: UIScreen.main.bounds.height * 0.5)
-                    controller.isFullScreenIfMobileNotRegistered = false
                     controller.reloadScreenAfterDismiss = {
-                        collectionView.reloadData()
+                        self.dismissPopup()
+                        
                     }
-                    self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
+                    
+                    self.present(controller, animated: true)
+//                    self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
                     
                 } else {
                     guard let room = selectedRoom else { return }
@@ -465,7 +465,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         
-        scrolltoTopHelper = ScrollToTopHelper(parent: self)
+//        scrolltoTopHelper = ScrollToTopHelper(parent: self)
         
         rateAndReviewsTableview.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
         hotelImagesCollectionView.register(UINib(nibName: "DetailsPageHotelImagesCVC", bundle: nil), forCellWithReuseIdentifier: "DetailsPageHotelImagesCVC")
@@ -654,6 +654,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         rateAndReviewsTableview.layoutIfNeeded()
         let contentHeight = rateAndReviewsTableview.contentSize.height
         rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 50
+        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 60
     }
     
     func updateRateAndReviewsContainerHeight() {

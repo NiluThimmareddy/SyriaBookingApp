@@ -20,13 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XXX-69-eqP">
-                                <rect key="frame" x="20" y="59" width="353" height="759"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seT-zv-re3">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="610.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="620.66666666666663"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CzB-3c-HFD">
-                                                <rect key="frame" x="0.0" y="5" width="353" height="230"/>
+                                                <rect key="frame" x="0.0" y="5" width="393" height="240"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Your Mobile Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhQ-bB-eke">
                                                         <rect key="frame" x="9.9999999999999858" y="10" width="236.66666666666663" height="23"/>
@@ -35,7 +35,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPh-Hk-QLk">
-                                                        <rect key="frame" x="308" y="4" width="35" height="35"/>
+                                                        <rect key="frame" x="348" y="4" width="35" height="35"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="35" id="9nh-LA-eDd"/>
                                                             <constraint firstAttribute="width" secondItem="pPh-Hk-QLk" secondAttribute="height" id="svp-vl-rlW"/>
@@ -50,14 +50,14 @@
                                                         </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2oK-QH-Kg5">
-                                                        <rect key="frame" x="0.0" y="53" width="353" height="1"/>
+                                                        <rect key="frame" x="0.0" y="53" width="393" height="1"/>
                                                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="1" id="aOT-If-GaF"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qFX-0y-kjw">
-                                                        <rect key="frame" x="10" y="69" width="333" height="20.333333333333329"/>
+                                                        <rect key="frame" x="10" y="69" width="373" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -91,7 +91,7 @@
                                                         </connections>
                                                     </button>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter mobile Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sga-DI-LeB">
-                                                        <rect key="frame" x="132" y="94.333333333333343" width="211" height="50"/>
+                                                        <rect key="frame" x="132" y="94.333333333333343" width="251" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="rFP-Sj-8dO"/>
                                                         </constraints>
@@ -99,7 +99,7 @@
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nzp-91-Uz1">
-                                                        <rect key="frame" x="132" y="154.33333333333334" width="211" height="0.0"/>
+                                                        <rect key="frame" x="132" y="154.33333333333334" width="251" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" systemColor="systemRedColor"/>
                                                         <nil key="highlightedColor"/>
@@ -126,7 +126,7 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="230" id="2xD-n1-nRn"/>
+                                                    <constraint firstAttribute="height" constant="240" id="2xD-n1-nRn"/>
                                                     <constraint firstItem="qhQ-bB-eke" firstAttribute="top" secondItem="CzB-3c-HFD" secondAttribute="top" constant="10" id="7EC-62-RWE"/>
                                                     <constraint firstItem="3p5-70-Hor" firstAttribute="leading" secondItem="snc-vv-35g" secondAttribute="leading" id="97c-Af-C8i"/>
                                                     <constraint firstItem="Nzp-91-Uz1" firstAttribute="trailing" secondItem="Sga-DI-LeB" secondAttribute="trailing" id="CKX-HO-IBK"/>
@@ -151,10 +151,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPw-uI-4s7">
-                                                <rect key="frame" x="0.0" y="235.00000000000003" width="353" height="375.66666666666674"/>
+                                                <rect key="frame" x="0.0" y="245.00000000000003" width="393" height="375.66666666666674"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Mobile number not registered. Please register below." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBT-RV-ify">
-                                                        <rect key="frame" x="0.0" y="10" width="353" height="40"/>
+                                                        <rect key="frame" x="0.0" y="10" width="393" height="40"/>
                                                         <color key="backgroundColor" red="0.99215686274509807" green="0.95294117647058818" blue="0.81960784313725488" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="hkY-ZV-ElI"/>
@@ -169,13 +169,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VYF-p1-C3g">
-                                                        <rect key="frame" x="10" y="60" width="333" height="240"/>
+                                                        <rect key="frame" x="10" y="60" width="373" height="240"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4cN-hq-VD5">
-                                                                <rect key="frame" x="0.0" y="0.0" width="333" height="80"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="80"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name *" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iFC-lN-Dbp">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="ADg-Rb-wdY"/>
                                                                         </constraints>
@@ -184,7 +184,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q7j-W9-ae3">
-                                                                        <rect key="frame" x="0.0" y="40" width="333" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="40" width="373" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="Rra-hk-Gg1"/>
                                                                         </constraints>
@@ -233,16 +233,16 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Day-94-Mmo">
-                                                                <rect key="frame" x="0.0" y="80" width="333" height="80"/>
+                                                                <rect key="frame" x="0.0" y="80" width="373" height="80"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUb-MZ-vZu">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="biZ-HT-hor">
-                                                                        <rect key="frame" x="0.0" y="40" width="333" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="40" width="373" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="OhT-SE-2H9"/>
                                                                         </constraints>
@@ -353,16 +353,16 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fm8-AI-Z3c">
-                                                                <rect key="frame" x="0.0" y="160" width="333" height="80"/>
+                                                                <rect key="frame" x="0.0" y="160" width="373" height="80"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vpr-Qp-TKm">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Country" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kAq-pk-dKq">
-                                                                        <rect key="frame" x="57" y="40" width="276" height="40"/>
+                                                                        <rect key="frame" x="57" y="40" width="316" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="Duk-z6-rCJ"/>
                                                                         </constraints>
@@ -533,8 +533,8 @@
                         <constraints>
                             <constraint firstItem="XXX-69-eqP" firstAttribute="bottom" secondItem="49k-Vx-ZSO" secondAttribute="bottom" id="4WG-Je-WEr"/>
                             <constraint firstItem="XXX-69-eqP" firstAttribute="top" secondItem="49k-Vx-ZSO" secondAttribute="top" id="hHk-16-GNN"/>
-                            <constraint firstItem="XXX-69-eqP" firstAttribute="leading" secondItem="49k-Vx-ZSO" secondAttribute="leading" constant="20" id="iEW-uz-Gen"/>
-                            <constraint firstItem="XXX-69-eqP" firstAttribute="trailing" secondItem="49k-Vx-ZSO" secondAttribute="trailing" constant="-20" id="via-sE-yJd"/>
+                            <constraint firstItem="XXX-69-eqP" firstAttribute="leading" secondItem="49k-Vx-ZSO" secondAttribute="leading" id="iEW-uz-Gen"/>
+                            <constraint firstItem="XXX-69-eqP" firstAttribute="trailing" secondItem="49k-Vx-ZSO" secondAttribute="trailing" id="via-sE-yJd"/>
                         </constraints>
                     </view>
                     <connections>
@@ -948,6 +948,7 @@ You can check your bookings in My Bookings</string>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="7wd-1L-fvP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vPW-TN-uhK" firstAttribute="centerX" secondItem="7wd-1L-fvP" secondAttribute="centerX" id="6N7-1p-zof"/>
                             <constraint firstItem="7wd-1L-fvP" firstAttribute="trailing" secondItem="vPW-TN-uhK" secondAttribute="trailing" constant="20" id="CHz-xL-VcU"/>
@@ -1604,10 +1605,10 @@ You can check your bookings in My Bookings</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yO-DG-uQN">
-                                <rect key="frame" x="20" y="69" width="353" height="749"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFi-RW-nQE">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Your Booking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J4s-Rr-jOp">
                                                 <rect key="frame" x="10" y="0.0" width="178" height="45"/>
@@ -1616,7 +1617,7 @@ You can check your bookings in My Bookings</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2oN-xG-mZf">
-                                                <rect key="frame" x="318" y="10" width="25" height="25"/>
+                                                <rect key="frame" x="358" y="10" width="25" height="25"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2oN-xG-mZf" secondAttribute="height" id="Mfc-s5-hQC"/>
                                                     <constraint firstAttribute="height" constant="25" id="P51-E1-sxZ"/>
@@ -1631,7 +1632,7 @@ You can check your bookings in My Bookings</string>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGh-Iy-Eb1">
-                                                <rect key="frame" x="0.0" y="49" width="353" height="1"/>
+                                                <rect key="frame" x="0.0" y="49" width="393" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="VvZ-Rx-RPg"/>
@@ -1657,19 +1658,19 @@ You can check your bookings in My Bookings</string>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9k-NL-0yu">
-                                        <rect key="frame" x="0.0" y="60" width="353" height="629"/>
+                                        <rect key="frame" x="0.0" y="60" width="393" height="639"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PaX-2J-vub">
-                                                <rect key="frame" x="0.0" y="0.0" width="353" height="835"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="835"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="33f-0C-gbu">
-                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="835"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="835"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FqD-RU-YLu">
-                                                                <rect key="frame" x="0.0" y="0.0" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guest Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xy-Sp-o0J">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="rFq-I9-Q8j"/>
                                                                         </constraints>
@@ -1678,10 +1679,10 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Clu-Kk-LDU">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mahesh" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4G8-YB-iif">
-                                                                                <rect key="frame" x="10" y="0.0" width="323" height="40"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="363" height="40"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="40" id="Olw-FD-wLj"/>
                                                                                 </constraints>
@@ -1723,10 +1724,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3X4-Ly-Gjc">
-                                                                <rect key="frame" x="0.0" y="105" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="105" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guest Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwS-Cq-UKl">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="Nn3-JJ-5Ow"/>
                                                                         </constraints>
@@ -1735,10 +1736,10 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a26-O3-ZrR">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iammaheshreddy.ios26@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ozx-ts-oVe">
-                                                                                <rect key="frame" x="10" y="0.0" width="323" height="40"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="363" height="40"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="40" id="EQ1-9Y-3AR"/>
                                                                                 </constraints>
@@ -1780,10 +1781,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qK-dg-t6O">
-                                                                <rect key="frame" x="0.0" y="210" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="210" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guest Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsM-Sz-w4z">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="95F-75-z8F"/>
                                                                         </constraints>
@@ -1792,10 +1793,10 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1vo-P3-uZe">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Guest phone number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1dS-ok-joI">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="40" id="DFH-WR-hhK"/>
                                                                                 </constraints>
@@ -1836,10 +1837,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uxa-yn-Kvo">
-                                                                <rect key="frame" x="0.0" y="315" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="315" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of Guests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diO-Ns-VaL">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="YQp-ld-dlH"/>
                                                                         </constraints>
@@ -1848,10 +1849,10 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m93-Hg-bmv">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BHg-0b-TlW">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="40" id="fvs-rR-bQz"/>
                                                                                 </constraints>
@@ -1868,7 +1869,7 @@ You can check your bookings in My Bookings</string>
                                                                         </constraints>
                                                                     </view>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Mvo-2M-mya">
-                                                                        <rect key="frame" x="315" y="55" width="18" height="30"/>
+                                                                        <rect key="frame" x="355" y="55" width="18" height="30"/>
                                                                         <subviews>
                                                                             <button opaque="NO" contentMode="bottom" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leb-9G-j3Q">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="15"/>
@@ -1929,10 +1930,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KED-el-S6B">
-                                                                <rect key="frame" x="0.0" y="420" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="420" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check-In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIz-YH-WE6">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="Bgr-5A-tw0"/>
                                                                         </constraints>
@@ -1941,15 +1942,15 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uam-qF-asz">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="dd/mm/yyyy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MLl-FC-s52">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                                             </textField>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP7-2X-7qH">
-                                                                                <rect key="frame" x="298" y="7.6666666666666288" width="25" height="25"/>
+                                                                                <rect key="frame" x="338" y="7.6666666666666288" width="25" height="25"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" secondItem="RP7-2X-7qH" secondAttribute="height" id="d2o-Lq-RWf"/>
                                                                                     <constraint firstAttribute="height" constant="25" id="xbv-vg-YaK"/>
@@ -1986,10 +1987,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IVq-eS-44x">
-                                                                <rect key="frame" x="0.0" y="525" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="525" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check-Out" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAY-dz-UbR">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="xCM-CV-o1w"/>
                                                                         </constraints>
@@ -1998,15 +1999,15 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hun-Ku-KIH">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="dd/mm/yyyy" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gFD-1v-hnX">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="40"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                                             </textField>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rhy-aH-Ait">
-                                                                                <rect key="frame" x="298" y="7.6666666666666288" width="25" height="25"/>
+                                                                                <rect key="frame" x="338" y="7.6666666666666288" width="25" height="25"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" secondItem="Rhy-aH-Ait" secondAttribute="height" id="Kbs-QT-Jdx"/>
                                                                                     <constraint firstAttribute="height" constant="25" id="Nx9-li-I3O"/>
@@ -2043,10 +2044,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTe-xH-Zbr">
-                                                                <rect key="frame" x="0.0" y="630" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="630" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Rooms &amp; Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bM6-Nc-W3Q">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="h9s-d9-S5h"/>
                                                                         </constraints>
@@ -2054,11 +2055,11 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
-                                                                        <rect key="frame" x="10" y="45" width="333" height="41"/>
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
+                                                                        <rect key="frame" x="10" y="45" width="373" height="41"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250: 2 Adults, 2 Child (Extra Bed) Qty 1 - Total $250.00" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDJ-2L-SAQ">
-                                                                                <rect key="frame" x="10" y="0.0" width="323" height="36"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="363" height="36"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -2097,10 +2098,10 @@ You can check your bookings in My Bookings</string>
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lR7-ei-dhS">
-                                                                <rect key="frame" x="0.0" y="735" width="353" height="100"/>
+                                                                <rect key="frame" x="0.0" y="735" width="393" height="100"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRO-M5-Bbv">
-                                                                        <rect key="frame" x="10" y="10" width="333" height="30"/>
+                                                                        <rect key="frame" x="10" y="10" width="373" height="30"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="30" id="3sf-On-OUh"/>
                                                                         </constraints>
@@ -2109,10 +2110,10 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Rs-PV-iNC">
-                                                                        <rect key="frame" x="10" y="50" width="333" height="40"/>
+                                                                        <rect key="frame" x="10" y="50" width="373" height="40"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYG-fk-huQ">
-                                                                                <rect key="frame" x="10" y="0.0" width="323" height="40"/>
+                                                                                <rect key="frame" x="10" y="0.0" width="363" height="40"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="40" id="qym-bC-euR"/>
                                                                                 </constraints>
@@ -2182,17 +2183,17 @@ You can check your bookings in My Bookings</string>
                                         </userDefinedRuntimeAttributes>
                                     </scrollView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J74-Nw-zl2">
-                                        <rect key="frame" x="0.0" y="689" width="353" height="60"/>
+                                        <rect key="frame" x="0.0" y="699" width="393" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bvl-Be-78O">
-                                                <rect key="frame" x="0.0" y="0.0" width="353" height="1"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="1"/>
                                                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="oHc-Pi-IEJ"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pfG-7X-OSv">
-                                                <rect key="frame" x="193" y="10" width="150" height="40"/>
+                                                <rect key="frame" x="233" y="10" width="150" height="40"/>
                                                 <color key="backgroundColor" red="0.25098039220000001" green="0.52156862749999999" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="Ia4-7z-pf9"/>
@@ -2249,9 +2250,9 @@ You can check your bookings in My Bookings</string>
                         <viewLayoutGuide key="safeArea" id="LZ5-K5-I1j"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="LZ5-K5-I1j" firstAttribute="trailing" secondItem="5yO-DG-uQN" secondAttribute="trailing" constant="20" id="K0a-GV-5qE"/>
-                            <constraint firstItem="5yO-DG-uQN" firstAttribute="top" secondItem="LZ5-K5-I1j" secondAttribute="top" constant="10" id="NyL-IT-g85"/>
-                            <constraint firstItem="5yO-DG-uQN" firstAttribute="leading" secondItem="LZ5-K5-I1j" secondAttribute="leading" constant="20" id="XoA-HS-WRC"/>
+                            <constraint firstItem="LZ5-K5-I1j" firstAttribute="trailing" secondItem="5yO-DG-uQN" secondAttribute="trailing" id="K0a-GV-5qE"/>
+                            <constraint firstItem="5yO-DG-uQN" firstAttribute="top" secondItem="LZ5-K5-I1j" secondAttribute="top" id="NyL-IT-g85"/>
+                            <constraint firstItem="5yO-DG-uQN" firstAttribute="leading" secondItem="LZ5-K5-I1j" secondAttribute="leading" id="XoA-HS-WRC"/>
                             <constraint firstItem="5yO-DG-uQN" firstAttribute="bottom" secondItem="LZ5-K5-I1j" secondAttribute="bottom" id="Zt7-E6-rsA"/>
                         </constraints>
                     </view>
@@ -2307,16 +2308,16 @@ You can check your bookings in My Bookings</string>
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

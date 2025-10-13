@@ -30,6 +30,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         setupConfirmationMessage()
         setUpLanguage()
+        backView.applyCardStyle()
     }
     
     private func setupConfirmationMessage() {
@@ -120,7 +121,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        goToHomeTab()
     }
     
     @IBAction func viewBookingConfirmationButtonAction(_ sender: Any) {

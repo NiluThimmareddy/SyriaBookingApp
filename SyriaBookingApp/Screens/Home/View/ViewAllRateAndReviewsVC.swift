@@ -79,25 +79,24 @@ extension ViewAllRateAndReviewsVC {
         rateAndReviewsTableView.dataSource = self
         rateAndReviewsTableView.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
         
-        guard let hotel = selectedHotel else { return }
-        
-//        rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
-        if AppSettings.shared.selectedLanguage == .arabic {
-            rateAndReviewsLabel.text = "التقييمات والمراجعات \(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
-        } else {
-            rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
-        }
-        rateAndReviewsTableView.reloadData()
-        
-        backView.applyCardStyle()
-        
         if comingFrom == .profile {
             FetchuserReview()
             rateAndReviewsLabel.text = "Reviews"
         }else {
             guard let hotel = selectedHotel else { return }
-            rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
-            rateAndReviewsTableView.reloadData()
+            
+            //        rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+            if AppSettings.shared.selectedLanguage == .arabic {
+                rateAndReviewsLabel.text = "التقييمات والمراجعات \(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
+            } else {
+                rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+            }
         }
+        rateAndReviewsTableView.reloadData()
+        
+        backView.applyCardStyle()
+        
+        
     }
+    
 }

@@ -100,12 +100,12 @@ class RegisterMobileNumberVC : UIViewController {
     }    
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        if comingFrom == .HomeSliderView || comingFrom == .tabbarBooking || comingFrom == .HotelDetails {
-            //Move to home page
-            UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
-        } else {
+//        if comingFrom == .tabbarBooking || comingFrom == .HotelDetails {
+//            //Move to home page
+//            UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
+//        } else {
             self.dismiss(animated: true, completion: nil)
-        }
+//        }
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
@@ -257,7 +257,7 @@ class RegisterMobileNumberVC : UIViewController {
  
 extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
-      
+        scrollView.applyCardStyle()
         setupGenderPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
         

@@ -65,19 +65,19 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cx7-XY-VMK">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_commonHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-ry-hcv">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequently Asked Questions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PSS-Tz-rsB">
-                                                <rect key="frame" x="10" y="70.333333333333343" width="223" height="19.333333333333329"/>
+                                                <rect key="frame" x="10" y="50.333333333333329" width="223" height="19.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Redefining travel and hospitality within Syria." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iAl-UN-bHW">
-                                                <rect key="frame" x="10" y="94.666666666666657" width="223" height="31.333333333333329"/>
+                                                <rect key="frame" x="10" y="74.666666666666657" width="223" height="31.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -88,7 +88,9 @@
                                             <constraint firstAttribute="bottom" secondItem="pxB-ry-hcv" secondAttribute="bottom" id="5aM-f8-MHn"/>
                                             <constraint firstItem="PSS-Tz-rsB" firstAttribute="leading" secondItem="cx7-XY-VMK" secondAttribute="leading" constant="10" id="6L3-6f-Uko"/>
                                             <constraint firstItem="iAl-UN-bHW" firstAttribute="leading" secondItem="PSS-Tz-rsB" secondAttribute="leading" id="KhE-Go-Bmj"/>
-                                            <constraint firstAttribute="height" constant="200" id="Q7e-IT-o10"/>
+                                            <constraint firstAttribute="height" constant="160" id="Q7e-IT-o10">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="180"/>
+                                            </constraint>
                                             <constraint firstItem="iAl-UN-bHW" firstAttribute="trailing" secondItem="PSS-Tz-rsB" secondAttribute="trailing" id="SY4-X1-jdJ"/>
                                             <constraint firstAttribute="trailing" secondItem="PSS-Tz-rsB" secondAttribute="trailing" constant="160" id="V2K-q4-icu"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="iAl-UN-bHW" secondAttribute="bottom" constant="10" id="Vw5-38-gIq"/>
@@ -142,13 +144,13 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You need to come at least once in your life" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehf-tL-2gf">
-                                        <rect key="frame" x="10" y="210" width="373" height="23"/>
+                                        <rect key="frame" x="10" y="170" width="373" height="23"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NQ6-EQ-rkP">
-                                        <rect key="frame" x="10" y="243" width="373" height="506"/>
+                                        <rect key="frame" x="10" y="203" width="373" height="546"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </tableView>
                                 </subviews>
@@ -210,19 +212,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mDr-Y1-dN1">
-                                <rect key="frame" x="0.0" y="59" width="393" height="200"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="160"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_commonHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="SXc-r4-9vu">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy &amp; Cookie Statement" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57R-Nh-N3h">
-                                        <rect key="frame" x="10" y="70.333333333333343" width="223" height="19.333333333333329"/>
+                                        <rect key="frame" x="10" y="50.333333333333329" width="223" height="19.333333333333329"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Redefining travel and hospitality within Syria." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpi-Nl-npP">
-                                        <rect key="frame" x="10" y="94.666666666666657" width="223" height="31.333333333333329"/>
+                                        <rect key="frame" x="10" y="74.666666666666657" width="223" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -241,7 +243,9 @@
                                     <constraint firstAttribute="trailing" secondItem="SXc-r4-9vu" secondAttribute="trailing" id="haX-xL-4MF"/>
                                     <constraint firstItem="SXc-r4-9vu" firstAttribute="leading" secondItem="mDr-Y1-dN1" secondAttribute="leading" id="qKX-b6-aJF"/>
                                     <constraint firstAttribute="bottom" secondItem="SXc-r4-9vu" secondAttribute="bottom" id="snn-TA-m5X"/>
-                                    <constraint firstAttribute="height" constant="200" id="vSQ-JS-9rm"/>
+                                    <constraint firstAttribute="height" constant="160" id="vSQ-JS-9rm">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="180"/>
+                                    </constraint>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQg-Qc-WJy">
@@ -271,10 +275,10 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="muq-iZ-Gve">
-                                <rect key="frame" x="0.0" y="259" width="393" height="593"/>
+                                <rect key="frame" x="0.0" y="219" width="393" height="633"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0v9-Qh-giV">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="593"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="633"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>
@@ -334,19 +338,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QZA-hn-FFO">
-                                <rect key="frame" x="0.0" y="59" width="393" height="200"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="160"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_commonHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="kfR-a5-x7K">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Us" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vq8-IY-lkJ">
-                                        <rect key="frame" x="10" y="70.333333333333343" width="223" height="19.333333333333329"/>
+                                        <rect key="frame" x="10" y="50.333333333333329" width="223" height="19.333333333333329"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Redefining travel and hospitality within Syria." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fm-TV-mpD">
-                                        <rect key="frame" x="10" y="94.666666666666657" width="223" height="31.333333333333329"/>
+                                        <rect key="frame" x="10" y="74.666666666666657" width="223" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -356,7 +360,9 @@
                                 <constraints>
                                     <constraint firstItem="kfR-a5-x7K" firstAttribute="top" secondItem="QZA-hn-FFO" secondAttribute="top" id="9OI-Qe-cYP"/>
                                     <constraint firstItem="7Fm-TV-mpD" firstAttribute="leading" secondItem="Vq8-IY-lkJ" secondAttribute="leading" id="9mc-Z4-Ru4"/>
-                                    <constraint firstAttribute="height" constant="200" id="EV0-u9-M7M"/>
+                                    <constraint firstAttribute="height" constant="160" id="EV0-u9-M7M">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="180"/>
+                                    </constraint>
                                     <constraint firstAttribute="trailing" secondItem="Vq8-IY-lkJ" secondAttribute="trailing" constant="160" id="EsC-Uj-Ls0"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="7Fm-TV-mpD" secondAttribute="bottom" constant="10" id="HLJ-dh-xb5"/>
                                     <constraint firstItem="7Fm-TV-mpD" firstAttribute="top" secondItem="Vq8-IY-lkJ" secondAttribute="bottom" constant="5" id="Jqn-bl-M0l"/>
@@ -395,10 +401,10 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOh-do-jec">
-                                <rect key="frame" x="0.0" y="259" width="393" height="593"/>
+                                <rect key="frame" x="0.0" y="219" width="393" height="633"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bxf-VC-RSp">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="593"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="633"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>
@@ -587,19 +593,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyU-ZH-gue">
-                                <rect key="frame" x="0.0" y="59" width="393" height="200"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="160"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_commonHeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="a74-fH-mKq">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terms &amp; Conditions" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMl-ee-lMK">
-                                        <rect key="frame" x="10" y="70.333333333333343" width="223" height="19.333333333333329"/>
+                                        <rect key="frame" x="10" y="50.333333333333329" width="223" height="19.333333333333329"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Redefining travel and hospitality within Syria." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHn-iQ-fvG">
-                                        <rect key="frame" x="10" y="94.666666666666657" width="223" height="31.333333333333329"/>
+                                        <rect key="frame" x="10" y="74.666666666666657" width="223" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -612,7 +618,9 @@
                                     <constraint firstItem="ZMl-ee-lMK" firstAttribute="leading" secondItem="gyU-ZH-gue" secondAttribute="leading" constant="10" id="6MW-7s-eIX"/>
                                     <constraint firstAttribute="trailing" secondItem="a74-fH-mKq" secondAttribute="trailing" id="Dca-0n-9Fp"/>
                                     <constraint firstItem="ZMl-ee-lMK" firstAttribute="centerY" secondItem="a74-fH-mKq" secondAttribute="centerY" constant="-20" id="ENS-Tf-7Vm"/>
-                                    <constraint firstAttribute="height" constant="200" id="GRp-Y0-EY0"/>
+                                    <constraint firstAttribute="height" constant="160" id="GRp-Y0-EY0">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="180"/>
+                                    </constraint>
                                     <constraint firstItem="a74-fH-mKq" firstAttribute="leading" secondItem="gyU-ZH-gue" secondAttribute="leading" id="N0m-Ds-qYq"/>
                                     <constraint firstItem="AHn-iQ-fvG" firstAttribute="trailing" secondItem="ZMl-ee-lMK" secondAttribute="trailing" id="P62-Fo-HEQ"/>
                                     <constraint firstItem="AHn-iQ-fvG" firstAttribute="top" secondItem="ZMl-ee-lMK" secondAttribute="bottom" constant="5" id="ZyQ-lt-0be"/>
@@ -648,10 +656,10 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tT1-rp-xsv">
-                                <rect key="frame" x="0.0" y="259" width="393" height="593"/>
+                                <rect key="frame" x="0.0" y="219" width="393" height="633"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hAO-BI-bie">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="593"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="633"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>
@@ -714,7 +722,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

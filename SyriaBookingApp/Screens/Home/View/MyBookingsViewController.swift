@@ -251,14 +251,15 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                     print("Failed to load RegisterMobileNumberVC")
                     return
                 }
-                //                controller.
+                controller.modalPresentationStyle = .overFullScreen
                 controller.comingFrom = .tabbarBooking
                 controller.reloadScreenAfterDismiss = {
                     DispatchQueue.main.async{
                         self.setupUI()
                     }
                 }
-                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
+                self.present(controller, animated: true)
+//                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
         }
     }

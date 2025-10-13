@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,17 +11,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="TopHotelsCollectionViewCell" customModule="SyriaBookingApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="305" height="313"/>
+            <rect key="frame" x="0.0" y="0.0" width="186.66666666666666" height="313"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="305" height="313"/>
+                <rect key="frame" x="0.0" y="0.0" width="186.66666666666666" height="313"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ENd-t5-I4u">
-                        <rect key="frame" x="5" y="8" width="295" height="297"/>
+                        <rect key="frame" x="5" y="8" width="176.66666666666666" height="297"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I9Q-Lg-lTX">
-                                <rect key="frame" x="0.0" y="0.0" width="295" height="200"/>
+                                <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="mH5-lG-IuU">
                                         <variation key="heightClass=regular-widthClass=regular" constant="250"/>
@@ -60,10 +60,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pC9-F9-Vlu">
-                                <rect key="frame" x="0.0" y="177" width="295" height="120"/>
+                                <rect key="frame" x="0.0" y="177" width="176.66666666666666" height="120"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JWN" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTC-gE-Kui">
-                                        <rect key="frame" x="10" y="25" width="275" height="17"/>
+                                        <rect key="frame" x="10" y="25" width="156.66666666666666" height="17"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -75,13 +75,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="Park: 2 km from Plubic Park" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5E-9B-3fX">
-                                        <rect key="frame" x="10" y="64" width="275" height="12"/>
+                                        <rect key="frame" x="10" y="64" width="156.66666666666666" height="12"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <color key="textColor" systemColor="systemPurpleColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="$200 / night" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXF-Iq-P94">
-                                        <rect key="frame" x="10" y="81" width="77.333333333333329" height="15.666666666666671"/>
+                                        <rect key="frame" x="9.9999999999999964" y="81" width="44.666666666666657" height="31.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -108,7 +108,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDd-f5-643">
-                                        <rect key="frame" x="210" y="74" width="80" height="30"/>
+                                        <rect key="frame" x="91.666666666666686" y="81.666666666666686" width="80" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="80" id="Yj1-Kw-lU7"/>
@@ -145,7 +145,7 @@
                                     <constraint firstItem="LDd-f5-643" firstAttribute="trailing" secondItem="dWB-V4-Gyr" secondAttribute="trailing" id="Upx-h2-iYO"/>
                                     <constraint firstItem="yXF-Iq-P94" firstAttribute="leading" secondItem="g5E-9B-3fX" secondAttribute="leading" id="V1I-78-skc"/>
                                     <constraint firstItem="LDd-f5-643" firstAttribute="centerY" secondItem="yXF-Iq-P94" secondAttribute="centerY" id="WB9-Eo-KJN"/>
-                                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="yXF-Iq-P94" secondAttribute="bottom" constant="33.329999999999998" id="aFp-Az-bO1"/>
+                                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="yXF-Iq-P94" secondAttribute="bottom" constant="10" id="aFp-Az-bO1"/>
                                     <constraint firstItem="zTC-gE-Kui" firstAttribute="top" secondItem="pC9-F9-Vlu" secondAttribute="top" constant="25" id="cqm-P5-4Ib"/>
                                     <constraint firstItem="dWB-V4-Gyr" firstAttribute="centerY" secondItem="5aO-MU-SJu" secondAttribute="centerY" id="crZ-Uw-9KY"/>
                                     <constraint firstItem="LDd-f5-643" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yXF-Iq-P94" secondAttribute="trailing" constant="10" id="cwI-ht-Xxc"/>
@@ -169,7 +169,7 @@
                                 </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lHr-qv-idt">
-                                <rect key="frame" x="180" y="162" width="100" height="25"/>
+                                <rect key="frame" x="61.666666666666671" y="162" width="100.00000000000001" height="25"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.7 (6 reviews)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOZ-kD-7Ov">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="25"/>
