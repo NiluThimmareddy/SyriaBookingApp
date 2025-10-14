@@ -126,7 +126,8 @@ extension UIViewController {
                 UIViewController.notificationVCReference = nil
             }
         } else {
-            guard let notificationVC = storyboard?.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            guard let notificationVC = storyboard.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
                 return
             }
             notificationVC.modalPresentationStyle = .overCurrentContext

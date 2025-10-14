@@ -36,11 +36,11 @@ class HowItsWorkVC: UIViewController {
     func setupFontForLabel(){
         descriptionLabel.font = .captionFont
         for q in QuestinosLabel {
-            q.font = .bodyFont
+            q.font = .titleFont
         }
         
         for a in answerLabel {
-            a.font = .captionFont
+            a.font = .bodyFont
         }
     }
     
