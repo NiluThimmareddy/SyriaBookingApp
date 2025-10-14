@@ -459,19 +459,19 @@ extension HomeViewController {
         sliderCollectionView.register(UINib(nibName: "SliderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SliderCollectionViewCell")
         
         let font = UIFont.systemFont(ofSize: 14)
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) {
+        if let today = Calendar.current.date(byAdding: .day, value: 0, to: Date()) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
-            let tomorrowDate = formatter.string(from: tomorrow)
+            let todayDate = formatter.string(from: today)
             
             let attributedTitle = NSAttributedString(
-                string: tomorrowDate,
+                string: todayDate,
                 attributes: [.font: font]
             )
             
-            selectedCheckInDate = tomorrow
-            checkInButton.setTitle(tomorrowDate, for: .normal)
+            selectedCheckInDate = today
+            checkInButton.setTitle(todayDate, for: .normal)
         }
         
         setUpTomorrowDate()
@@ -625,8 +625,8 @@ extension HomeViewController {
             }
         }
         
-        setButton(tomorrowDateButton, daysToAdd: 1)
-        setButton(dayAfterTomorrowButton, daysToAdd: 2)
+        setButton(tomorrowDateButton, daysToAdd: 0)
+        setButton(dayAfterTomorrowButton, daysToAdd: 1)
     }
     
     func NavigationBackGroundColour(){
@@ -765,21 +765,23 @@ extension HomeViewController {
     }
     
     func updateDatePickerLimits() {
-        let now = Date()
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date()) // Strip time
+        
         switch currentDatePickerMode {
         case .checkIn:
-            
-            datePicker.minimumDate = now
-            datePicker.date = now
+            datePicker.minimumDate = today
+            datePicker.date = today
             
         case .checkOut:
-            guard let checkIn = selectedCheckInDate else {
-                datePicker.minimumDate = now
-                datePicker.date = now
-                return
+            if let checkIn = selectedCheckInDate {
+                let checkInDay = calendar.startOfDay(for: checkIn)
+                datePicker.minimumDate = checkInDay
+                datePicker.date = checkInDay
+            } else {
+                datePicker.minimumDate = today
+                datePicker.date = today
             }
-            datePicker.minimumDate = checkIn
-            datePicker.date = checkIn
         }
     }
     
@@ -787,12 +789,11 @@ extension HomeViewController {
         switch currentDatePickerMode {
         case .checkIn:
             selectedCheckInDate = sender.date
-            setNextDateInCkechout(checkInDate:sender.date)
-        case .checkOut :
+            setNextDateInCkechout(checkInDate: sender.date)
+        case .checkOut:
             selectedCheckOutDate = sender.date
-            break
         }
-        
+
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let selectedDate = formatter.string(from: sender.date)

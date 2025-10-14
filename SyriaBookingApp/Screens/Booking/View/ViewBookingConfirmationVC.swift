@@ -186,9 +186,27 @@ extension ViewBookingConfirmationVC {
         
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
-        let calculatedTotal: String
-        let totalAmount : Double = self.bookingHistoryData?.totalAmount ?? 0.0
-        calculatedTotal = String(format: "%.2f", totalAmount)
+        var calculatedTotal = "0.00"
+        var totalAmount: Double = 0.0
+
+        if let data = self.bookingHistoryData {
+            // Parse total nights
+            let totalNights = calculateTotalNights(
+                checkIn: data.checkIn.toDayMonthYear(),
+                checkOut: data.checkOut.toDayMonthYear()
+            )
+
+            // Parse each booking detail (rate × qty × nights)
+            let details = parseBookingDetails(data.bookingDetails)
+            bookingDetails = details
+
+            totalAmount = details.reduce(0.0) { partialResult, detail in
+                let perNightTotal = detail.rate * Double(detail.qty)
+                return partialResult + (perNightTotal * Double(totalNights))
+            }
+
+            calculatedTotal = String(format: "%.2f", totalAmount)
+        }
         
         guard let data = bookingHistoryData else {
             print("booking history is empty")
@@ -212,7 +230,7 @@ extension ViewBookingConfirmationVC {
                     (bookingDateLabel, "Booking Date: \(data.timestamp.toDayMonthYear())", "Booking Date:"),
                     (checkInLabel, "Check-In: \(data.checkIn.toDayMonthYear())", "Check-In:"),
                     (checkOutLabel, "Check-Out: \(data.checkOut.toDayMonthYear())", "Check-Out:"),
-                    (totalNightsLabel, "Total Nights: (\(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())))", "Total Nights:"),
+                    (totalNightsLabel, "Total: \(calculateTotalNights(checkIn: data.checkIn.toDayMonthYear(), checkOut: data.checkOut.toDayMonthYear())) Nights", "Total:"),
                     (statusLabel, "Status: \(data.bookingStatus)", "Status:"),
                     (guestLabel, "Guest: \(data.guestName)", "Guest:"),
                     (guestEmailLabel, "Email: \(data.guestEmail)", "Email:"),
@@ -384,6 +402,19 @@ extension ViewBookingConfirmationVC {
         }
         
         return result
+    }
+    
+    func calculateTotalNights(checkIn: String, checkOut: String) -> Int {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+
+        guard let checkInDate = formatter.date(from: checkIn),
+              let checkOutDate = formatter.date(from: checkOut) else {
+            return 0
+        }
+
+        let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
+        return max(components.day ?? 0, 0)
     }
     
 }

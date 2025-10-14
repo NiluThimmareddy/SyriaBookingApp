@@ -42,7 +42,7 @@ class MyBookingTableViewCell: UITableViewCell {
         hotelNameLabel.text = booking.hotelName
         roomTypeLabel.text = booking.roomType
         datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
-        totalAmountLabel.text = "$\(booking.totalAmount)"
+        totalAmountLabel.text = "Total: \(booking.totalAmount)"
         upcomingDataLabel.text = booking.lastUpdatedUtc.toDayMonth()
         
         switch booking.status.lowercased() {
