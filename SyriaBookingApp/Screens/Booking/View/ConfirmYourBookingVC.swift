@@ -49,11 +49,14 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkInTF.text = ""
+        checkOutTF.text = ""
         setUpUI()
         hideKeyboardWhenTappedAround()
         numberOfGuestsTF.delegate = self
         checkInTF.delegate = self
         checkOutTF.delegate = self
+       
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -109,6 +112,8 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             self.hideLoader()
             checkInTF.text = ""
             checkOutTF.text = ""
+            selectedCheckInDate =  nil
+            selectedCheckOutDate = nil
             guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
             
             confirmationVC.guestName = response.guestName
@@ -157,6 +162,17 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         }
     }
     
+    func setNextDateInCkechout(checkInDate:Date){
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: checkInDate) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateStyle = .medium
+            let tomorrowDate = formatter.string(from: tomorrow)
+            
+            checkOutTF.text =  tomorrowDate
+        }
+    }
+    
 }
 
 extension ConfirmYourBookingVC {
@@ -168,14 +184,29 @@ extension ConfirmYourBookingVC {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+
+        if let checkIn = selectedCheckInDate {
+            // If check-in is already selected
+            let selectedCheckin = formatter.string(from: checkIn)
+            let selectedCheckout = selectedCheckOutDate != nil ? formatter.string(from: selectedCheckOutDate!) : "Not Selected"
+            checkInTF.text = selectedCheckin
+            checkOutTF.text = selectedCheckout
+        } else {
+            // No check-in selected, set today as check-in
+            let today = Date()
+            checkInTF.text = formatter.string(from: today)
+            
+            // Set tomorrow as default check-out
+            if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+                checkOutTF.text = formatter.string(from: tomorrow)
+            }
+        }
+
         
-        let selectedCheckin = selectedCheckInDate.map { formatter.string(from: $0) } ?? "Not Selected"
-        let selectedCheckout = selectedCheckOutDate.map { formatter.string(from: $0) } ?? "Not Selected"
         
-        
-        
-        checkInTF.text = selectedCheckin
-        checkOutTF.text = selectedCheckout
+       
         var roomRatesData = ""
         total = 0.0
         for i in selectedRates {
@@ -216,6 +247,61 @@ extension ConfirmYourBookingVC {
         updateTotalAmountLabel()
     }
 
+//    func setupDatePickerUI() {
+//        datePickerContainerView = UIView()
+//        datePickerContainerView.backgroundColor = .systemBackground
+//        datePickerContainerView.layer.cornerRadius = 16
+//        datePickerContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+//        datePickerContainerView.layer.shadowColor = UIColor.black.cgColor
+//        datePickerContainerView.layer.shadowOpacity = 0.2
+//        datePickerContainerView.layer.shadowOffset = CGSize(width: 0, height: -2)
+//        datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        datePicker = UIDatePicker()
+//        datePicker.datePickerMode = .date
+//        datePicker.preferredDatePickerStyle = .inline
+//        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+//        datePicker.translatesAutoresizingMaskIntoConstraints = false
+//
+//        datePickerContainerView.addSubview(datePicker)
+//        view.addSubview(datePickerContainerView)
+//
+//        // Constraints - Different for iPhone and iPad
+//        if UIDevice.current.userInterfaceIdiom == .pad {
+//            // iPad - Fixed width and centered
+//            NSLayoutConstraint.activate([
+//                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+//                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+//                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
+//                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
+//
+//                datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//                datePickerContainerView.widthAnchor.constraint(equalToConstant: 400),
+//                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
+//            ])
+//        } else {
+//            // iPhone - Full width
+//            NSLayoutConstraint.activate([
+//                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+//                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+//                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
+//                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
+//
+//                datePickerContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//                datePickerContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
+//            ])
+//        }
+//
+//        datePickerBottomConstraint = datePickerContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 400)
+//        datePickerBottomConstraint?.isActive = true
+//        
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissDatePicker))
+//        tapGesture.cancelsTouchesInView = false
+//        tapGesture.delegate = self
+//        view.addGestureRecognizer(tapGesture)
+//    }
+    
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
         datePickerContainerView.backgroundColor = .systemBackground
@@ -226,43 +312,56 @@ extension ConfirmYourBookingVC {
         datePickerContainerView.layer.shadowOffset = CGSize(width: 0, height: -2)
         datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
 
+        // ✅ Toolbar setup
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
+        toolbar.setItems([cancelButton, flexSpace, doneButton], animated: false)
+
+        // Date Picker setup
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
 
+        // Add subviews
+        datePickerContainerView.addSubview(toolbar)
         datePickerContainerView.addSubview(datePicker)
         view.addSubview(datePickerContainerView)
 
-        // Constraints - Different for iPhone and iPad
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // iPad - Fixed width and centered
-            NSLayoutConstraint.activate([
-                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
-                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
-                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
+        // Constraints
+        NSLayoutConstraint.activate([
+            toolbar.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+            toolbar.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
+            toolbar.heightAnchor.constraint(equalToConstant: 44),
 
+            datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
+            datePicker.topAnchor.constraint(equalTo: toolbar.bottomAnchor, constant: 8),
+            datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16)
+        ])
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            NSLayoutConstraint.activate([
                 datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 datePickerContainerView.widthAnchor.constraint(equalToConstant: 400),
-                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
+                datePickerContainerView.heightAnchor.constraint(equalToConstant: 450)
             ])
         } else {
-            // iPhone - Full width
             NSLayoutConstraint.activate([
-                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
-                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
-                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
-
                 datePickerContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 datePickerContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
+                datePickerContainerView.heightAnchor.constraint(equalToConstant: 450)
             ])
         }
 
-        datePickerBottomConstraint = datePickerContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 400)
+        datePickerBottomConstraint = datePickerContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 450)
         datePickerBottomConstraint?.isActive = true
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissDatePicker))
@@ -270,6 +369,33 @@ extension ConfirmYourBookingVC {
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
+
+    @objc func doneDatePicker() {
+        let selectedDate = datePicker.date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        let selectedDateString = formatter.string(from: selectedDate)
+        
+        switch currentDatePickerMode {
+        case .checkIn:
+            selectedCheckInDate = selectedDate
+            checkInTF.text = selectedDateString
+            
+                setNextDateInCkechout(checkInDate: datePicker.date)
+            
+        case .checkOut:
+            selectedCheckOutDate = selectedDate
+            checkOutTF.text = selectedDateString
+        }
+
+        updateTotalAmountLabel()
+        dismissDatePicker()
+    }
+
+    @objc func cancelDatePicker() {
+        dismissDatePicker()
+    }
+
     
     func toggleDatePicker(for button: UIButton) {
         activeButton = button
@@ -281,7 +407,7 @@ extension ConfirmYourBookingVC {
     }
     
     @objc func dismissDatePicker() {
-        datePickerBottomConstraint?.constant = 400
+        datePickerBottomConstraint?.constant = 500
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -299,39 +425,37 @@ extension ConfirmYourBookingVC {
             print("Setting Check-In Text Field")
             selectedCheckInDate = sender.date
             checkInTF.text = selectedDateString
-            checkOutTF.text = ""
-            selectedCheckOutDate = nil
+            setNextDateInCkechout(checkInDate: sender.date)
         case .checkOut:
             print("Setting Check-Out Text Field")
             selectedCheckOutDate = sender.date
             checkOutTF.text = selectedDateString
+            dismissDatePicker()
         }
         
-        dismissDatePicker()
+       
         updateTotalAmountLabel()
     }
     
     func updateDatePickerLimits() {
-        guard let today = Calendar.current.date(byAdding: .day, value: 0, to: Date()) else {
-            return
-        }
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date()) // Strip time
+        
         switch currentDatePickerMode {
         case .checkIn:
             datePicker.minimumDate = today
-            if let checkInDate = selectedCheckInDate {
-                datePicker.date = checkInDate
-            } else {
-                datePicker.date = today
-                selectedCheckInDate = today
-            }
+            datePicker.date = today
+            
         case .checkOut:
             if let checkIn = selectedCheckInDate {
-                guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) else {
-                    return
+                if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) {
+                    datePicker.minimumDate = nextDayBaseOnCheckin
                 }
-                datePicker.minimumDate = tomorrow
-                datePicker.date = tomorrow
-                selectedCheckOutDate = datePicker.date
+            } else {
+                if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+                    datePicker.minimumDate = tomorrow
+                    datePicker.date = tomorrow
+                }
             }
         }
     }

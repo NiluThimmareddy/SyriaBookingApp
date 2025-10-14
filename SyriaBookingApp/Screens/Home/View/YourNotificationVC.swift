@@ -19,8 +19,12 @@ class YourNotificationVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
+       
         setupLanguage()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setUpUI()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -77,20 +81,15 @@ extension YourNotificationVC {
         yourNotificationTV.estimatedRowHeight = 60
         yourNotificationTV.rowHeight = UITableView.automaticDimension
         
-        guard let user = UserSessionManager.getUser() else { return }
-        viewModel.fetchNotificationUser(userId: user.id)
+        
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
         
         viewModel.onSuccess = { [weak self] response in
             DispatchQueue.main.async {
                 self?.hideLoader()
                
-                self?.viewModel.filteredHistoryArray = response.filter { data in
-                    if let date = data.checkInUtc.toDate() {
-                        return date >= Calendar.current.startOfDay(for: Date())
-                    }
-                    return false
-                }
+                self?.viewModel.filteredHistoryArray = response
+
                 let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
                 
                 if rowCount == 0 {
@@ -116,6 +115,11 @@ extension YourNotificationVC {
                 self?.hideLoader()
                 self?.showAlert(error)
             }
+        }
+        
+        if let user = UserSessionManager.getUser() {
+            viewModel.fetchNotificationUser(userId: user.id)
+            
         }
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }

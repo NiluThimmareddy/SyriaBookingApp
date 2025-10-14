@@ -181,6 +181,20 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
             storyboard.viewModel = self.viewModel
             
+            let formater = DateFormatter()
+            formater.dateStyle = .medium
+            
+            let date = formater.date(from: checkInButton.titleLabel?.text ?? "")
+            
+            guard let date = date else { return }
+            selectedCheckInDate = date
+            
+            let checkoutdate = formater.date(from: checkOutButton.titleLabel?.text ?? "")
+            
+            guard let checkoutdate = checkoutdate else { return }
+            selectedCheckOutDate = checkoutdate
+            
+            
             storyboard.delegate = self
             storyboard.comingFrom = .search
             storyboard.selectedCity = selectedCity
@@ -216,8 +230,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         let date = formater.date(from: sender.titleLabel?.text ?? "")
         
         guard let date = date else { return }
-        selectedCheckInDate = date
-        currentDatePickerMode = .checkOut
+       
+                currentDatePickerMode = .checkOut
         setNextDateInCkechout(checkInDate: date)
         updateDatePickerLimits()
     }
@@ -228,7 +242,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
-        selectedCheckInDate = date
+       
         
         guard let date = date else { return }
         setNextDateInCkechout(checkInDate: date)
@@ -242,7 +256,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
-            selectedCheckOutDate = tomorrow
+            
             checkOutButton.setTitle(tomorrowDate, for: .normal)
         }
     }
@@ -469,7 +483,6 @@ extension HomeViewController {
                 attributes: [.font: font]
             )
             
-            selectedCheckInDate = today
             checkInButton.setTitle(todayDate, for: .normal)
         }
         
@@ -646,6 +659,9 @@ extension HomeViewController {
         recentlyCollectionView.reloadData()
         
         if lang == .english {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
+            ]
             newYearTitleLabel.text = "New Year, New Adventures"
             dealOfferLabel.text = "Save 15% or more when you book and stay before 31 Decembe 2025"
             handPickedHotelsDescriptionLabel.text = "Experience the finest stays with our handpicked hotels, selected for their exceptional comfort, service, and location."
@@ -660,11 +676,11 @@ extension HomeViewController {
             checkInButton.setTitle("Check In", for: .normal)
             checkOutButton.setTitle("Check Out", for: .normal)
             searchButton.setTitle("Search", for: .normal)
-            viewAllButton.setTitle("View All", for: .normal)
+            let viwallTitle = "View All"
+            let viewallattributedTitle = NSAttributedString(string: viwallTitle, attributes: attributes)
+            viewAllButton.setAttributedTitle(viewallattributedTitle, for: .normal)
             let title = "Find early 2025 deals"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
-            ]
+            
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
         } else {
@@ -713,56 +729,111 @@ extension HomeViewController {
         datePickerContainerView = UIView()
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-        
         datePicker.preferredDatePickerStyle = .inline
+        updateDatePickerLimits()
+        
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         
-        updateDatePickerLimits()
+        // Container
         datePickerContainerView.backgroundColor = .systemBackground
-        datePickerContainerView.layer.cornerRadius = 8
+        datePickerContainerView.layer.cornerRadius = 12
         datePickerContainerView.layer.borderWidth = 1
         datePickerContainerView.layer.borderColor = UIColor.lightGray.cgColor
         datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         
+        // Buttons
+        let cancelButton = UIButton(type: .system)
+        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitleColor(.systemRed, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        cancelButton.addTarget(self, action: #selector(cancelDatePicker), for: .touchUpInside)
+        
+        let doneButton = UIButton(type: .system)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.setTitleColor(.systemBlue, for: .normal)
+        doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        doneButton.addTarget(self, action: #selector(doneDatePicker), for: .touchUpInside)
+        
+        // Button stack (below the picker)
+        let buttonStack = UIStackView(arrangedSubviews: [cancelButton, doneButton])
+        buttonStack.axis = .horizontal
+        buttonStack.distribution = .fillEqually
+        buttonStack.spacing = 16
+        buttonStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add subviews
         datePickerContainerView.addSubview(datePicker)
+        datePickerContainerView.addSubview(buttonStack)
         view.addSubview(datePickerContainerView)
         
+        // Constraints (picker + buttons)
         NSLayoutConstraint.activate([
             datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
             datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-            datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
-            datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor),
+            datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 8),
             
-            datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonStack.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 12),
+            buttonStack.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor, constant: 16),
+            buttonStack.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor, constant: -16),
+            buttonStack.heightAnchor.constraint(equalToConstant: 44),
+            buttonStack.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -12),
+            
             datePickerContainerView.widthAnchor.constraint(equalToConstant: 320),
-            datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
+            datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
         ])
         
         datePickerContainerView.isHidden = true
     }
     
-    func toggleDatePicker(for button: UIButton) {
-        activeButton = button
+    @objc func cancelDatePicker() {
+        UIView.transition(with: datePickerContainerView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.datePickerContainerView.isHidden = true
+        })
+    }
+
+    @objc func doneDatePicker() {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        let selectedDate = formatter.string(from: datePicker.date)
         
-        if button.superview != nil {
-            let buttonFrame = button.convert(button.bounds, to: view)
-            let topAnchor = datePickerContainerView.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 8)
-            NSLayoutConstraint.deactivate(datePickerContainerView.constraints)
-            NSLayoutConstraint.activate([
-                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
-                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
-                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor),
-                datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                topAnchor,
-                datePickerContainerView.widthAnchor.constraint(equalToConstant: 320),
-                datePickerContainerView.heightAnchor.constraint(equalToConstant: 360)
-            ])
+        activeButton?.setTitle(selectedDate, for: .normal)
+        
+        if currentDatePickerMode == .checkIn {
+            setNextDateInCkechout(checkInDate: datePicker.date)
         }
-        datePickerContainerView.isHidden.toggle()
+        
+        UIView.transition(with: datePickerContainerView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.datePickerContainerView.isHidden = true
+        })
     }
     
+    func toggleDatePicker(for button: UIButton) {
+        activeButton = button
+        updateDatePickerLimits()
+        
+        if let superview = button.superview {
+            let buttonFrame = button.convert(button.bounds, to: view)
+            
+            // Remove old constraints
+            datePickerContainerView.removeFromSuperview()
+            view.addSubview(datePickerContainerView)
+            datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                datePickerContainerView.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 8),
+                datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                datePickerContainerView.widthAnchor.constraint(equalToConstant: 320),
+                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
+            ])
+        }
+        
+        // Toggle visibility with animation
+        UIView.transition(with: datePickerContainerView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.datePickerContainerView.isHidden.toggle()
+        })
+    }
+
     func updateDatePickerLimits() {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date()) // Strip time
@@ -773,13 +844,21 @@ extension HomeViewController {
             datePicker.date = today
             
         case .checkOut:
-            if let checkIn = selectedCheckInDate {
-                let checkInDay = calendar.startOfDay(for: checkIn)
-                datePicker.minimumDate = checkInDay
-                datePicker.date = checkInDay
-            } else {
-                datePicker.minimumDate = today
-                datePicker.date = today
+            let formater = DateFormatter()
+            formater.dateStyle = .medium
+            let date = formater.date(from: checkInButton.titleLabel?.text ?? "")
+            
+            guard let date = date else {
+                if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+                    datePicker.minimumDate = tomorrow
+                    datePicker.date = tomorrow
+                }
+                return
+            }
+            
+            
+            if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 1, to: date) {
+                datePicker.minimumDate = nextDayBaseOnCheckin
             }
         }
     }
@@ -787,10 +866,10 @@ extension HomeViewController {
     @objc private func dateChanged(_ sender: UIDatePicker) {
         switch currentDatePickerMode {
         case .checkIn:
-            selectedCheckInDate = sender.date
+            
             setNextDateInCkechout(checkInDate: sender.date)
         case .checkOut:
-            selectedCheckOutDate = sender.date
+            break
         }
 
         let formatter = DateFormatter()

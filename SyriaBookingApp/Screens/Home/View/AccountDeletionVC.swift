@@ -84,6 +84,7 @@ class AccountDeletionVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
         attachData()
     }
     
@@ -166,5 +167,8 @@ class AccountDeletionVC: UIViewController {
     }
     
    
-   
+    @IBAction func dismissButtonAction(_ sender: UIButton) {
+        self.dismiss(animated: true)
+    }
+    
 }

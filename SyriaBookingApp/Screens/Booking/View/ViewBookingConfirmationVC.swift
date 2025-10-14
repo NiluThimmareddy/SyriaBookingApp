@@ -103,20 +103,7 @@ class ViewBookingConfirmationVC : UIViewController {
     }
     
     @IBAction func goToHomeButtonAction(_ sender: Any) {
-        if isFromMyBookings {
-            // Just dismiss back to MyBookingsViewController
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            // Default "Go To Home" behavior
-            self.view.window?.rootViewController?.dismiss(animated: true) {
-                if let tabBarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController {
-                    tabBarController.selectedIndex = 0
-                    if let navController = tabBarController.viewControllers?.first as? UINavigationController {
-                        navController.popToRootViewController(animated: false)
-                    }
-                }
-            }
-        }
+        goToHomeTab()
     }
 }
 

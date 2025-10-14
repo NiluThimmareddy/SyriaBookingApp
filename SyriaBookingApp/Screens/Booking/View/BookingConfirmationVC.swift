@@ -21,7 +21,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     var roomDetails : String?
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-//    var selectedRate = [Rate]()
+    //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []
     var bookingId : String?
     var roomtype : String?
@@ -35,7 +35,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     
     private func setupConfirmationMessage() {
         guard let name = guestName else { return }
-
+        
         let fullText: String
         if AppSettings.shared.selectedLanguage == .english {
             fullText = """
@@ -50,9 +50,9 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
             يمكنك مراجعة حجوزاتك في حجوزاتي
             """
         }
-
+        
         let attributedString = NSMutableAttributedString(string: fullText)
-
+        
         let nameRange = (fullText as NSString).range(of: name)
         if nameRange.location != NSNotFound {
             attributedString.addAttributes([
@@ -60,20 +60,20 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
                 .foregroundColor: UIColor.black
             ], range: nameRange)
         }
-
+        
         let bookingsRange = (fullText as NSString).range(of: AppSettings.shared.selectedLanguage == .english ? "My Bookings" : "حجوزاتي")
         if bookingsRange.location != NSNotFound {
             attributedString.addAttributes([
                 .link: "mybookings://open"
             ], range: bookingsRange)
         }
-
+        
         confirmationMessageTextView.attributedText = attributedString
         confirmationMessageTextView.isEditable = false
         confirmationMessageTextView.isScrollEnabled = false
         confirmationMessageTextView.dataDetectorTypes = []
         confirmationMessageTextView.delegate = self
-
+        
         confirmationMessageTextView.linkTextAttributes = [
             .foregroundColor: UIColor.systemGreen,
             .underlineStyle: NSUnderlineStyle.single.rawValue
@@ -82,34 +82,43 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if URL.absoluteString == "mybookings://open" {
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                
-                tabBarController.selectedIndex = 1 
-
-                if let nav = tabBarController.viewControllers?[1] as? UINavigationController,
-                   let myBookingsVC = nav.topViewController as? MyBookingsViewController {
-
-                    myBookingsVC.guestName = guestName
-                    myBookingsVC.guestEmail = guestEmail
-                    myBookingsVC.guestPhone = guestPhone
-                    myBookingsVC.checkInDate = checkInDate
-                    myBookingsVC.checkOutDate = checkOutDate
-                    myBookingsVC.numberOfGuests = numberOfGuests
-                    myBookingsVC.totalPrice = totalPrice
-                    myBookingsVC.selectedHotel = selectedHotel
-                    myBookingsVC.selectedRoom = selectedRoom
-                    myBookingsVC.selectedRates = selectedRates
-                }
-
-                tabBarController.modalPresentationStyle = .fullScreen
-                present(tabBarController, animated: true, completion: nil)
+            let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+            
+            guard let viewBookingConfirmationVC = storyboard.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
+                return false
             }
-            return false
+            
+            viewBookingConfirmationVC.isFromMyBookings = false
+            viewBookingConfirmationVC.hotelID = selectedHotel?.id ?? ""
+            viewBookingConfirmationVC.bookingId = bookingId ?? ""
+            viewBookingConfirmationVC.roomType = roomtype ?? ""
+            viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
+            present(viewBookingConfirmationVC, animated: true)
         }
+        //            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+        //
+        //                tabBarController.selectedIndex = 1
+        //
+        //                if let nav = tabBarController.viewControllers?[1] as? UINavigationController,
+        //                   let myBookingsVC = nav.topViewController as? MyBookingsViewController {
+        //
+        //                    myBookingsVC.guestName = guestName
+        //                    myBookingsVC.guestEmail = guestEmail
+        //                    myBookingsVC.guestPhone = guestPhone
+        //                    myBookingsVC.checkInDate = checkInDate
+        //                    myBookingsVC.checkOutDate = checkOutDate
+        //                    myBookingsVC.numberOfGuests = numberOfGuests
+        //                    myBookingsVC.totalPrice = totalPrice
+        //                    myBookingsVC.selectedHotel = selectedHotel
+        //                    myBookingsVC.selectedRoom = selectedRoom
+        //                    myBookingsVC.selectedRates = selectedRates
+        //                }
+        //
+        //                tabBarController.modalPresentationStyle = .fullScreen
+        //                present(tabBarController, animated: true, completion: nil)
+        //            }
         return true
-    }
-
+        }
     @objc func setUpLanguage() {
         if AppSettings.shared.selectedLanguage == .english {
             bookingConfirmationTitleLabel.text = "Booking Confirmation"

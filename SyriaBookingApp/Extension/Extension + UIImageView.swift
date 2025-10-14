@@ -1,9 +1,7 @@
 //
 //  Extension + UIImageView.swift
 //  SyriaBookingApp
-//
 //  Created by ToqSoft on 28/07/25.
-//
 
 import Foundation
 
@@ -29,11 +27,7 @@ extension UIImageView {
             }
         }.resume()
     }
-    
-
 }
-
-
 
 extension UIImage {
     func rotate(radians: CGFloat) -> UIImage? {

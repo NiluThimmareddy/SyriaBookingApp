@@ -3673,7 +3673,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="gnp-kI-AIR"/>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tac-1x-TjR">
-                                <rect key="frame" x="0.0" y="734" width="393" height="50"/>
+                                <rect key="frame" x="0.0" y="733" width="393" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpN-Or-EAb">
                                         <rect key="frame" x="30" y="0.0" width="363" height="50"/>
@@ -3696,7 +3696,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="iAZ-nL-TA4" secondAttribute="bottom" id="6nw-5E-RHP"/>
-                            <constraint firstItem="tac-1x-TjR" firstAttribute="bottom" secondItem="DaK-6G-TEk" secondAttribute="bottom" id="CAn-nm-JbZ"/>
+                            <constraint firstItem="tac-1x-TjR" firstAttribute="bottom" secondItem="DaK-6G-TEk" secondAttribute="bottom" constant="-1" id="CAn-nm-JbZ"/>
                             <constraint firstItem="tac-1x-TjR" firstAttribute="leading" secondItem="DaK-6G-TEk" secondAttribute="leading" id="Nh1-3d-Co0"/>
                             <constraint firstItem="iAZ-nL-TA4" firstAttribute="trailing" secondItem="DaK-6G-TEk" secondAttribute="trailing" id="Rsd-Ym-oQy"/>
                             <constraint firstItem="iAZ-nL-TA4" firstAttribute="top" secondItem="DaK-6G-TEk" secondAttribute="top" id="jN2-Xl-6kH"/>
@@ -3792,6 +3792,9 @@
                                                                 <buttonConfiguration key="configuration" style="plain">
                                                                     <imageReference key="image" image="xmark" catalog="system" symbolScale="medium"/>
                                                                 </buttonConfiguration>
+                                                                <connections>
+                                                                    <action selector="dismissButtonAction:" destination="8Zl-2I-hM1" eventType="touchUpInside" id="Ndc-J5-vHd"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
