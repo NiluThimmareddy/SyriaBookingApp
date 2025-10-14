@@ -138,7 +138,11 @@ extension RightMenuViewController{
         }))
         
         alert.addAction(UIAlertAction(title: "Request to Delete Account", style: .default, handler: { _ in
-            self.openGoogleSheetForDeletion()
+            
+           
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "AccountDeletionVC") as! AccountDeletionVC
+            self.present(controller, animated: true)
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -223,34 +227,7 @@ extension RightMenuViewController{
 
    
 
-    private func openGoogleSheetForDeletion() {
-        // Your form base URL
-        let baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSdCgN1fhtcpoyD7yqhQIc3SKukItcUEWwWeLj-ytpH_VHn6mw/viewform"
-        
-        guard let user = UserSessionManager.getUser() else { return }
-        // Default values you want to pass
-        let userName = user.name
-        let userEmail = user.email
-        let userMobile = user.mobile
-        let messageText = ""
-        
-        // Encode and append entries to the URL
-        guard let encodedUserName = userName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let encodedEmail = userEmail.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let encodedMobile = userMobile.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let encodedMessage = messageText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        
-        // Build the pre-filled form URL
-        let fullURLString = "\(baseURL)?entry.201439333=\(encodedUserName)&entry.1046284756=\(encodedEmail)&entry.1750033878=\(encodedMobile)&entry.1324659407=\(encodedMessage)"
-        
-        // Create URL and present SafariViewController
-        if let url = URL(string: fullURLString) {
-            let safariVC = SFSafariViewController(url: url)
-            safariVC.delegate = self
-            safariVC.dismissButtonStyle = .close
-            present(safariVC, animated: true)
-        }
-    }
+   
 }
 
 extension RightMenuViewController: SFSafariViewControllerDelegate {

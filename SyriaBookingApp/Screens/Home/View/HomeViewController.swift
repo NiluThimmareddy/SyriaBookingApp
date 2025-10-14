@@ -119,7 +119,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        setupAppNavigationBar()
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
