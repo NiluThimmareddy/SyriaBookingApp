@@ -24,7 +24,7 @@ class HowItsWorkVC: UIViewController {
         super.viewDidLoad()
         
         
-        setupFontForLabel()
+//        setupFontForLabel()
     }
     
     override func viewWillAppear(_ animated: Bool) {

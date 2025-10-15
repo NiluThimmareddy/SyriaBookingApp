@@ -660,7 +660,7 @@ extension HomeViewController {
         
         if lang == .english {
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
+                .font: UIFont.systemFont(ofSize: 11, weight:.bold)
             ]
             newYearTitleLabel.text = "New Year, New Adventures"
             dealOfferLabel.text = "Save 15% or more when you book and stay before 31 Decembe 2025"

@@ -41,8 +41,14 @@ class MyBookingTableViewCell: UITableViewCell {
         currentBooking = booking
         hotelNameLabel.text = booking.hotelName
         roomTypeLabel.text = booking.roomType
-        datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
-        totalAmountLabel.text = "Total: \(booking.totalAmount)"
+        let checkInDateStr = booking.checkInUtc.toDayMonthYear()
+        let checkOutDateStr = booking.checkOutUtc.toDayMonthYear()
+        datesLabel.text = "\(checkInDateStr) - \(checkOutDateStr)"
+        
+        let totalNights = calculateTotalNights(checkIn: checkInDateStr, checkOut: checkOutDateStr)
+        let perNightRate = booking.totalAmount // assuming `totalAmount` stores per-night price
+        let finalTotal = perNightRate * Double(totalNights)
+        totalAmountLabel.text = String(format: "Total: %.2f", finalTotal)
         upcomingDataLabel.text = booking.lastUpdatedUtc.toDayMonth()
         
         switch booking.status.lowercased() {
@@ -71,6 +77,20 @@ class MyBookingTableViewCell: UITableViewCell {
             cancelButton.isHidden = true
         }
     }
+    
+    func calculateTotalNights(checkIn: String, checkOut: String) -> Int {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        
+        guard let checkInDate = formatter.date(from: checkIn),
+              let checkOutDate = formatter.date(from: checkOut) else {
+            return 0
+        }
+        
+        let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
+        return max(components.day ?? 0, 0)
+    }
+
 
     @IBAction func detailsButtonAction(_ sender: Any) {
         if let booking = currentBooking {
