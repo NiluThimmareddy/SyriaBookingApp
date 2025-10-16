@@ -38,7 +38,6 @@ class PrivacyPolicyViewController: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
-            // ✅ Arabic version
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -48,26 +47,23 @@ class PrivacyPolicyViewController: UIViewController {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.8;
+                        font-size: 13px;
+                        line-height: 1.3;
                         direction: rtl;
                         text-align: right;
                     }
-                    h2 { font-size: 24px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: #000000; }
-                    h5 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: #000000; }
-                    h6 { font-size: 16px; font-weight: 500; margin-top: 20px; margin-bottom: 8px; color: #222222; }
-                    p { margin-bottom: 12px; font-size: 16px; font-weight: 400; color: #333333; }
-                    ul { padding-right: 20px; margin-top: 4px; margin-bottom: 16px; }
-                    li { margin-bottom: 8px; font-size: 16px; }
-                    a { color: #007AFF; text-decoration: none; font-size: 16px; font-weight: 500; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h2 { font-size: 18px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 6px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-right: 16px; margin-top: 2px; margin-bottom: 12px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
             <body>
-                <h2>سياسة الخصوصية</h2>
-                <p><em>آخر تحديث: 17 مارس 2025</em></p>
-
                 <p>في SyriaBooking.sy، نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح سياسة الخصوصية وملفات تعريف الارتباط هذه كيف نجمع ونستخدم ونخزن ونحمي معلوماتك الشخصية، وكيف نستخدم ملفات تعريف الارتباط عند زيارة أو استخدام موقعنا.</p>
 
                 <h5>1. ما هي المعلومات التي نجمعها:</h5>
@@ -156,7 +152,6 @@ class PrivacyPolicyViewController: UIViewController {
             </html>
             """
         } else {
-            // ✅ English version
             htmlString = """
             <html lang="en" dir="ltr">
             <head>
@@ -166,24 +161,23 @@ class PrivacyPolicyViewController: UIViewController {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.6;
+                        font-size: 13px;
+                        line-height: 1.3;
+                        direction: ltr;
+                        text-align: left;
                     }
-                    h2 { font-size: 24px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: #000000; }
-                    h5 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: #000000; }
-                    h6 { font-size: 16px; font-weight: 500; margin-top: 20px; margin-bottom: 8px; color: #222222; }
-                    p { margin-bottom: 12px; font-size: 16px; font-weight: 400; color: #333333; }
-                    ul { padding-left: 20px; margin-top: 4px; margin-bottom: 16px; }
-                    li { margin-bottom: 8px; font-size: 16px; }
-                    a { color: #007AFF; text-decoration: none; font-size: 16px; font-weight: 500; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h2 { font-size: 18px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 6px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-left: 16px; margin-top: 2px; margin-bottom: 12px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
             <body>
-                <h2>Privacy Policy</h2>
-                <p><em>Last update: Mar 17, 2025</em></p>
-
                 <p>At SyriaBooking.sy, we respect your privacy and are committed to protecting your personal data. This Privacy & Cookie Statement explains how we collect, use, store, and protect your personal information, and how we use cookies when you visit or use our website.</p>
 
                 <h5>1. What Information We Collect:</h5>

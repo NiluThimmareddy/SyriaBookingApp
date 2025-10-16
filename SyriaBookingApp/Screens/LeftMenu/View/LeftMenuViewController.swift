@@ -206,11 +206,13 @@ extension LeftMenuViewController {
         
         switch selectedLanguage {
         case .english:
-            englishButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+            englishButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.6)
             englishButton.setTitleColor(.white, for: .normal)
+            englishButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         case .arabic:
-            arabicButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+            arabicButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.6)
             arabicButton.setTitleColor(.white, for: .normal)
+            arabicButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         default:
             break
         }

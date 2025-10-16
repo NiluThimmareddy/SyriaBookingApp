@@ -43,7 +43,6 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var total : Double = 0.0
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []
     var viewModel = BookingViewModel()
     
@@ -57,6 +56,26 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         checkInTF.delegate = self
         checkOutTF.delegate = self
        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let today = Date()
+        selectedCheckInDate = today
+        
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+            selectedCheckOutDate = tomorrow
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateStyle = .medium
+        
+        checkInTF.text = formatter.string(from: selectedCheckInDate!)
+        checkOutTF.text = formatter.string(from: selectedCheckOutDate!)
+        
+        updateTotalAmountLabel()
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -197,16 +216,14 @@ extension ConfirmYourBookingVC {
             // No check-in selected, set today as check-in
             let today = Date()
             checkInTF.text = formatter.string(from: today)
-            
+            selectedCheckInDate = today
             // Set tomorrow as default check-out
             if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
                 checkOutTF.text = formatter.string(from: tomorrow)
+                selectedCheckOutDate = tomorrow
             }
         }
 
-        
-        
-       
         var roomRatesData = ""
         total = 0.0
         for i in selectedRates {
@@ -246,61 +263,6 @@ extension ConfirmYourBookingVC {
         Arabic()
         updateTotalAmountLabel()
     }
-
-//    func setupDatePickerUI() {
-//        datePickerContainerView = UIView()
-//        datePickerContainerView.backgroundColor = .systemBackground
-//        datePickerContainerView.layer.cornerRadius = 16
-//        datePickerContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-//        datePickerContainerView.layer.shadowColor = UIColor.black.cgColor
-//        datePickerContainerView.layer.shadowOpacity = 0.2
-//        datePickerContainerView.layer.shadowOffset = CGSize(width: 0, height: -2)
-//        datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        datePicker = UIDatePicker()
-//        datePicker.datePickerMode = .date
-//        datePicker.preferredDatePickerStyle = .inline
-//        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
-//        datePicker.translatesAutoresizingMaskIntoConstraints = false
-//
-//        datePickerContainerView.addSubview(datePicker)
-//        view.addSubview(datePickerContainerView)
-//
-//        // Constraints - Different for iPhone and iPad
-//        if UIDevice.current.userInterfaceIdiom == .pad {
-//            // iPad - Fixed width and centered
-//            NSLayoutConstraint.activate([
-//                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
-//                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-//                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
-//                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
-//
-//                datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//                datePickerContainerView.widthAnchor.constraint(equalToConstant: 400),
-//                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
-//            ])
-//        } else {
-//            // iPhone - Full width
-//            NSLayoutConstraint.activate([
-//                datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
-//                datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
-//                datePicker.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor, constant: 16),
-//                datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16),
-//
-//                datePickerContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//                datePickerContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//                datePickerContainerView.heightAnchor.constraint(equalToConstant: 400)
-//            ])
-//        }
-//
-//        datePickerBottomConstraint = datePickerContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 400)
-//        datePickerBottomConstraint?.isActive = true
-//        
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissDatePicker))
-//        tapGesture.cancelsTouchesInView = false
-//        tapGesture.delegate = self
-//        view.addGestureRecognizer(tapGesture)
-//    }
     
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
@@ -381,7 +343,7 @@ extension ConfirmYourBookingVC {
             selectedCheckInDate = selectedDate
             checkInTF.text = selectedDateString
             
-                setNextDateInCkechout(checkInDate: datePicker.date)
+            setNextDateInCkechout(checkInDate: datePicker.date)
             
         case .checkOut:
             selectedCheckOutDate = selectedDate
@@ -462,8 +424,14 @@ extension ConfirmYourBookingVC {
     
     func calculateNumberOfNights(checkIn: Date?, checkOut: Date?) -> Int {
         guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
-        let components = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut)
-        return components.day ?? 0
+        let calendar = Calendar.current
+        let startOfCheckIn = calendar.startOfDay(for: checkIn)
+        let startOfCheckOut = calendar.startOfDay(for: checkOut)
+        
+        let adjustedCheckOut = startOfCheckOut.addingTimeInterval(-1)
+        
+        let components = calendar.dateComponents([.day], from: startOfCheckIn, to: adjustedCheckOut)
+        return (components.day ?? 0) + 1
     }
     
     func updateTotalAmountLabel() {

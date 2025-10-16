@@ -18,7 +18,14 @@ class RateAndReviewsTVC : UITableViewCell {
      
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        setupStarSize()
+    }
+    func setupStarSize() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            starRatings.settings.starSize = 22
+        } else {
+            starRatings.settings.starSize = 14
+        }
     }
 
     func configure(with review: Review) {

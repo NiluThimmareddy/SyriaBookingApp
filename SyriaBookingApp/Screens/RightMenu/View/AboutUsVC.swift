@@ -42,7 +42,6 @@ class AboutUsVC: UIViewController {
         let htmlString: String
 
         if AppSettings.shared.selectedLanguage == .arabic {
-            // ✅ Arabic version (forced LTR)
             htmlString = """
             <html lang="ar" dir="ltr">
             <head>
@@ -52,18 +51,18 @@ class AboutUsVC: UIViewController {
                         font-family: -apple-system;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.8;
-                        direction: ltr; /* Force Left-to-Right */
-                        text-align: left; /* Force text alignment */
+                        font-size: 13px; /* ↓ smaller font */
+                        line-height: 1.3; /* ↓ tighter line spacing */
+                        direction: ltr;
+                        text-align: left;
                     }
-                    h1 { font-size: 22px; font-weight: 700; margin-bottom: 10px; text-align: left; }
-                    h2 { font-size: 20px; font-weight: 600; margin-top: 15px; margin-bottom: 10px; text-align: left; }
-                    h3 { font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 8px; text-align: left; }
-                    p { margin-bottom: 14px; text-align: left; }
-                    ul { padding-left: 20px; }
-                    li { margin-bottom: 8px; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h1 { font-size: 16px; font-weight: 700; margin-bottom: 6px; text-align: left; }
+                    h2 { font-size: 15px; font-weight: 600; margin-top: 10px; margin-bottom: 6px; text-align: left; }
+                    h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 5px; text-align: left; }
+                    p { margin-bottom: 8px; text-align: left; }
+                    ul { padding-left: 16px; margin-bottom: 8px; }
+                    li { margin-bottom: 4px; }
+                    strong { font-weight: 600; font-size: 13px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
@@ -109,7 +108,6 @@ class AboutUsVC: UIViewController {
             </html>
             """
         } else {
-            // ✅ English version (LTR)
             htmlString = """
             <html lang="en" dir="ltr">
             <head>
@@ -119,18 +117,18 @@ class AboutUsVC: UIViewController {
                         font-family: -apple-system;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.6;
+                        font-size: 13px; /* ↓ smaller font */
+                        line-height: 1.3; /* ↓ tighter line spacing */
                         direction: ltr;
                         text-align: left;
                     }
-                    h1 { font-size: 22px; font-weight: 700; margin-bottom: 10px; text-align: left; }
-                    h2 { font-size: 20px; font-weight: 600; margin-top: 15px; margin-bottom: 10px; text-align: left; }
-                    h3 { font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 8px; text-align: left; }
-                    p { margin-bottom: 14px; text-align: left; }
-                    ul { padding-left: 20px; }
-                    li { margin-bottom: 8px; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h1 { font-size: 16px; font-weight: 700; margin-bottom: 6px; text-align: left; }
+                    h2 { font-size: 15px; font-weight: 600; margin-top: 10px; margin-bottom: 6px; text-align: left; }
+                    h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 5px; text-align: left; }
+                    p { margin-bottom: 8px; text-align: left; }
+                    ul { padding-left: 16px; margin-bottom: 8px; }
+                    li { margin-bottom: 4px; }
+                    strong { font-weight: 600; font-size: 13px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
@@ -182,4 +180,5 @@ class AboutUsVC: UIViewController {
 
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
+
 }

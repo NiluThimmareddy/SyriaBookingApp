@@ -45,7 +45,6 @@ class TermsAndConditionsVC: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
-            // ✅ Arabic Terms & Conditions
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -55,25 +54,23 @@ class TermsAndConditionsVC: UIViewController {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.6;
+                        font-size: 13px;
+                        line-height: 1.3;
                         direction: rtl;
                         text-align: right;
                     }
-                    h2 { font-size: 24px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: #000000; }
-                    h5 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: #000000; }
-                    h6 { font-size: 16px; font-weight: 500; margin-top: 20px; margin-bottom: 8px; color: #222222; }
-                    p { margin-bottom: 12px; font-size: 16px; font-weight: 400; color: #333333; }
-                    ul { padding-right: 20px; margin-top: 4px; margin-bottom: 16px; }
-                    li { margin-bottom: 8px; font-size: 16px; }
-                    a { color: #007AFF; text-decoration: none; font-size: 16px; font-weight: 500; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h2 { font-size: 18px; font-weight: 700; margin-top: 20px; margin-bottom: 6px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 14px; margin-bottom: 4px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 4px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-right: 16px; margin-top: 2px; margin-bottom: 10px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
             <body>
-                <h2>الشروط والأحكام</h2>
-
                 <p>مرحباً بكم في SyriaBooking.sy</p>
                 <p>تحكم هذه الشروط والأحكام ("الشروط") استخدامك لموقع SyriaBooking.sy والخدمات المقدمة من خلاله...</p>
 
@@ -104,7 +101,6 @@ class TermsAndConditionsVC: UIViewController {
             </html>
             """
         } else {
-            // ✅ English Terms & Conditions
             htmlString = """
             <html lang="en" dir="ltr">
             <head>
@@ -114,23 +110,23 @@ class TermsAndConditionsVC: UIViewController {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
                         padding: 20px;
                         color: #333333;
-                        font-size: 16px;
-                        line-height: 1.6;
+                        font-size: 13px;
+                        line-height: 1.3;
+                        direction: ltr;
+                        text-align: left;
                     }
-                    h2 { font-size: 24px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: #000000; }
-                    h5 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: #000000; }
-                    h6 { font-size: 16px; font-weight: 500; margin-top: 20px; margin-bottom: 8px; color: #222222; }
-                    p { margin-bottom: 12px; font-size: 16px; font-weight: 400; color: #333333; }
-                    ul { padding-left: 20px; margin-top: 4px; margin-bottom: 16px; }
-                    li { margin-bottom: 8px; font-size: 16px; }
-                    a { color: #007AFF; text-decoration: none; font-size: 16px; font-weight: 500; }
-                    strong { font-weight: 600; font-size: 17px; }
+                    h2 { font-size: 18px; font-weight: 700; margin-top: 20px; margin-bottom: 6px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 14px; margin-bottom: 4px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 4px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-left: 16px; margin-top: 2px; margin-bottom: 10px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
                 </style>
             </head>
             <body>
-                <h2>Terms & Conditions</h2>
-
                 <p>Welcome to SyriaBooking.sy</p>
                 <p>These Terms & Conditions (“Terms”) govern your use of the SyriaBooking.sy website and services...</p>
 

@@ -92,6 +92,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var isUserInteracting = false
     var delegate : recentlyViewdHotelsProtocol?
     var isScrollingForward = true
+    var currentPromotionIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -401,7 +402,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             if viewModel.recentlyViewdHotels.isEmpty {
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
             } else {
-                let itemWidth = collectionView.frame.width * 0.4
+                let itemWidth = collectionView.frame.width * 0.3
                 let itemHeight =  collectionView.frame.height
                 recentlyViewedHeightConstraint.constant = itemHeight
                 return CGSize(width: itemWidth, height: itemHeight)
@@ -894,17 +895,18 @@ extension HomeViewController {
     }
     
     func startPromotionAutoScroll() {
+        promotionScrollTimer?.invalidate()
         promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
             guard let self = self,
-                  let collectionView = self.promotionsCollectionView else { return }
-            
-            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
-            guard let currentIndexPath = visibleIndexPaths.sorted().first else { return }
-            
-            let nextItem = (currentIndexPath.item + 1) % self.promotionsList.count
-            let nextIndexPath = IndexPath(item: nextItem, section: 0)
-            
-            collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+                  let collectionView = self.promotionsCollectionView,
+                  self.promotionsList.count > 1 else { return }
+
+            self.currentPromotionIndex = (self.currentPromotionIndex + 1) % self.promotionsList.count
+            let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
+
+            DispatchQueue.main.async {
+                collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+            }
         }
     }
     
