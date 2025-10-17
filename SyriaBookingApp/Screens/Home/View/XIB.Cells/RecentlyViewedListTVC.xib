@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="126" id="KGk-i7-Jjw" customClass="RecentlyViewedListTVC" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="126"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="126"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oQd-j9-fK2">
+                        <rect key="frame" x="5" y="5" width="310" height="116"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HotelPlaceholder 1" translatesAutoresizingMaskIntoConstraints="NO" id="JAc-7u-9lY">
+                                <rect key="frame" x="10" y="13" width="90" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="JAc-7u-9lY" secondAttribute="height" id="gb8-iq-cTa"/>
+                                    <constraint firstAttribute="height" constant="90" id="my8-5w-gC8"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AL MAJED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDs-3n-wdt">
+                                <rect key="frame" x="110" y="13" width="190" height="18"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotel • DAMASCUS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Pk-G0-rdW">
+                                <rect key="frame" x="110" y="36" width="190" height="15.666666666666664"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="★ 3.3 (3 reviews)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PwP-OU-NcC">
+                                <rect key="frame" x="110" y="56.666666666666657" width="190" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From $50 / night" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mS-7M-eZq">
+                                <rect key="frame" x="110" y="78.666666666666671" width="110" height="15.666666666666671"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10m ago" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fLK-cf-KDB">
+                                <rect key="frame" x="230" y="79.333333333333329" width="70" height="14.333333333333329"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="hVy-aw-whC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="11"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4Pk-G0-rdW" firstAttribute="trailing" secondItem="JDs-3n-wdt" secondAttribute="trailing" id="0h2-V8-3gY"/>
+                            <constraint firstAttribute="trailing" secondItem="JDs-3n-wdt" secondAttribute="trailing" constant="10" id="5PP-vV-ymL"/>
+                            <constraint firstItem="4Pk-G0-rdW" firstAttribute="leading" secondItem="JDs-3n-wdt" secondAttribute="leading" id="6eA-sR-id2"/>
+                            <constraint firstItem="PwP-OU-NcC" firstAttribute="leading" secondItem="4Pk-G0-rdW" secondAttribute="leading" id="DLp-mW-HER"/>
+                            <constraint firstItem="9mS-7M-eZq" firstAttribute="top" secondItem="PwP-OU-NcC" secondAttribute="bottom" constant="5" id="G4j-Ne-5r1"/>
+                            <constraint firstAttribute="trailing" secondItem="fLK-cf-KDB" secondAttribute="trailing" constant="10" id="GCX-ST-MI9"/>
+                            <constraint firstItem="JDs-3n-wdt" firstAttribute="top" secondItem="JAc-7u-9lY" secondAttribute="top" id="JSM-C8-uta"/>
+                            <constraint firstItem="JDs-3n-wdt" firstAttribute="leading" secondItem="JAc-7u-9lY" secondAttribute="trailing" constant="10" id="KAp-mo-npf"/>
+                            <constraint firstItem="fLK-cf-KDB" firstAttribute="centerY" secondItem="9mS-7M-eZq" secondAttribute="centerY" id="PDY-pJ-pe3"/>
+                            <constraint firstItem="4Pk-G0-rdW" firstAttribute="top" secondItem="JDs-3n-wdt" secondAttribute="bottom" constant="5" id="Q7B-aM-pC1"/>
+                            <constraint firstItem="JAc-7u-9lY" firstAttribute="centerY" secondItem="oQd-j9-fK2" secondAttribute="centerY" id="aQO-Qu-CAI"/>
+                            <constraint firstItem="PwP-OU-NcC" firstAttribute="top" secondItem="4Pk-G0-rdW" secondAttribute="bottom" constant="5" id="atA-J1-Klb"/>
+                            <constraint firstItem="PwP-OU-NcC" firstAttribute="trailing" secondItem="4Pk-G0-rdW" secondAttribute="trailing" id="d7a-X8-JiU"/>
+                            <constraint firstItem="JAc-7u-9lY" firstAttribute="leading" secondItem="oQd-j9-fK2" secondAttribute="leading" constant="10" id="gQT-ZS-vHt"/>
+                            <constraint firstItem="fLK-cf-KDB" firstAttribute="leading" secondItem="9mS-7M-eZq" secondAttribute="trailing" constant="10" id="jrt-Ku-NIW"/>
+                            <constraint firstItem="9mS-7M-eZq" firstAttribute="leading" secondItem="PwP-OU-NcC" secondAttribute="leading" id="nFt-UO-eTd"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9mS-7M-eZq" secondAttribute="bottom" constant="10" id="rcx-nt-BmV"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="oQd-j9-fK2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="2xH-cb-YJy"/>
+                    <constraint firstAttribute="bottom" secondItem="oQd-j9-fK2" secondAttribute="bottom" constant="5" id="L2G-8A-jbW"/>
+                    <constraint firstItem="oQd-j9-fK2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="ZSv-O8-I0f"/>
+                    <constraint firstAttribute="trailing" secondItem="oQd-j9-fK2" secondAttribute="trailing" constant="5" id="de6-gZ-55L"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="backView" destination="oQd-j9-fK2" id="4Rh-aw-QLU"/>
+                <outlet property="hotelImgView" destination="JAc-7u-9lY" id="DTa-ay-uc6"/>
+                <outlet property="hotelNameLabel" destination="JDs-3n-wdt" id="nWR-FA-Yv0"/>
+                <outlet property="hotelReviewsLabel" destination="PwP-OU-NcC" id="APx-CP-zNT"/>
+                <outlet property="hotelTypeLabel" destination="4Pk-G0-rdW" id="Dvp-tD-vTo"/>
+                <outlet property="pricePerNightLabel" destination="9mS-7M-eZq" id="vD9-GO-kEa"/>
+                <outlet property="viewedDateLabel" destination="fLK-cf-KDB" id="gza-PH-ARU"/>
+            </connections>
+            <point key="canvasLocation" x="85.496183206106863" y="17.605633802816904"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="HotelPlaceholder 1" width="91.666664123535156" height="61"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

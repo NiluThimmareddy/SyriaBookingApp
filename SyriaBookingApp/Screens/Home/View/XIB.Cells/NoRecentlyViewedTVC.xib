@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="96" id="KGk-i7-Jjw" customClass="NoRecentlyViewedTVC" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0nY-Pp-uAj">
+                        <rect key="frame" x="5" y="5" width="310" height="86"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Mw9-Dm-DsC">
+                                <rect key="frame" x="10" y="10.666666666666668" width="40" height="38.666666666666657"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Mw9-Dm-DsC" secondAttribute="height" id="8Ml-Nq-2GT"/>
+                                    <constraint firstAttribute="height" constant="40" id="w0R-68-0f9"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Recently Viewed Hotels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsA-qa-fZX">
+                                <rect key="frame" x="60" y="9.9999999999999982" width="240" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotels you view will appear here for easy access later" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MVN-Jw-1yy">
+                                <rect key="frame" x="60" y="34.333333333333343" width="240" height="33.666666666666657"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="DsA-qa-fZX" firstAttribute="leading" secondItem="Mw9-Dm-DsC" secondAttribute="trailing" constant="10" id="45h-bb-BX9"/>
+                            <constraint firstItem="DsA-qa-fZX" firstAttribute="top" secondItem="Mw9-Dm-DsC" secondAttribute="top" id="46g-Ed-Jhl"/>
+                            <constraint firstItem="MVN-Jw-1yy" firstAttribute="leading" secondItem="DsA-qa-fZX" secondAttribute="leading" id="MX5-gl-Fg3"/>
+                            <constraint firstItem="MVN-Jw-1yy" firstAttribute="trailing" secondItem="DsA-qa-fZX" secondAttribute="trailing" id="R6F-Si-oZc"/>
+                            <constraint firstItem="Mw9-Dm-DsC" firstAttribute="leading" secondItem="0nY-Pp-uAj" secondAttribute="leading" constant="10" id="SI1-2z-BUS"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MVN-Jw-1yy" secondAttribute="bottom" constant="10" id="j7R-No-UgS"/>
+                            <constraint firstAttribute="trailing" secondItem="DsA-qa-fZX" secondAttribute="trailing" constant="10" id="rtl-Zm-zvU"/>
+                            <constraint firstItem="Mw9-Dm-DsC" firstAttribute="top" secondItem="0nY-Pp-uAj" secondAttribute="top" constant="10" id="ujr-M6-Ref"/>
+                            <constraint firstItem="MVN-Jw-1yy" firstAttribute="top" secondItem="DsA-qa-fZX" secondAttribute="bottom" constant="5" id="zhs-p0-lAG"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="0nY-Pp-uAj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="1h6-BX-zVS"/>
+                    <constraint firstAttribute="trailing" secondItem="0nY-Pp-uAj" secondAttribute="trailing" constant="5" id="4cp-Up-Qln"/>
+                    <constraint firstAttribute="bottom" secondItem="0nY-Pp-uAj" secondAttribute="bottom" constant="5" id="tQT-YM-O47"/>
+                    <constraint firstItem="0nY-Pp-uAj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="tne-gR-9CY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="backView" destination="0nY-Pp-uAj" id="Duj-Lg-CZm"/>
+                <outlet property="clockImgView" destination="Mw9-Dm-DsC" id="TAh-na-NC9"/>
+                <outlet property="descriptionLabel" destination="MVN-Jw-1yy" id="DTe-OO-auE"/>
+                <outlet property="noRecentlyViewTitleLabel" destination="DsA-qa-fZX" id="qOU-lZ-BhG"/>
+            </connections>
+            <point key="canvasLocation" x="83.969465648854964" y="38.732394366197184"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="clock.fill" catalog="system" width="128" height="123"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

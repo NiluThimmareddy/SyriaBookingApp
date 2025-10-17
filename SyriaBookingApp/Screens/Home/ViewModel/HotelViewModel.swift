@@ -57,6 +57,7 @@ class HotelViewModel {
     }
     
     
+    
     func fetchSingleHotels(id: String = "", completion: @escaping (Hotel) -> Void) {
         NetworkRetryManager.executeWithNetworkRetry(
             observerKey: "FetchHotelsRetry",
@@ -123,9 +124,11 @@ class HotelViewModel {
   }
  
     
-    func fetchRecentlyViewedHotels(completion: () -> Void) {
-        var ids = HotelDataMaganer.shared.recentlyViewedHotelIds
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+    func fetchRecentlyViewedHotels(completion: @escaping () -> Void) {
+        let recentlyViewedDict = HotelDataMaganer.shared.getRecentlyViewedHotelIds()
+        
+        // Sort by most recent date first
+        let sortedIds = recentlyViewedDict.sorted { $0.value > $1.value }.map { $0.key }
         
         guard let allHotels = self.hotels?.data else {
             self.recentlyViewdHotels = []
@@ -133,33 +136,20 @@ class HotelViewModel {
             return
         }
         
-        // Match hotels in order
-        self.recentlyViewdHotels = ids.compactMap { id in
+        // Match hotels in order of most recent
+        self.recentlyViewdHotels = sortedIds.compactMap { id in
             allHotels.first {
-                $0.id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == id
+                $0.id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             }
         }
-       
-        
-        // Remove missing hotels
-        let validIDs = self.recentlyViewdHotels.map {
-            $0.id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        }
-        ids = ids.filter { validIDs.contains($0) }
         
         // Enforce max 10
-        if ids.count > 10 {
-            ids = Array(ids.prefix(10))
+        if self.recentlyViewdHotels.count > 10 {
             self.recentlyViewdHotels = Array(self.recentlyViewdHotels.prefix(10))
         }
         
-        // Save cleaned IDs
-        HotelDataMaganer.shared.recentlyViewedHotelIds = ids
-        UserDefaults.standard.set(ids, forKey: "RecentlyViewedHotelIDs")
-        
         completion()
     }
-    
     
     
     func filterHotelsBasedOnSearch(searchText: String){

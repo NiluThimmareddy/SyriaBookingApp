@@ -71,6 +71,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var newYearTitleLabel: UILabel!
     @IBOutlet weak var recentlyViewedHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var topHotelsCollectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var recentlySeeMoreButton: UIButton!
+    @IBOutlet weak var whereToNextSeeMoreButton: UIButton!
+    @IBOutlet weak var whereToNextTopConstraint: NSLayoutConstraint!
+    
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -123,6 +127,24 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         gradientView.applyTopRightLightGreyGradient()
         gradientView.applyCardStyle()
         topView.addTopShadow()
+    }
+    
+    @IBAction func recentlySeeMoreButtonAction(_ sender: Any) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "RecentlyViewedVC") as! RecentlyViewedVC
+        
+        controller.recentlyViewedHotels = viewModel.recentlyViewdHotels
+        controller.viewModel = viewModel
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @IBAction func whereToNextSeeMoreButtonAction(_ sender: Any) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "WhereToNextVC") as! WhereToNextVC
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     @IBAction func leftMenuBarButtonAction(_ sender: UIBarButtonItem) {
@@ -494,6 +516,7 @@ extension HomeViewController {
                 
                 self.viewModel.fetchRecentlyViewedHotels {
                     self.recentlyCollectionView.reloadData()
+                    self.updateRecentlyViewedSectionVisibility()
                 }
                 
                 self.hideLoader()
@@ -599,6 +622,29 @@ extension HomeViewController {
         selectCheckInView.addBottomShadow()
         selectCheckOutView.addBottomShadow()
         updateTexts()
+    }
+    
+    func updateRecentlyViewedSectionVisibility() {
+        let hasRecentlyViewedHotels = !viewModel.recentlyViewdHotels.isEmpty
+        
+        recentlyHeadLineLabel.isHidden = !hasRecentlyViewedHotels
+        recentlySeeMoreButton.isHidden = !hasRecentlyViewedHotels
+        
+        if hasRecentlyViewedHotels {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                recentlyViewedHeightConstraint.constant = 200
+            } else {
+                recentlyViewedHeightConstraint.constant = 150
+            }
+            whereToNextTopConstraint.constant = 20
+        } else {
+            recentlyViewedHeightConstraint.constant = 0
+            whereToNextTopConstraint.constant = 0
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     func setUpTomorrowDate() {
@@ -998,8 +1044,8 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
     
     func reladRecentlyViewedData() {
         viewModel.fetchRecentlyViewedHotels {
-            
-            recentlyCollectionView.reloadData()
+            self.recentlyCollectionView.reloadData()
+            self.updateRecentlyViewedSectionVisibility()
         }
     }
     

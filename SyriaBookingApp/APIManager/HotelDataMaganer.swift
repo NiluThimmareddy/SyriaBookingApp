@@ -8,33 +8,66 @@
 import Foundation
 class HotelDataMaganer {
     static let shared = HotelDataMaganer()
-    var recentlyViewedHotelIds =  [String]()
+    var recentlyViewedHotelIds: [String: Date] = [:]
     private init() {
-        
-        if let savedIDs = UserDefaults.standard.array(forKey: "RecentlyViewedHotelIDs") as? [String] {
-            recentlyViewedHotelIds = savedIDs
-               }
-    }
+         // Load from UserDefaults
+         if let savedDict = UserDefaults.standard.dictionary(forKey: "RecentlyViewedHotelIDs") as? [String: TimeInterval] {
+             recentlyViewedHotelIds = savedDict.mapValues { Date(timeIntervalSince1970: $0) }
+         }
+     }
     
     var allHotels : [Hotel] = []
     
     func addRecentlyViewedHotel(id: String) {
-            var ids = recentlyViewedHotelIds
-            
-            // Remove if already present (to re-insert at top)
-            ids.removeAll { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
-                            id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
-            
-            // Insert at top
-            ids.insert(id, at: 0)
-            
-            // Keep only last 10
-            if ids.count > 10 {
-                ids = Array(ids.prefix(10))
-            }
-            
-            // Save back
-            recentlyViewedHotelIds = ids
-            UserDefaults.standard.set(ids, forKey: "RecentlyViewedHotelIDs")
+        // Update the timestamp for this hotel
+        recentlyViewedHotelIds[id] = Date()
+        saveRecentlyViewedHotels()
+    }
+    
+    func saveRecentlyViewedHotels() {
+        // Convert Date to TimeInterval for UserDefaults storage
+        let dictToSave = recentlyViewedHotelIds.mapValues { $0.timeIntervalSince1970 }
+        UserDefaults.standard.set(dictToSave, forKey: "RecentlyViewedHotelIDs")
+    }
+    
+    func clearAllRecentlyViewedHotels() {
+        recentlyViewedHotelIds.removeAll()
+        saveRecentlyViewedHotels()
+    }
+    
+    func clearTodaysRecentlyViewedHotels() {
+        let today = Date()
+        recentlyViewedHotelIds = recentlyViewedHotelIds.filter { entry in
+            !Calendar.current.isDate(entry.value, inSameDayAs: today)
         }
+        saveRecentlyViewedHotels()
+    }
+    
+    func clearEarlierRecentlyViewedHotels() {
+        let today = Date()
+        recentlyViewedHotelIds = recentlyViewedHotelIds.filter { entry in
+            Calendar.current.isDate(entry.value, inSameDayAs: today)
+        }
+        saveRecentlyViewedHotels()
+    }
+    
+    func getRecentlyViewedHotelIds() -> [String: Date] {
+        return recentlyViewedHotelIds
+    }
+    
+    func getRecentlyViewedHotelDate(hotelId: String) -> Date? {
+        return recentlyViewedHotelIds[hotelId]
+    }
+    func getAllRecentlyViewedHotels() -> [Hotel] {
+        let sortedIds = recentlyViewedHotelIds.sorted { $0.value > $1.value }.map { $0.key }
+        let viewedHotels = allHotels.filter { sortedIds.contains($0.id) }
+        let sortedHotels = viewedHotels.sorted {
+            guard let date1 = recentlyViewedHotelIds[$0.id],
+                  let date2 = recentlyViewedHotelIds[$1.id] else { return false }
+            return date1 > date2
+        }
+        
+        return sortedHotels
+    }
+
 }
