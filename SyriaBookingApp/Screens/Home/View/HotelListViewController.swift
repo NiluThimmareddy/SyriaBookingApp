@@ -13,7 +13,6 @@ enum hotelListSource{
     case filter
 }
 
-
 class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTopCapable {
    
     @IBOutlet weak var HotelListtableView: UITableView!
@@ -36,20 +35,26 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
-        viewModel.onDataLoaded = {
+        viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
-                self.HotelListtableView.reloadData()
+                self?.applyFilterOnHotels()
             }
         }
         
-        if comingFrom == .tabBar{
+        if comingFrom == .tabBar {
             viewModel.fetchHotels()
-            
+        } else if comingFrom == .filter {
+            // If coming from filter, apply filter immediately if data is already loaded
+            if !HotelDataMaganer.shared.allHotels.isEmpty {
+                applyFilterOnHotels()
+            } else {
+                viewModel.fetchHotels()
+            }
         }
     }
+    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)        
+        super.viewWillAppear(animated)
         setupAppNavigationBar()
         setUpUI()
     }
@@ -94,7 +99,6 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
         controller.modalPresentationStyle = .pageSheet
         present(controller, animated: true)
     }
-    
 }
 
 extension HotelListViewController : UITableViewDelegate , UITableViewDataSource {
@@ -128,7 +132,6 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 250
     }
-   
 }
 
 extension HotelListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -161,7 +164,7 @@ extension HotelListViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-            return 0
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -185,7 +188,7 @@ extension HotelListViewController  {
     func setUpUI() {
         HotelListtableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
         scrolleView.addTopShadow()
-        self.applyFilterOnHotels()
+        
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         scrolltoTopHelper = ScrollToTopHelper(parent: self)
@@ -199,6 +202,11 @@ extension HotelListViewController  {
             topHotelsLayout.estimatedItemSize = .zero
         }
         navigationController?.setNavigationBarBlack()
+        
+        // Apply filter after UI setup
+        if comingFrom == .filter {
+            applyFilterOnHotels()
+        }
     }
     
     func applyFilterOnHotels() {
@@ -208,17 +216,33 @@ extension HotelListViewController  {
         }
         var filtered = hotels
         
-        if selectedCity != "" && selectedCity != "All" && selectedCity != "Select City" {
-            filtered = filtered.filter { $0.city == selectedCity }
+        // Apply city filter
+        if !selectedCity.isEmpty && selectedCity != "All" && selectedCity != "Select City" {
+            filtered = filtered.filter { $0.city.lowercased() == selectedCity.lowercased() }
+            print("Filtering by city: \(selectedCity), Found \(filtered.count) hotels")
         }
         
+        // Apply rating sort if needed
         if shouldSortByRating {
-            filtered = filtered.sorted { ($0.averageRating) > ($1.averageRating)
-            }
+            filtered = filtered.sorted { ($0.averageRating) > ($1.averageRating) }
         }
+        
         viewModel.filteredHotels = filtered
-        viewModel.filteredHotelsCopy =  filtered
+        viewModel.filteredHotelsCopy = filtered
+        
+        // Reload both table view and collection view
         HotelListtableView.reloadData()
+        hotelCollectionView.reloadData()
+        
+        // Show empty state if no hotels found
+        if filtered.isEmpty {
+            showEmptyState()
+        }
+    }
+    
+    private func showEmptyState() {
+        // You can add an empty state view here
+        print("No hotels found for city: \(selectedCity)")
     }
     
     //delegate method
@@ -227,6 +251,7 @@ extension HotelListViewController  {
         viewModel.filteredHotelsCopy = viewModel.filteredHotels
         DispatchQueue.main.async {
             self.HotelListtableView.reloadData()
+            self.hotelCollectionView.reloadData()
         }
     }
     
@@ -240,7 +265,6 @@ extension HotelListViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filterHotelsBasedOnSearch(searchText: searchText)
         HotelListtableView.reloadData()
+        hotelCollectionView.reloadData()
     }
 }
-
-

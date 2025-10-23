@@ -144,6 +144,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     @IBAction func whereToNextSeeMoreButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "WhereToNextVC") as! WhereToNextVC
+        controller.whereToNextCityList = self.WhereToNextCityList // Pass the city data
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -227,8 +228,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.navigationBar.tintColor = .white
             self.navigationController?.pushViewController(storyboard, animated: true)
-        } else{
-            
+        } else {
             showAlert(title: "SyriaBooking", message: "Please select city")
         }
     }

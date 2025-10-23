@@ -100,7 +100,11 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
         if recentlyViewedHotels.isEmpty {
             return 90
         }
-        return 130
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return 200
+        } else {
+            return 130
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -177,6 +181,13 @@ extension RecentlyViewedVC {
         
         let lang = AppSettings.shared.selectedLanguage
         self.navigationItem.title = lang == .english ? "Recently Viewed" : "شوهدت مؤخرا"
+        
+        if #available(iOS 15.0, *) {
+            recentlyViewedTableview.sectionHeaderTopPadding = 15
+        }
+        
+        recentlyViewedTableview.contentInset = .zero
+        recentlyViewedTableview.contentInsetAdjustmentBehavior = .never
     }
     
     func loadRecentlyViewedHotels() {

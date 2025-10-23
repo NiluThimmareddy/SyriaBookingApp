@@ -21,6 +21,9 @@ enum APIURL{
     var baseURL: String {
         return "https://syriabookingcacheapi.azurewebsites.net/api/"
     }
+//    var baseURL: String {
+//        return "https://syriabookingstage.azurewebsites.net/public-api/"
+//    }
     
     var url : URL? {
         switch self {
