@@ -54,6 +54,7 @@ class HotelDetailsViewController : UIViewController {
     @IBOutlet weak var pleseClickHereButton: UIButton!
     @IBOutlet weak var totalPriceView: UIView!
     @IBOutlet weak var totalAmountLabel: UILabel!
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     var  hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -94,6 +95,10 @@ class HotelDetailsViewController : UIViewController {
         super.viewDidLayoutSubviews()
         updateRateAndReviewsTableHeight()
     }
+    
+    @IBAction func segmentControlAction(_ sender: Any) {
+    }
+    
     
     @IBAction func overViewButtonAction(_ sender: Any) {
         isDescriptionVisible.toggle()
@@ -250,7 +255,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == hotelImagesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsPageHotelImagesCVC", for: indexPath) as! DetailsPageHotelImagesCVC
-            
             guard let hotel = selectedHotel else { return cell }
             let images = hotel.images
             let startIndex = indexPath.row * 5
@@ -304,6 +308,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
             let rooms = (selectedHotel?.rooms[indexPath.row])!
             cell.delegate = self
+            cell.parentHotel = self.selectedHotel
             cell.onBooknowBottonClick = { selectedRoom in
                 if UserSessionManager.getUser() == nil{
                     // open loginin
@@ -739,12 +744,24 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     
 }
 
+//extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
+//    func didTapImageFive(in cell: DetailsPageHotelImagesCVC) {
+//        guard let galleryVC = storyboard?.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else {
+//            return
+//        }
+//        galleryVC.selectedHotel = selectedHotel
+//        present(galleryVC, animated: true)
+//    }
+//}
 extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
     func didTapImageFive(in cell: DetailsPageHotelImagesCVC) {
         guard let galleryVC = storyboard?.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else {
             return
         }
         galleryVC.selectedHotel = selectedHotel
+        galleryVC.galleryType = .hotel
+        galleryVC.initialIndex = 0 
+        
         present(galleryVC, animated: true)
     }
 }

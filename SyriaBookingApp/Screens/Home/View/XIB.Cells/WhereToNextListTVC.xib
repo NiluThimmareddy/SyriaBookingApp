@@ -18,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lUn-9A-nPy">
-                        <rect key="frame" x="5" y="5" width="310" height="200"/>
+                        <rect key="frame" x="5" y="5" width="310" height="195"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_home_image1" translatesAutoresizingMaskIntoConstraints="NO" id="ZFq-CY-sDq">
-                                <rect key="frame" x="0.0" y="0.0" width="310" height="200"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZFq-CY-sDq">
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="195"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="10"/>
@@ -35,7 +35,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24 hotels available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mpg-m5-16f">
-                                <rect key="frame" x="20" y="38" width="245" height="17"/>
+                                <rect key="frame" x="20" y="33" width="245" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -54,7 +54,7 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kkm-d5-9lS">
-                                <rect key="frame" x="20" y="75" width="290" height="105"/>
+                                <rect key="frame" x="20" y="70" width="290" height="105"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="105" id="6hK-Vw-0v1"/>
@@ -100,7 +100,7 @@
                 <constraints>
                     <constraint firstItem="lUn-9A-nPy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="IWS-Yz-twp"/>
                     <constraint firstItem="lUn-9A-nPy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="PAo-I9-UfZ"/>
-                    <constraint firstAttribute="bottom" secondItem="lUn-9A-nPy" secondAttribute="bottom" constant="5" id="Zc8-Si-WNi"/>
+                    <constraint firstAttribute="bottom" secondItem="lUn-9A-nPy" secondAttribute="bottom" constant="10" id="Zc8-Si-WNi"/>
                     <constraint firstAttribute="trailing" secondItem="lUn-9A-nPy" secondAttribute="trailing" constant="5" id="b92-xV-ZDC"/>
                 </constraints>
             </tableViewCellContentView>
@@ -118,7 +118,6 @@
     </objects>
     <resources>
         <image name="chevron.right.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="ic_home_image1" width="640" height="185.66667175292969"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

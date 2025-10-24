@@ -2374,7 +2374,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0pX-sm-mPz">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2041.3333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2091.3333333333335"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RoQ-hN-Dkl">
                                                 <rect key="frame" x="5" y="5" width="383" height="250"/>
@@ -2613,8 +2613,21 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="SWW-64-wY9">
+                                                <rect key="frame" x="20" y="677.33333333333337" width="195" height="31"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="ig1-zs-4VL"/>
+                                                </constraints>
+                                                <segments>
+                                                    <segment title="International"/>
+                                                    <segment title="Local"/>
+                                                </segments>
+                                                <connections>
+                                                    <action selector="segmentControlAction:" destination="C9i-fF-Sso" eventType="valueChanged" id="152-cg-fTL"/>
+                                                </connections>
+                                            </segmentedControl>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="boa-YN-ant">
-                                                <rect key="frame" x="20" y="677.33333333333337" width="353" height="444.00000000000011"/>
+                                                <rect key="frame" x="20" y="727.33333333333337" width="353" height="444.00000000000011"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availability" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haF-TB-ibk">
                                                         <rect key="frame" x="10" y="9.9999999999999982" width="77.333333333333329" height="17.333333333333329"/>
@@ -2687,7 +2700,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s4j-37-G8x">
-                                                <rect key="frame" x="20" y="1141.3333333333333" width="353" height="450"/>
+                                                <rect key="frame" x="20" y="1191.3333333333333" width="353" height="450"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lyt-po-fvu">
                                                         <rect key="frame" x="10" y="15.000000000000002" width="91.666666666666671" height="18.666666666666671"/>
@@ -2862,7 +2875,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3W-cY-IT6">
-                                                <rect key="frame" x="20" y="1611.3333333333333" width="353" height="400"/>
+                                                <rect key="frame" x="20" y="1661.3333333333333" width="353" height="399.99999999999977"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Rate &amp; Reviews 3.7 (6 reviews)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09k-xy-vHC">
                                                         <rect key="frame" x="10" y="15" width="219.33333333333334" height="30"/>
@@ -2903,7 +2916,7 @@
                                                         </connections>
                                                     </tableView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HES-Vc-1Tg">
-                                                        <rect key="frame" x="10" y="360" width="333" height="35"/>
+                                                        <rect key="frame" x="10" y="360.00000000000023" width="333" height="35"/>
                                                         <color key="backgroundColor" red="0.25098039220000001" green="0.52156862749999999" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="CiB-n1-0dG">
@@ -2961,6 +2974,7 @@
                                             <constraint firstItem="p3W-cY-IT6" firstAttribute="leading" secondItem="s4j-37-G8x" secondAttribute="leading" id="3Nj-ko-C2W"/>
                                             <constraint firstItem="3YD-PB-5Re" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="20" id="6LO-75-YSh"/>
                                             <constraint firstItem="boa-YN-ant" firstAttribute="leading" secondItem="Jui-Ma-QSs" secondAttribute="leading" id="BTT-Je-j9u"/>
+                                            <constraint firstItem="SWW-64-wY9" firstAttribute="leading" secondItem="Jui-Ma-QSs" secondAttribute="leading" id="Bqu-Fb-jaE"/>
                                             <constraint firstItem="OZw-aN-6GI" firstAttribute="top" secondItem="3YD-PB-5Re" secondAttribute="bottom" constant="10" id="E7f-qn-8UT"/>
                                             <constraint firstItem="Jui-Ma-QSs" firstAttribute="top" secondItem="0fp-mz-4jZ" secondAttribute="bottom" constant="20" id="Evl-7e-Yf9"/>
                                             <constraint firstItem="p3W-cY-IT6" firstAttribute="top" secondItem="s4j-37-G8x" secondAttribute="bottom" constant="20" id="FjR-7G-hE8"/>
@@ -2968,6 +2982,7 @@
                                             <constraint firstItem="RoQ-hN-Dkl" firstAttribute="top" secondItem="0pX-sm-mPz" secondAttribute="top" constant="5" id="MaF-Ig-nUk"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3YD-PB-5Re" secondAttribute="trailing" constant="20" id="MnU-0s-Uk8"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="top" secondItem="boa-YN-ant" secondAttribute="bottom" constant="20" id="NN7-xK-aPX"/>
+                                            <constraint firstItem="boa-YN-ant" firstAttribute="top" secondItem="SWW-64-wY9" secondAttribute="bottom" constant="20" id="OfT-my-0Rn"/>
                                             <constraint firstItem="boa-YN-ant" firstAttribute="trailing" secondItem="Jui-Ma-QSs" secondAttribute="trailing" id="PHn-1H-N3t"/>
                                             <constraint firstItem="RoQ-hN-Dkl" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="5" id="Uex-3F-2LX"/>
                                             <constraint firstItem="OZw-aN-6GI" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="20" id="Xga-Za-QEW"/>
@@ -2976,10 +2991,10 @@
                                             <constraint firstItem="3YD-PB-5Re" firstAttribute="top" secondItem="RoQ-hN-Dkl" secondAttribute="bottom" constant="20" id="ewr-DP-Gfe"/>
                                             <constraint firstItem="Jui-Ma-QSs" firstAttribute="trailing" secondItem="0fp-mz-4jZ" secondAttribute="trailing" id="hEH-Za-jEe"/>
                                             <constraint firstItem="0fp-mz-4jZ" firstAttribute="leading" secondItem="OZw-aN-6GI" secondAttribute="leading" id="laV-uj-4TI"/>
-                                            <constraint firstItem="boa-YN-ant" firstAttribute="top" secondItem="Jui-Ma-QSs" secondAttribute="bottom" constant="20" id="nfr-Of-ada"/>
                                             <constraint firstAttribute="trailing" secondItem="RoQ-hN-Dkl" secondAttribute="trailing" constant="5" id="ocT-sZ-mws"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="trailing" secondItem="boa-YN-ant" secondAttribute="trailing" id="qRH-hB-rJj"/>
                                             <constraint firstItem="p3W-cY-IT6" firstAttribute="trailing" secondItem="s4j-37-G8x" secondAttribute="trailing" id="qju-KK-jRk"/>
+                                            <constraint firstItem="SWW-64-wY9" firstAttribute="top" secondItem="Jui-Ma-QSs" secondAttribute="bottom" constant="20" id="qoO-uA-eZ0"/>
                                             <constraint firstItem="0fp-mz-4jZ" firstAttribute="top" secondItem="OZw-aN-6GI" secondAttribute="bottom" constant="10" id="tIL-T3-AZI"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="leading" secondItem="boa-YN-ant" secondAttribute="leading" id="wNU-DG-BQy"/>
                                         </constraints>
@@ -3066,6 +3081,7 @@
                         <outlet property="roomsAvailabilityCollectionView" destination="GBl-UR-vjU" id="SYq-jC-Usi"/>
                         <outlet property="roomsCollectionViewHeightConstraint" destination="Uf3-Bv-FjQ" id="LXz-4R-sTT"/>
                         <outlet property="scrollView" destination="iAZ-nL-TA4" id="Ak3-g5-idi"/>
+                        <outlet property="segmentControl" destination="SWW-64-wY9" id="QNw-KQ-riD"/>
                         <outlet property="selectratingButton" destination="qe9-b1-bFF" id="04L-bb-wK3"/>
                         <outlet property="submitReviewButton" destination="ybL-Mo-4nn" id="M2D-WD-X0p"/>
                         <outlet property="totalAmountLabel" destination="FpN-Or-EAb" id="AE4-UX-Q6z"/>
@@ -5464,22 +5480,22 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -120,7 +120,7 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
         }
         
         let headerView = UIView()
-        headerView.backgroundColor = .systemBackground
+//        headerView.backgroundColor = .systemBackground
         
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

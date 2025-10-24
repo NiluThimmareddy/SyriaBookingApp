@@ -94,7 +94,6 @@ extension WhereToNextListTVC: UICollectionViewDelegate, UICollectionViewDataSour
             let hotel = hotels[indexPath.row]
             cell.configure(with: hotel, language: selectedLanguage)
         }
-        
         return cell
     }
     
@@ -118,6 +117,7 @@ extension WhereToNextListTVC: UICollectionViewDelegate, UICollectionViewDataSour
             onHotelSelected?(selectedHotel)
         }
     }
+    
 }
 
 // MARK: - Setup Methods
@@ -126,6 +126,7 @@ extension WhereToNextListTVC {
         totalHotelCollectionView.register(UINib(nibName: "WhereToNextListCVC", bundle: nil), forCellWithReuseIdentifier: "WhereToNextListCVC")
         totalHotelCollectionView.delegate = self
         totalHotelCollectionView.dataSource = self
+        hotelImgView.applyFullLightBlackGradientOverlay()
     }
     
     override func prepareForReuse() {

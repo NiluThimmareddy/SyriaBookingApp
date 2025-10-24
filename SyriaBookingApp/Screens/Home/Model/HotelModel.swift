@@ -156,8 +156,7 @@ struct RoomElement: Codable {
     let room: RoomDetails
     let coverImage: String?
     var rates: [Rate]
-    
-    
+    let images: [String]? 
 }
 
 struct Rate: Codable {
