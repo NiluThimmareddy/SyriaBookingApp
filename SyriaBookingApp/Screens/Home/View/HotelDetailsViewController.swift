@@ -431,6 +431,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         }
     }
     
+    func showRefundPolicy(for room: RoomElement) {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let refundVC = storyboard.instantiateViewController(withIdentifier: "RefundPolicyVC") as? RefundPolicyVC else { return }
+        refundVC.modalPresentationStyle = .overFullScreen
+        self.present(refundVC, animated: true)
+    }
+    
     func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
         return CenteredPresentationController(presentedViewController: presented, presenting: presenting)
     }
@@ -744,15 +751,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     
 }
 
-//extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
-//    func didTapImageFive(in cell: DetailsPageHotelImagesCVC) {
-//        guard let galleryVC = storyboard?.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else {
-//            return
-//        }
-//        galleryVC.selectedHotel = selectedHotel
-//        present(galleryVC, animated: true)
-//    }
-//}
 extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
     func didTapImageFive(in cell: DetailsPageHotelImagesCVC) {
         guard let galleryVC = storyboard?.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else {

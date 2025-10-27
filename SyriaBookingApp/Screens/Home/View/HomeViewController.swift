@@ -274,7 +274,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     }
     
     func setNextDateInCkechout(checkInDate:Date){
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: checkInDate) {
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
             formatter.dateStyle = .medium

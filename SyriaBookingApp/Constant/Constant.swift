@@ -18,12 +18,17 @@ enum APIURL{
     case notificationCount
     case updateProfile(userId: String)
     
-    var baseURL: String {
-        return "https://syriabookingcacheapi.azurewebsites.net/api/"
-    }
+    
+    //Production URL
 //    var baseURL: String {
-//        return "https://syriabookingstage.azurewebsites.net/public-api/"
+//        return "https://syriabookingcacheapi.azurewebsites.net/api/"
+//
 //    }
+    
+   //Development URL
+    var baseURL: String {
+        return "https://syriabookingstage.azurewebsites.net/public-api/api/"
+    }
     
     var url : URL? {
         switch self {

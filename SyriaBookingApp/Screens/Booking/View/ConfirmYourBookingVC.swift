@@ -64,7 +64,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         let today = Date()
         selectedCheckInDate = today
         
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
             selectedCheckOutDate = tomorrow
         }
         
@@ -182,7 +182,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     }
     
     func setNextDateInCkechout(checkInDate:Date){
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: checkInDate) {
+        if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
             formatter.dateStyle = .medium
@@ -218,7 +218,7 @@ extension ConfirmYourBookingVC {
             checkInTF.text = formatter.string(from: today)
             selectedCheckInDate = today
             // Set tomorrow as default check-out
-            if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+            if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
                 checkOutTF.text = formatter.string(from: tomorrow)
                 selectedCheckOutDate = tomorrow
             }
@@ -410,11 +410,11 @@ extension ConfirmYourBookingVC {
             
         case .checkOut:
             if let checkIn = selectedCheckInDate {
-                if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 1, to: checkIn) {
+                if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 0, to: checkIn) {
                     datePicker.minimumDate = nextDayBaseOnCheckin
                 }
             } else {
-                if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) {
+                if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
                     datePicker.minimumDate = tomorrow
                     datePicker.date = tomorrow
                 }

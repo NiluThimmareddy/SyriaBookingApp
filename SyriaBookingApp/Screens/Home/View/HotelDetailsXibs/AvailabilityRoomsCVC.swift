@@ -204,6 +204,7 @@ import UIKit
 protocol AvailabilityRoomsCVCDelegate: AnyObject {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate)
     func showAlertForRateSelection()
+    func showRefundPolicy(for room: RoomElement)
 }
 
 class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioningDelegate {
@@ -220,6 +221,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var bookNowButton: UIButton!
     @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateTitleLabel: UILabel!
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
@@ -234,6 +236,15 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     
     @IBAction func bookNowButtonAction(_ sender: Any) {
         self.onBooknowBottonClick?(selectedRoom)
+    }
+    
+    @IBAction func refundPolicyButtonAction(_ sender : UIButton) {
+        if let selectedRoom = selectedRoom {
+            delegate?.showRefundPolicy(for: selectedRoom)
+        }
+    }
+    
+    @IBAction func segmentControlAction(_ sender: Any) {
     }
     
 }
@@ -300,6 +311,18 @@ extension AvailabilityRoomsCVC {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(roomImageTapped))
         roomImageView.isUserInteractionEnabled = true
         roomImageView.addGestureRecognizer(tapGesture)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white
+        ]
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black
+        ]
+        segmentControl.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+        segmentControl.layer.backgroundColor = UIColor.white.cgColor
+        segmentControl.selectedSegmentTintColor = UIColor.black
+        segmentControl.addBottomShadow()
     }
     
     @objc func roomImageTapped() {
@@ -357,7 +380,6 @@ extension AvailabilityRoomsCVC {
         let maxChildren = rooms.room.maxChildren
         let breakfastIncluded = rooms.room.breakfastIncluded
         let amenities = rooms.room.amenities ?? "N/A"
-        let refundPolicy = rooms.room.refundPolicy ?? "N/A"
         
         let roomsizeText: String
         let guestText: String
@@ -368,14 +390,14 @@ extension AvailabilityRoomsCVC {
         if AppSettings.shared.selectedLanguage == .arabic {
             roomsizeText = "الحجم: \(roomSize)"
             guestText = "الحد الأقصى للنزلاء: \(maxAdults) بالغين، \(maxChildren) أطفال"
-            refundPolicyText = "سياسة الاسترجاع: \(refundPolicy)"
+            refundPolicyText = "سياسة الاسترجاع: "
             aminitiesText = "المرافق: \(amenities)"
             breakfastText = "يشمل الإفطار: \(breakfastIncluded ? "نعم" : "لا")"
             rateTitleLabel.text = "الأسعار"
         } else {
             roomsizeText = "Size: \(roomSize)"
             guestText = "Max Guests: \(maxAdults) Adults, \(maxChildren) Children"
-            refundPolicyText = "Refund Policy: \(refundPolicy)"
+            refundPolicyText = "Refund Policy: "
             aminitiesText = "Amenities: \(amenities)"
             breakfastText = "Breakfast Included: \(breakfastIncluded ? "Yes" : "No")"
             rateTitleLabel.text = "Rates"
@@ -391,7 +413,6 @@ extension AvailabilityRoomsCVC {
         let labelConfigs: [(UILabel, String, String, UIColor)] = [
             (roomSizeLabel, roomsizeText, "Size:", .darkGray),
             (maxGuestsLabel, guestText, "Max Guests:", .darkGray),
-            (refundPolicyLabel, refundPolicyText, "Refund Policy:", .darkGray),
             (amenitiesLabel, aminitiesText, "Amenities:", .systemBlue),
             (breakfastLabel, breakfastText, "Breakfast Included:", .darkGray)
         ]

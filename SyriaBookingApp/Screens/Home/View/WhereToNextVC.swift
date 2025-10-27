@@ -66,7 +66,8 @@ class WhereToNextVC: UIViewController, UIViewControllerTransitioningDelegate {
 // MARK: - UITableView DataSource & Delegate
 extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return whereToNextCityList.count
+//        return whereToNextCityList.count
+        return min(whereToNextCityList.count, 10)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
