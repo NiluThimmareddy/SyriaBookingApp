@@ -63,6 +63,8 @@ class ViewBookingConfirmationVC : UIViewController {
     @IBOutlet weak var needHelpTitleLabel: UILabel!
     @IBOutlet weak var thanksMessageTextLabel: UILabel!
     @IBOutlet weak var guestInformationTitleLabel: UILabel!
+    @IBOutlet weak var totalDiscountLabel: UILabel!
+    @IBOutlet weak var netTotalLabel: UILabel!
     
     var bookingId : String = ""
     var hotelID : String = ""
@@ -233,6 +235,8 @@ extension ViewBookingConfirmationVC {
                     (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
                     (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
                     (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
+                    (totalDiscountLabel, "Total Discount:","Total Discount:"),
+                    (netTotalLabel, "Net Total:","Net Total:"),
                     (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
                     (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
                 ]
@@ -258,6 +262,8 @@ extension ViewBookingConfirmationVC {
                     (acceptedCurrenciesLabel, "العملات المقبولة: \(hotelData.acceptedCurrencies ?? "لا توجد عملات")", "العملات المقبولة:"),
                     (languagesSpokenLabel, "اللغات المتحدثة: \(hotelData.languagesSpoken.rawValue)", "اللغات المتحدثة:"),
                     (totalPriceLabel, "السعر الإجمالي: \(calculatedTotal)", "السعر الإجمالي:"),
+                    (totalDiscountLabel, "إجمالي الخصم:", "إجمالي الخصم:"),
+                    (netTotalLabel, "الإجمالي الصافي:", "الإجمالي الصافي:"),
                     (paymentMethodLabel, "طريقة الدفع: الدفع في الفندق", "طريقة الدفع:"),
                     (contactEmailLabel, "للحصول على الدعم أو إجراء تغييرات على الحجز، تواصل عبر support@syriabooking.sy","support@syriabooking.sy")
                 ]

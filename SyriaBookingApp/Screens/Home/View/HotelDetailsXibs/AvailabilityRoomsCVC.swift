@@ -222,6 +222,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateTitleLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBOutlet weak var imageCountLabel: UILabel!
     
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
@@ -323,6 +324,10 @@ extension AvailabilityRoomsCVC {
         segmentControl.layer.backgroundColor = UIColor.white.cgColor
         segmentControl.selectedSegmentTintColor = UIColor.black
         segmentControl.addBottomShadow()
+        self.imageCountLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        imageCountLabel.layer.cornerRadius = 10
+        imageCountLabel.layer.masksToBounds = true
+        imageCountLabel.layer.maskedCorners = [.layerMinXMinYCorner]
     }
     
     @objc func roomImageTapped() {

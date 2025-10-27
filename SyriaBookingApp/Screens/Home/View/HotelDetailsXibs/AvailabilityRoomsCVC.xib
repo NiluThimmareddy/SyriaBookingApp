@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -32,6 +32,16 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pV4-5u-liT">
+                                <rect key="frame" x="90" y="105" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pV4-5u-liT" secondAttribute="height" id="NIT-1a-5oY"/>
+                                    <constraint firstAttribute="height" constant="30" id="pTh-gh-Nav"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i8M-mX-Kb9">
                                 <rect key="frame" x="130" y="15" width="233" height="17"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
@@ -177,6 +187,7 @@
                             <constraint firstItem="mjc-l1-6JG" firstAttribute="leading" secondItem="62u-Ia-RSf" secondAttribute="leading" id="2ZU-JJ-wjt"/>
                             <constraint firstItem="Jma-BW-U9w" firstAttribute="leading" secondItem="q0R-AG-hvq" secondAttribute="trailing" constant="10" id="3F3-lm-0Tt"/>
                             <constraint firstItem="di2-yy-3rL" firstAttribute="top" secondItem="z3j-QT-WCa" secondAttribute="bottom" constant="10" id="5sI-rS-DEc"/>
+                            <constraint firstItem="pV4-5u-liT" firstAttribute="bottom" secondItem="62u-Ia-RSf" secondAttribute="bottom" id="92O-wT-eZY"/>
                             <constraint firstItem="mjc-l1-6JG" firstAttribute="trailing" secondItem="idO-7F-UdQ" secondAttribute="trailing" id="DGt-Ge-jVl"/>
                             <constraint firstItem="Jma-BW-U9w" firstAttribute="centerY" secondItem="q0R-AG-hvq" secondAttribute="centerY" id="JWq-oy-75y"/>
                             <constraint firstItem="YFz-j3-qrE" firstAttribute="leading" secondItem="OBS-uF-nfn" secondAttribute="leading" id="Jlh-Md-V2G"/>
@@ -200,6 +211,7 @@
                             <constraint firstItem="z3j-QT-WCa" firstAttribute="leading" secondItem="mjc-l1-6JG" secondAttribute="leading" id="i15-3C-7sa"/>
                             <constraint firstItem="VJE-1u-jY3" firstAttribute="leading" secondItem="i8M-mX-Kb9" secondAttribute="leading" id="koY-5S-DkQ"/>
                             <constraint firstItem="OBS-uF-nfn" firstAttribute="leading" secondItem="z3j-QT-WCa" secondAttribute="leading" id="ldA-Pj-5ta"/>
+                            <constraint firstItem="pV4-5u-liT" firstAttribute="trailing" secondItem="62u-Ia-RSf" secondAttribute="trailing" id="mTR-vP-VoK"/>
                             <constraint firstItem="idO-7F-UdQ" firstAttribute="top" secondItem="q0R-AG-hvq" secondAttribute="bottom" constant="7" id="pSb-DQ-x5b"/>
                             <constraint firstItem="CGw-4a-pRE" firstAttribute="top" secondItem="VJE-1u-jY3" secondAttribute="bottom" constant="7" id="q9c-Dw-cYK"/>
                             <constraint firstAttribute="trailing" secondItem="i8M-mX-Kb9" secondAttribute="trailing" id="qRt-hb-Fe8"/>
@@ -227,6 +239,7 @@
                 <outlet property="backView" destination="3yb-Wn-yZc" id="PkC-8w-3DI"/>
                 <outlet property="bookNowButton" destination="YFz-j3-qrE" id="ye1-86-dFc"/>
                 <outlet property="breakfastLabel" destination="idO-7F-UdQ" id="6qp-8w-xjv"/>
+                <outlet property="imageCountLabel" destination="pV4-5u-liT" id="C9V-6S-O8B"/>
                 <outlet property="maxGuestsLabel" destination="CGw-4a-pRE" id="N0G-3j-eN0"/>
                 <outlet property="rateTitleLabel" destination="z3j-QT-WCa" id="pY1-OA-mqM"/>
                 <outlet property="refundPolicyLabel" destination="q0R-AG-hvq" id="MHz-rh-wxc"/>
