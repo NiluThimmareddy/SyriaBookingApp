@@ -57,7 +57,9 @@
                                 <rect key="frame" x="20" y="70" width="290" height="105"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="105" id="6hK-Vw-0v1"/>
+                                    <constraint firstAttribute="height" constant="105" id="6hK-Vw-0v1">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="130"/>
+                                    </constraint>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="9g4-P2-0XI">
                                     <size key="itemSize" width="128" height="128"/>
@@ -87,7 +89,9 @@
                             <constraint firstItem="mpg-m5-16f" firstAttribute="leading" secondItem="94R-3V-aYO" secondAttribute="leading" id="h1X-P2-6uS"/>
                             <constraint firstAttribute="trailing" secondItem="ZFq-CY-sDq" secondAttribute="trailing" id="rCi-l7-FNI"/>
                             <constraint firstAttribute="trailing" secondItem="HXa-uq-Khy" secondAttribute="trailing" constant="10" id="sgR-kf-4hD"/>
-                            <constraint firstItem="94R-3V-aYO" firstAttribute="top" secondItem="lUn-9A-nPy" secondAttribute="top" constant="10" id="we4-Au-qOt"/>
+                            <constraint firstItem="94R-3V-aYO" firstAttribute="top" secondItem="lUn-9A-nPy" secondAttribute="top" constant="10" id="we4-Au-qOt">
+                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                            </constraint>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

@@ -311,16 +311,16 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         onRateSelectionChanged?(rate)
         roomRatesTableview.reloadRows(at: [indexPath], with: .none)
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
+
 }
 
 extension AvailabilityRoomsCVC {
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         updateBookNowButtonTitle()
+        
+        roomRatesTableview.rowHeight = UITableView.automaticDimension
+        roomRatesTableview.estimatedRowHeight = 40
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(roomImageTapped))
         roomImageView.isUserInteractionEnabled = true
@@ -337,7 +337,6 @@ extension AvailabilityRoomsCVC {
         segmentControl.layer.backgroundColor = UIColor.white.cgColor
         segmentControl.selectedSegmentTintColor = UIColor.black
         segmentControl.selectedSegmentIndex = 0
-        segmentControl.addBottomShadow()
         self.imageCountLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         imageCountLabel.layer.cornerRadius = 10
         imageCountLabel.layer.masksToBounds = true
@@ -384,11 +383,11 @@ extension AvailabilityRoomsCVC {
     func configure(with rooms: RoomElement) {
         self.selectedRoom = rooms
         roomRatesTableview.reloadData()
-        
-        let rateCount = rooms.rates.count
-        let rowHeight: CGFloat = 40
-        roomRatesTableviewheightConstraint.constant = CGFloat(rateCount) * rowHeight
-        self.layoutIfNeeded()
+        DispatchQueue.main.async {
+            self.roomRatesTableview.layoutIfNeeded()
+            self.roomRatesTableviewheightConstraint.constant = self.roomRatesTableview.contentSize.height
+            self.layoutIfNeeded()
+        }
         
         if let imageUrlString = rooms.coverImage, !imageUrlString.isEmpty {
             roomImageView.loadImage(from: imageUrlString)

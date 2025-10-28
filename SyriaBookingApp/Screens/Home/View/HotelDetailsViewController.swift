@@ -452,6 +452,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         }
         let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity ?? 0) > 0 }.count
         let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity ?? 0) }
+        
         if total > 0 {
             totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $\(total)"
         } else {
@@ -654,7 +655,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func calculateRoomCellHeight(for room: RoomElement) -> CGFloat {
-        let baseHeight: CGFloat = 300 + 50
+        let baseHeight: CGFloat = 350
         let rateRowHeight: CGFloat = 40
         let rateCount = room.rates.count
         let tableHeight = CGFloat(rateCount) * rateRowHeight

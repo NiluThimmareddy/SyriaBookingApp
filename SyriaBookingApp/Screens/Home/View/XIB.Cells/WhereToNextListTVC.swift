@@ -98,7 +98,9 @@ extension WhereToNextListTVC: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.width * 0.75
+        let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let widthMultiplier: CGFloat = isIpad ? 0.4 : 0.75
+        let width = collectionView.bounds.width * widthMultiplier
         let height = collectionView.bounds.height
         return CGSize(width: width, height: height)
     }

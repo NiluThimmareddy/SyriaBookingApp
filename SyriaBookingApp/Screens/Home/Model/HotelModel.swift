@@ -164,7 +164,7 @@ struct Rate: Codable {
     let price: Double
     let notes: String?
     let discount: Double?
-    let  localPrice: Double?
+    let localPrice: Double?
     let localDiscount: Double?
     var selectedQuantity: Int = 1
     var isSelected: Bool? = false

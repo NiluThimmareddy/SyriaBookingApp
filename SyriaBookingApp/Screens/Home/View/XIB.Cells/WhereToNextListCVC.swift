@@ -35,7 +35,7 @@ class WhereToNextListCVC: UICollectionViewCell {
         let price = hotel.minRoomPrice
         if !price.isEmpty {
             if language == .english {
-                pricePerNightLabel.text = "$\(price)/night"
+                pricePerNightLabel.text = "\(price)/night"
             } else {
                 pricePerNightLabel.text = "\(price) دولار/ليلة"
             }
