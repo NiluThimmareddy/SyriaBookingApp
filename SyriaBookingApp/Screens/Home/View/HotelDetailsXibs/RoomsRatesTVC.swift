@@ -18,7 +18,7 @@ class RoomsRatesTVC : UITableViewCell {
     var onQuantityChanged: ((Int) -> Void)?
     var onRoomSelected : ((RoomElement) -> Void)?
     var selecteRoomRates = [Rate]()
-    
+   
     override func awakeFromNib() {
         super.awakeFromNib()
     }

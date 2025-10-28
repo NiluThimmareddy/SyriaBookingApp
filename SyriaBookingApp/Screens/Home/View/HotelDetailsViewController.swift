@@ -252,6 +252,8 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
         }
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == hotelImagesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsPageHotelImagesCVC", for: indexPath) as! DetailsPageHotelImagesCVC
@@ -351,6 +353,9 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     self.selectedRates.removeAll { $0.id == rate.id }
                 }
                 
+                cell.segmentChanged = {
+                    self.totalPriceView.isHidden = true
+                }
                 self.updateTotalPrice()
             }
             cell.configure(with: rooms)
@@ -416,6 +421,8 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 }
 
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
+   
+    
     
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         if let user = UserSessionManager.getUser(){
@@ -447,18 +454,45 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func updateTotalPrice() {
-        let total = selectedRates.reduce(0) {
-            $0 + (($1.price ?? 0) * Double($1.selectedQuantity ?? 1))
-        }
-        let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity ?? 0) > 0 }.count
-        let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity ?? 0) }
         
-        if total > 0 {
-            totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $\(total)"
-        } else {
-            totalAmountLabel.text = ""
+        if !selectedRates.isEmpty {
+            let isLocal = selectedRates[0].isLocal
+            if isLocal {
+                let total = selectedRates.reduce(0) {
+                    $0 + (($1.localPrice ?? 0) * Double($1.selectedQuantity))
+                }
+                let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity) > 0 }.count
+                let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity) }
+                
+                
+                let totalDiscount = selectedRates.reduce(0) { $0 + ($1.localDiscount ?? 0) }
+                if total > 0 {
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: SYP \(total) (\(totalDiscount)% Discount)"
+                } else {
+                    totalAmountLabel.text = ""
+                }
+                totalPriceView.isHidden = total == 0
+            }else{
+                let total = selectedRates.reduce(0) {
+                    $0 + (($1.price) * Double($1.selectedQuantity))
+                }
+                let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity) > 0 }.count
+                let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity) }
+                
+                
+                
+                let totalDiscount = selectedRates.reduce(0) { $0 + ($1.discount ?? 0) }
+                if total > 0 {
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $ \(total) (\(totalDiscount)% Discount)"
+                } else {
+                    totalAmountLabel.text = ""
+                }
+                totalPriceView.isHidden = total == 0
+                
+            }
+        }else{
+            totalPriceView.isHidden = true
         }
-        totalPriceView.isHidden = total == 0
     }
     
     func setUpUI() {

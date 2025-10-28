@@ -224,7 +224,7 @@ class BookingViewModel {
         }.resume()
     }
     
-    func SubmitBookingInfo(userId: String,hotelId: String,roomId: String,guestName: String,guestPhone: String,guestEmail: String,numberOfGuests: Int,checkIn: String,checkOut: String,totalAmount: Double,bookingDetails: String
+    func SubmitBookingInfo(userId: String,hotelId: String,roomId: String,guestName: String,guestPhone: String,guestEmail: String,numberOfGuests: Int,checkIn: String,checkOut: String, totalAmount: Double,bookingDetails: String, bookingType: String, totalDiscount: Double, netTotal: Double
     ) {
         let params: [String: Any] = [
             "userId": userId,
@@ -237,7 +237,10 @@ class BookingViewModel {
             "checkIn": checkIn,
             "checkOut": checkOut,
             "totalAmount": totalAmount,
-            "bookingDetails": bookingDetails
+            "bookingDetails": bookingDetails,
+            "bookingType": bookingType,
+            "totalDiscount": totalDiscount,
+            "netTotal": netTotal
         ]
         
         print("📤 Request body:", params)

@@ -100,12 +100,7 @@ class RegisterMobileNumberVC : UIViewController {
     }    
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        if comingFrom == .tabbarBooking {
-
-            goToHomeTab()
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+            goToHomeTab()        
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {

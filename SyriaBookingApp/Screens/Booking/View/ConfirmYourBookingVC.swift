@@ -49,11 +49,15 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var isDatePickerShown = false
     var formattedTotal = ""
     var total : Double = 0.0
+    var totalDiscountAmount = 0.0
+    var totalAmount = 0.0
+    var netAmountAfterDiscount =  0.0
+    
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRates: [Rate] = []
     var viewModel = BookingViewModel()
-    
+    var roomRatesData = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         checkInTF.text = ""
@@ -83,7 +87,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         checkInTF.text = formatter.string(from: selectedCheckInDate!)
         checkOutTF.text = formatter.string(from: selectedCheckOutDate!)
         
-        updateTotalAmountLabel()
+        updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
@@ -171,9 +175,9 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             self.showAlert(error.description)
         }
         
-        let allDetails = "\(selectedRoomAndRatesLabel.text ?? "") TotalNoghts-  \(totalNightsCountLabel.text ?? "") DiscountAmount- \(totalDiscountAmountLabel.text ?? "")"
+        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: roomRatesData, bookingType: bookingTypeLabel.text ?? "", totalDiscount: totalDiscountAmount, netTotal: netAmountAfterDiscount)
         
-        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: allDetails)
+        
         
     }
     
@@ -233,30 +237,53 @@ extension ConfirmYourBookingVC {
             }
         }
         
+       
+
+        
+        total = 0.0
         
 
-        var roomRatesData = ""
-        total = 0.0
-        for i in selectedRates {
-            if i.isSelected {
-                
-                if i.isLocal {
-                    let lineTotal = Double(i.localPrice ?? 0.0) * Double(i.selectedQuantity)
-                    let formattedLineTotal = String(format: "$%.2f", lineTotal)
-                    total += lineTotal
-                    roomRatesData += "\n SYP\(i.localPrice ?? 0.0): \(i.notes ?? "") Qty \(i.selectedQuantity) (\(i.localDiscount ?? 0.0)% Discount) - Total \(formattedLineTotal)"
-                }else{
-                    let lineTotal = Double(i.price) * Double(i.selectedQuantity)
-                    let formattedLineTotal = String(format: "$%.2f", lineTotal)
-                    total += lineTotal
-                    roomRatesData += "\n $\(i.price): \(i.notes ?? "") Qty \(i.selectedQuantity) (\(i.discount ?? 0.0)% Discount) - Total \(formattedLineTotal)"
-                }
+        for rate in selectedRates where rate.isSelected {
+            // Common values
+            let qty = Double(rate.selectedQuantity)
+            let discountPercent = rate.isLocal ? (rate.localDiscount ?? 0.0) : (rate.discount ?? 0.0)
+            let price = rate.isLocal ? (rate.localPrice ?? 0.0) : rate.price
+            let currency = rate.isLocal ? "SYP" : "$"
+            
+            // Calculations
+            let gross = price * qty
+            let discountValue = gross * (discountPercent / 100)
+            let net = gross - discountValue
+            
+            // Add to total
+            total += net
+            
+            // Format values
+            let formattedPrice = String(format: "%.2f", price)
+            let formattedGross = String(format: "%.2f", gross)
+            let formattedDiscountValue = String(format: "%.2f", discountValue)
+            let formattedNet = String(format: "%.2f", net)
+            
+            // Build string like example
+            let line = "Rate Id(\(rate.id)) : qty \(Int(qty)), price \(formattedPrice) \(currency), discount \(discountPercent)%, gross \(formattedGross) \(currency), discount \(formattedDiscountValue) \(currency), net \(formattedNet) \(currency)"
+            
+            // Append with newline if not first
+            if !roomRatesData.isEmpty {
+                roomRatesData += "\r\n"
             }
+            roomRatesData += line
         }
-        
-        formattedTotal = String(format: "$%.2f", total)
+
+        // Update labels
+        if let firstSelected = selectedRates.first(where: { $0.isSelected }) {
+            bookingTypeLabel.text = firstSelected.isLocal ? "Local(SYP)" : "International($)"
+            let formattedTotal = String(format: "%.2f", total)
+            totalAmountLabel.text = firstSelected.isLocal ? "SYP \(formattedTotal)" : "$ \(formattedTotal)"
+        }
+
         selectedRoomAndRatesLabel.text = roomRatesData
-        totalAmountLabel.text = formattedTotal
+
+        
         setupDatePickerUI()
         
         increaseNoButton.layer.cornerRadius = 10
@@ -276,7 +303,7 @@ extension ConfirmYourBookingVC {
             object: nil
         )
         Arabic()
-        updateTotalAmountLabel()
+        updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
     
     func setupDatePickerUI() {
@@ -365,7 +392,7 @@ extension ConfirmYourBookingVC {
             checkOutTF.text = selectedDateString
         }
 
-        updateTotalAmountLabel()
+        updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
         dismissDatePicker()
     }
 
@@ -411,7 +438,7 @@ extension ConfirmYourBookingVC {
         }
         
        
-        updateTotalAmountLabel()
+        updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
     
     func updateDatePickerLimits() {
@@ -466,22 +493,22 @@ extension ConfirmYourBookingVC {
             }
         }
         
-        
-        let totalDiscountAmount = totalDiscount * Double(totalnights)
+         totalDiscountAmount = totalDiscount * Double(totalnights)
         totalDiscountAmountLabel.text = "\(totalDiscountAmount)%"
         
-        let totalAmount = total * Double(totalnights)
-        let netAmountAfterDiscount =  (totalAmount - ( totalAmount * totalDiscount ) / 100)
+         totalAmount = total * Double(totalnights)
+         netAmountAfterDiscount =  (totalAmount - ( totalAmount * totalDiscount ) / 100)
         netTotalAmountLabel.text = "\(currency) \(netAmountAfterDiscount )"
         
         return totalnights
         
     }
     
-    func updateTotalAmountLabel() {
+    func updateTotalAmountLabel(isLocal : Bool) {
         let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
+        let  currency =  isLocal ? "SYP " : "$ "
         guard nights > 0 else {
-            totalAmountLabel.text = formattedTotal // if no valid nights selected
+            totalAmountLabel.text =  "\(currency) \(formattedTotal)" // if no valid nights selected
             return
         }
 
@@ -490,8 +517,8 @@ extension ConfirmYourBookingVC {
         // Calculate per-night total (existing roomRates total × number of nights)
         let perNightTotal = total
         let totalForStay = perNightTotal * Double(nights)
-        let formatted = String(format: "$%.2f", totalForStay)
-        totalAmountLabel.text = formatted
+        let formatted = String(format: "%.2f", totalForStay)
+        totalAmountLabel.text = "\(currency) \(formatted)"
     }
     
     @objc func Arabic() {

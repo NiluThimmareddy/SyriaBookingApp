@@ -37,6 +37,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     var onRateSelectionChanged: ((Rate) -> Void)?
     var parentHotel: Hotel?
     
+    var segmentChanged : (()-> Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()
@@ -56,13 +57,27 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
         print("segment changes \(String(describing: sender.tag))")
         switch sender.selectedSegmentIndex {
         case 0:
+            self.segmentChanged?()
             isLocalRate = false
+            if var room = selectedRoom {
+                for index in room.rates.indices {
+                    room.rates[index].isSelected = false
+                    room.rates[index].isLocal = false
+                }
+                selectedRoom = room // reassign updated value
+            }
             roomRatesTableview.reloadData()
         case 1:
             isLocalRate = true
-//            for i in selectedRoom?.rates {
-//                i.isSelected = false
-//            }
+            self.segmentChanged?()
+            if var room = selectedRoom {
+                for index in room.rates.indices {
+                    room.rates[index].isSelected = false
+                    room.rates[index].isLocal = true
+                }
+                selectedRoom = room // reassign updated value
+            }
+            
             roomRatesTableview.reloadData()
         default:
             break
@@ -80,7 +95,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomsRatesTVC", for: indexPath) as! RoomsRatesTVC
         guard let selectedRoom = selectedRoom else {
-       
+            
             return cell
         }
         
@@ -94,7 +109,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.checkMarkButton.tag = indexPath.row
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
         cell.selectRoomsButton.tag =  indexPath.row
-       
+        
         cell.configure(with: selectedRoom, ratesForLocal: isLocalRate ?? false) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
@@ -124,14 +139,14 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         onRateSelectionChanged?(rate)
         roomRatesTableview.reloadRows(at: [indexPath], with: .none)
     }
-
+    
 }
 
 extension AvailabilityRoomsCVC {
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         updateBookNowButtonTitle()
-        
+        roomRatesTableview.isScrollEnabled = false
         roomRatesTableview.rowHeight = UITableView.automaticDimension
         roomRatesTableview.estimatedRowHeight = 40
         
@@ -159,10 +174,10 @@ extension AvailabilityRoomsCVC {
     @objc func roomImageTapped() {
         guard let selectedRoom = selectedRoom,
               let topVC = UIApplication.shared.keyWindow?.rootViewController else { return }
-
+        
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         guard let galleryVC = storyboard.instantiateViewController(withIdentifier: "HotelImagesGalleryVC") as? HotelImagesGalleryVC else { return }
-
+        
         galleryVC.galleryType = .room
         
         let RoomImages = parentHotel?.images.filter  { $0.contains(selectedRoom.room.id) }
@@ -184,12 +199,12 @@ extension AvailabilityRoomsCVC {
                 return
             }
         }
-
+        
         if !galleryVC.roomImages.isEmpty {
             topVC.present(galleryVC, animated: true)
         }
     }
-
+    
     func configure(with rooms: RoomElement) {
         self.selectedRoom = rooms
         roomRatesTableview.reloadData()
@@ -222,7 +237,7 @@ extension AvailabilityRoomsCVC {
         let refundPolicyText: String
         let aminitiesText: String
         let breakfastText: String
-
+        
         if AppSettings.shared.selectedLanguage == .arabic {
             roomsizeText = "الحجم: \(roomSize)"
             guestText = "الحد الأقصى للنزلاء: \(maxAdults) بالغين، \(maxChildren) أطفال"
@@ -266,7 +281,7 @@ extension AvailabilityRoomsCVC {
         
         updateBookNowButtonTitle()
     }
-
+    
     func updateBookNowButtonTitle() {
         if UserSessionManager.getUser() == nil {
             if AppSettings.shared.selectedLanguage == .arabic {
