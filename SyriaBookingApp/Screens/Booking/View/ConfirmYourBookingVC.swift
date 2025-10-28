@@ -28,6 +28,14 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     @IBOutlet weak var checkOutTitleLabel: UILabel!
     @IBOutlet weak var selectedRoomsAndRatesLabel: UILabel!
     @IBOutlet weak var totalAmountTitleLabel: UILabel!
+    @IBOutlet weak var bookingTypeTitleLabel: UILabel!
+    @IBOutlet weak var bookingTypeLabel: UILabel!
+    @IBOutlet weak var totalNightsTitleLabel: UILabel!
+    @IBOutlet weak var totalNightsCountLabel: UILabel!
+    @IBOutlet weak var totalDiscountTitleLabel: UILabel!
+    @IBOutlet weak var totalDiscountAmountLabel: UILabel!
+    @IBOutlet weak var netTotalTitleLabel: UILabel!
+    @IBOutlet weak var netTotalAmountLabel: UILabel!
     
     var guestName: String?
     var guestEmail: String?
@@ -401,7 +409,7 @@ extension ConfirmYourBookingVC {
     
     func updateDatePickerLimits() {
         let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date()) // Strip time
+        let today = calendar.startOfDay(for: Date())
         
         switch currentDatePickerMode {
         case .checkIn:

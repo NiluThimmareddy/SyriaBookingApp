@@ -17,8 +17,7 @@ enum APIURL{
     case notification
     case notificationCount
     case updateProfile(userId: String)
-    
-    
+        
     //Production URL
 //    var baseURL: String {
 //        return "https://syriabookingcacheapi.azurewebsites.net/api/"

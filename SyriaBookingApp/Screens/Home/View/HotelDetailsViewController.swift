@@ -654,7 +654,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func calculateRoomCellHeight(for room: RoomElement) -> CGFloat {
-        let baseHeight: CGFloat = 300
+        let baseHeight: CGFloat = 300 + 50
         let rateRowHeight: CGFloat = 40
         let rateCount = room.rates.count
         let tableHeight = CGFloat(rateCount) * rateRowHeight
@@ -759,7 +759,6 @@ extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
         galleryVC.selectedHotel = selectedHotel
         galleryVC.galleryType = .hotel
         galleryVC.initialIndex = 0 
-        
         present(galleryVC, animated: true)
     }
 }

@@ -74,7 +74,10 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var recentlySeeMoreButton: UIButton!
     @IBOutlet weak var whereToNextSeeMoreButton: UIButton!
     @IBOutlet weak var whereToNextTopConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var recommendedHotelsTitleLabel: UILabel!
+    @IBOutlet weak var recommendedHotelsCollectionView: UICollectionView!
+    @IBOutlet weak var viewAllRecommendedButton: UIButton!
+    @IBOutlet weak var recommendedHotelsCollectionViewHeightConstraint: NSLayoutConstraint!
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -98,6 +101,16 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     var isScrollingForward = true
     var currentPromotionIndex = 0
     
+    var recommendedHotels: [Hotel] {
+        let startIndex = 10
+        let endIndex = min(30, viewModel.filteredHotels.count)
+        
+        if startIndex < viewModel.filteredHotels.count {
+            return Array(viewModel.filteredHotels[startIndex..<endIndex])
+        }
+        return []
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
@@ -273,6 +286,14 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         updateDatePickerLimits()
     }
     
+    @IBAction func viewAllRecommendedButtonAction(_ sender: Any) {
+        let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+        controller.comingFrom = .filter
+        controller.viewModel = self.viewModel
+//        controller.shouldShowAllHotels = true
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     func setNextDateInCkechout(checkInDate:Date){
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
@@ -283,6 +304,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
             checkOutButton.setTitle(tomorrowDate, for: .normal)
         }
     }
+    
 }
 
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -292,12 +314,14 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         } else if collectionView == recentlyCollectionView {
             return viewModel.recentlyViewdHotels.isEmpty ? 1 : min(10, viewModel.recentlyViewdHotels.count)
         } else if collectionView == propertyTypeCollectionView {
-            return  WhereToNextCityList.count
+            return WhereToNextCityList.count
         } else if collectionView == promotionsCollectionView {
             return min(5, promotionsList.count)
-        } else if collectionView == sliderCollectionView{
+        } else if collectionView == sliderCollectionView {
             return sliderImages.count
-        } else  {
+        } else if collectionView == recommendedHotelsCollectionView {
+            return recommendedHotels.count
+        } else {
             return min(10, viewModel.filteredHotels.count)
         }
     }
@@ -359,6 +383,12 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
 //                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
             return cell
+        } else if collectionView == recommendedHotelsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
+            let hotel = recommendedHotels[indexPath.row]
+            cell.configuration(with: hotel)
+            cell.delegate = self
+            return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PromotionsCollectionViewCell", for: indexPath) as! PromotionsCollectionViewCell
             let promoHotel = promotionsList[indexPath.row]
@@ -403,13 +433,22 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(vc, animated: true)
+        } else if collectionView == recommendedHotelsCollectionView {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            let selectedHotel = recommendedHotels[indexPath.row]
+            vc.selectedHotel = selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+            HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+            delegate?.reladRecentlyViewedData()
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         if collectionView == topHotelsCollectionView {
             let layout = collectionViewLayout as! UICollectionViewFlowLayout
             let isIpad = UIDevice.current.userInterfaceIdiom == .pad
@@ -417,7 +456,7 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
             let availableWidth = collectionView.bounds.width - spacing
             let widthPerItem = availableWidth / numberOfItemsPerRow
-            let heightMultiplier: CGFloat = isIpad ? 1 : 1.5
+            let heightMultiplier: CGFloat = isIpad ? 0.9 : 1.5
             topHotelsCollectionViewHeightConstraint.constant = CGFloat((widthPerItem * heightMultiplier) * 5) + 10
             return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
         } else if collectionView == recentlyCollectionView {
@@ -446,6 +485,16 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             return CGSize(width: width, height: height)
         } else if collectionView == sliderCollectionView {
             return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
+        } else if collectionView == recommendedHotelsCollectionView {
+            let layout = collectionViewLayout as! UICollectionViewFlowLayout
+            let isIpad = UIDevice.current.userInterfaceIdiom == .pad
+            let numberOfItemsPerRow: CGFloat = isIpad ? 2 : 2
+            let spacing: CGFloat = layout.minimumInteritemSpacing + layout.sectionInset.left + layout.sectionInset.right
+            let availableWidth = collectionView.bounds.width - spacing
+            let widthPerItem = availableWidth / numberOfItemsPerRow
+            let heightMultiplier: CGFloat = isIpad ? 0.9 : 1.5
+            recommendedHotelsCollectionViewHeightConstraint.constant = CGFloat((widthPerItem * heightMultiplier) * 10) + 10
+            return CGSize(width: widthPerItem, height: widthPerItem * heightMultiplier)
         } else {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
@@ -528,6 +577,7 @@ extension HomeViewController {
                 self.viewModel.filteredHotelsCopy = self.viewModel.filteredHotels
                 
                 self.topHotelsCollectionView.reloadData()
+                self.recommendedHotelsCollectionView.reloadData()
                 self.promotionsList = self.viewModel.filteredHotels.filter {
                     if let desc = $0.shortDescription?.trimmingCharacters(in: .whitespacesAndNewlines) {
                         return !desc.isEmpty
@@ -579,6 +629,12 @@ extension HomeViewController {
         if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             topHotelsLayout.estimatedItemSize = .zero
         }
+        
+        recommendedHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
+        if let recommendedHotelsLayout = recommendedHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            recommendedHotelsLayout.estimatedItemSize = .zero
+        }
+        
         recentlyCollectionView.register(UINib(nibName: "NoRecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "NoRecentlyViewedCVC")
         recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")
         if let layouts = recentlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -604,7 +660,7 @@ extension HomeViewController {
         setupDatePickerUI()
         startPromotionAutoScroll()
         
-        [recentlyHeadLineLabel,whereToNextHeadLineLabel,topHotelHeadLineLabel,handpickedHotelsLabel].forEach { fontSize in
+        [recentlyHeadLineLabel,whereToNextHeadLineLabel,topHotelHeadLineLabel,handpickedHotelsLabel,recommendedHotelsTitleLabel].forEach { fontSize in
             fontSize?.font = .titleFont
         }
         handPickedHotelsDescriptionLabel.font = .captionFont
@@ -704,6 +760,7 @@ extension HomeViewController {
         topHotelsCollectionView.reloadData()
         propertyTypeCollectionView.reloadData()
         recentlyCollectionView.reloadData()
+        recommendedHotelsCollectionView.reloadData()
         
         if lang == .english {
             let attributes: [NSAttributedString.Key: Any] = [
@@ -730,6 +787,8 @@ extension HomeViewController {
             
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
+            recommendedHotelsTitleLabel.text = "Recommended Hotels"
+            viewAllRecommendedButton.setTitle("View All Recommended", for: .normal)
         } else {
             dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
             newYearTitleLabel.text = "عام جديد، مغامرات جديدة"
@@ -752,6 +811,8 @@ extension HomeViewController {
             ]
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
+            recommendedHotelsTitleLabel.text = "فنادق موصى بها"
+            viewAllRecommendedButton.setTitle("عرض جميع الموصى بها", for: .normal)
         }
     }
     

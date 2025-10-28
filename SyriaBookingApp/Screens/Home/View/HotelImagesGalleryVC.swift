@@ -165,6 +165,8 @@ class HotelImagesGalleryVC: UIViewController {
     @IBOutlet weak var hotelImagesCollectionView: UICollectionView!
     @IBOutlet weak var hotelThumbnailCollectionView: UICollectionView!
     @IBOutlet weak var hotelThumbnailCollectionHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var dismissButton: UIButton!
+    
     
     var selectedHotel: Hotel?
     var roomImages: [String] = []
@@ -189,6 +191,11 @@ class HotelImagesGalleryVC: UIViewController {
         
         hotelThumbnailCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
     }
+    
+    @IBAction func dismissButtonAction(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    
 }
 
 extension HotelImagesGalleryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -317,6 +324,10 @@ extension HotelImagesGalleryVC {
             layout.minimumLineSpacing = 8
             layout.estimatedItemSize = .zero
         }
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+//        backview.clipsToBounds = false
+
     }
 }
 
