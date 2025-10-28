@@ -47,7 +47,7 @@ class MyBookingTableViewCell: UITableViewCell {
         
         let totalNights = calculateTotalNights(checkIn: checkInDateStr, checkOut: checkOutDateStr)
         let perNightRate = booking.totalAmount // assuming `totalAmount` stores per-night price
-        let finalTotal = perNightRate * Double(totalNights)
+        let finalTotal = perNightRate
         totalAmountLabel.text = String(format: "Total: %.2f", finalTotal)
         upcomingDataLabel.text = booking.lastUpdatedUtc.toDayMonth()
         

@@ -171,8 +171,10 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             self.showAlert(error.description)
         }
         
-        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: selectedRoomAndRatesLabel.text ?? ""
-        )
+        let allDetails = "\(selectedRoomAndRatesLabel.text ?? "") TotalNoghts-  \(totalNightsCountLabel.text ?? "") DiscountAmount- \(totalDiscountAmountLabel.text ?? "")"
+        
+        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: allDetails)
+        
     }
     
     @IBAction func increaseNoButtonAction(_ sender: Any) {
@@ -213,7 +215,6 @@ extension ConfirmYourBookingVC {
         formatter.dateFormat = "dd-MM-yyyy"
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
-
         if let checkIn = selectedCheckInDate {
             // If check-in is already selected
             let selectedCheckin = formatter.string(from: checkIn)
@@ -231,19 +232,25 @@ extension ConfirmYourBookingVC {
                 selectedCheckOutDate = tomorrow
             }
         }
+        
+        
 
         var roomRatesData = ""
         total = 0.0
         for i in selectedRates {
-            if i.isSelected == true {
-                let price = i.price
-                let quantity = i.selectedQuantity
-                let guestNotes = i.notes ?? "Details Unavailable"
+            if i.isSelected {
                 
-                let lineTotal = Double(price) * Double(quantity)
-                let formattedLineTotal = String(format: "$%.2f", lineTotal)
-                total += lineTotal
-                roomRatesData += "\n $\(price): \(guestNotes) Qty \(quantity) - Total \(formattedLineTotal)"
+                if i.isLocal {
+                    let lineTotal = Double(i.localPrice ?? 0.0) * Double(i.selectedQuantity)
+                    let formattedLineTotal = String(format: "$%.2f", lineTotal)
+                    total += lineTotal
+                    roomRatesData += "\n SYP\(i.localPrice ?? 0.0): \(i.notes ?? "") Qty \(i.selectedQuantity) (\(i.localDiscount ?? 0.0)% Discount) - Total \(formattedLineTotal)"
+                }else{
+                    let lineTotal = Double(i.price) * Double(i.selectedQuantity)
+                    let formattedLineTotal = String(format: "$%.2f", lineTotal)
+                    total += lineTotal
+                    roomRatesData += "\n $\(i.price): \(i.notes ?? "") Qty \(i.selectedQuantity) (\(i.discount ?? 0.0)% Discount) - Total \(formattedLineTotal)"
+                }
             }
         }
         
@@ -439,7 +446,36 @@ extension ConfirmYourBookingVC {
         let adjustedCheckOut = startOfCheckOut.addingTimeInterval(-1)
         
         let components = calendar.dateComponents([.day], from: startOfCheckIn, to: adjustedCheckOut)
-        return (components.day ?? 0) + 1
+        let totalnights = (components.day ?? 0) + 1
+        totalNightsCountLabel.text = totalnights.description
+        var currency = ""
+        var totalDiscount = 0.0
+        for i in selectedRates{
+            if i.isSelected {
+                if i.isLocal{
+                    currency = "SYP"
+                    bookingTypeLabel.text = "Local(SYP)"
+                    let localdiscount = i.localDiscount ?? 0.0
+                    totalDiscount += localdiscount
+                }else{
+                    currency = "$"
+                    bookingTypeLabel.text = "International($)"
+                    let discount = i.discount ?? 0.0
+                    totalDiscount += discount
+                }
+            }
+        }
+        
+        
+        let totalDiscountAmount = totalDiscount * Double(totalnights)
+        totalDiscountAmountLabel.text = "\(totalDiscountAmount)%"
+        
+        let totalAmount = total * Double(totalnights)
+        let netAmountAfterDiscount =  (totalAmount - ( totalAmount * totalDiscount ) / 100)
+        netTotalAmountLabel.text = "\(currency) \(netAmountAfterDiscount )"
+        
+        return totalnights
+        
     }
     
     func updateTotalAmountLabel() {
@@ -449,6 +485,8 @@ extension ConfirmYourBookingVC {
             return
         }
 
+        
+        
         // Calculate per-night total (existing roomRates total × number of nights)
         let perNightTotal = total
         let totalForStay = perNightTotal * Double(nights)

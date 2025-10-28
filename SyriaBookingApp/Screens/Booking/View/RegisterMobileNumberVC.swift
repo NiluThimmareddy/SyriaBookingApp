@@ -100,12 +100,12 @@ class RegisterMobileNumberVC : UIViewController {
     }    
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-//        if comingFrom == .tabbarBooking || comingFrom == .HotelDetails {
-//            //Move to home page
-//            UIApplication.topViewController()?.dismissPopup(ofType: RegisterMobileNumberVC.self)
-//        } else {
+        if comingFrom == .tabbarBooking {
+
+            goToHomeTab()
+        } else {
             self.dismiss(animated: true, completion: nil)
-//        }
+        }
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
