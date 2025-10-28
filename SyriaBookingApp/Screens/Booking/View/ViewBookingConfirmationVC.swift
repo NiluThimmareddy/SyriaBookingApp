@@ -8,10 +8,8 @@
 import UIKit
 
 struct BookingDetail {
-    let rate: Double
-    let description: String
-    let qty: Int
-    let amount: Double
+    let Details: String
+    
 }
 
 class ViewBookingConfirmationVC : UIViewController {
@@ -118,16 +116,21 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomRateTVC") as! RoomRateTVC
         let detail = bookingDetails[indexPath.row]
         
-        cell.rateLabel.text = "$\(detail.rate)"
-        cell.descriptionLabel.text = detail.description
-        cell.descriptionLabel.numberOfLines = 0
-        cell.qtyLabel.text = "\(detail.qty)"
-        cell.amountLabel.text = "$\(detail.amount)"
+        cell.rateLabel.text = detail.Details.description
+//        cell.descriptionLabel.text = detail.description
+//        cell.descriptionLabel.numberOfLines = 0
+//        cell.qtyLabel.text = "\(detail.qty)"
+//        cell.amountLabel.text = "$\(detail.amount)"
+        
+//        if let bookingHistoryData = bookingHistoryData{
+//            cell.rateLabel?.text = bookingHistoryData.bookingDetails
+//        }
         
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
+        
     }
 }
 
@@ -176,7 +179,8 @@ extension ViewBookingConfirmationVC {
         roomRateDetailsTableview.register(UINib(nibName: "RoomRateTVC", bundle: nil), forCellReuseIdentifier: "RoomRateTVC")
         
         var calculatedTotal = "0.00"
-        var totalAmount: Double = 0.0
+        var totalDiscount = "0.00"
+        var netTotal = "0.00"
 
         if let data = self.bookingHistoryData {
             // Parse total nights
@@ -186,15 +190,29 @@ extension ViewBookingConfirmationVC {
             )
 
             // Parse each booking detail (rate × qty × nights)
-            let details = parseBookingDetails(data.bookingDetails)
-            bookingDetails = details
+//            let details = parseBookingDetails(data.bookingDetails)
+//            bookingDetails = details
 
-            totalAmount = details.reduce(0.0) { partialResult, detail in
-                let perNightTotal = detail.rate * Double(detail.qty)
-                return partialResult + (perNightTotal * Double(totalNights))
+//            totalAmount = details.reduce(0.0) { partialResult, detail in
+//                let perNightTotal = detail.rate * Double(detail.qty)
+//                return partialResult + (perNightTotal * Double(totalNights))
+//            }
+
+//            totalPriceLabel.text = data.totalAmount.description
+//            totalDiscountLabel.text = data.totalDiscount
+//            netTotalLabel.text = data.netTotal.description
+            
+           let type = data.bookingType
+            
+            if type == "International" {
+                calculatedTotal = "$ \(String(format: "%.2f", data.totalAmount))"
+                totalDiscount = "$ \(String(format: "%.2f", data.totalDiscount))"
+                netTotal = "$ \(String(format: "%.2f", data.netTotal))"
+            }else{
+                calculatedTotal = "SYP \(String(format: "%.2f", data.totalAmount))"
+                totalDiscount = "SYP \(String(format: "%.2f", data.totalDiscount))"
+                netTotal = "SYP \(String(format: "%.2f", data.netTotal))"
             }
-
-            calculatedTotal = String(format: "%.2f", totalAmount)
         }
         
         guard let data = bookingHistoryData else {
@@ -207,7 +225,7 @@ extension ViewBookingConfirmationVC {
             return
         }
         
-        bookingDetails = parseBookingDetails(data.bookingDetails)
+        bookingDetails = parseBookingDetails(from: data.bookingDetails)
         roomRateDetailsTableview.reloadData()
         
         tableviewHeightConstraint.constant = CGFloat(44 * bookingDetails.count)
@@ -235,8 +253,8 @@ extension ViewBookingConfirmationVC {
                     (acceptedCurrenciesLabel, "Accepted Currencies: \(hotelData.acceptedCurrencies ?? "No Currencies")", "Accepted Currencies:"),
                     (languagesSpokenLabel, "Languages Spoken: \(hotelData.languagesSpoken.rawValue)", "Languages Spoken:"),
                     (totalPriceLabel, "Total Price: \(calculatedTotal)", "Total Price:"),
-                    (totalDiscountLabel, "Total Discount:","Total Discount:"),
-                    (netTotalLabel, "Net Total:","Net Total:"),
+                    (totalDiscountLabel, "Total Discount: \(totalDiscount)","Total Discount:"),
+                    (netTotalLabel, "Net Total:\(netTotal)","Net Total:"),
                     (paymentMethodLabel, "Payment Method: Pay at Hotel", "Payment Method:"),
                     (contactEmailLabel, "For support or changes to your booking, contact support@syriabooking.sy","support@syriabooking.sy")
                 ]
@@ -262,8 +280,8 @@ extension ViewBookingConfirmationVC {
                     (acceptedCurrenciesLabel, "العملات المقبولة: \(hotelData.acceptedCurrencies ?? "لا توجد عملات")", "العملات المقبولة:"),
                     (languagesSpokenLabel, "اللغات المتحدثة: \(hotelData.languagesSpoken.rawValue)", "اللغات المتحدثة:"),
                     (totalPriceLabel, "السعر الإجمالي: \(calculatedTotal)", "السعر الإجمالي:"),
-                    (totalDiscountLabel, "إجمالي الخصم:", "إجمالي الخصم:"),
-                    (netTotalLabel, "الإجمالي الصافي:", "الإجمالي الصافي:"),
+                    (totalDiscountLabel, "إجمالي الخصم: \(totalDiscount)", "إجمالي الخصم:"),
+                    (netTotalLabel, "الإجمالي الصافي:  \(totalDiscount)","الإجمالي الصافي:"),
                     (paymentMethodLabel, "طريقة الدفع: الدفع في الفندق", "طريقة الدفع:"),
                     (contactEmailLabel, "للحصول على الدعم أو إجراء تغييرات على الحجز، تواصل عبر support@syriabooking.sy","support@syriabooking.sy")
                 ]
@@ -364,37 +382,16 @@ extension ViewBookingConfirmationVC {
         return data
     }
     
-    func parseBookingDetails(_ details: String) -> [BookingDetail] {
-        var result: [BookingDetail] = []
+    func parseBookingDetails(from input: String) -> [BookingDetail] {
+        // Split the string using "\r\n"
+        let lines = input.components(separatedBy: "\r\n")
         
-        let regexPattern = #"\$\s*([\d.]+)\s*:\s*((?:(?!Qty\s*\d+\s*-\s*Total).)*)Qty\s*(\d+)\s*-\s*Total\s*\$\s*([\d.]+)"#
+        // Convert non-empty lines into BookingDetail objects
+        let detailsArray = lines
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .map { BookingDetail(Details: $0.trimmingCharacters(in: .whitespacesAndNewlines)) }
         
-        guard let regex = try? NSRegularExpression(
-            pattern: regexPattern,
-            options: [.anchorsMatchLines, .dotMatchesLineSeparators]
-        ) else {
-            return result
-        }
-        
-        let nsDetails = details as NSString
-        let matches = regex.matches(in: details, range: NSRange(location: 0, length: nsDetails.length))
-        
-        for match in matches {
-            if match.numberOfRanges == 5 {
-                let rateString = nsDetails.substring(with: match.range(at: 1))
-                let description = nsDetails.substring(with: match.range(at: 2)).trimmingCharacters(in: .whitespacesAndNewlines)
-                let qtyString = nsDetails.substring(with: match.range(at: 3))
-                let amountString = nsDetails.substring(with: match.range(at: 4))
-                
-                if let rate = Double(rateString),
-                   let qty = Int(qtyString),
-                   let amount = Double(amountString) {
-                    result.append(BookingDetail(rate: rate, description: description, qty: qty, amount: amount))
-                }
-            }
-        }
-        
-        return result
+        return detailsArray
     }
     
     func calculateTotalNights(checkIn: String, checkOut: String) -> Int {

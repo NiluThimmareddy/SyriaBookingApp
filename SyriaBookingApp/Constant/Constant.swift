@@ -16,7 +16,7 @@ enum APIURL{
     case postBooking
     case notification
     case notificationCount
-    case updateProfile(userId: String)
+    case updateProfile
         
     //Production URL
 //    var baseURL: String {
@@ -53,8 +53,8 @@ enum APIURL{
             return URL(string: baseURL + "BookingPublic/Notifications-by-user/")
         case . notificationCount:
             return URL(string: baseURL + "BookingPublic/Notifications-count-by-user/")
-        case .updateProfile(let userId):
-            return URL(string: baseURL + "UserPublic/\(userId)")
+        case .updateProfile:
+            return URL(string: baseURL + "UserPublic/")
         }
     }
 }

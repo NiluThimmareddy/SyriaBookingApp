@@ -13,11 +13,18 @@ class ProfileViewModel {
     var onError: ((String) -> Void)?
     
     func updateProfile(userId: String, profile: BookingModel) {
-        guard let url = APIURL.updateProfile(userId: userId).url else {
+        
+        guard var url = APIURL.updateProfile.url?.absoluteString else { return }
+        url += "\(userId)"
+        
+        
+        
+        guard let url =  URL(string: url) else {
+            
             onProfileUpdated?(false, "Invalid URL", nil)
             return
         }
-        
+
         let body: [String: Any] = [
             "name": profile.name,
             "mobile": profile.mobile,

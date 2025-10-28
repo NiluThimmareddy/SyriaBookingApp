@@ -24,13 +24,17 @@ class RoomsRatesTVC : UITableViewCell {
     }
     
     func configure(with selectedRoom: RoomElement, ratesForLocal: Bool, onQuantityChanged: @escaping (Int) -> Void) {
+        
         var rooms = selectedRoom.rates[selectRoomsButton.tag]
-        let notes = rooms.notes ?? "No notes"
-
+        let notes = rooms.notes ?? ""
+        
+        
         // Format price with two decimal points
         let formattedPrice: String
         let discountText: String
 
+       
+        
         if ratesForLocal {
             if let localPrice = rooms.localPrice {
                 formattedPrice = String(format: "%.2f", localPrice)
@@ -104,38 +108,6 @@ class RoomsRatesTVC : UITableViewCell {
         configureQtyDropdown(for: selectRoomsButton, options: ["1", "2", "3", "4", "5"])
         selectRoomsButton.setTitle("\(rooms.selectedQuantity)", for: .normal)
     }
-
-//
-//    func configure(with selectedRoom: RoomElement,ratesForLocal:Bool , onQuantityChanged: @escaping (Int) -> Void) {
-//        var rooms = selectedRoom.rates[selectRoomsButton.tag]
-//        
-//        let notes = rooms.notes ?? "No notes"
-//        
-//        if ratesForLocal{
-//            if let localPrice = rooms.localPrice, let  localDiscount = rooms.localDiscount  {
-//                roomPriceLabel.text = "\(localPrice)SYP (\(localDiscount)) \(notes)"
-//            }
-//        }else{
-//            if let discount = rooms.discount{
-//                roomPriceLabel.text = "\(rooms.price)$ (\(discount)) \(notes)"
-//            }else{
-//                roomPriceLabel.text = "\(rooms.price) \(notes)"
-//            }
-//        }
-//        self.onQuantityChanged = onQuantityChanged
-//        let imageName = rooms.isSelected ?? false ? "checkmark.square.fill" : "square"
-// 
-//        if rooms.isSelected ?? false {
-//            selecteRoomRates.append(rooms)
-//            rooms.selectedQuantity = selectedQty
-//        }
-//        let configuration = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
-//        let image = UIImage(systemName: imageName, withConfiguration: configuration)
-//        checkMarkButton.setImage(image, for: .normal)
-//        checkMarkButton.tintColor = UIColor.black
-//        configureQtyDropdown(for: selectRoomsButton, options: ["1","2","3","4","5"])
-//        selectRoomsButton.setTitle("\(rooms.selectedQuantity)", for: .normal)
-//}
     
     func configureQtyDropdown(for button:UIButton, options:[String]){
         let actions = options.map { option in

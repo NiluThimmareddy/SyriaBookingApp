@@ -167,8 +167,8 @@ struct Rate: Codable {
     let localPrice: Double?
     let localDiscount: Double?
     var selectedQuantity: Int = 1
-    var isSelected: Bool? = false
-   
+    var isSelected: Bool = false
+    var isLocal : Bool = false
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -236,3 +236,46 @@ struct BookingHistoryModel: Codable {
 struct NotificationCountModel : Codable {
     let count : Int
 }
+
+struct BookingDetailsResponseModel : Codable {
+    var message : String
+    var data : [BookingDetailsModel]
+}
+struct BookingDetailsModel:Codable{
+    var id : String
+    var timestamp : String
+    var userId : String
+    var hotelId: String
+    var guestName : String
+    var guestPhone : String
+    var guestEmail : String
+    var numberOfGuests : Int
+    var checkIn : String
+    var checkOut : String
+    var bookingStatus : String
+    var bookingDetails : String
+    var totalAmount : Double
+    var bookingType : String
+    var totalDiscount : Double
+    var netTotal : Double
+  
+}
+/*
+"id": "BK00125",
+"timestamp": "2025-09-29T18:14:49.9357803+00:00",
+"userId": "UP00193",
+"hotelId": "H00041",
+"roomId": "R00064",
+"guestName": "Nilu",
+"guestPhone": "9986749841",
+"guestEmail": "niluk3700@gmail.com",
+"numberOfGuests": 2,
+"checkIn": "2025-09-18T00:00:00Z",
+"checkOut": "2025-09-22T00:00:00Z",
+"bookingStatus": "Cancelled",
+"bookingDetails": "$50: Base Price Qty 1 - Total $50.00\r\n$10: Extra Bed Qty 1 - Total $10.00",
+"totalAmount": 240,
+"bookingType": "International",
+"totalDiscount": 0,
+"netTotal": 240
+*/

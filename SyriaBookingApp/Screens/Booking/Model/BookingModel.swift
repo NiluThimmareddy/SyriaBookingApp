@@ -131,4 +131,7 @@ struct BookingHistoryDataModel: Codable {
     let bookingStatus: String
     let bookingDetails: String
     let totalAmount: Double
+    let bookingType: String
+    let totalDiscount: Double
+    let netTotal: Double
 }
