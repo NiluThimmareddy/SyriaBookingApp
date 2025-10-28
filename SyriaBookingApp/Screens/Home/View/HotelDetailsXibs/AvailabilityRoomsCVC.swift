@@ -222,7 +222,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var roomRatesTableviewheightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateTitleLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
-    
+    var isLocalRate : Bool?
     var selectedRoom: RoomElement?
     weak var delegate: AvailabilityRoomsCVCDelegate?
     var onBooknowBottonClick : ((RoomElement?)->Void)?
@@ -244,7 +244,19 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
         }
     }
     
-    @IBAction func segmentControlAction(_ sender: Any) {
+    @IBAction func segmentControlAction(_ sender: UISegmentedControl) {
+        print("segment changes \(String(describing: sender.tag))")
+        switch sender.selectedSegmentIndex {
+        case 0:
+            isLocalRate = false
+            roomRatesTableview.reloadData()
+        case 1:
+            isLocalRate = true
+            roomRatesTableview.reloadData()
+        default:
+            break
+        }
+        
     }
     
 }
@@ -271,7 +283,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
         cell.selectRoomsButton.tag =  indexPath.row
        
-        cell.configure(with: selectedRoom) { [weak self] selectedQty in
+        cell.configure(with: selectedRoom, ratesForLocal: isLocalRate ?? false) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
             if let rate = self.selectedRoom?.rates[indexPath.row] {
@@ -322,6 +334,7 @@ extension AvailabilityRoomsCVC {
         segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
         segmentControl.layer.backgroundColor = UIColor.white.cgColor
         segmentControl.selectedSegmentTintColor = UIColor.black
+        segmentControl.selectedSegmentIndex = 0
         segmentControl.addBottomShadow()
     }
     
@@ -334,7 +347,11 @@ extension AvailabilityRoomsCVC {
 
         galleryVC.galleryType = .room
         
-        if let roomImages = selectedRoom.images, !roomImages.isEmpty {
+        let RoomImages = parentHotel?.images.filter  { $0.contains(selectedRoom.room.id) }
+        
+        print("*** Images count for Room ---> \(RoomImages?.count)")
+//        let RoomImages = parentHotel?.images.filter  { $0.contains(rooms.room.id) }
+        if let roomImages = RoomImages, !roomImages.isEmpty {
             galleryVC.roomImages = roomImages
             
             if let roomCover = selectedRoom.coverImage,
@@ -373,6 +390,10 @@ extension AvailabilityRoomsCVC {
             roomImageView.image = UIImage(named: "HotelPlaceholder 1")
         }
         
+        let RoomImages = parentHotel?.images.filter  { $0.contains(rooms.room.id) }.count ?? 0
+            
+        
+        print("Total Room Images\(RoomImages)")
         let roomType = rooms.room.roomType
         let bedType = rooms.room.bedType
         let roomSize = rooms.room.roomSize ?? "N/A"

@@ -163,6 +163,9 @@ struct Rate: Codable {
     let id, roomID, effectiveDate: String
     let price: Double
     let notes: String?
+    let discount: Double?
+    let  localPrice: Double?
+    let localDiscount: Double?
     var selectedQuantity: Int = 1
     var isSelected: Bool? = false
    
@@ -171,6 +174,7 @@ struct Rate: Codable {
         case id
         case roomID = "roomId"
         case effectiveDate, price, notes
+        case discount,localPrice,localDiscount
     }
 }
 

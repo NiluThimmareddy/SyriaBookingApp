@@ -23,8 +23,7 @@ class SplashScreensVC: UIViewController {
     var currentPage = 0
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+        super.viewDidLoad()        
         setUpUI()
     }
     
@@ -56,7 +55,6 @@ class SplashScreensVC: UIViewController {
 }
 
 extension SplashScreensVC {
-    
     func setUpUI() {
         pageControl.numberOfPages = splashData.count
         pageControl.currentPage = currentPage
