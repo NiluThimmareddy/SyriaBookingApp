@@ -48,8 +48,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var datePickerBottomConstraint: NSLayoutConstraint?
     var isDatePickerShown = false
     var formattedTotal = ""
-    var total : Double = 0.0
-    var totalDiscountAmount = 0.0
+   
     var totalAmount = 0.0
     var netAmountAfterDiscount =  0.0
     
@@ -58,6 +57,13 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var selectedRates: [Rate] = []
     var viewModel = BookingViewModel()
     var roomRatesData = ""
+    
+    var totalGrossAmount = 0.0
+    var totalNetAmount = 0.0
+    var totalDiscountAmount = 0.0
+    var roomRatesDataDisplay = ""
+    var roomRatesDataAPI = ""
+    var  finaltotalDiscountAmount = 0.0
     override func viewDidLoad() {
         super.viewDidLoad()
         checkInTF.text = ""
@@ -175,9 +181,9 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             self.showAlert(error.description)
         }
         
-        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: total,bookingDetails: roomRatesData, bookingType: bookingTypeLabel.text ?? "", totalDiscount: totalDiscountAmount, netTotal: netAmountAfterDiscount)
+//        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalNetAmount,bookingDetails: roomRatesData, bookingType: bookingTypeLabel.text ?? "", totalDiscount: totalDiscountAmount, netTotal: netAmountAfterDiscount)
         
-        
+        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataDisplay, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
         
     }
     
@@ -209,102 +215,91 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
 }
 
 extension ConfirmYourBookingVC {
+
     func setUpUI() {
         backView.applyCardStyle()
         guestNameLabel.text = guestName
         guestEmailLabel.text = guestEmail
         guestMobileNumberTF.text = guestMobileNumber
-        
+
+        // --- Setup date format ---
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
+
         if let checkIn = selectedCheckInDate {
-            // If check-in is already selected
-            let selectedCheckin = formatter.string(from: checkIn)
-            let selectedCheckout = selectedCheckOutDate != nil ? formatter.string(from: selectedCheckOutDate!) : "Not Selected"
-            checkInTF.text = selectedCheckin
-            checkOutTF.text = selectedCheckout
+            checkInTF.text = formatter.string(from: checkIn)
+            if let checkOut = selectedCheckOutDate {
+                checkOutTF.text = formatter.string(from: checkOut)
+            }
         } else {
-            // No check-in selected, set today as check-in
             let today = Date()
-            checkInTF.text = formatter.string(from: today)
             selectedCheckInDate = today
-            // Set tomorrow as default check-out
+            checkInTF.text = formatter.string(from: today)
             if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
-                checkOutTF.text = formatter.string(from: tomorrow)
                 selectedCheckOutDate = tomorrow
+                checkOutTF.text = formatter.string(from: tomorrow)
             }
         }
-        
-       
 
-        
-        total = 0.0
-        
+        // --- Reset totals ---
+        totalGrossAmount = 0.0
+        totalNetAmount = 0.0
+        totalDiscountAmount = 0.0
+        roomRatesDataDisplay = ""
+        roomRatesDataAPI = ""
 
+        // --- Loop through selected rates ---
         for rate in selectedRates where rate.isSelected {
-            // Common values
             let qty = Double(rate.selectedQuantity)
             let discountPercent = rate.isLocal ? (rate.localDiscount ?? 0.0) : (rate.discount ?? 0.0)
             let price = rate.isLocal ? (rate.localPrice ?? 0.0) : rate.price
             let currency = rate.isLocal ? "SYP" : "$"
-            
-            // Calculations
-            let gross = price * qty
-            let discountValue = gross * (discountPercent / 100)
-            let net = gross - discountValue
-            
-            // Add to total
-            total += net
-            
-            // Format values
-            let formattedPrice = String(format: "%.2f", price)
-            let formattedGross = String(format: "%.2f", gross)
-            let formattedDiscountValue = String(format: "%.2f", discountValue)
-            let formattedNet = String(format: "%.2f", net)
-            
-            // Build string like example
-            let line = "Rate Id(\(rate.id)) : qty \(Int(qty)), price \(formattedPrice) \(currency), discount \(discountPercent)%, gross \(formattedGross) \(currency), discount \(formattedDiscountValue) \(currency), net \(formattedNet) \(currency)"
-            
-            // Append with newline if not first
-            if !roomRatesData.isEmpty {
-                roomRatesData += "\r\n"
+
+            // --- Calculations (force Double precision) ---
+            let gross: Double = price
+            let discountValue: Double = gross * (discountPercent / 100.0)
+            let net: Double = gross - discountValue
+
+            totalGrossAmount += gross
+            totalDiscountAmount += discountValue
+//            totalNetAmount = net
+
+            // --- Display format ---
+            let displayLine = String(
+                format: "Qty %.2f × %.2f %@ (−%.2f%%) = Gross %.2f %@, Discount %.2f %@, Net %.2f %@",
+                qty, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
+            )
+
+            let apiLine = String(
+                format: "Rate Id(%@) : qty %.2f, price %.2f %@, discount %.2f%%, gross %.2f %@, discount %.2f %@, net %.2f %@",
+                rate.id, qty, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
+            )
+
+            // Append
+            if !roomRatesDataDisplay.isEmpty {
+                roomRatesDataDisplay += "\r\n"
+                roomRatesDataAPI += "\r\n"
             }
-            roomRatesData += line
+
+            roomRatesDataDisplay += displayLine
+            roomRatesDataAPI += apiLine
         }
 
-        // Update labels
+        // --- Update Labels ---
         if let firstSelected = selectedRates.first(where: { $0.isSelected }) {
+            let currency = firstSelected.isLocal ? "SYP" : "$"
             bookingTypeLabel.text = firstSelected.isLocal ? "Local(SYP)" : "International($)"
-            let formattedTotal = String(format: "%.2f", total)
-            totalAmountLabel.text = firstSelected.isLocal ? "SYP \(formattedTotal)" : "$ \(formattedTotal)"
         }
 
-        selectedRoomAndRatesLabel.text = roomRatesData
-
-        
+        selectedRoomAndRatesLabel.text = roomRatesDataDisplay
         setupDatePickerUI()
-        
-        increaseNoButton.layer.cornerRadius = 10
-        increaseNoButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        increaseNoButton.clipsToBounds = true
-        decreaseNoButton.layer.cornerRadius = 10
-        decreaseNoButton.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        decreaseNoButton.clipsToBounds = true
-        bottomView.layer.cornerRadius = 10
-        bottomView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        bottomView.clipsToBounds = true
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(Arabic),
-            name: .languageChanged,
-            object: nil
-        )
         Arabic()
-        updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
+        updateTotalAmountLabel(isLocal: selectedRoom?.rates.first?.isLocal ?? false)
     }
+
+
     
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
@@ -464,63 +459,47 @@ extension ConfirmYourBookingVC {
         }
     }
     
+   
     func calculateNumberOfNights(checkIn: Date?, checkOut: Date?) -> Int {
         guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
+        
         let calendar = Calendar.current
         let startOfCheckIn = calendar.startOfDay(for: checkIn)
         let startOfCheckOut = calendar.startOfDay(for: checkOut)
         
-        let adjustedCheckOut = startOfCheckOut.addingTimeInterval(-1)
+        let components = calendar.dateComponents([.day], from: startOfCheckIn, to: startOfCheckOut)
+        let days = components.day ?? 0
         
-        let components = calendar.dateComponents([.day], from: startOfCheckIn, to: adjustedCheckOut)
-        let totalnights = (components.day ?? 0) + 1
-        totalNightsCountLabel.text = totalnights.description
-        var currency = ""
-        var totalDiscount = 0.0
-        for i in selectedRates{
-            if i.isSelected {
-                if i.isLocal{
-                    currency = "SYP"
-                    bookingTypeLabel.text = "Local(SYP)"
-                    let localdiscount = i.localDiscount ?? 0.0
-                    totalDiscount += localdiscount
-                }else{
-                    currency = "$"
-                    bookingTypeLabel.text = "International($)"
-                    let discount = i.discount ?? 0.0
-                    totalDiscount += discount
-                }
-            }
-        }
+        // If both dates are same → 1 night
+        // If next day → 1 night
+        // Otherwise → number of days difference
+        let totalNights = max(days, 0) == 0 ? 1 : days
         
-         totalDiscountAmount = totalDiscount * Double(totalnights)
-        totalDiscountAmountLabel.text = "\(totalDiscountAmount)%"
-        
-         totalAmount = total * Double(totalnights)
-         netAmountAfterDiscount =  (totalAmount - ( totalAmount * totalDiscount ) / 100)
-        netTotalAmountLabel.text = "\(currency) \(netAmountAfterDiscount )"
-        
-        return totalnights
-        
+        totalNightsCountLabel.text = "\(totalNights)"
+        return totalNights
     }
-    
-    func updateTotalAmountLabel(isLocal : Bool) {
+
+
+    func updateTotalAmountLabel(isLocal: Bool) {
         let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
-        let  currency =  isLocal ? "SYP " : "$ "
+        let currency = isLocal ? "SYP" : "$"
+        bookingTypeLabel.text =  isLocal ? "Local(SYP)" :"International($)"
         guard nights > 0 else {
-            totalAmountLabel.text =  "\(currency) \(formattedTotal)" // if no valid nights selected
+            totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalGrossAmount))"
+            netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalNetAmount))"
             return
         }
+        finaltotalDiscountAmount = totalDiscountAmount * Double(nights)
+        totalAmount = totalGrossAmount * Double(nights)
+        netAmountAfterDiscount = Double(totalAmount) -  Double(finaltotalDiscountAmount)
 
+        totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalAmount))"
+        totalDiscountAmountLabel.text = "\(currency) \(String(format: "%.2f", finaltotalDiscountAmount))"
+        netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", netAmountAfterDiscount))"
         
-        
-        // Calculate per-night total (existing roomRates total × number of nights)
-        let perNightTotal = total
-        let totalForStay = perNightTotal * Double(nights)
-        let formatted = String(format: "%.2f", totalForStay)
-        totalAmountLabel.text = "\(currency) \(formatted)"
+       
     }
-    
+
     @objc func Arabic() {
         if AppSettings.shared.selectedLanguage == .english {
             confirmYourBookingTitleLabel.text = "Confirm Your Booking"

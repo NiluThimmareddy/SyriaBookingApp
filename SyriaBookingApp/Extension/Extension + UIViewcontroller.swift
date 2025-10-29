@@ -388,11 +388,33 @@ extension UIViewController {
     }
 
     
+//    func iso8601String(from date: Date) -> String {
+//        let formatter = ISO8601DateFormatter()
+//        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+//        return formatter.string(from: date)
+//    }
+    
+    
     func iso8601String(from date: Date) -> String {
+        let calendar = Calendar(identifier: .gregorian)
+        
+        // Create UTC midnight components for that calendar day
+        var components = calendar.dateComponents([.year, .month, .day], from: date)
+        components.hour = 0
+        components.minute = 0
+        components.second = 0
+        components.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        guard let utcDate = calendar.date(from: components) else { return "" }
+        
         let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter.string(from: date)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.formatOptions = [.withInternetDateTime] // gives "T00:00:00Z"
+        
+        return formatter.string(from: utcDate)
     }
+
+
     
     func getDummyDOB() -> String {
         let formatter = DateFormatter()
