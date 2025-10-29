@@ -152,7 +152,6 @@ extension ViewBookingConfirmationVC {
         
         viewModel.getBookingHistory(userId: user.id, BookingId: bookingId) { response in
             self.bookingHistoryData = response
-            
             self.hotelViewModel.onError = { error in
                 DispatchQueue.main.async {
                     self.hideLoader()
@@ -400,11 +399,11 @@ extension ViewBookingConfirmationVC {
 
         guard let checkInDate = formatter.date(from: checkIn),
               let checkOutDate = formatter.date(from: checkOut) else {
-            return 0
+            return 1
         }
 
         let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
-        return max(components.day ?? 0, 0)
+        return max(components.day ?? 1, 1)
     }
     
 }
