@@ -12,7 +12,9 @@ enum APIURL{
     case fetchHotelReviews
     case postReportAnApp
     case postForOTP
+    case PostForEmailOTP
     case verifyOTP
+    case verifyEmailOTP
     case postBooking
     case notification
     case notificationCount
@@ -45,8 +47,12 @@ enum APIURL{
             return URL(string: baseURL + "/ContactPublic")
         case .postForOTP:
             return URL(string: baseURL + "UserPublic/send-otp")
+        case .PostForEmailOTP:
+            return URL(string: baseURL + "UserPublic/send-email-otp")
         case .verifyOTP:
             return URL(string: baseURL + "UserPublic/verify-otp")
+        case .verifyEmailOTP:
+            return URL(string: baseURL + "UserPublic/verify-email-otp")  
         case .postBooking:
             return URL(string: baseURL + "BookingPublic/")
         case .notification:

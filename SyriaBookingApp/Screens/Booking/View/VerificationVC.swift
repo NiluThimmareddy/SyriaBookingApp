@@ -71,12 +71,7 @@ class VerificationVC : UIViewController {
                 )
             }
         }else{
-            
-            
-            
-            
-            
-            self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
+             self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
                 guard let self = self, let UserId = UserId else { return }
                 
                 self.viewModel.onSuccess = { response in

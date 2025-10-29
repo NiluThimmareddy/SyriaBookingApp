@@ -45,6 +45,11 @@ class RegisterMobileNumberVC : UIViewController {
     @IBOutlet weak var genderTitleLabel: UILabel!
     @IBOutlet weak var countryTitleLabel: UILabel!
     @IBOutlet weak var dateOfBirthTitleLabel: UILabel!
+    @IBOutlet var otpTF: [UITextField]!
+    @IBOutlet weak var EmailView: UIView!
+    @IBOutlet weak var otpView: UIView!
+    @IBOutlet weak var UserInformationView: UIView!
+    @IBOutlet weak var selectPrefixButton: UIButton!
     
     var shouldShowBottomView = false
     var prefilledMobileNumber: String?
@@ -66,11 +71,23 @@ class RegisterMobileNumberVC : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        
+       
+        
         hideKeyboardWhenTappedAround()
         enterMobileNumberTF.delegate = self
         enterNameTF.delegate = self
         enterEmailTF.delegate = self
         enterCountryTF.delegate = self
+        
+        
+        self.bottomView.isHidden = false
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        otpTF.first?.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
@@ -181,16 +198,78 @@ class RegisterMobileNumberVC : UIViewController {
                     
                 } else {
                     hideLoader()
-                    if let parentVC = self.parent {
-                        parentVC.expandPopupToFullScreen(self)
-                    }
+//                    if let parentVC = self.parent {
+//                        parentVC.expandPopupToFullScreen(self)
+//                    }
+                    
                     self.bottomView.isHidden = false
+                    EmailView.isHidden = false
+                    otpView.isHidden = true
+                    UserInformationView.isHidden = true
+ 
                 }
             })
         }
     }
+    
+    @IBAction func sendCodeButtonAction(_ sender: UIButton) {
+        
+        guard let email = enterEmailTF.text else {
+            showAlert("Please enter email")
+            return
+        }
+        
+        self.getEmailOTP(email: email) { otpResponse in
+            self.otpView.isHidden = false
+            print(otpResponse.data.otp)
+            
+            
+            
+        }
+    }
+    
+   func verifyEmailOTPCode(email:String,otp:String,completion: @escaping (VerifyEmailOTPModel?) -> Void) {
+        showLoader()
+        viewModel.onEmailVerifyOTPSuccess = { response in
+            self.hideLoader()
+            completion(response)
+        }
+        viewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(title:"SyriaBooking", message: error.description, onOK: {
+                self.otpTF.forEach { textfield in
+                    textfield.text = ""
+                }
+            })
+        }
+        viewModel.verifyEmailOTP(email: email, otp: otp)
+    }
+    
+    
+    @IBAction func verifyEmailOTPButtonAction(_ sender: Any) {
+        guard let email = enterEmailTF.text else {
+            return
+        }
+         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
+        
+        guard !otp.isEmpty else {
+            showAlert("Please enter the OTP.")
+            return
+        }
+        
+       
+             self.verifyEmailOTPCode(email: email, otp: otp) { [weak self] UserId in
+                 UserId?.data.email
+                 guard let self = self, let UserId = UserId else { return }
+                 self.UserInformationView.isHidden = false
+                
+            }
+        }
+    
+    
         
         @IBAction func registerButtonAction(_ sender: Any) {
+            
             guard let name = enterNameTF.text, !name.trimmingCharacters(in: .whitespaces).isEmpty else {
                 showAlert("Please enter your name.")
                 return
@@ -201,19 +280,14 @@ class RegisterMobileNumberVC : UIViewController {
                 return
             }
             
-            var gendr = ""
-            
-            //        if let gender = selectGenderButton.title(for: .normal), gender != "Select Gender"  {
-            //            gendr = gender
-            //            return
-            //        }
+            let gendr = ""
             
             guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
                 showAlert("Please enter your country.")
                 return
             }
             
-            guard var mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
+            guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
                 showAlert("Please enter a mobile number.")
                 return
             }
@@ -222,21 +296,19 @@ class RegisterMobileNumberVC : UIViewController {
             let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
             
             viewModel.onSuccess = { [weak self] response in
-                
                 guard let self = self else { return }
-                //                guard let user = self.registerUserDetails else { return }
-                //                UserSessionManager.saveUser(user)
+                UserSessionManager.saveUser(response)
                 
-                self.getOTP(mobilenumebr: response.mobile) { otpResponse in
-                    
-                    self.dismiss(animated: true) {
-                        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                        if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                            tabBarVC.modalPresentationStyle = .fullScreen
-                            UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                            tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: response.mobile, guestName: response.name, guestEmail: response.email,isNewUser:true)
+                DispatchQueue.main.async {
+                    self.showAlert(
+                        title: "Success",
+                        message: "Your mobile number has been Registered successfully.",
+                        type: .success,
+                        onOK: {
+                            self.goToHomeTab()
+                            
                         }
-                    }
+                    )
                 }
             }
             
@@ -254,7 +326,17 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
         scrollView.applyCardStyle()
         setupGenderPullDownMenu()
+        setupPrefixPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
+        
+        
+        for (index, textField) in otpTF.enumerated() {
+            textField.delegate = self
+            textField.keyboardType = .numberPad
+            textField.textAlignment = .center
+            textField.tag = index
+            textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        }
         
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
@@ -292,7 +374,25 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             return updatedText.count <= maxMobileNumberLength
         }
         
-        return true
+       else {
+            if string.isEmpty {
+                if let currentText = textField.text, !currentText.isEmpty {
+                    textField.text = ""
+                    if textField.tag > 0 {
+                        otpTF[textField.tag - 1].becomeFirstResponder()
+                    }
+                    return false
+                } else {
+                    if textField.tag > 0 {
+                        otpTF[textField.tag - 1].becomeFirstResponder()
+                    }
+                    return false
+                }
+            }
+            return (textField.text?.count ?? 0) < 1
+        }
+        
+       
     }
     
     func getRegisteredUserDetails(for number: String, completion: @escaping (BookingModel?) -> Void) {
@@ -316,7 +416,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
                 }
             }
         }
-        
         viewModel.FetchUserData(mobile: number)
     }
     
@@ -338,6 +437,25 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         viewModel.fetchOTP(mobileNumber: mobilenumebr)
     }
     
+    
+    
+    func getEmailOTP(email:String, completion: @escaping (OTPResponseModel) -> Void){
+        self.showLoader()
+        viewModel.onOTPSuccess = { response in
+            self.hideLoader()
+            completion(response)
+        }
+        
+        viewModel.onError = { error in
+            self.hideLoader()
+            self.showAlert(title:"SyriaBooking", message: error.description, onOK: {
+                
+            })
+        }
+        
+        viewModel.fetchEmailOTP(email: email)
+    }
+    
     func expandToFullScreen() {
         if let sheet = self.sheetPresentationController {
             sheet.animateChanges {
@@ -346,10 +464,36 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         }
     }
     
+    
+    func setupPrefixPullDownMenu() {
+        let mrTitle = AppSettings.shared.selectedLanguage == .english ? "Mr." : "ذكر"
+        let mrsTitle = AppSettings.shared.selectedLanguage == .english ? "Mrs." : "أنثى"
+        let missTitle = AppSettings.shared.selectedLanguage == .english ? "Miss" : "آخر"
+        let selectTitle = AppSettings.shared.selectedLanguage == .english ? "Select Prefix" : "اختر الجنس"
+        
+        selectPrefixButton.setTitle(selectTitle, for: .normal)
+ 
+        let mr = UIAction(title: mrTitle) { _ in
+            self.selectPrefixButton.setTitle(mrTitle, for: .normal)
+        }
+        
+        let mrs = UIAction(title: mrsTitle) { _ in
+            self.selectPrefixButton.setTitle(mrsTitle, for: .normal)
+        }
+        
+        let miss = UIAction(title: missTitle) { _ in
+            self.selectPrefixButton.setTitle(missTitle, for: .normal)
+        }
+        
+        let prefixMenu = UIMenu(title: "", children: [mr, mrs, miss])
+        selectPrefixButton.menu = prefixMenu
+        selectPrefixButton.showsMenuAsPrimaryAction = true
+    }
+    
     func setupGenderPullDownMenu() {
-        let maleTitle = AppSettings.shared.selectedLanguage == .english ? "Male" : "ذكر"
-        let femaleTitle = AppSettings.shared.selectedLanguage == .english ? "Female" : "أنثى"
-        let otherTitle = AppSettings.shared.selectedLanguage == .english ? "Other" : "آخر"
+        let maleTitle = AppSettings.shared.selectedLanguage == .english ? "Mr." : "ذكر"
+        let femaleTitle = AppSettings.shared.selectedLanguage == .english ? "Mrs." : "أنثى"
+        let otherTitle = AppSettings.shared.selectedLanguage == .english ? "Miss." : "آخر"
         let selectGenderTitle = AppSettings.shared.selectedLanguage == .english ? "Select Gender" : "اختر الجنس"
         
         selectGenderButton.setTitle(selectGenderTitle, for: .normal)
@@ -422,34 +566,37 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     
     
     @objc private func dateTextFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text else { return }
         
-        let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-        
-        var result = ""
-        for (index, char) in digits.enumerated() {
-            result.append(char)
-            if index == 3 || index == 5 {
-                result.append("-")
+       
+            guard let text = textField.text else { return }
+            
+            let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
+            
+            var result = ""
+            for (index, char) in digits.enumerated() {
+                result.append(char)
+                if index == 3 || index == 5 {
+                    result.append("-")
+                }
+                if result.count >= 10 { break }
             }
-            if result.count >= 10 { break }
-        }
-        
-        let currentSelectedRange = textField.selectedTextRange
-        textField.text = result
-        if let range = currentSelectedRange {
-            textField.selectedTextRange = range
-        }
-        
-        if result.count == 10 {
-            if !isValidDate(result) {
-                textField.textColor = .systemRed
+            
+            let currentSelectedRange = textField.selectedTextRange
+            textField.text = result
+            if let range = currentSelectedRange {
+                textField.selectedTextRange = range
+            }
+            
+            if result.count == 10 {
+                if !isValidDate(result) {
+                    textField.textColor = .systemRed
+                } else {
+                    textField.textColor = .label
+                }
             } else {
                 textField.textColor = .label
             }
-        } else {
-            textField.textColor = .label
-        }
+        
     }
     
     private func isValidDate(_ dateString: String) -> Bool {
@@ -575,7 +722,21 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
             return false
         }
     }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+
+        if text.count >= 1 {
+            textField.text = String(text.prefix(1))
+            if textField.tag < otpTF.count - 1 {
+                otpTF[textField.tag + 1].becomeFirstResponder()
+            } else {
+                textField.resignFirstResponder()
+            }
+        }
+    }
 }
+
  
 extension UITabBarController {
     func presentVerificationVC(otpResponse: OTPResponseModel?, mobileNumber: String, guestName: String, guestEmail: String,isNewUser:Bool) {
