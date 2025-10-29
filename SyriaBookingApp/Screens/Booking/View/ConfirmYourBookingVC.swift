@@ -183,7 +183,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         
 //        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalNetAmount,bookingDetails: roomRatesData, bookingType: bookingTypeLabel.text ?? "", totalDiscount: totalDiscountAmount, netTotal: netAmountAfterDiscount)
         
-        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataDisplay, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
+        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
         
     }
     
@@ -250,34 +250,31 @@ extension ConfirmYourBookingVC {
         roomRatesDataDisplay = ""
         roomRatesDataAPI = ""
 
-        // --- Loop through selected rates ---
         for rate in selectedRates where rate.isSelected {
             let qty = Double(rate.selectedQuantity)
             let discountPercent = rate.isLocal ? (rate.localDiscount ?? 0.0) : (rate.discount ?? 0.0)
             let price = rate.isLocal ? (rate.localPrice ?? 0.0) : rate.price
             let currency = rate.isLocal ? "SYP" : "$"
 
-            // --- Calculations (force Double precision) ---
-            let gross: Double = price
-            let discountValue: Double = gross * (discountPercent / 100.0)
-            let net: Double = gross - discountValue
+            let gross = price * qty
+            let discountValue = gross * (discountPercent / 100.0)
+            let net = gross - discountValue
 
             totalGrossAmount += gross
             totalDiscountAmount += discountValue
-//            totalNetAmount = net
 
-            // --- Display format ---
+            let qtyInt = Int(qty)
+
             let displayLine = String(
-                format: "Qty %.2f × %.2f %@ (−%.2f%%) = Gross %.2f %@, Discount %.2f %@, Net %.2f %@",
-                qty, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
+                format: "Qty %d × %.2f %@ (−%.2f%%) = Gross %.2f %@, Discount %.2f %@, Net %.2f %@",
+                qtyInt, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
             )
 
             let apiLine = String(
-                format: "Rate Id(%@) : qty %.2f, price %.2f %@, discount %.2f%%, gross %.2f %@, discount %.2f %@, net %.2f %@",
-                rate.id, qty, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
+                format: "Rate Id(%@) : qty %d, price %.2f %@, discount %.2f%%, gross %.2f %@, discount %.2f %@, net %.2f %@",
+                rate.id, qtyInt, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
             )
 
-            // Append
             if !roomRatesDataDisplay.isEmpty {
                 roomRatesDataDisplay += "\r\n"
                 roomRatesDataAPI += "\r\n"
@@ -286,6 +283,7 @@ extension ConfirmYourBookingVC {
             roomRatesDataDisplay += displayLine
             roomRatesDataAPI += apiLine
         }
+
 
         // --- Update Labels ---
         if let firstSelected = selectedRates.first(where: { $0.isSelected }) {
