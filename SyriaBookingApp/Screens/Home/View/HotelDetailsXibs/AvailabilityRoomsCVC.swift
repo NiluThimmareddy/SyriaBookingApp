@@ -36,8 +36,8 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     var onBooknowBottonClick : ((RoomElement?)->Void)?
     var onRateSelectionChanged: ((Rate) -> Void)?
     var parentHotel: Hotel?
-    
     var segmentChanged : (()-> Void)?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setUpUI()

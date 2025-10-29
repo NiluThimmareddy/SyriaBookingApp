@@ -20,6 +20,9 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a67-3A-NxU">
                                 <rect key="frame" x="0.0" y="-5" width="393" height="857"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="a67-3A-NxU" secondAttribute="height" multiplier="9:19.5" priority="250" id="eXv-j7-BNR"/>
+                                </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sHp-wR-1eK">
                                 <rect key="frame" x="348" y="783" width="35" height="35"/>
@@ -58,7 +61,7 @@
                                     <constraint firstAttribute="height" constant="35" id="xdC-Jg-ZEv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                <color key="tintColor" systemColor="labelColor"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Skip "/>
                                 <buttonConfiguration key="configuration" style="plain" title="Skip ">
