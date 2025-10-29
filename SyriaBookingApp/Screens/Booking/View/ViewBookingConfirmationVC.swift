@@ -129,8 +129,7 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
-        
+        return 50
     }
 }
 
@@ -227,7 +226,7 @@ extension ViewBookingConfirmationVC {
         bookingDetails = parseBookingDetails(from: data.bookingDetails)
         roomRateDetailsTableview.reloadData()
         
-        tableviewHeightConstraint.constant = CGFloat(44 * bookingDetails.count)
+        tableviewHeightConstraint.constant = CGFloat(50 * bookingDetails.count)
         
         let bookingLabelConfigs: [(UILabel, String, String)] = {
             if AppSettings.shared.selectedLanguage == .english {
