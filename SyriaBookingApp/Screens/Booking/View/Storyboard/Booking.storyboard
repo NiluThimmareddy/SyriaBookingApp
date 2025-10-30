@@ -219,6 +219,9 @@
                                                                         <real key="value" value="5"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="sendCodeButtonAction:" destination="7ty-nV-GL8" eventType="touchUpInside" id="TK7-2r-3hM"/>
+                                                                </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To continue, please verify your email. Click Send code, then enter the 6-digit code we email you." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5a-Mp-4r6">
                                                                 <rect key="frame" x="10" y="195" width="353" height="50"/>
@@ -318,6 +321,9 @@
                                                                         <real key="value" value="5"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="verifyEmailOTPButtonAction:" destination="7ty-nV-GL8" eventType="touchUpInside" id="w8d-Kv-zDN"/>
+                                                                </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pg2-Jr-8Cz">
                                                                 <rect key="frame" x="10" y="98" width="353" height="25"/>
@@ -328,6 +334,15 @@
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                 <state key="normal" title="Didn't get it? Resend you can resend resend in 300s"/>
                                                             </button>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCy-Em-Mzr">
+                                                                <rect key="frame" x="10" y="98" width="353" height="25"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="25" id="w0z-hN-bLa"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -335,7 +350,11 @@
                                                             <constraint firstItem="Pg2-Jr-8Cz" firstAttribute="leading" secondItem="N0F-hC-2du" secondAttribute="leading" id="4QZ-Ze-HgS"/>
                                                             <constraint firstItem="eh9-Tk-Vh5" firstAttribute="leading" secondItem="N0F-hC-2du" secondAttribute="trailing" constant="10" id="EFd-Rw-zhe"/>
                                                             <constraint firstAttribute="bottom" secondItem="Pg2-Jr-8Cz" secondAttribute="bottom" constant="10" id="Jlj-AI-4Ro"/>
+                                                            <constraint firstItem="pCy-Em-Mzr" firstAttribute="leading" secondItem="N0F-hC-2du" secondAttribute="leading" id="K8f-ca-gmO"/>
+                                                            <constraint firstItem="pCy-Em-Mzr" firstAttribute="trailing" secondItem="eh9-Tk-Vh5" secondAttribute="trailing" id="OHx-zZ-fVj"/>
                                                             <constraint firstItem="Pg2-Jr-8Cz" firstAttribute="top" secondItem="N0F-hC-2du" secondAttribute="bottom" constant="10" id="Zg2-Wn-rvf"/>
+                                                            <constraint firstItem="pCy-Em-Mzr" firstAttribute="top" secondItem="N0F-hC-2du" secondAttribute="bottom" constant="10" id="aXP-cu-14v"/>
+                                                            <constraint firstAttribute="bottom" secondItem="pCy-Em-Mzr" secondAttribute="bottom" constant="10" id="bf2-81-2J8"/>
                                                             <constraint firstItem="fiJ-ee-CNf" firstAttribute="leading" secondItem="O2A-1e-z2f" secondAttribute="leading" constant="10" id="eWK-Ou-Hs9"/>
                                                             <constraint firstAttribute="trailing" secondItem="fiJ-ee-CNf" secondAttribute="trailing" constant="10" id="feK-Ct-wUJ"/>
                                                             <constraint firstItem="fiJ-ee-CNf" firstAttribute="top" secondItem="O2A-1e-z2f" secondAttribute="top" constant="10" id="few-vr-nUa"/>
@@ -345,6 +364,11 @@
                                                             <constraint firstAttribute="height" constant="133" id="qsx-BA-Rc9"/>
                                                             <constraint firstItem="N0F-hC-2du" firstAttribute="top" secondItem="fiJ-ee-CNf" secondAttribute="bottom" constant="10" id="vpC-fA-kbb"/>
                                                         </constraints>
+                                                        <variation key="default">
+                                                            <mask key="subviews">
+                                                                <exclude reference="Pg2-Jr-8Cz"/>
+                                                            </mask>
+                                                        </variation>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cLs-zz-FgE">
                                                         <rect key="frame" x="10" y="408" width="373" height="280"/>
@@ -744,6 +768,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="EmailView" destination="115-39-DE7" id="CxW-PG-OWo"/>
+                        <outlet property="UserInformationView" destination="cLs-zz-FgE" id="lUt-hm-c48"/>
                         <outlet property="backView" destination="seT-zv-re3" id="zT6-bN-M50"/>
                         <outlet property="bottomView" destination="PPw-uI-4s7" id="N18-q7-AtY"/>
                         <outlet property="bottomViewHeightConstraint" destination="DVB-q9-29i" id="4O4-9U-Apo"/>
@@ -755,11 +781,13 @@
                         <outlet property="dateOfBirthTitleLabel" destination="sSF-uh-peE" id="nzx-v8-H6C"/>
                         <outlet property="dismissButton" destination="pPh-Hk-QLk" id="ZN5-KL-bKa"/>
                         <outlet property="emailTitleLabel" destination="FUb-MZ-vZu" id="2zd-fp-2IG"/>
+                        <outlet property="emailViewHeightConstraint" destination="zQv-RX-9WY" id="vPi-Hi-IFg"/>
                         <outlet property="enterAddressTF" destination="N3z-6t-tFI" id="zNo-64-OVF"/>
                         <outlet property="enterCountryTF" destination="kAq-pk-dKq" id="7G7-NF-o2F"/>
                         <outlet property="enterEmailTF" destination="biZ-HT-hor" id="xaF-5x-0HA"/>
+                        <outlet property="enterFirstNameTF" destination="43Q-3K-og4" id="d0d-SQ-XTI"/>
+                        <outlet property="enterLastNameTF" destination="Q7j-W9-ae3" id="smx-1K-xRz"/>
                         <outlet property="enterMobileNumberTF" destination="Sga-DI-LeB" id="MA7-aT-YTH"/>
-                        <outlet property="enterNameTF" destination="Q7j-W9-ae3" id="auC-2X-3Lh"/>
                         <outlet property="enterYourMobileTitleLabel" destination="qhQ-bB-eke" id="yME-u8-4Ge"/>
                         <outlet property="genderTitleLabel" destination="m7r-tq-Zvj" id="QIf-w5-5C7"/>
                         <outlet property="mobileNumberCountryCodeButton" destination="snc-vv-35g" id="Rf3-10-81G"/>
@@ -767,11 +795,23 @@
                         <outlet property="mobileNumberTF" destination="Zl9-A6-5sc" id="S4p-rU-PSg"/>
                         <outlet property="mobileNumberTitleLabel" destination="qFX-0y-kjw" id="Ws5-kH-F13"/>
                         <outlet property="nameTitleLabel" destination="iFC-lN-Dbp" id="S6G-KN-7fL"/>
+                        <outlet property="otpMessageLable" destination="U5a-Mp-4r6" id="RZm-Qs-Kml"/>
+                        <outlet property="otpView" destination="O2A-1e-z2f" id="PCO-Hm-Oj8"/>
+                        <outlet property="otpViewHeightConstraint" destination="qsx-BA-Rc9" id="cpK-Lf-mC0"/>
                         <outlet property="registerButton" destination="iRB-fU-b9m" id="kmA-KR-oU3"/>
+                        <outlet property="resendLabel" destination="pCy-Em-Mzr" id="cwP-Wy-qcJ"/>
                         <outlet property="scrollView" destination="XXX-69-eqP" id="tQL-Q4-avr"/>
                         <outlet property="selectDateofBirthTF" destination="HWy-gL-qhB" id="UM8-ge-X1H"/>
                         <outlet property="selectGenderButton" destination="N28-w0-VN9" id="i6t-Ob-fbM"/>
+                        <outlet property="selectPrefixButton" destination="ale-7D-GM7" id="paj-zU-mfP"/>
                         <outlet property="topView" destination="CzB-3c-HFD" id="AGa-Gd-xmV"/>
+                        <outlet property="userInformationViewHeightConstraint" destination="sTH-TG-JIy" id="2uZ-xl-Jgz"/>
+                        <outletCollection property="otpTF" destination="y2I-jx-asC" collectionClass="NSMutableArray" id="UOp-S8-Ae0"/>
+                        <outletCollection property="otpTF" destination="fpB-Uw-PWm" collectionClass="NSMutableArray" id="bh9-Qv-kae"/>
+                        <outletCollection property="otpTF" destination="XTs-tC-pJT" collectionClass="NSMutableArray" id="CFO-03-g4G"/>
+                        <outletCollection property="otpTF" destination="roa-hd-UN2" collectionClass="NSMutableArray" id="MHK-9U-nma"/>
+                        <outletCollection property="otpTF" destination="B1b-hJ-FWT" collectionClass="NSMutableArray" id="gXE-3j-kDv"/>
+                        <outletCollection property="otpTF" destination="MuL-DH-5NP" collectionClass="NSMutableArray" id="uAI-Hf-79y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FhG-Pf-fgC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2345,7 +2385,7 @@ You can check your bookings in My Bookings</string>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
                                                                         <rect key="frame" x="10" y="45" width="373" height="41"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250: 2 Adults, 2 Child (Extra Bed) Qty 1 - Total $250.00" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDJ-2L-SAQ">
@@ -2791,9 +2831,6 @@ You can check your bookings in My Bookings</string>
                                                         <buttonConfiguration key="configuration" style="plain">
                                                             <imageReference key="image" image="xmark" catalog="system" symbolScale="medium"/>
                                                         </buttonConfiguration>
-                                                        <connections>
-                                                            <action selector="dismissButtonAction:" destination="anQ-YZ-n4F" eventType="touchUpInside" id="Yz8-fg-QKj"/>
-                                                        </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jfa-5U-Zfx">
                                                         <rect key="frame" x="0.0" y="53" width="393" height="1"/>
@@ -2832,9 +2869,6 @@ You can check your bookings in My Bookings</string>
                                                                 <real key="value" value="5"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="mobileNumberCountryCodeButtonAction:" destination="anQ-YZ-n4F" eventType="touchUpInside" id="o3E-c3-Iua"/>
-                                                        </connections>
                                                     </button>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter mobile Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bL4-xF-Puv">
                                                         <rect key="frame" x="132" y="94.333333333333343" width="251" height="50"/>
@@ -2865,9 +2899,6 @@ You can check your bookings in My Bookings</string>
                                                                 <real key="value" value="5"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="continueButtonAction:" destination="anQ-YZ-n4F" eventType="touchUpInside" id="OT7-Vv-WQB"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -3224,9 +3255,6 @@ You can check your bookings in My Bookings</string>
                                                                 <real key="value" value="5"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="registerButtonAction:" destination="anQ-YZ-n4F" eventType="touchUpInside" id="RCx-hg-Yce"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -3283,36 +3311,6 @@ You can check your bookings in My Bookings</string>
                             <constraint firstItem="VFM-Ps-XN3" firstAttribute="top" secondItem="Bai-dR-5D8" secondAttribute="top" id="gHc-AB-PFN"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="backView" destination="Ubj-ju-3yp" id="G9n-eJ-1Xv"/>
-                        <outlet property="bottomView" destination="Mdj-1v-Fdc" id="wSk-I5-ZGc"/>
-                        <outlet property="bottomViewHeightConstraint" destination="ziT-SI-qRc" id="5Qq-vs-nDc"/>
-                        <outlet property="chevronImgView" destination="B6B-Ox-mV2" id="bKW-dO-AUT"/>
-                        <outlet property="continueButton" destination="tgC-0S-qZq" id="Qgu-ud-K50"/>
-                        <outlet property="countryMobileNoCountLabel" destination="Bld-9p-CoL" id="yTY-o4-48b"/>
-                        <outlet property="countryNameButton" destination="agI-19-HUF" id="uFK-5i-AGA"/>
-                        <outlet property="countryTitleLabel" destination="a8i-3f-How" id="4uW-ZC-uL6"/>
-                        <outlet property="dateOfBirthTitleLabel" destination="YJn-hF-P84" id="pWM-nm-028"/>
-                        <outlet property="dismissButton" destination="nBu-UQ-xJx" id="5yi-Zv-wvP"/>
-                        <outlet property="emailTitleLabel" destination="2vK-wl-m0X" id="Oxq-Ur-NsB"/>
-                        <outlet property="enterAddressTF" destination="D2F-Pi-sPE" id="WKo-2v-geH"/>
-                        <outlet property="enterCountryTF" destination="138-rm-wlM" id="nxe-94-h1w"/>
-                        <outlet property="enterEmailTF" destination="fvU-IC-Nz6" id="FAz-nZ-3IA"/>
-                        <outlet property="enterMobileNumberTF" destination="bL4-xF-Puv" id="p14-QT-3pV"/>
-                        <outlet property="enterNameTF" destination="Sya-Qd-65e" id="qzE-sX-arB"/>
-                        <outlet property="enterYourMobileTitleLabel" destination="0nO-Sd-5cU" id="8uP-42-OcG"/>
-                        <outlet property="genderTitleLabel" destination="pKd-1Q-ebU" id="ZL6-3S-MUF"/>
-                        <outlet property="mobileNumberCountryCodeButton" destination="ENM-jD-fQh" id="Wbq-5S-S9L"/>
-                        <outlet property="mobileNumberNoteLabel" destination="pI9-du-QxF" id="Ovl-sD-c64"/>
-                        <outlet property="mobileNumberTF" destination="Gcs-fg-oiY" id="69r-mt-fNN"/>
-                        <outlet property="mobileNumberTitleLabel" destination="g6x-K4-a8Y" id="737-ex-ffF"/>
-                        <outlet property="nameTitleLabel" destination="9Eb-yb-RBG" id="OTV-hS-VF1"/>
-                        <outlet property="registerButton" destination="neB-sn-LYd" id="jbS-KR-PrL"/>
-                        <outlet property="scrollView" destination="VFM-Ps-XN3" id="TXo-lT-rI4"/>
-                        <outlet property="selectDateofBirthTF" destination="c3W-XA-EMK" id="jZt-3c-0a4"/>
-                        <outlet property="selectGenderButton" destination="Nlj-eo-oIq" id="OIW-29-bPZ"/>
-                        <outlet property="topView" destination="mJe-tk-0o2" id="jns-oc-3db"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jua-C7-DSs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
