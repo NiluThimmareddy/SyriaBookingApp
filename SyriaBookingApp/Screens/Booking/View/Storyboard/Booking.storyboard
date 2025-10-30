@@ -223,7 +223,7 @@
                                                                     <action selector="sendCodeButtonAction:" destination="7ty-nV-GL8" eventType="touchUpInside" id="A1k-dF-Lyv"/>
                                                                 </connections>
                                                             </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To continue, please verify your email. Click Send code, then enter the 6-digit code we email you." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5a-Mp-4r6">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5a-Mp-4r6">
                                                                 <rect key="frame" x="10" y="195" width="353" height="50"/>
                                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                                 <constraints>
@@ -766,8 +766,9 @@
                         <outlet property="enterAddressTF" destination="N3z-6t-tFI" id="zNo-64-OVF"/>
                         <outlet property="enterCountryTF" destination="kAq-pk-dKq" id="7G7-NF-o2F"/>
                         <outlet property="enterEmailTF" destination="biZ-HT-hor" id="xaF-5x-0HA"/>
+                        <outlet property="enterFirstNameTF" destination="43Q-3K-og4" id="Xf4-MN-xki"/>
+                        <outlet property="enterLastNameTF" destination="Q7j-W9-ae3" id="tDi-7I-zoo"/>
                         <outlet property="enterMobileNumberTF" destination="Sga-DI-LeB" id="MA7-aT-YTH"/>
-                        <outlet property="enterNameTF" destination="Q7j-W9-ae3" id="auC-2X-3Lh"/>
                         <outlet property="enterYourMobileTitleLabel" destination="qhQ-bB-eke" id="yME-u8-4Ge"/>
                         <outlet property="genderTitleLabel" destination="m7r-tq-Zvj" id="QIf-w5-5C7"/>
                         <outlet property="mobileNumberCountryCodeButton" destination="snc-vv-35g" id="Rf3-10-81G"/>
@@ -775,6 +776,7 @@
                         <outlet property="mobileNumberTF" destination="Zl9-A6-5sc" id="S4p-rU-PSg"/>
                         <outlet property="mobileNumberTitleLabel" destination="qFX-0y-kjw" id="Ws5-kH-F13"/>
                         <outlet property="nameTitleLabel" destination="iFC-lN-Dbp" id="S6G-KN-7fL"/>
+                        <outlet property="otpMessageLable" destination="U5a-Mp-4r6" id="mSR-5m-hdU"/>
                         <outlet property="otpView" destination="O2A-1e-z2f" id="mgF-jA-PhA"/>
                         <outlet property="registerButton" destination="iRB-fU-b9m" id="kmA-KR-oU3"/>
                         <outlet property="scrollView" destination="XXX-69-eqP" id="tQL-Q4-avr"/>
