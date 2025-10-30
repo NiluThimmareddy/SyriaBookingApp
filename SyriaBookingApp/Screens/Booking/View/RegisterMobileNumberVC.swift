@@ -919,7 +919,7 @@ class RegisterMobileNumberVC : UIViewController {
     var reloadScreenAfterDismiss : (() -> Void)?
     
     var resendTimer: Timer?
-    var totalTime = 30
+    var totalTime = 300
     var resendTap: UITapGestureRecognizer?
     
     override func viewDidLoad() {
@@ -957,7 +957,7 @@ class RegisterMobileNumberVC : UIViewController {
         // Invalidate any existing timer
         stopResendTimer()
         
-        totalTime = 30 // 5 minutes in seconds
+        totalTime = 300 // 5 minutes in seconds
         updateResendCountdownText()
         // Create and start new timer
         resendTimer = Timer.scheduledTimer(timeInterval: 1.0,
