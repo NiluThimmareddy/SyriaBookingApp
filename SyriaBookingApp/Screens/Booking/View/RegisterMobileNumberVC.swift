@@ -898,7 +898,8 @@ class RegisterMobileNumberVC : UIViewController {
     @IBOutlet weak var otpViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var userInformationViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var resendLabel: UILabel!
-    
+    @IBOutlet weak var sendCodeButton: UIButton!
+    @IBOutlet weak var userInformationTopConstraint: NSLayoutConstraint!
     
     var shouldShowBottomView = false
     var prefilledMobileNumber: String?
@@ -918,7 +919,7 @@ class RegisterMobileNumberVC : UIViewController {
     var reloadScreenAfterDismiss : (() -> Void)?
     
     var resendTimer: Timer?
-    var totalTime = 300
+    var totalTime = 30
     var resendTap: UITapGestureRecognizer?
     
     override func viewDidLoad() {
@@ -956,9 +957,8 @@ class RegisterMobileNumberVC : UIViewController {
         // Invalidate any existing timer
         stopResendTimer()
         
-        totalTime = 300 // 5 minutes in seconds
+        totalTime = 30 // 5 minutes in seconds
         updateResendCountdownText()
-        
         // Create and start new timer
         resendTimer = Timer.scheduledTimer(timeInterval: 1.0,
                                          target: self,
@@ -989,7 +989,7 @@ class RegisterMobileNumberVC : UIViewController {
         let staticText = "Didn't get it? "
         let resendText = "Resend"
         let fullText = staticText + resendText
-        
+        sendCodeButton.setTitle("Resend", for: .normal)
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Style the static text
@@ -1011,6 +1011,7 @@ class RegisterMobileNumberVC : UIViewController {
         
         resendLabel.attributedText = attributedString
         resendLabel.isUserInteractionEnabled = true
+        sendCodeButton.isUserInteractionEnabled = true
     }
     
     func updateResendCountdownText() {
@@ -1022,6 +1023,7 @@ class RegisterMobileNumberVC : UIViewController {
         let resendText = "Resend"
         let tailText = " — you can resend again in \(timeString)"
         
+        sendCodeButton.setTitle("Resend in \(timeString)", for: .normal)
         let fullText = staticText + resendText + tailText
         let attributedString = NSMutableAttributedString(string: fullText)
         
@@ -1039,7 +1041,8 @@ class RegisterMobileNumberVC : UIViewController {
         }
         
         resendLabel.attributedText = attributedString
-        resendLabel.isUserInteractionEnabled = false // Disable during countdown
+        resendLabel.isUserInteractionEnabled = false
+        sendCodeButton.isUserInteractionEnabled = false
     }
     
     @IBAction func mobileNumberCountryCodeButtonAction(_ sender: Any) {
@@ -1145,15 +1148,12 @@ class RegisterMobileNumberVC : UIViewController {
                     
                 } else {
                     hideLoader()
-//                    if let parentVC = self.parent {
-//                        parentVC.expandPopupToFullScreen(self)
-//                    }
-                    
                     self.bottomView.isHidden = false
                     EmailView.isHidden = false
                     otpView.isHidden = true
                     UserInformationView.isHidden = true
- 
+                    registerButton.isHidden = true
+                    sendCodeButton.setTitle("Send Code", for: .normal)
                 }
             })
         }
@@ -1171,35 +1171,33 @@ class RegisterMobileNumberVC : UIViewController {
             enterEmailTF.layer.borderWidth = 0.5
             
             self.getEmailOTP(email: email) { otpResponse in
-                self.otpMessageLable.text = "We sent verification code to \(email)"
+                self.otpMessageLable.text = " We sent verification code to \(email)"
                 self.changeLabelStyle(Email: false)
                 self.otpView.isHidden = false
-                
-                // Start the countdown timer after OTP is sent successfully
                 self.startResendTimer()
                 print(otpResponse.data.otp)
             }
-            
         } else {
             print("❌ Invalid Email")
             enterEmailTF.layer.borderColor = UIColor.red.cgColor
             enterEmailTF.layer.borderWidth = 0.5
             showAlert("Please enter a valid email address")
+            return
         }
     }
     
     func changeLabelStyle(Email:Bool = true){
         if Email {
-            self.otpMessageLable.backgroundColor = UIColor.systemGray5
+            self.otpMessageLable.backgroundColor = UIColor.systemGray6
             self.otpMessageLable.textColor = .label
-            self.otpMessageLable.layer.cornerRadius = 5
+            self.otpMessageLable.layer.cornerRadius = 8
             
-        }else{
-            self.otpMessageLable.layer.borderWidth = 0.5
-            self.otpMessageLable.layer.cornerRadius = 5
-            self.otpMessageLable.layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            self.otpMessageLable.layer.borderWidth = 1.0
+            self.otpMessageLable.layer.cornerRadius = 8
+            self.otpMessageLable.layer.borderColor = UIColor(hex: "#408558").cgColor
             self.otpMessageLable.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
-            self.otpMessageLable.textColor = UIColor.systemGreen
+            self.otpMessageLable.textColor = UIColor(hex: "#408558")
         }
         
     }
@@ -1212,7 +1210,7 @@ class RegisterMobileNumberVC : UIViewController {
         }
         viewModel.onError = { error in
             self.hideLoader()
-            self.showAlert(title:"SyriaBooking", message: error.description, onOK: {
+            self.showAlert(title:"SyriaBooking", message: "Incorrect OTP entered. Please check and re-enter.", onOK: {
                 self.otpTF.forEach { textfield in
                     textfield.text = ""
                 }
@@ -1234,13 +1232,18 @@ class RegisterMobileNumberVC : UIViewController {
         }
         
         self.verifyEmailOTPCode(email: email, otp: otp) { [weak self] UserId in
-            UserId?.data.email
             guard let self = self, let UserId = UserId else { return }
-            self.otpMessageLable.text = "Email verified. You can complete the form now."
+            self.otpMessageLable.text = " Email verified. You can complete the form now."
+            self.sendCodeButton.setTitle("Email Verified", for: .normal)
+            stopResendTimer()
             self.changeLabelStyle(Email: false)
             self.UserInformationView.isHidden = false
+            self.registerButton.isHidden = false
             self.otpView.isHidden = true
             self.otpViewHeightConstraint.constant = 0
+            self.userInformationTopConstraint.constant = 0
+            self.enterEmailTF.isEnabled = false
+            self.sendCodeButton.isEnabled = false
         }
     }
 
@@ -1308,11 +1311,10 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     func setUpUI() {
         updateResendCountdownText()
         setupResendLabel()
-        scrollView.applyCardStyle()
         setupGenderPullDownMenu()
         setupPrefixPullDownMenu()
         selectDateofBirthTF.addTarget(self, action: #selector(dateTextFieldDidChange), for: .editingChanged)
-        self.otpMessageLable.text = "To continue, please verify your email. Click Send code, then enter the 6-digit code we email you."
+        self.otpMessageLable.text = " To continue, please verify your email. Click Send code, then enter the 6-digit code we email you."
         self.changeLabelStyle(Email: true)
         
         for (index, textField) in otpTF.enumerated() {
@@ -1323,6 +1325,9 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         }
         
+        EmailView.isHidden = true
+        otpView.isHidden = true
+        UserInformationView.isHidden = true
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number
@@ -1341,6 +1346,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
 
     func setupResendLabel() {
         resendLabel.isUserInteractionEnabled = true
+        sendCodeButton.isUserInteractionEnabled = true
         resendTap = UITapGestureRecognizer(target: self, action: #selector(resendTapped))
         resendLabel.addGestureRecognizer(resendTap!)
     }
@@ -1471,7 +1477,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let mrTitle = AppSettings.shared.selectedLanguage == .english ? "Ms" : "ذكر"
         let mrsTitle = AppSettings.shared.selectedLanguage == .english ? "Mr" : "أنثى"
         let missTitle = AppSettings.shared.selectedLanguage == .english ? "Mrs" : "آخر"
-        let selectTitle = AppSettings.shared.selectedLanguage == .english ? "Select Prefix" : "اختر الجنس"
+        let selectTitle = AppSettings.shared.selectedLanguage == .english ? " Select Prefix" : "اختر الجنس"
         
         selectPrefixButton.setTitle(selectTitle, for: .normal)
  
