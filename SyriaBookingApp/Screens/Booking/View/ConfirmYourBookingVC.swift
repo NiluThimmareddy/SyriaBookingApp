@@ -472,31 +472,61 @@ extension ConfirmYourBookingVC {
         // If next day → 1 night
         // Otherwise → number of days difference
         let totalNights = max(days, 0) == 0 ? 1 : days
-        
-        totalNightsCountLabel.text = "\(totalNights)"
         return totalNights
     }
 
-
+//
+//    func updateTotalAmountLabel(isLocal: Bool) {
+//        let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
+//        let currency = isLocal ? "SYP" : "$"
+//        bookingTypeLabel.text =  isLocal ? "Local(SYP)" :"International($)"
+//        guard nights > 0 else {
+//            totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalGrossAmount))"
+//            netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalNetAmount))"
+//            return
+//        }
+//        
+//        totalNightsCountLabel.text = "\(nights)"
+//        finaltotalDiscountAmount = totalDiscountAmount * Double(nights)
+//        totalAmount = totalGrossAmount * Double(nights)
+//        netAmountAfterDiscount = Double(totalAmount) -  Double(finaltotalDiscountAmount)
+//
+//        totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalAmount))"
+//        totalDiscountAmountLabel.text = "\(currency) \(String(format: "%.2f", finaltotalDiscountAmount))"
+//        netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", netAmountAfterDiscount))"
+//        
+//       
+//    }
+    
     func updateTotalAmountLabel(isLocal: Bool) {
         let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
         let currency = isLocal ? "SYP" : "$"
-        bookingTypeLabel.text =  isLocal ? "Local(SYP)" :"International($)"
+        bookingTypeLabel.text = isLocal ? "Local (SYP)" : "International ($)"
+        
+        // Number formatter for both currencies (with comma and 2 decimals)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.groupingSeparator = ","
+        formatter.locale = Locale(identifier: "en_US")
+        
         guard nights > 0 else {
-            totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalGrossAmount))"
-            netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalNetAmount))"
+            totalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: totalGrossAmount)) ?? "0.00")"
+            netTotalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: totalNetAmount)) ?? "0.00")"
             return
         }
+        
+        totalNightsCountLabel.text = "\(nights)"
         finaltotalDiscountAmount = totalDiscountAmount * Double(nights)
         totalAmount = totalGrossAmount * Double(nights)
-        netAmountAfterDiscount = Double(totalAmount) -  Double(finaltotalDiscountAmount)
-
-        totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalAmount))"
-        totalDiscountAmountLabel.text = "\(currency) \(String(format: "%.2f", finaltotalDiscountAmount))"
-        netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", netAmountAfterDiscount))"
+        netAmountAfterDiscount = Double(totalAmount) - Double(finaltotalDiscountAmount)
         
-       
+        totalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: totalAmount)) ?? "0.00")"
+        totalDiscountAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: finaltotalDiscountAmount)) ?? "0.00")"
+        netTotalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: netAmountAfterDiscount)) ?? "0.00")"
     }
+
 
     @objc func Arabic() {
         if AppSettings.shared.selectedLanguage == .english {

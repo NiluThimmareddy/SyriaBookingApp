@@ -83,8 +83,17 @@ struct VerifyOTPModel : Codable{
     let data: UserData
 }
 
+struct VerifyEmailOTPModel : Codable{
+    let message: String
+    let data: UserEmailData
+}
+
 struct UserData: Codable {
     let userId: String
+}
+
+struct UserEmailData: Codable {
+    let email: String
 }
 
 struct PostBookingWrapper: Codable {

@@ -14,6 +14,7 @@ class BookingViewModel {
     var onHistorySuccess : ((BookingHistoryDataModel) -> Void)?
     var onError: ((String) -> Void)?
     var onVerifyOTPSucess : ((VerifyOTPModel) -> Void)?
+    var onEmailVerifyOTPSuccess : ((VerifyEmailOTPModel) -> Void)?
     func FetchUserData(mobile:String? = nil,id:String? = nil){
         
         guard let urlstr = APIURL.BookingURL.url?.absoluteString else { return }
@@ -108,6 +109,64 @@ class BookingViewModel {
                 switch result {
                 case .success(let response):
                     self.onVerifyOTPSucess?(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    
+    func fetchEmailOTP(email:String){
+        
+        guard let urlstr = APIURL.PostForEmailOTP.url?.absoluteString else { return }
+        //        let getUrl = urlstr + "\(mobileNumber)"
+        
+        let url = URL(string: urlstr)
+        
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        let params: [String: Any] = [
+            "email": email,
+        ]
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: OTPResponseModel.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onOTPSuccess?(response)
+                case .failure(let failure):
+                    self.onError?(failure.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func verifyEmailOTP(email:String,otp:String){
+        
+        guard let urlstr = APIURL.verifyEmailOTP.url?.absoluteString else { return }
+        //        let getUrl = urlstr + "\(mobileNumber)"
+        
+        let url = URL(string: urlstr)
+        
+        guard let url = url else{
+            self.onError?("Invalid URL")
+            return
+        }
+        
+        let params: [String: Any] = [
+            "email": email,
+            "code": otp
+        ]
+        
+        APIManager.shared.postRequest(urlString: url , body: params, responseType: VerifyEmailOTPModel.self) { result in
+            DispatchQueue.main.async{
+                switch result {
+                case .success(let response):
+                    self.onEmailVerifyOTPSuccess?(response)
                 case .failure(let failure):
                     self.onError?(failure.localizedDescription)
                 }
