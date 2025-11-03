@@ -21,15 +21,15 @@ enum APIURL{
     case updateProfile
         
     //Production URL
-//    var baseURL: String {
-//        return "https://syriabookingcacheapi.azurewebsites.net/api/"
-//
-//    }
+    var baseURL: String {
+        return "https://syriabooking.sy/public-api/api/"
+
+    }
     
    //Development URL
-    var baseURL: String {
-        return "https://syriabookingstage.azurewebsites.net/public-api/api/"
-    }
+//    var baseURL: String {
+//        return "https://syriabookingstage.azurewebsites.net/public-api/api/"
+//    }
     
     var url : URL? {
         switch self {

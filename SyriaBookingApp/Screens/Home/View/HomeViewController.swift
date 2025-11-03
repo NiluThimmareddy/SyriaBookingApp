@@ -788,7 +788,7 @@ extension HomeViewController {
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
             recommendedHotelsTitleLabel.text = "Recommended Hotels"
-            viewAllRecommendedButton.setTitle("View All Recommended", for: .normal)
+            viewAllRecommendedButton.setTitle("View All", for: .normal)
         } else {
             dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
             newYearTitleLabel.text = "عام جديد، مغامرات جديدة"
@@ -812,7 +812,7 @@ extension HomeViewController {
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
             recommendedHotelsTitleLabel.text = "فنادق موصى بها"
-            viewAllRecommendedButton.setTitle("عرض جميع الموصى بها", for: .normal)
+            viewAllRecommendedButton.setTitle("عرض جميع", for: .normal)
         }
     }
     

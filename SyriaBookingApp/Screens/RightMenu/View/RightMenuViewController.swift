@@ -8,7 +8,7 @@
 import UIKit
 import SafariServices
 
-class RightMenuViewController: UIViewController {
+class RightMenuViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet weak var rightMenuTableView: UITableView!
     
@@ -79,12 +79,22 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             controller.titleText = "Report an app"
             present(controller, animated: true)
         case 5 :
-            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
-            controller.navigationItem.backButtonTitle = ""
-            self.navnController?.pushViewController(controller, animated: true)
-               
-            self.dismiss(animated: true, completion: nil)
+           let title = menuArray[indexPath.row]
+            if  title == "Profile" ||  title == "الملف الشخصي"{
+                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+                let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
+                controller.navigationItem.backButtonTitle = ""
+                self.navnController?.pushViewController(controller, animated: true)
+            }else{
+                let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+                guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+                controller.modalPresentationStyle = .overFullScreen
+                controller.transitioningDelegate = self
+                controller.reloadScreenAfterDismiss = {
+                    self.goToHomeTab()
+                }
+                self.present(controller, animated: true)
+            }
         case 6 :
             showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
                 UserSessionManager.clearUser()

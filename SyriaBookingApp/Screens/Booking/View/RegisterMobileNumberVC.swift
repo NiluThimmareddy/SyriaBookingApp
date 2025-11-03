@@ -1328,6 +1328,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         EmailView.isHidden = true
         otpView.isHidden = true
         UserInformationView.isHidden = true
+        registerButton.isHidden = true
         bottomView.isHidden = !shouldShowBottomView
         if shouldShowBottomView, let number = prefilledMobileNumber {
             mobileNumberTF.text = number

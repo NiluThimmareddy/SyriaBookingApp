@@ -162,13 +162,13 @@ extension UIViewController {
                     controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا","الإبلاغ عن التطبيق","الملف الشخصي","تسجيل الخروج","ديليت أن أكاونت"]
                 } else {
                     controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا",
-                        "الإبلاغ عن التطبيق"]
+                        "الإبلاغ عن التطبيق", "تسجيل الدخول"]
                 }
             } else {
                 if isLoggedIn {
                     controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App","Profile","Logout","Delete Account"]
                 } else {
-                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App"]
+                    controller.menuArray = ["FAQ","Privacy Policy","Terms and Conditions","About Us","Report an App","Login"]
                 }
             }
             

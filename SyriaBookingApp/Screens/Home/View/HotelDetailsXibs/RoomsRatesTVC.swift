@@ -42,11 +42,14 @@ class RoomsRatesTVC : UITableViewCell {
                 formattedPrice = "0.00"
             }
 
-            if let localDiscount = rooms.localDiscount {
+            if let localDiscount = rooms.localDiscount, localDiscount > 0 {
                 discountText = "\(localDiscount)"
             } else {
                 discountText = ""
             }
+            
+            
+
 
             // Create attributed string
             let attributedText = NSMutableAttributedString(string: "\(formattedPrice) SYP ", attributes: [
@@ -67,8 +70,8 @@ class RoomsRatesTVC : UITableViewCell {
         } else {
            
                 formattedPrice = String(format: "%.2f", rooms.price)
-
-            if let discount = rooms.discount{
+            
+            if let discount = rooms.discount, discount > 0 {
                 discountText = "\(discount)"
             } else {
                 discountText = ""
