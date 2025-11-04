@@ -109,8 +109,6 @@ class HotelViewModel {
               return
           }
           
-          
-
           APIManager.shared.fetchData(from: url, modelType: Review.self) { result in
               switch result {
               case .success(let response):

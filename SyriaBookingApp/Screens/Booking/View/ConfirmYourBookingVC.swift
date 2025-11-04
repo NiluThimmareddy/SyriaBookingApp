@@ -1,6 +1,6 @@
 
 import UIKit
-
+import Reachability
 class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
@@ -64,6 +64,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var roomRatesDataDisplay = ""
     var roomRatesDataAPI = ""
     var  finaltotalDiscountAmount = 0.0
+    var reachability : Reachability?
     override func viewDidLoad() {
         super.viewDidLoad()
         checkInTF.text = ""
@@ -113,6 +114,12 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
+        
+        guard let reachability = try? Reachability(), reachability.connection != .unavailable else {
+            showAlert("No Internet Connection. Please check your network and try again.")
+            return
+        }
+        
         guard let noOfGuestText = numberOfGuestsTF.text,
               !noOfGuestText.isEmpty,
               let noOfGuest = Int(noOfGuestText) else {
