@@ -13,6 +13,9 @@ class TermsAndConditionsVC: UIViewController {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var termsAndConditionsTitleLabel: UILabel!
+    @IBOutlet weak var termsAndConditionsLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
+    
     
     private var webView: WKWebView!
 
@@ -45,6 +48,8 @@ class TermsAndConditionsVC: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            termsAndConditionsLabel.text = "الشروط والأحكام"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -101,6 +106,8 @@ class TermsAndConditionsVC: UIViewController {
             </html>
             """
         } else {
+            termsAndConditionsLabel.text = "Terms & Conditions"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

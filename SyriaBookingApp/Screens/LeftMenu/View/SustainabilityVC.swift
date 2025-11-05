@@ -12,6 +12,8 @@ class SustainabilityVC: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var sustainabilityTitleLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
     
@@ -45,6 +47,8 @@ class SustainabilityVC: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            sustainabilityTitleLabel.text = "الاستدامة"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -132,6 +136,8 @@ class SustainabilityVC: UIViewController {
             </html>
             """
         } else {
+            sustainabilityTitleLabel.text = "Sustainability"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

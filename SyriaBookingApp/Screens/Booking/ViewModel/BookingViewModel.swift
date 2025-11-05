@@ -245,6 +245,7 @@ class BookingViewModel {
             }
         }
     }
+    
     func postRequest<T: Decodable>(urlString: URL,body: [String: Any],responseType: T.Type,completion: @escaping (Result<T, Error>) -> Void
     ) {
         var request = URLRequest(url: urlString)

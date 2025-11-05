@@ -12,6 +12,8 @@ class SafetyResourceCenterVC : UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var safetyResourceCenterTitleLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
     
@@ -45,6 +47,8 @@ class SafetyResourceCenterVC : UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            safetyResourceCenterTitleLabel.text = "مركز موارد السلامة"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -134,6 +138,8 @@ class SafetyResourceCenterVC : UIViewController {
             </html>
             """
         } else {
+            safetyResourceCenterTitleLabel.text = "Safety Resource Center"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

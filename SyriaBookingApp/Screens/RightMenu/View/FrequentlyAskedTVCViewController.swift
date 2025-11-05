@@ -14,6 +14,9 @@ class FrequentlyAskedTVCViewController : UIViewController {
     @IBOutlet weak var frequentlyAskedTVC: UITableView!
     @IBOutlet weak var FAQsTitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var frequentlyAskedQuestionsTitleLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
+    
     
     var selectedIndexPath: IndexPath?
     
@@ -95,6 +98,8 @@ extension FrequentlyAskedTVCViewController {
     
     func setupLanguageContent() {
         if AppSettings.shared.selectedLanguage == .arabic {
+            frequentlyAskedQuestionsTitleLabel.text = "الأسئلة الشائعة"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             FAQsTitleLabel.text = "الأسئلة المتكررة"
             FAQsTitleLabel.textAlignment = .center
             
@@ -127,6 +132,8 @@ extension FrequentlyAskedTVCViewController {
                 "نعم. يتوفر فريق دعم العملاء المحلي لدينا 7 أيام في الأسبوع لمساعدتك في الحجز أو الإلغاء أو أي استفسارات. نحن هنا لجعل رحلتك بلا قلق."
             ]
         } else {
+            frequentlyAskedQuestionsTitleLabel.text = "Frequently Asked Questions"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             FAQsTitleLabel.text = "Frequently Asked Questions"
             FAQsTitleLabel.textAlignment = .center
             

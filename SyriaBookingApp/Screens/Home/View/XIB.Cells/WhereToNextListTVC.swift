@@ -129,6 +129,7 @@ extension WhereToNextListTVC {
         totalHotelCollectionView.delegate = self
         totalHotelCollectionView.dataSource = self
         hotelImgView.applyFullLightBlackGradientOverlay()
+        updateUI()
     }
     
     override func prepareForReuse() {

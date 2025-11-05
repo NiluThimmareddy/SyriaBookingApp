@@ -178,6 +178,7 @@ extension RecentlyViewedVC {
         recentlyViewedTableview.register(UINib(nibName: "NoRecentlyViewedTVC", bundle: nil), forCellReuseIdentifier: "NoRecentlyViewedTVC")
         
         configureDeleteButtonMenu()
+        updateLoginViewTexts()
         
         let lang = AppSettings.shared.selectedLanguage
         self.navigationItem.title = lang == .english ? "Recently Viewed" : "شوهدت مؤخرا"
@@ -188,6 +189,27 @@ extension RecentlyViewedVC {
         
         recentlyViewedTableview.contentInset = .zero
         recentlyViewedTableview.contentInsetAdjustmentBehavior = .never
+    }
+    
+    func updateLoginViewTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .english {
+            loginDescriptionLabel.text = "Login to book your stay quickly and securely"
+        } else {
+            loginDescriptionLabel.text = "سجل الدخول لحجز إقامتك بسرعة وأمان"
+        }
+        
+        let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        
+        if lang == .english {
+            let attributedTitle = NSAttributedString(string: "Login", attributes: attributes)
+            loginButton.setAttributedTitle(attributedTitle, for: .normal)
+        } else {
+            let attributedTitle = NSAttributedString(string: "تسجيل الدخول", attributes: attributes)
+            loginButton.setAttributedTitle(attributedTitle, for: .normal)
+        }
     }
     
     func loadRecentlyViewedHotels() {

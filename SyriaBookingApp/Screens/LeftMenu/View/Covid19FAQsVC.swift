@@ -13,6 +13,8 @@ class Covid19FAQsVC : UIViewController {
     @IBOutlet weak var covid19TitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var subDescriptionLabel: UILabel!
+    @IBOutlet weak var covid19FaqsTitleLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     var selectedIndexPath: IndexPath?
     
@@ -157,8 +159,8 @@ extension Covid19FAQsVC: UITableViewDelegate, UITableViewDataSource {
 extension Covid19FAQsVC {
     func setUpUI() {
         frequentlyAskedTVC.register(UINib(nibName: "FrequentlyAskedTVC", bundle: .main), forCellReuseIdentifier: "FrequentlyAskedTVC")
-         frequentlyAskedTVC.dataSource = self
-         frequentlyAskedTVC.delegate = self
+        frequentlyAskedTVC.dataSource = self
+        frequentlyAskedTVC.delegate = self
         
         covid19TitleLabel.text = covid19TitleText
         descriptionLabel.text = descriptionText
@@ -174,6 +176,14 @@ extension Covid19FAQsVC {
         subDescriptionLabel.semanticContentAttribute = .forceLeftToRight
         
         frequentlyAskedTVC.semanticContentAttribute = .forceLeftToRight
+        
+        if AppSettings.shared.selectedLanguage == .arabic {
+            covid19FaqsTitleLabel.text = "الأسئلة الشائعة حول كوفيد-19"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
+        } else {
+            covid19FaqsTitleLabel.text = "COVID-19 FAQs"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
+        }
     }
 }
 

@@ -362,7 +362,9 @@
                     <navigationItem key="navigationItem" id="gPR-yD-L1n"/>
                     <connections>
                         <outlet property="backView" destination="czD-ts-5yx" id="NK9-LC-6Ef"/>
+                        <outlet property="careersTitleLabel" destination="zNi-pI-27a" id="iz8-nf-r7P"/>
                         <outlet property="insideScrollView" destination="EvG-nl-hQK" id="FlL-wz-pJT"/>
+                        <outlet property="redefiningTravelDescriptionLabel" destination="kZ4-dK-b0b" id="2yA-JC-oEL"/>
                         <outlet property="scrollView" destination="LEn-zk-4S5" id="DxE-B5-rgG"/>
                     </connections>
                 </viewController>
@@ -483,9 +485,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="qNM-mE-UZJ"/>
                     <connections>
+                        <outlet property="covid19FaqsTitleLabel" destination="Csa-jK-yBv" id="5qZ-qC-q5v"/>
                         <outlet property="covid19TitleLabel" destination="B6R-yG-jDU" id="QYJ-FB-ZdE"/>
                         <outlet property="descriptionLabel" destination="OXt-hU-JEy" id="SZB-EZ-zmK"/>
                         <outlet property="frequentlyAskedTVC" destination="0Xi-Xx-vlo" id="gnu-4Q-HCc"/>
+                        <outlet property="redefiningTravelDescriptionLabel" destination="p8f-Yu-Nxi" id="Wlt-1l-B2n"/>
                         <outlet property="subDescriptionLabel" destination="yKE-b8-SWc" id="e3N-De-BOx"/>
                     </connections>
                 </viewController>
@@ -578,7 +582,9 @@
                     </view>
                     <connections>
                         <outlet property="bottomView" destination="dRk-hn-vW2" id="6l9-rC-KAT"/>
+                        <outlet property="redefiningTravelDescriptionLabel" destination="OGW-94-uRt" id="dpn-ic-7Oe"/>
                         <outlet property="scrollView" destination="YUI-B5-add" id="bAB-Vy-g3H"/>
+                        <outlet property="sustainabilityTitleLabel" destination="r4G-pN-NKZ" id="ybH-hJ-2bf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kML-6h-I0X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -667,6 +673,8 @@
                     </view>
                     <connections>
                         <outlet property="bottomView" destination="1fl-eQ-dSU" id="AUf-r2-KqY"/>
+                        <outlet property="redefiningTravelDescriptionLabel" destination="pTc-4R-6xj" id="f9T-3U-OUb"/>
+                        <outlet property="safetyResourceCenterTitleLabel" destination="H2z-HQ-q72" id="RlQ-A8-3Xt"/>
                         <outlet property="scrollView" destination="7Ih-iR-PUB" id="9cc-YZ-VW4"/>
                     </connections>
                 </viewController>
@@ -961,30 +969,8 @@
                                                             </constraint>
                                                         </constraints>
                                                     </stackView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="747" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HG-GR-bbI">
-                                                        <rect key="frame" x="10" y="548.33333333333337" width="373" height="70"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="70" id="uEC-d0-biT"/>
-                                                        </constraints>
-                                                        <string key="text">Arrive at your hotel, show your booking confirmation, and pay directly at the front desk in cash or by card (as accepted by the hotel). It’s simple, secure, and commitment-free.</string>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                        <variation key="heightClass=regular-widthClass=regular">
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        </variation>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4. Receive Confirmation:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pgm-QR-sfv">
-                                                        <rect key="frame" x="10" y="448.66666666666663" width="373" height="19.333333333333314"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                        <variation key="heightClass=regular-widthClass=regular">
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                                        </variation>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5. Pay at the Hotel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YVI-ht-Aya">
-                                                        <rect key="frame" x="10" y="525" width="373" height="19.333333333333371"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. Book Instantly — No Payment Required:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-4W-nMC">
+                                                        <rect key="frame" x="10" y="353.33333333333337" width="169" height="38.333333333333314"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1002,6 +988,15 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         </variation>
                                                     </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4. Receive Confirmation:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pgm-QR-sfv">
+                                                        <rect key="frame" x="10" y="448.66666666666663" width="373" height="19.333333333333314"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <variation key="heightClass=regular-widthClass=regular">
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                        </variation>
+                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmt-PW-tTO">
                                                         <rect key="frame" x="10" y="472" width="373" height="43"/>
                                                         <string key="text">Once you book, you’ll receive a booking confirmation with all your hotel details, directions, and contact information. Your room is reserved and waiting for you.</string>
@@ -1012,13 +1007,26 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         </variation>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. Book Instantly — No Payment Required:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-4W-nMC">
-                                                        <rect key="frame" x="10" y="353.33333333333337" width="169" height="38.333333333333314"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5. Pay at the Hotel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YVI-ht-Aya">
+                                                        <rect key="frame" x="10" y="525" width="373" height="19.333333333333371"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                         <variation key="heightClass=regular-widthClass=regular">
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                        </variation>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="747" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HG-GR-bbI">
+                                                        <rect key="frame" x="10" y="548.33333333333337" width="373" height="70"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="70" id="uEC-d0-biT"/>
+                                                        </constraints>
+                                                        <string key="text">Arrive at your hotel, show your booking confirmation, and pay directly at the front desk in cash or by card (as accepted by the hotel). It’s simple, secure, and commitment-free.</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <variation key="heightClass=regular-widthClass=regular">
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         </variation>
                                                     </label>
                                                 </subviews>
@@ -1111,17 +1119,19 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="arriveAtYourHotelLabel" destination="9HG-GR-bbI" id="9Jr-AY-7dd"/>
+                        <outlet property="bookInstantlyTitleLabel" destination="Xdy-4W-nMC" id="9Dc-CC-Bid"/>
+                        <outlet property="browseDetaildHotelLabel" destination="Hcz-2R-KyD" id="jTb-b7-Gf9"/>
+                        <outlet property="compareAndChooseTitleLabel" destination="aCG-hP-tGu" id="d3z-D2-0sg"/>
                         <outlet property="descriptionLabel" destination="BdX-Wy-Wgd" id="F16-bl-SRO"/>
-                        <outletCollection property="QuestinosLabel" destination="wiQ-dj-o0Q" collectionClass="NSMutableArray" id="UlF-6Q-fqS"/>
-                        <outletCollection property="QuestinosLabel" destination="aCG-hP-tGu" collectionClass="NSMutableArray" id="dWH-fE-2ps"/>
-                        <outletCollection property="QuestinosLabel" destination="Xdy-4W-nMC" collectionClass="NSMutableArray" id="3QV-g5-Ioi"/>
-                        <outletCollection property="QuestinosLabel" destination="Pgm-QR-sfv" collectionClass="NSMutableArray" id="9MZ-Cm-Uuy"/>
-                        <outletCollection property="QuestinosLabel" destination="YVI-ht-Aya" collectionClass="NSMutableArray" id="geR-GZ-B0R"/>
-                        <outletCollection property="answerLabel" destination="nz9-Zv-gXs" collectionClass="NSMutableArray" id="CSN-5p-OhK"/>
-                        <outletCollection property="answerLabel" destination="Hcz-2R-KyD" collectionClass="NSMutableArray" id="R5t-w3-pS8"/>
-                        <outletCollection property="answerLabel" destination="njS-aS-Pya" collectionClass="NSMutableArray" id="cdA-ep-BFD"/>
-                        <outletCollection property="answerLabel" destination="jmt-PW-tTO" collectionClass="NSMutableArray" id="d2k-wu-y3g"/>
-                        <outletCollection property="answerLabel" destination="9HG-GR-bbI" collectionClass="NSMutableArray" id="6XP-dg-nMx"/>
+                        <outlet property="howItWorksTitleLabel" destination="AFi-Qh-m88" id="PwO-Cc-nAO"/>
+                        <outlet property="onceYouBookLabel" destination="jmt-PW-tTO" id="VKE-L2-w5k"/>
+                        <outlet property="payAtHotelTitleLabel" destination="YVI-ht-Aya" id="A0d-Mg-tRZ"/>
+                        <outlet property="receiveConfirmationTitleLabel" destination="Pgm-QR-sfv" id="OpJ-Kb-sku"/>
+                        <outlet property="redefiningTravelDescriptionLabel" destination="Xxg-1S-dU0" id="M3h-5V-TPx"/>
+                        <outlet property="searchForHotelTitleLabel" destination="wiQ-dj-o0Q" id="1ov-Kz-Pqc"/>
+                        <outlet property="selectYourRoomLabel" destination="njS-aS-Pya" id="Pb7-fA-qdV"/>
+                        <outlet property="useYourSearchDescriptionLabel" destination="nz9-Zv-gXs" id="0Ot-Kb-tCO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8j-LU-Mti" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

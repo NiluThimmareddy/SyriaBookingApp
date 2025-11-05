@@ -764,15 +764,15 @@ extension HomeViewController {
         
         if lang == .english {
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 11, weight:.bold)
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
             ]
             newYearTitleLabel.text = "New Year, New Adventures"
-            dealOfferLabel.text = "Save 15% or more when you book and stay before 31 Decembe 2025"
+            dealOfferLabel.text = "Save 15% or more when you book and stay before 31 December 2025"
             handPickedHotelsDescriptionLabel.text = "Experience the finest stays with our handpicked hotels, selected for their exceptional comfort, service, and location."
             handpickedHotelsLabel.text = "Handpicked Hotels"
             navigationTitleNameLabel.title = "SyriaBooking"
-            //            messageLabel.text = "Good Morning User!"
-            //            subTitleMessageLabel.text = "Your Gateway to Discover Syria"
+            // messageLabel.text = "Good Morning User!"
+            // subTitleMessageLabel.text = "Your Gateway to Discover Syria"
             recentlyHeadLineLabel.text = "Recently Viewed"
             whereToNextHeadLineLabel.text = "Where to next?"
             topHotelHeadLineLabel.text = "Top Hotels"
@@ -780,23 +780,34 @@ extension HomeViewController {
             checkInButton.setTitle("Check In", for: .normal)
             checkOutButton.setTitle("Check Out", for: .normal)
             searchButton.setTitle("Search", for: .normal)
-            let viwallTitle = "View All"
-            let viewallattributedTitle = NSAttributedString(string: viwallTitle, attributes: attributes)
-            viewAllButton.setAttributedTitle(viewallattributedTitle, for: .normal)
-            let title = "Find early 2025 deals"
             
+            // See More buttons
+            let seeMoreTitle = "See More"
+            let seeMoreAttributedTitle = NSAttributedString(string: seeMoreTitle, attributes: attributes)
+            recentlySeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
+            whereToNextSeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
+            
+            let viewAllTitle = "View All"
+            let viewAllAttributedTitle = NSAttributedString(string: viewAllTitle, attributes: attributes)
+            viewAllButton.setAttributedTitle(viewAllAttributedTitle, for: .normal)
+            
+            let title = "Find early 2025 deals"
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
+            
             recommendedHotelsTitleLabel.text = "Recommended Hotels"
             viewAllRecommendedButton.setTitle("View All", for: .normal)
         } else {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
+            ]
             dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
             newYearTitleLabel.text = "عام جديد، مغامرات جديدة"
             handPickedHotelsDescriptionLabel.text = "ختبر أرقى الإقامات مع فنادقنا المختارة بعناية، والتي تم اختيارها لراحتها الاستثنائية وخدماتها ومواقعها المميزة."
             handpickedHotelsLabel.text = "فنادق مختارة بعناية"
             navigationTitleNameLabel.title = "سيريا بوكينغ"
-            //            messageLabel.text = "صباح الخير المستخدم!"
-            //            subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
+            // messageLabel.text = "صباح الخير المستخدم!"
+            // subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
             recentlyHeadLineLabel.text = "شوهدت مؤخرا"
             whereToNextHeadLineLabel.text = "إلى أين بعد؟"
             topHotelHeadLineLabel.text = "أفضل الفنادق"
@@ -804,13 +815,21 @@ extension HomeViewController {
             checkInButton.setTitle("تسجيل الوصول", for: .normal)
             checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
             searchButton.setTitle("بحث", for: .normal)
-            viewAllButton.setTitle("عرض الكل", for: .normal)
+            
+            // See More buttons in Arabic
+            let seeMoreTitle = "المزيد"
+            let seeMoreAttributedTitle = NSAttributedString(string: seeMoreTitle, attributes: attributes)
+            recentlySeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
+            whereToNextSeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
+            
+            let viewAllTitle = "عرض الكل"
+            let viewAllAttributedTitle = NSAttributedString(string: viewAllTitle, attributes: attributes)
+            viewAllButton.setAttributedTitle(viewAllAttributedTitle, for: .normal)
+            
             let title = "ابحث مبكرًا 2025 عن عروض"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
-            ]
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             findDealButton.setAttributedTitle(attributedTitle, for: .normal)
+            
             recommendedHotelsTitleLabel.text = "فنادق موصى بها"
             viewAllRecommendedButton.setTitle("عرض جميع", for: .normal)
         }

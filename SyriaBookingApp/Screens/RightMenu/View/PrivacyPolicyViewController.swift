@@ -7,6 +7,8 @@ class PrivacyPolicyViewController: UIViewController {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var privacyPolicyTitleLabel: UILabel!
+    @IBOutlet weak var privacyPolicyLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
 
@@ -38,6 +40,8 @@ class PrivacyPolicyViewController: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            privacyPolicyLabel.text = "بيان الخصوصية وملفات تعريف الارتباط"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             htmlString = """
             <html lang="ar" dir="rtl">
             <head>
@@ -152,6 +156,8 @@ class PrivacyPolicyViewController: UIViewController {
             </html>
             """
         } else {
+            privacyPolicyLabel.text = "Privacy & Cookie Statement"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

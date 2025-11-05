@@ -13,6 +13,8 @@ class CareersVC: UIViewController {
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
+    @IBOutlet weak var careersTitleLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
     
@@ -46,6 +48,8 @@ class CareersVC: UIViewController {
         let htmlString: String
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            careersTitleLabel.text = "الوظائف"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             // ✅ Arabic version (RTL)
             htmlString = """
             <html lang="ar" dir="rtl">
@@ -107,6 +111,8 @@ class CareersVC: UIViewController {
             """
         } else {
             // ✅ English version (LTR)
+            careersTitleLabel.text = "Careers"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

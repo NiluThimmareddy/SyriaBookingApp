@@ -143,6 +143,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AvailabilityRoomsCVC {
+
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         updateBookNowButtonTitle()
@@ -154,6 +155,17 @@ extension AvailabilityRoomsCVC {
         roomImageView.isUserInteractionEnabled = true
         roomImageView.addGestureRecognizer(tapGesture)
         
+        // Setup segmented control styling and localization
+        setupSegmentedControlStyling()
+        segmentControl.setInternationalLocalSegments() // Add this line
+        
+        self.imageCountLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        imageCountLabel.layer.cornerRadius = 10
+        imageCountLabel.layer.masksToBounds = true
+        imageCountLabel.layer.maskedCorners = [.layerMinXMinYCorner]
+    }
+    
+    func setupSegmentedControlStyling() {
         let selectedTextAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white
         ]
@@ -165,10 +177,12 @@ extension AvailabilityRoomsCVC {
         segmentControl.layer.backgroundColor = UIColor.white.cgColor
         segmentControl.selectedSegmentTintColor = UIColor.black
         segmentControl.selectedSegmentIndex = 0
-        self.imageCountLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        imageCountLabel.layer.cornerRadius = 10
-        imageCountLabel.layer.masksToBounds = true
-        imageCountLabel.layer.maskedCorners = [.layerMinXMinYCorner]
+        
+        if AppSettings.shared.selectedLanguage == .arabic {
+            segmentControl.semanticContentAttribute = .forceLeftToRight
+        } else {
+            segmentControl.semanticContentAttribute = .forceLeftToRight
+        }
     }
     
     @objc func roomImageTapped() {
@@ -299,3 +313,14 @@ extension AvailabilityRoomsCVC {
     }
 }
 
+ extension UISegmentedControl {
+     func setInternationalLocalSegments() {
+         if AppSettings.shared.selectedLanguage == .arabic {
+             self.setTitle("الدولية", forSegmentAt: 0)
+             self.setTitle("المحلية", forSegmentAt: 1)
+         } else {
+             self.setTitle("International", forSegmentAt: 0)
+             self.setTitle("Local", forSegmentAt: 1)
+         }
+     }
+ }

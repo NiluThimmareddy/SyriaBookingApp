@@ -26,9 +26,15 @@ class RecentlyViewedListTVC: UITableViewCell {
         let lang = AppSettings.shared.selectedLanguage
         hotelNameLabel.text = hotel.name
         hotelTypeLabel.text = lang == .english ? "\(hotel.type) • \(hotel.city)" : "\(hotel.type) • \(hotel.cityAR)"
-        pricePerNightLabel.text = "From \(hotel.minRoomPrice) / night"
-        hotelReviewsLabel.text = "★ \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
         
+        if lang == .english {
+            pricePerNightLabel.text = "From \(hotel.minRoomPrice) / night"
+            hotelReviewsLabel.text = "★ \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
+        } else {
+            pricePerNightLabel.text = "ابتداءً من \(hotel.minRoomPrice) / ليلة"
+            hotelReviewsLabel.text = "★ \(hotel.averageRating) (\(hotel.reviewCount) تقييم)"
+        }
+       
         if let viewedDate = getViewedDate(for: hotel.id) {
             viewedDateLabel.text = formatViewedDate(viewedDate)
         } else {

@@ -8,6 +8,8 @@ class AboutUsVC: UIViewController {
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var aboutUsTitleLabel: UILabel!
+    @IBOutlet weak var aboutUsLabel: UILabel!
+    @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
 
@@ -42,6 +44,8 @@ class AboutUsVC: UIViewController {
         let htmlString: String
 
         if AppSettings.shared.selectedLanguage == .arabic {
+            aboutUsLabel.text = "من نحن"
+            redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
             htmlString = """
             <html lang="ar" dir="ltr">
             <head>
@@ -108,6 +112,8 @@ class AboutUsVC: UIViewController {
             </html>
             """
         } else {
+            aboutUsLabel.text = "About Us"
+            redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
             htmlString = """
             <html lang="en" dir="ltr">
             <head>

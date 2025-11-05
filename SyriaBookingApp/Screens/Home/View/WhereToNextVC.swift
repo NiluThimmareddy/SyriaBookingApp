@@ -138,6 +138,31 @@ extension WhereToNextVC {
         whereToNextTableview.register(UINib(nibName: "WhereToNextListTVC", bundle: nil), forCellReuseIdentifier: "WhereToNextListTVC")
         whereToNextTableview.delegate = self
         whereToNextTableview.dataSource = self
+        
+        updateLoginViewTexts()
+    }
+    
+    func updateLoginViewTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .english {
+            loginDescriptionLabel.text = "Login to book your stay quickly and securely"
+            citiesTitleLabel.text = "Cities"
+        } else {
+            loginDescriptionLabel.text = "سجل الدخول لحجز إقامتك بسرعة وأمان"
+            citiesTitleLabel.text = "المدن"
+        }
+        
+        let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        
+        if lang == .english {
+            let attributedTitle = NSAttributedString(string: "Login", attributes: attributes)
+            loginButton.setAttributedTitle(attributedTitle, for: .normal)
+        } else {
+            let attributedTitle = NSAttributedString(string: "تسجيل الدخول", attributes: attributes)
+            loginButton.setAttributedTitle(attributedTitle, for: .normal)
+        }
     }
     
     func updateLoginViewVisibility() {

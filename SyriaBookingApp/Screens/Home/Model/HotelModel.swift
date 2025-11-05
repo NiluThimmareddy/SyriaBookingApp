@@ -260,22 +260,3 @@ struct BookingDetailsModel:Codable{
     var netTotal : Double
   
 }
-/*
-"id": "BK00125",
-"timestamp": "2025-09-29T18:14:49.9357803+00:00",
-"userId": "UP00193",
-"hotelId": "H00041",
-"roomId": "R00064",
-"guestName": "Nilu",
-"guestPhone": "9986749841",
-"guestEmail": "niluk3700@gmail.com",
-"numberOfGuests": 2,
-"checkIn": "2025-09-18T00:00:00Z",
-"checkOut": "2025-09-22T00:00:00Z",
-"bookingStatus": "Cancelled",
-"bookingDetails": "$50: Base Price Qty 1 - Total $50.00\r\n$10: Extra Bed Qty 1 - Total $10.00",
-"totalAmount": 240,
-"bookingType": "International",
-"totalDiscount": 0,
-"netTotal": 240
-*/
