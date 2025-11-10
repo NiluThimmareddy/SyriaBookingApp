@@ -8,13 +8,13 @@
 import UIKit
 
 class LaunchScreenViewController: UIViewController {
-
+    
     let userViewModel = BookingViewModel()
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigateTo()
     }
-
+    
     private func navigateTo() {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
         
@@ -31,17 +31,14 @@ class LaunchScreenViewController: UIViewController {
             }
         } else {
             // Directly go to Home tab
-            
             let user = UserSessionManager.getUser()
-            
             userViewModel.onSuccess = { respose in
                 if ((respose.mobile.contains("-Block"))){
                     UserSessionManager.clearUser()
                 }
-                
             }
             userViewModel.FetchUserData(id: user?.id)
- 
+            
             goToHomeTab()
         }
     }

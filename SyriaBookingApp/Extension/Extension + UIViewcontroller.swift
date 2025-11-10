@@ -386,14 +386,6 @@ extension UIViewController {
                               completion: nil)
         }
     }
-
-    
-//    func iso8601String(from date: Date) -> String {
-//        let formatter = ISO8601DateFormatter()
-//        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-//        return formatter.string(from: date)
-//    }
-    
     
     func iso8601String(from date: Date) -> String {
         let calendar = Calendar(identifier: .gregorian)

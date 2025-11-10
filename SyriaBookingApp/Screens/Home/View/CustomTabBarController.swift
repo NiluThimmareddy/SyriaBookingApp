@@ -6,23 +6,23 @@
 //
 
 import UIKit
- 
+
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
- 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         
         if #available(iOS 15.0, *) {
-                    let appearance = UITabBarAppearance()
-                    appearance.configureWithDefaultBackground()
-                    tabBar.standardAppearance = appearance
-                    tabBar.scrollEdgeAppearance = appearance
-                }
- 
+            let appearance = UITabBarAppearance()
+            appearance.configureWithDefaultBackground()
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = appearance
+        }
+        
         setUpTabBarAppearance()
         updateTabBarTitles()
- 
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateTabBarTitles),
@@ -31,41 +31,41 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         )
     }
     
-        override func overrideTraitCollection(
-            forChild childViewController: UIViewController
-        ) -> UITraitCollection? {
-            if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-                // Force compact horizontal size for the tab bar (bottom)
-                return UITraitCollection(horizontalSizeClass: .compact)
-            }
-            return super.overrideTraitCollection(forChild: childViewController)
+    override func overrideTraitCollection(
+        forChild childViewController: UIViewController
+    ) -> UITraitCollection? {
+        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            // Force compact horizontal size for the tab bar (bottom)
+            return UITraitCollection(horizontalSizeClass: .compact)
         }
+        return super.overrideTraitCollection(forChild: childViewController)
+    }
+    
+    // Optional: Support rotation for iPad to keep bottom tab bar
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         
-        // Optional: Support rotation for iPad to keep bottom tab bar
-        override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-            super.viewWillTransition(to: size, with: coordinator)
-            
-            if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-                // Re-apply trait override on rotation
-                self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChild: self)
-            }
+        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            // Re-apply trait override on rotation
+            self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChild: self)
         }
- 
+    }
+    
     // MARK: - Setup TabBar UI
     private func setUpTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .black
- 
+        
         appearance.stackedLayoutAppearance.normal.iconColor = .white
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.stackedLayoutAppearance.selected.iconColor = .white
         appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
- 
+        
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
     }
- 
+    
     @objc func updateTabBarTitles() {
         if AppSettings.shared.selectedLanguage == .english {
             tabBar.items?[0].title = "Home"
@@ -79,21 +79,18 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             tabBar.items?[3].title = "اتصل بنا"
         }
     }
-  
+    
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         
         if let nav = viewController as? UINavigationController,
            nav.topViewController is ReportAnAppVC {
-            
             // ✅ Get current visible VC
             if let topVC = UIApplication.topViewController() {
-                
                 // ✅ Prevent duplicates: check if ReportAnAppVC already added as child
                 if topVC.children.contains(where: { $0 is ReportAnAppVC }) {
                     return false
                 }
-                
                 // ✅ Show popup
                 if let contactVC = storyboard?.instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
                     contactVC.comingfrom = .TabBar
@@ -101,23 +98,19 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
                     topVC.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
                 }
             }
-            
             return false
         }
-        
         return true
     }
-
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
     }
 }
- 
+
 extension CustomTabBarController: YourNotificationVCDelegate {
     func yourNotificationDidRequestTabSwitch(to index: Int) {
         print("Delegate called, switching to tab \(index)")
-//        self.initialSelectedIndex = index
         self.selectedIndex = index
     }
 }

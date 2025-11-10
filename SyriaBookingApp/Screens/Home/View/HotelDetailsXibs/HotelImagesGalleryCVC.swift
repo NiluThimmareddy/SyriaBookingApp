@@ -12,7 +12,7 @@ protocol HotelImagesGalleryCVCDelegate: AnyObject {
 }
 
 class HotelImagesGalleryCVC : UICollectionViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImageView: UIImageView!
     

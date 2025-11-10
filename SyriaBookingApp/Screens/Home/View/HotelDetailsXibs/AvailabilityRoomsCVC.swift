@@ -143,7 +143,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AvailabilityRoomsCVC {
-
+    
     func setUpUI() {
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         updateBookNowButtonTitle()
@@ -313,14 +313,14 @@ extension AvailabilityRoomsCVC {
     }
 }
 
- extension UISegmentedControl {
-     func setInternationalLocalSegments() {
-         if AppSettings.shared.selectedLanguage == .arabic {
-             self.setTitle("الدولية", forSegmentAt: 0)
-             self.setTitle("المحلية", forSegmentAt: 1)
-         } else {
-             self.setTitle("International", forSegmentAt: 0)
-             self.setTitle("Local", forSegmentAt: 1)
-         }
-     }
- }
+extension UISegmentedControl {
+    func setInternationalLocalSegments() {
+        if AppSettings.shared.selectedLanguage == .arabic {
+            self.setTitle("الدولية", forSegmentAt: 0)
+            self.setTitle("المحلية", forSegmentAt: 1)
+        } else {
+            self.setTitle("International", forSegmentAt: 0)
+            self.setTitle("Local", forSegmentAt: 1)
+        }
+    }
+}

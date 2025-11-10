@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyBookingsViewController: UIViewController {
+class MyBookingsViewController: BaseViewController {
     
     @IBOutlet weak var HistoryTableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
@@ -35,13 +35,11 @@ class MyBookingsViewController: UIViewController {
     
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
-    //    var selectedRate = [Rate]()
     var selectedRates: [Rate] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       setupUI()
-        
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,11 +54,11 @@ class MyBookingsViewController: UIViewController {
         // Refresh UI + fetch bookings
         refreshBookingData()
     }
-
+    
     private func refreshBookingData() {
         // Optional: prevent duplicate calls
         guard presentedViewController == nil else { return }
-
+        
         if let user = UserSessionManager.getUser() {
             showLoader()
             
@@ -90,7 +88,7 @@ class MyBookingsViewController: UIViewController {
             setupUI()
         }
     }
-
+    
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
@@ -231,8 +229,6 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             segmentControl.selectedSegmentTintColor = UIColor.black
             segmentControl.addBottomShadow()
             
-            
-            //            isLoginPopupPresented = false
             DispatchQueue.main.async {
                 self.selectedSegmentIndex = 0
                 self.HistoryTableView.reloadData()
@@ -259,7 +255,6 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
                     }
                 }
                 self.present(controller, animated: true)
-//                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
         }
     }

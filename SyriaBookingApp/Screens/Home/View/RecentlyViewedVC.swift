@@ -8,7 +8,7 @@
 import UIKit
 
 class RecentlyViewedVC: UIViewController, UIViewControllerTransitioningDelegate {
-
+    
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var recentlyViewedTableview: UITableView!
     @IBOutlet weak var loginView: UIView!
@@ -20,7 +20,7 @@ class RecentlyViewedVC: UIViewController, UIViewControllerTransitioningDelegate 
     
     var recentlyViewedHotels: [Hotel] = []
     var viewModel: HotelViewModel?
-
+    
     var todayHotels: [Hotel] = []
     var earlierHotels: [Hotel] = []
     
@@ -120,8 +120,6 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
         }
         
         let headerView = UIView()
-//        headerView.backgroundColor = .systemBackground
-        
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
@@ -131,12 +129,12 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
         
         if numberOfSections(in: tableView) == 1 {
             titleLabel.text = !todayHotels.isEmpty ?
-                (lang == .english ? "Today" : "اليوم") :
-                (lang == .english ? "Earlier" : "سابق")
+            (lang == .english ? "Today" : "اليوم") :
+            (lang == .english ? "Earlier" : "سابق")
         } else {
             titleLabel.text = section == 0 ?
-                (lang == .english ? "Today" : "اليوم") :
-                (lang == .english ? "Earlier" : "سابق")
+            (lang == .english ? "Today" : "اليوم") :
+            (lang == .english ? "Earlier" : "سابق")
         }
         
         headerView.addSubview(titleLabel)
@@ -287,7 +285,7 @@ extension RecentlyViewedVC {
         deleteButton.menu = menu
         deleteButton.showsMenuAsPrimaryAction = true
     }
-        
+    
     func handleMenuSelection(option: String) {
         let lang = AppSettings.shared.selectedLanguage
         
@@ -307,8 +305,8 @@ extension RecentlyViewedVC {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Clear All History" : "مسح كل السجل"
         let message = lang == .english ?
-            "Are you sure you want to clear all your recently viewed hotels?" :
-            "هل أنت متأكد أنك تريد مسح كل الفنادق التي شاهدتها مؤخرًا؟"
+        "Are you sure you want to clear all your recently viewed hotels?" :
+        "هل أنت متأكد أنك تريد مسح كل الفنادق التي شاهدتها مؤخرًا؟"
         let cancelTitle = lang == .english ? "Cancel" : "إلغاء"
         let clearTitle = lang == .english ? "Clear All" : "مسح الكل"
         
@@ -325,13 +323,13 @@ extension RecentlyViewedVC {
         
         present(alert, animated: true)
     }
-
+    
     func clearTodaysHistory() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Clear Today's History" : "مسح سجل اليوم"
         let message = lang == .english ?
-            "Are you sure you want to clear today's recently viewed hotels?" :
-            "هل أنت متأكد أنك تريد مسح فنادق اليوم التي شاهدتها؟"
+        "Are you sure you want to clear today's recently viewed hotels?" :
+        "هل أنت متأكد أنك تريد مسح فنادق اليوم التي شاهدتها؟"
         let cancelTitle = lang == .english ? "Cancel" : "إلغاء"
         let clearTitle = lang == .english ? "Clear Today's" : "مسح اليوم"
         
@@ -345,13 +343,13 @@ extension RecentlyViewedVC {
         
         present(alert, animated: true)
     }
-
+    
     func clearEarlierHistory() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Clear Earlier History" : "مسح السجل السابق"
         let message = lang == .english ?
-            "Are you sure you want to clear earlier recently viewed hotels (excluding today)?" :
-            "هل أنت متأكد أنك تريد مسح الفنادق التي شاهدتها سابقًا (ما عدا اليوم)؟"
+        "Are you sure you want to clear earlier recently viewed hotels (excluding today)?" :
+        "هل أنت متأكد أنك تريد مسح الفنادق التي شاهدتها سابقًا (ما عدا اليوم)؟"
         let cancelTitle = lang == .english ? "Cancel" : "إلغاء"
         let clearTitle = lang == .english ? "Clear Earlier" : "مسح السابق"
         
@@ -365,7 +363,7 @@ extension RecentlyViewedVC {
         
         present(alert, animated: true)
     }
-
+    
     func showClearSuccessMessage(for type: String, completion: (() -> Void)? = nil) {
         let lang = AppSettings.shared.selectedLanguage
         let message: String
@@ -373,16 +371,16 @@ extension RecentlyViewedVC {
         switch type {
         case "all":
             message = lang == .english ?
-                "All recently viewed hotels have been cleared" :
-                "تم مسح كل الفنادق التي شاهدتها مؤخرًا"
+            "All recently viewed hotels have been cleared" :
+            "تم مسح كل الفنادق التي شاهدتها مؤخرًا"
         case "today":
             message = lang == .english ?
-                "Today's recently viewed hotels have been cleared" :
-                "تم مسح فنادق اليوم التي شاهدتها"
+            "Today's recently viewed hotels have been cleared" :
+            "تم مسح فنادق اليوم التي شاهدتها"
         case "earlier":
             message = lang == .english ?
-                "Earlier recently viewed hotels have been cleared" :
-                "تم مسح الفنادق التي شاهدتها سابقًا"
+            "Earlier recently viewed hotels have been cleared" :
+            "تم مسح الفنادق التي شاهدتها سابقًا"
         default:
             return
         }
@@ -406,7 +404,7 @@ extension RecentlyViewedVC {
             self.dismiss(animated: true, completion: nil)
         }
     }
-
+    
     private func updateDeleteButtonVisibility() {
         deleteButton.isHidden = recentlyViewedHotels.isEmpty
     }

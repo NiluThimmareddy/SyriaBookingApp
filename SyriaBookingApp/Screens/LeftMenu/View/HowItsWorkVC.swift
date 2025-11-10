@@ -46,7 +46,7 @@ class HowItsWorkVC: UIViewController {
         if AppSettings.shared.selectedLanguage == .arabic {
             howItWorksTitleLabel.text = "كيف تعمل"
             redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
-
+            
             descriptionLabel.text = "في SyriaBooking.sy، جعلنا تجربة حجز الفنادق بسيطة وآمنة ومرنة. مع ميزة «الدفع عند الوصول»، يمكنك التخطيط لإقامتك بثقة — دون الحاجة إلى الدفع المسبق!"
             
             searchForHotelTitleLabel.text = "1. ابحث عن الفنادق:"
@@ -66,7 +66,7 @@ class HowItsWorkVC: UIViewController {
         } else {
             howItWorksTitleLabel.text = "How It Works"
             redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
-               
+            
             descriptionLabel.text = "At SyriaBooking.sy, we’ve made your hotel booking experience simple, secure, and flexible. With our “Pay on Arrival” feature, you can plan your stay with confidence — no prepayment required!"
             
             searchForHotelTitleLabel.text = "1. Search for Hotels:"

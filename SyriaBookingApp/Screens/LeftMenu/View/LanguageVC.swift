@@ -59,10 +59,10 @@ class LanguageVC: UIViewController {
             dismiss(animated: true)
         }
     }
-
+    
     @IBAction func englishSelected(_ sender: UIButton) {
         AppSettings.shared.selectedLanguage = .english
-       
+        
         NotificationCenter.default.post(name: .languageChanged, object: nil)
         updateSelectedLanguageUI()
     }
@@ -71,6 +71,6 @@ class LanguageVC: UIViewController {
         AppSettings.shared.selectedLanguage = .arabic
         updateSelectedLanguageUI()
         NotificationCenter.default.post(name: .languageChanged, object: nil)
-       
+        
     }
 }

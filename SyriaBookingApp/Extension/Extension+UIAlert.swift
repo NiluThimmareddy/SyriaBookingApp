@@ -17,15 +17,7 @@ extension UIViewController{
         case info
     }
     
-    func showAlert(
-        title:String,
-        message:String,
-        type: AlertType = .info,
-        OkButtonTitle: String = "OK",
-        cancelButtonTitle:String? = nil,
-        onOK : (()-> Void)? = nil,
-        onCancel: (()-> Void)? = nil
-    ){
+    func showAlert(title:String,message:String,type: AlertType = .info,OkButtonTitle: String = "OK",cancelButtonTitle:String? = nil,onOK : (()-> Void)? = nil,onCancel: (()-> Void)? = nil){
         var finalTitle = title
         switch type {
         case .success : finalTitle =  "✅ " + title
@@ -39,8 +31,6 @@ extension UIViewController{
         alert.addAction(UIAlertAction(title: OkButtonTitle  , style: .default) { _ in
             onOK?()
         })
-        
-        
         //Optional Delete Button Action
         
         if let cancel = cancelButtonTitle {

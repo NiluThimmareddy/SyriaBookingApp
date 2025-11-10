@@ -30,10 +30,5 @@ class AppSettings {
         }
     }
     
-    
-    
 }
 
-//extension Notification.Name {
-//    static let languageChanged = Notification.Name("languageChanged")
-//}

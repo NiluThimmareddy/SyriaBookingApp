@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfilePageVC: UIViewController {
+class ProfilePageVC: BaseViewController {
     
     @IBOutlet weak var manageAccountsCVHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var userEmail: UILabel!
@@ -22,41 +22,30 @@ class ProfilePageVC: UIViewController {
     @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var signOutBackView: UIView!
     @IBOutlet weak var manageAccountsCV: UICollectionView!
-  
+    
     @IBOutlet weak var completeProfileLabel: UILabel!
     @IBOutlet weak var completeProfileImage: UIImageView!
     @IBOutlet weak var completeProfileImageBackView: UIView!
     @IBOutlet weak var completeProfileBackView: UIView!
     @IBOutlet weak var profileTV: UITableView!
     
- 
+    
     let profileSections: [ProfileSection] = [
-        
         ProfileSection(
             sectionTitle: "Preferences",
             options: [
                 ProfileOption(listData: "Email Preferences", imageName: "envelope.fill")
             ]
         ),
-//        ProfileSection(
-//            sectionTitle: "Help and Privacy",
-//            options: [
-//                ProfileOption(listData: "FAQ", imageName: "questionmark.circle"),
-//                ProfileOption(listData: "About Us", imageName: "info.circle"),
-//                ProfileOption(listData: "Terms of Use", imageName: "doc.text"),
-//                ProfileOption(listData: "Privacy and Data Management", imageName: "lock.shield"),
-//                ProfileOption(listData: "Customer Service", imageName: "person.crop.circle.badge.questionmark")
-//            ]
-//        )
     ]
-
+    
     let manageAccountsData = [
         ProfileOption(listData: "Personal details", imageName: "person"),
         ProfileOption(listData: "My Bookings", imageName: "calendar"),
         ProfileOption(listData: "Other Guests", imageName: "person.2"),
         ProfileOption(listData: "My reviews", imageName: "bubble.left.and.bubble.right")
     ]
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +53,7 @@ class ProfilePageVC: UIViewController {
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
         
-       
+        
         profileTV.register(UINib(nibName: "ProfileTVC", bundle: nil), forCellReuseIdentifier: "ProfileTVC")
         profileTV.showsVerticalScrollIndicator = false
         profileTV.showsHorizontalScrollIndicator = false
@@ -77,12 +66,8 @@ class ProfilePageVC: UIViewController {
         signOutBackView.layer.cornerRadius = 10
         fontStyle()
         mixedText()
-//        navigationProcess()
-       
-        
-        
-//        navigationItem.titleView = topNameLbl
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateProfileTableViewHeight()
@@ -101,29 +86,30 @@ class ProfilePageVC: UIViewController {
         userName.text = "Hi, \(username.name)"
         userEmail.text = "\(username.email)"
     }
+    
     func mixedText() {
         let fullText = "Complete your profile and use this informations for your next booking"
         let boldText = "Complete your profile"
-
+        
         let attributedString = NSMutableAttributedString(string: fullText)
-
+        
         // 1. Apply default font to entire text first
         attributedString.addAttribute(.font, value: UIFont.poppinsMedium(12), range: NSRange(location: 0, length: attributedString.length))
-
+        
         // 2. Apply bold to specific part
         if let boldRange = fullText.range(of: boldText) {
             let nsRange = NSRange(boldRange, in: fullText)
             attributedString.addAttribute(.font, value: UIFont.poppinsBold(12), range: nsRange)
         }
-
+        
         completeProfileLabel.attributedText = attributedString
     }
-
+    
     func fontStyle(){
         userName.font = UIFont.poppinsBold(16)
         userEmail.font = UIFont.poppinsMedium(12)
         manageAccountTitleLbl.font = UIFont.poppinsBold(14)
-
+        
     }
     
     func updateProfileTableViewHeight() {
@@ -145,7 +131,7 @@ class ProfilePageVC: UIViewController {
             }
             
             self.view.layoutIfNeeded()
-        }else{
+        } else {
             var totalTableHeight: CGFloat = 0
             
             for section in profileSections {
@@ -165,13 +151,13 @@ class ProfilePageVC: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-   
-   
-  
+    
+    
+    
     private func roundCornersOfTopProfileView() {
         let width = topProfileView.bounds.width
         let height = topProfileView.bounds.height
-
+        
         // Create a custom curved bottom left corner using a path
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0, y: 0))                        // Top-left
@@ -181,24 +167,18 @@ class ProfilePageVC: UIViewController {
         path.addQuadCurve(to: CGPoint(x: 0, y: height - 90),      // Curve end point
                           controlPoint: CGPoint(x: 0, y: height)) // Curve control point
         path.close()
-
+        
         let shape = CAShapeLayer()
         shape.path = path.cgPath
         topProfileView.layer.mask = shape
     }
-
-
-
+    
     @objc func messageButtonTapped() {
         print("message tapped")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "CustomerServiceChatVC")as! CustomerServiceChatVC
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
-//        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-//        let controller = storyboard.instantiateViewController(identifier: "MessagesVC")as! MessagesVC
-//        navigationItem.backButtonTitle = ""
-//        navigationController?.pushViewController(controller, animated: true)
     }
     
     @objc func bellButtonTapped() {
@@ -208,17 +188,16 @@ class ProfilePageVC: UIViewController {
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     @IBAction func completeProfileButton(_ sender: Any) {
         print("Button tapped....")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
-       
+        
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }
-  
-
+    
     @IBAction func signOutButton(_ sender: Any) {
         showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
             UserSessionManager.clearUser()
@@ -227,23 +206,18 @@ class ProfilePageVC: UIViewController {
             }
         })
     }
-    
- 
-  
 }
 
 extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
-   
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return profileSections.count
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return profileSections[section].options.count
     }
-    
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileTVC", for: indexPath) as? ProfileTVC else {
@@ -263,10 +237,10 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
         
         cell.profileListBackView.backViewBlackShadow()
         cell.profileListLbl.font = .poppinsMedium(12)
-     
+        
         
         if numberOfRows == 1 {
-         
+            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [
                 .layerMinXMinYCorner,
@@ -275,101 +249,103 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
                 .layerMaxXMaxYCorner
             ]
         } else if row == 0 {
-           
+            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else if row == numberOfRows - 1 {
-          
+            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         } else {
-          
+            
             cell.profileListBackView.layer.cornerRadius = 0
             cell.profileListBackView.layer.maskedCorners = []
         }
         
         return cell
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = .clear
-
+        
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = profileSections[section].sectionTitle
         label.textColor = .black
         label.font = UIFont.poppinsBold(14)
         label.textAlignment = .left
-
+        
         headerView.addSubview(label)
-
+        
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
             label.topAnchor.constraint(equalTo: headerView.topAnchor),
             label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
         ])
-
+        
         return headerView
     }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return profileSections[section].sectionTitle
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedOption = profileSections[indexPath.section].options[indexPath.row]
+        
+        switch selectedOption.listData {
+        case "Email Preferences":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "EmailPreferencesVC")as! EmailPreferencesVC
+            navigationItem.backButtonTitle = ""
+            navigationController?.pushViewController(controller, animated: true)
             
-            switch selectedOption.listData {
-            case "Email Preferences":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "EmailPreferencesVC")as! EmailPreferencesVC
-                navigationItem.backButtonTitle = ""
-                navigationController?.pushViewController(controller, animated: true)
-
-            case "FAQ":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "HelpCentreVC")as! HelpCentreVC
-                navigationItem.backButtonTitle = ""
-                navigationController?.pushViewController(controller, animated: true)
-
-            case "Abous Us":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
-                navigationItem.backButtonTitle = ""
-                controller.contentType = .about
-                navigationController?.pushViewController(controller, animated: true)
-                
-            case "Terms of Use":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
-                navigationItem.backButtonTitle = ""
-                controller.contentType = .terms
-                navigationController?.pushViewController(controller, animated: true)
-                
-            case "Privacy and data management":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
-                navigationItem.backButtonTitle = ""
-                controller.contentType = .privacy
-                navigationController?.pushViewController(controller, animated: true)
-
-            case "Customer Service":
-                let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = storyboard.instantiateViewController(identifier: "CustomerServiceVC")as! CustomerServiceVC
-                navigationItem.backButtonTitle = ""
-                navigationController?.pushViewController(controller, animated: true)
-
-           
-            default:
-                break
-            }
+        case "FAQ":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "HelpCentreVC")as! HelpCentreVC
+            navigationItem.backButtonTitle = ""
+            navigationController?.pushViewController(controller, animated: true)
+            
+        case "Abous Us":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            navigationItem.backButtonTitle = ""
+            controller.contentType = .about
+            navigationController?.pushViewController(controller, animated: true)
+            
+        case "Terms of Use":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            navigationItem.backButtonTitle = ""
+            controller.contentType = .terms
+            navigationController?.pushViewController(controller, animated: true)
+            
+        case "Privacy and data management":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            navigationItem.backButtonTitle = ""
+            controller.contentType = .privacy
+            navigationController?.pushViewController(controller, animated: true)
+            
+        case "Customer Service":
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            let controller = storyboard.instantiateViewController(identifier: "CustomerServiceVC")as! CustomerServiceVC
+            navigationItem.backButtonTitle = ""
+            navigationController?.pushViewController(controller, animated: true)
+            
+        default:
+            break
+        }
     }
 }
 
@@ -385,31 +361,29 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.titleLbl.text = data.listData
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = ( manageAccountsCV.frame.size.height - 10 ) / 2
         let width = ( manageAccountsCV.frame.size.width - 10 ) / 2
         return CGSize(width: width, height: height)
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0{
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
-        }else if indexPath.row == 1{
-//            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-//            let controller = storyboard.instantiateViewController(identifier: "SecurityVC")as! SecurityVC
-//            navigationItem.backButtonTitle = ""
-//            navigationController?.pushViewController(controller, animated: true)
+        } else if indexPath.row == 1 {
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
             self.navigationController?.pushViewController(controller, animated: true)
             
-        }else  if indexPath.row == 2{
+        } else if indexPath.row == 2 {
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "OtherGuestVC")as! OtherGuestVC
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(vc, animated: true)
-        }else  if indexPath.row == 3{
+        } else if indexPath.row == 3 {
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
             viewAllVC.comingFrom = .profile

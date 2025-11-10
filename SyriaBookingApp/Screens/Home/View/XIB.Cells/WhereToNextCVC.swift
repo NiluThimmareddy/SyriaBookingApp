@@ -17,7 +17,7 @@ class WhereToNextCVC : UICollectionViewCell {
     func configure(with item: WhereToNextList) {
         if AppSettings.shared.selectedLanguage == .english{
             popularPlaceLabel.text = item.City
-        }else{
+        } else {
             popularPlaceLabel.text = item.Cityar
         }
         hotelImageView.loadImage(from: item.image)

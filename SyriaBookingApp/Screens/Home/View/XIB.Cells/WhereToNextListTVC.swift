@@ -8,7 +8,7 @@
 import UIKit
 
 class WhereToNextListTVC: UITableViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImgView: UIImageView!
     @IBOutlet weak var hotelNameLabel: UILabel!
@@ -24,7 +24,7 @@ class WhereToNextListTVC: UITableViewCell {
         super.awakeFromNib()
         setUpUI()
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         backView.applyCardStyle()

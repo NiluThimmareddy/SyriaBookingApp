@@ -17,7 +17,7 @@ protocol PersonalDetailsEditVCDelegate: AnyObject {
     
 }
 
-class PersonalDetailsEditVC: UIViewController {
+class PersonalDetailsEditVC: BaseViewController {
 
     @IBOutlet weak var addressCountryNameTV: UITableView!
     @IBOutlet weak var FlagTV: UITableView!

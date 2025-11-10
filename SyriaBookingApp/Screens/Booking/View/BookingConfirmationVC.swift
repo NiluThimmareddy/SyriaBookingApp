@@ -1,7 +1,7 @@
 
 import UIKit
 
-class BookingConfirmationVC : UIViewController, UITextViewDelegate {
+class BookingConfirmationVC : BaseViewController, UITextViewDelegate {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
@@ -95,30 +95,8 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
             viewBookingConfirmationVC.modalPresentationStyle = .fullScreen
             present(viewBookingConfirmationVC, animated: true)
         }
-        //            if let tabBarController = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-        //
-        //                tabBarController.selectedIndex = 1
-        //
-        //                if let nav = tabBarController.viewControllers?[1] as? UINavigationController,
-        //                   let myBookingsVC = nav.topViewController as? MyBookingsViewController {
-        //
-        //                    myBookingsVC.guestName = guestName
-        //                    myBookingsVC.guestEmail = guestEmail
-        //                    myBookingsVC.guestPhone = guestPhone
-        //                    myBookingsVC.checkInDate = checkInDate
-        //                    myBookingsVC.checkOutDate = checkOutDate
-        //                    myBookingsVC.numberOfGuests = numberOfGuests
-        //                    myBookingsVC.totalPrice = totalPrice
-        //                    myBookingsVC.selectedHotel = selectedHotel
-        //                    myBookingsVC.selectedRoom = selectedRoom
-        //                    myBookingsVC.selectedRates = selectedRates
-        //                }
-        //
-        //                tabBarController.modalPresentationStyle = .fullScreen
-        //                present(tabBarController, animated: true, completion: nil)
-        //            }
         return true
-        }
+    }
     @objc func setUpLanguage() {
         if AppSettings.shared.selectedLanguage == .english {
             bookingConfirmationTitleLabel.text = "Booking Confirmation"
@@ -137,7 +115,7 @@ class BookingConfirmationVC : UIViewController, UITextViewDelegate {
         guard let viewBookingConfirmationVC = storyboard?.instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
         }
-
+        
         viewBookingConfirmationVC.isFromMyBookings = false
         viewBookingConfirmationVC.hotelID = selectedHotel?.id ?? ""
         viewBookingConfirmationVC.bookingId = bookingId ?? ""

@@ -12,7 +12,7 @@ struct BookingDetail {
     
 }
 
-class ViewBookingConfirmationVC : UIViewController {
+class ViewBookingConfirmationVC : BaseViewController {
     
     @IBOutlet weak var checkMarkImgView: UIImageView!
     @IBOutlet weak var backView: UIView!
@@ -71,8 +71,6 @@ class ViewBookingConfirmationVC : UIViewController {
     var hotelViewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var bookingDetails: [BookingDetail] = []
-    
-    //    var selectedRoom: RoomElement?
     var selectedRate = [Rate]()
     var viewModel = BookingViewModel()
     var isFromMyBookings: Bool = false
@@ -117,15 +115,6 @@ extension ViewBookingConfirmationVC : UITableViewDelegate, UITableViewDataSource
         let detail = bookingDetails[indexPath.row]
         
         cell.rateLabel.text = detail.Details.description
-//        cell.descriptionLabel.text = detail.description
-//        cell.descriptionLabel.numberOfLines = 0
-//        cell.qtyLabel.text = "\(detail.qty)"
-//        cell.amountLabel.text = "$\(detail.amount)"
-        
-//        if let bookingHistoryData = bookingHistoryData{
-//            cell.rateLabel?.text = bookingHistoryData.bookingDetails
-//        }
-        
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -179,28 +168,15 @@ extension ViewBookingConfirmationVC {
         var calculatedTotal = "0.00"
         var totalDiscount = "0.00"
         var netTotal = "0.00"
-
+        
         if let data = self.bookingHistoryData {
             // Parse total nights
             let totalNights = calculateTotalNights(
                 checkIn: data.checkIn.toDayMonthYear(),
                 checkOut: data.checkOut.toDayMonthYear()
             )
-
-            // Parse each booking detail (rate × qty × nights)
-//            let details = parseBookingDetails(data.bookingDetails)
-//            bookingDetails = details
-
-//            totalAmount = details.reduce(0.0) { partialResult, detail in
-//                let perNightTotal = detail.rate * Double(detail.qty)
-//                return partialResult + (perNightTotal * Double(totalNights))
-//            }
-
-//            totalPriceLabel.text = data.totalAmount.description
-//            totalDiscountLabel.text = data.totalDiscount
-//            netTotalLabel.text = data.netTotal.description
             
-           let type = data.bookingType
+            let type = data.bookingType
             
             if type == "International" {
                 calculatedTotal = "$ \(String(format: "%.2f", data.totalAmount))"
@@ -285,7 +261,7 @@ extension ViewBookingConfirmationVC {
                 ]
             }
         }()
-
+        
         bookingLabelConfigs.forEach { label, fullText, highlightText in
             label.setHighlightedText(
                 fullText: fullText,
@@ -299,22 +275,16 @@ extension ViewBookingConfirmationVC {
         
         switch data.bookingStatus.lowercased() {
         case "pending":
-//            messageStatusLabel.text = "Awaiting confirmation"
-//            descriptionStatusLabel.text = "Your booking has been received and is pending confirmation. We’ll notify you once it’s confirmed."
             statusView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemBlue.cgColor
             checkMarkImgView.image = UIImage(systemName: "clock")
             checkMarkImgView.tintColor = UIColor.systemBlue
         case "cancelled":
-//            messageStatusLabel.text = "Booking cancelled"
-//            descriptionStatusLabel.text = "This booking has been cancelled. If you believe this is a mistake, please contact support."
             statusView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemRed.cgColor
             checkMarkImgView.image = UIImage(systemName: "xmark.circle")
             checkMarkImgView.tintColor = UIColor.systemRed
         case "confirmed":
-//            messageStatusLabel.text = "Your booking is confirmed!"
-//            descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
             statusView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.1)
             statusView.layer.borderColor = UIColor.systemGreen.cgColor
             checkMarkImgView.image = UIImage(systemName: "checkmark.seal.fill")
@@ -395,12 +365,12 @@ extension ViewBookingConfirmationVC {
     func calculateTotalNights(checkIn: String, checkOut: String) -> Int {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
-
+        
         guard let checkInDate = formatter.date(from: checkIn),
               let checkOutDate = formatter.date(from: checkOut) else {
             return 1
         }
-
+        
         let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
         return max(components.day ?? 1, 1)
     }
@@ -437,7 +407,7 @@ extension ViewBookingConfirmationVC {
                 messageStatusLabel.text = "Your booking is confirmed!"
                 descriptionStatusLabel.text = "We look forward to hosting you. Safe travels!"
             }
-
+            
             printButton.setTitle("Print", for: .normal)
             goToHomeButton.setTitle(isFromMyBookings ? "Close" : "Go To Home", for: .normal)
             
@@ -469,7 +439,7 @@ extension ViewBookingConfirmationVC {
                 messageStatusLabel.text = "تم تأكيد الحجز!"
                 descriptionStatusLabel.text = "نتطلع إلى استضافتك. نتمنى لك رحلة سعيدة!"
             }
-
+            
             printButton.setTitle("طباعة", for: .normal)
             goToHomeButton.setTitle(isFromMyBookings ? "إغلاق" : "الذهاب إلى الصفحة الرئيسية", for: .normal)
         }

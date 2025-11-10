@@ -42,22 +42,7 @@ class CancelBookingVC: UIViewController {
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    //    @IBAction func confirmCancelButtonAction(_ sender: Any) {
-    //
-    //        guard let reason = reasonTextView.text else {
-    //            self.showAlert("Please enter reason for cancel your booking")
-    //            return
-    //        }
-    //        self.showLoader()
-    //        if let booking = booking {
-    //            hideLoader()
-    //            delegate?.didConfirmCancellation(for: booking,reason: reason)
-    //        }
-    //
-    //        self.dismiss(animated: true, completion: nil)
-    //    }
-    
+
     @IBAction func confirmCancelButtonAction(_ sender: Any) {
 
         guard let booking = booking else { return }

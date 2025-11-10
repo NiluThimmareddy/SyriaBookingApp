@@ -6,12 +6,13 @@
 //
 
 import UIKit
+
 protocol DetailsPageHotelImagesCVCDelegate: AnyObject {
     func didTapImageFive(in cell: DetailsPageHotelImagesCVC)
 }
 
 class DetailsPageHotelImagesCVC : UICollectionViewCell {
-
+    
     @IBOutlet weak var thirdImageBackView: UIView!
     @IBOutlet weak var fifthImageBackView: UIView!
     @IBOutlet weak var backView: UIView!
@@ -41,7 +42,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
         roundCornersOfImageFiveBackViewContainer()
         roundCornersOfImageThreeBackViewContainer()
     }
-
+    
     private func addTapGestureToImageFive() {
         [hotelImageOne,hotelImageTwo,hotelImageThree,hotelImageFour,hotelImageFive].forEach { images in
             images.isUserInteractionEnabled = true
@@ -60,7 +61,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.topLeft],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         hotelImageOne.layer.mask = shape
@@ -71,7 +72,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.topRight],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         hotelImageTwo.layer.mask = shape
@@ -82,7 +83,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.bottomLeft],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         hotelImageThree.layer.mask = shape
@@ -93,7 +94,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.bottomLeft],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         thirdImageBackView.layer.mask = shape
@@ -104,7 +105,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.bottomRight],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         hotelImageFive.layer.mask = shape
@@ -115,7 +116,7 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
             byRoundingCorners: [.bottomRight],
             cornerRadii: CGSize(width: 10, height: 10)
         )
-
+        
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         fifthImageBackView.layer.mask = shape

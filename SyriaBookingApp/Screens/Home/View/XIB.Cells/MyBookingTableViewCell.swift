@@ -13,7 +13,7 @@ protocol MyBookingCellDelegate: AnyObject {
 }
 
 class MyBookingTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var hotelNameLabel: UILabel!
@@ -90,8 +90,8 @@ class MyBookingTableViewCell: UITableViewCell {
         let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
         return max(components.day ?? 0, 0)
     }
-
-
+    
+    
     @IBAction func detailsButtonAction(_ sender: Any) {
         if let booking = currentBooking {
             delegate?.didTapDetails(for: booking)
@@ -108,6 +108,6 @@ class MyBookingTableViewCell: UITableViewCell {
         if let booking = currentBooking {
             self.contactSupprtButtonAction?(booking)
         }
-      
+        
     }
 }

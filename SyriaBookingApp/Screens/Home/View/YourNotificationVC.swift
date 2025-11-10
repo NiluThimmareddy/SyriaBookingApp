@@ -5,7 +5,7 @@ protocol YourNotificationVCDelegate: AnyObject {
     func yourNotificationDidRequestTabSwitch(to index: Int)
 }
 
-class YourNotificationVC: UIViewController {
+class YourNotificationVC: BaseViewController {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var yourNotificationTV: UITableView!
@@ -19,7 +19,7 @@ class YourNotificationVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         setupLanguage()
     }
     
@@ -87,9 +87,9 @@ extension YourNotificationVC {
         viewModel.onSuccess = { [weak self] response in
             DispatchQueue.main.async {
                 self?.hideLoader()
-               
+                
                 self?.viewModel.filteredHistoryArray = response
-
+                
                 let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
                 
                 if rowCount == 0 {
@@ -144,11 +144,11 @@ extension YourNotificationVC {
         backViewHeightConstraint.constant = totalHeight
         view.layoutIfNeeded()
     }
-
+    
 }
 
 extension YourNotificationVC {
-
+    
     func setupLanguage() {
         if AppSettings.shared.selectedLanguage == .arabic {
             viewAllButton.setTitle("عرض الكل", for: .normal)

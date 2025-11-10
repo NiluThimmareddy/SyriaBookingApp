@@ -8,12 +8,12 @@
 import UIKit
 
 class SplashScreensVC: UIViewController {
-
+    
     @IBOutlet weak var splashImagesView: UIImageView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var nextPageButton: UIButton!
-   
+    
     var splashData: [SplashData] = [
         SplashData(imageName: "ic_splashScreen1", title: "Away from Home, Yet Feels Like Home", description: "Enjoy the warmth, comfort, and care of home wherever you go"),
         SplashData(imageName: "ic_splashScreen2", title: "Seamless Booking, Exceptional Services", description: "Book your stay, explore amenities, and enjoy exclusive deals—all in one place"),
@@ -23,7 +23,7 @@ class SplashScreensVC: UIViewController {
     var currentPage = 0
     
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
         setUpUI()
     }
     
@@ -73,7 +73,7 @@ extension SplashScreensVC {
         let data = splashData[currentPage]
         splashImagesView.image = UIImage(named: data.imageName)
         pageControl.currentPage = currentPage
-
+        
         if currentPage == splashData.count - 1 {
             nextPageButton.setTitle("Get Started", for: .normal)
             nextPageButton.setImage(nil, for: .normal)
@@ -97,8 +97,8 @@ extension SplashScreensVC {
             skipButton.isHidden = false
         }
     }
-
-
+    
+    
     @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
         if gesture.direction == .left {
             if currentPage < splashData.count - 1 {

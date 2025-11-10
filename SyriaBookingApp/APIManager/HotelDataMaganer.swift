@@ -10,11 +10,11 @@ class HotelDataMaganer {
     static let shared = HotelDataMaganer()
     var recentlyViewedHotelIds: [String: Date] = [:]
     private init() {
-         // Load from UserDefaults
-         if let savedDict = UserDefaults.standard.dictionary(forKey: "RecentlyViewedHotelIDs") as? [String: TimeInterval] {
-             recentlyViewedHotelIds = savedDict.mapValues { Date(timeIntervalSince1970: $0) }
-         }
-     }
+        // Load from UserDefaults
+        if let savedDict = UserDefaults.standard.dictionary(forKey: "RecentlyViewedHotelIDs") as? [String: TimeInterval] {
+            recentlyViewedHotelIds = savedDict.mapValues { Date(timeIntervalSince1970: $0) }
+        }
+    }
     
     var allHotels : [Hotel] = []
     
@@ -69,5 +69,5 @@ class HotelDataMaganer {
         
         return sortedHotels
     }
-
+    
 }

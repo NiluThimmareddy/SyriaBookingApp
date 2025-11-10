@@ -47,9 +47,6 @@ class RoomsRatesTVC : UITableViewCell {
             } else {
                 discountText = ""
             }
-            
-            
-
 
             // Create attributed string
             let attributedText = NSMutableAttributedString(string: "\(formattedPrice) SYP ", attributes: [

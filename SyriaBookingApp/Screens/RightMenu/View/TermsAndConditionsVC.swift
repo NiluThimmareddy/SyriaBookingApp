@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 class TermsAndConditionsVC: UIViewController {
-
+    
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var termsAndConditionsTitleLabel: UILabel!
@@ -18,14 +18,14 @@ class TermsAndConditionsVC: UIViewController {
     
     
     private var webView: WKWebView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         webView = WKWebView(frame: self.view.bounds)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bottomView.addSubview(webView)
-
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             webView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
@@ -41,9 +41,9 @@ class TermsAndConditionsVC: UIViewController {
             termsAndConditionsTitleLabel.text = "Terms and Conditions"
             termsAndConditionsTitleLabel.textAlignment = .center
         }
-
+        
     }
-
+    
     private func loadHTMLContent() {
         let htmlString: String
         
@@ -78,7 +78,7 @@ class TermsAndConditionsVC: UIViewController {
             <body>
                 <p>مرحباً بكم في SyriaBooking.sy</p>
                 <p>تحكم هذه الشروط والأحكام ("الشروط") استخدامك لموقع SyriaBooking.sy والخدمات المقدمة من خلاله...</p>
-
+            
                 <h5>1. التعريفات:</h5>
                 <ul>
                     <li><strong>“المنصة”</strong> تشير إلى موقع SyriaBooking.sy والخدمات المرتبطة به.</li>
@@ -86,10 +86,10 @@ class TermsAndConditionsVC: UIViewController {
                     <li><strong>“الفندق” أو “مكان الإقامة”</strong> يعني مزود الإقامة المدرج على المنصة.</li>
                     <li><strong>“الحجز”</strong> يعني حجز إقامة تم عبر SyriaBooking.sy.</li>
                 </ul>
-
+            
                 <h5>2. نطاق خدماتنا:</h5>
                 <p>يوفر SyriaBooking.sy منصة إلكترونية للمستخدمين لتصفح ومقارنة وحجز أماكن الإقامة في سوريا...</p>
-
+            
                 <h5>3. سياسة الحجز:</h5>
                 <ul>
                     <li>يمكنك حجز الغرف من خلال الموقع دون أي دفعات مسبقة.</li>
@@ -97,10 +97,10 @@ class TermsAndConditionsVC: UIViewController {
                     <li>يتم الدفع مباشرة في الفندق عند تسجيل الوصول، نقداً أو وفق طرق الدفع التي يقبلها الفندق.</li>
                     <li>قد يطلب بعض الفنادق تأكيداً إضافياً عبر الهاتف أو الرسائل؛ عدم التأكيد قد يؤدي إلى إلغاء الحجز.</li>
                 </ul>
-
+            
                 <h6>شكراً لزيارتكم!</h6>
                 <p>باستخدامك موقعنا أو خدماتنا، فإنك توافق على شروط هذه السياسة. يرجى مراجعتها بشكل دوري للتحديثات أو التغييرات.</p>
-
+            
                 <p><strong>للتواصل:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></p>
             </body>
             </html>
@@ -136,7 +136,7 @@ class TermsAndConditionsVC: UIViewController {
             <body>
                 <p>Welcome to SyriaBooking.sy</p>
                 <p>These Terms & Conditions (“Terms”) govern your use of the SyriaBooking.sy website and services...</p>
-
+            
                 <h5>1. Definitions:</h5>
                 <ul>
                     <li><strong>“Platform”</strong> refers to SyriaBooking.sy website and related services.</li>
@@ -144,10 +144,10 @@ class TermsAndConditionsVC: UIViewController {
                     <li><strong>“Hotel” or “Property”</strong> means the accommodation provider listed on the platform.</li>
                     <li><strong>“Booking”</strong> means a reservation made through SyriaBooking.sy for accommodation.</li>
                 </ul>
-
+            
                 <h5>2. Scope of Our Services:</h5>
                 <p>SyriaBooking.sy provides an online platform for users to browse, compare, and reserve accommodations in Syria...</p>
-
+            
                 <h5>3. Booking Policy:</h5>
                 <ul>
                     <li>You may book rooms through the website without any prepayment.</li>
@@ -155,10 +155,10 @@ class TermsAndConditionsVC: UIViewController {
                     <li>Payment is made directly to the hotel at check-in, in cash or as per the hotel’s accepted payment methods.</li>
                     <li>Some hotels may request a follow-up confirmation via phone or message; failure to confirm may result in cancellation.</li>
                 </ul>
-
+            
                 <h6>Thank you for visiting!</h6>
                 <p>By using our website or services, you consent to the terms of this policy. Please review it periodically for updates or changes.</p>
-
+            
                 <p><strong>Contact:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></p>
             </body>
             </html>
@@ -167,5 +167,5 @@ class TermsAndConditionsVC: UIViewController {
         
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
-
+    
 }

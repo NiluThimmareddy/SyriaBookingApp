@@ -3,7 +3,7 @@ import UIKit
 import WebKit
 
 class PrivacyPolicyViewController: UIViewController {
-
+    
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var privacyPolicyTitleLabel: UILabel!
@@ -11,13 +11,13 @@ class PrivacyPolicyViewController: UIViewController {
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
     private var webView: WKWebView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         webView = WKWebView(frame: self.view.bounds)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bottomView.addSubview(webView)
-
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             webView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
@@ -33,7 +33,7 @@ class PrivacyPolicyViewController: UIViewController {
             privacyPolicyTitleLabel.text = "Privacy Policy"
             privacyPolicyTitleLabel.textAlignment = .center
         }
-
+        
     }
     
     private func loadHTMLContent() {
@@ -69,7 +69,7 @@ class PrivacyPolicyViewController: UIViewController {
             </head>
             <body>
                 <p>في SyriaBooking.sy، نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح سياسة الخصوصية وملفات تعريف الارتباط هذه كيف نجمع ونستخدم ونخزن ونحمي معلوماتك الشخصية، وكيف نستخدم ملفات تعريف الارتباط عند زيارة أو استخدام موقعنا.</p>
-
+            
                 <h5>1. ما هي المعلومات التي نجمعها:</h5>
                 <p>عند استخدامك SyriaBooking.sy، قد نقوم بجمع الأنواع التالية من المعلومات:</p>
                 <ul>
@@ -89,7 +89,7 @@ class PrivacyPolicyViewController: UIViewController {
                     </li>
                 </ul>
                 <p><em>نحن لا نجمع معلومات بطاقات الدفع أو الائتمان، فجميع المدفوعات تتم مباشرة في الفندق.</em></p>
-
+            
                 <h5>2. كيف نستخدم معلوماتك:</h5>
                 <ul>
                     <li>معالجة وتأكيد حجوزاتك الفندقية</li>
@@ -99,14 +99,14 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>منع الاحتيال أو إساءة استخدام منصتنا</li>
                     <li>إرسال تحديثات أو عروض (بموافقتك فقط)</li>
                 </ul>
-
+            
                 <h5>3. كيف نشارك معلوماتك:</h5>
                 <ul>
                     <li>الفندق الذي قمت بالحجز فيه (لأغراض الحجز فقط)</li>
                     <li>فرق الدعم الفني وخدمة العملاء الداخلية</li>
                     <li>السلطات القانونية عند الحاجة وفق القانون</li>
                 </ul>
-
+            
                 <h5>4. أمان البيانات:</h5>
                 <p>نطبق التدابير الأمنية المناسبة لحماية بياناتك من الوصول غير المصرح به أو التغيير أو إساءة الاستخدام.</p>
                 <ul>
@@ -114,14 +114,14 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>تخزين آمن للبيانات</li>
                     <li>وصول محدود للموظفين المصرح لهم فقط</li>
                 </ul>
-
+            
                 <h5>5. مدة الاحتفاظ بالبيانات:</h5>
                 <p>نحتفظ ببياناتك فقط للمدة اللازمة لتنفيذ الحجوزات أو الامتثال للقوانين. يمكنك طلب حذف بياناتك في أي وقت عبر البريد الإلكتروني <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a>.</p>
-
+            
                 <h5>6. سياسة ملفات تعريف الارتباط:</h5>
                 <p><strong>أ. ما هي ملفات تعريف الارتباط؟</strong><br>
                 هي ملفات نصية صغيرة تُخزن على جهازك عند زيارة الموقع. تساعدنا على فهم تفضيلاتك وتحسين تجربتك.</p>
-
+            
                 <p><strong>ب. أنواع ملفات تعريف الارتباط التي نستخدمها</strong></p>
                 <ul>
                     <li><strong>ضرورية:</strong> تمكّن الوظائف الأساسية مثل الحجز وتسجيل الدخول</li>
@@ -129,13 +129,13 @@ class PrivacyPolicyViewController: UIViewController {
                     <li><strong>الوظيفية:</strong> تتذكر إعداداتك وتفضيلاتك</li>
                     <li><strong>التحليلية:</strong> تتبع الاستخدام لتحسين المحتوى والتصميم</li>
                 </ul>
-
+            
                 <p><strong>ج. إدارة ملفات تعريف الارتباط</strong><br>
                 يمكنك إدارتها أو تعطيلها من إعدادات المتصفح. لكن بعض أجزاء الموقع قد لا تعمل بشكل صحيح بدونها.</p>
-
+            
                 <h5>7. المستخدمون الدوليون:</h5>
                 <p>SyriaBooking.sy مقرها في سوريا. باستخدامك منصتنا، فإنك توافق على معالجة بياناتك وتخزينها داخل سوريا أو في دول أخرى حيث تعمل أنظمتنا.</p>
-
+            
                 <h5>8. حقوقك:</h5>
                 <ul>
                     <li>الوصول إلى بياناتك الشخصية</li>
@@ -144,12 +144,12 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>سحب موافقتك على الاتصالات التسويقية</li>
                     <li>تقديم شكوى إلى جهة حماية البيانات (إذا كانت موجودة)</li>
                 </ul>
-
+            
                 <h5>9. تواصل معنا:</h5>
                 <p>للاستفسارات أو الطلبات المتعلقة بالخصوصية أو ملفات تعريف الارتباط، يرجى التواصل معنا:</p>
                 <p><strong>البريد:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a><br>
                 <strong>الهاتف:</strong> +963-123-456789</p>
-
+            
                 <h6>شكراً لزيارتكم!</h6>
                 <p>باستخدامك موقعنا أو خدماتنا، فإنك توافق على شروط سياسة الخصوصية هذه. يرجى مراجعتها دورياً للتحديثات أو التغييرات.</p>
             </body>
@@ -185,7 +185,7 @@ class PrivacyPolicyViewController: UIViewController {
             </head>
             <body>
                 <p>At SyriaBooking.sy, we respect your privacy and are committed to protecting your personal data. This Privacy & Cookie Statement explains how we collect, use, store, and protect your personal information, and how we use cookies when you visit or use our website.</p>
-
+            
                 <h5>1. What Information We Collect:</h5>
                 <p>When you use SyriaBooking.sy, we may collect the following types of information:</p>
                 <ul>
@@ -205,7 +205,7 @@ class PrivacyPolicyViewController: UIViewController {
                     </li>
                 </ul>
                 <p><em>We do not collect credit card or payment information, as all payments are made directly at the hotel.</em></p>
-
+            
                 <h5>2. How We Use Your Information:</h5>
                 <ul>
                     <li>Process and confirm your hotel bookings</li>
@@ -215,14 +215,14 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>Prevent fraud or misuse of our platform</li>
                     <li>Send service updates or offers (only with your consent)</li>
                 </ul>
-
+            
                 <h5>3. How We Share Your Information:</h5>
                 <ul>
                     <li>The hotel you have booked with (for reservation purposes only)</li>
                     <li>Our internal customer support and tech teams</li>
                     <li>Legal authorities when required by law or regulation</li>
                 </ul>
-
+            
                 <h5>4. Data Security:</h5>
                 <p>We implement appropriate technical and organizational security measures to protect your personal data from unauthorized access, alteration, or misuse.</p>
                 <ul>
@@ -230,14 +230,14 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>Secure database storage</li>
                     <li>Limited access to authorized personnel only</li>
                 </ul>
-
+            
                 <h5>5. Data Retention:</h5>
                 <p>We retain your personal data only as long as needed to fulfill your bookings or comply with legal obligations. You may request deletion of your data at any time by contacting us at <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a>.</p>
-
+            
                 <h5>6. Cookie Policy:</h5>
                 <p><strong>a. What Are Cookies?</strong><br>
                 Cookies are small text files stored on your device when you visit a website. They help us understand your preferences and improve your experience.</p>
-
+            
                 <p><strong>b. Types of Cookies We Use</strong></p>
                 <ul>
                     <li><strong>Essential Cookies:</strong> Enable core functionality like booking and login</li>
@@ -245,13 +245,13 @@ class PrivacyPolicyViewController: UIViewController {
                     <li><strong>Functionality Cookies:</strong> Remember your settings and preferences</li>
                     <li><strong>Analytics Cookies:</strong> Track usage to help us improve content and layout</li>
                 </ul>
-
+            
                 <p><strong>c. Managing Cookies</strong><br>
                 You can manage or disable cookies via your browser settings. However, some parts of our website may not work properly without cookies.</p>
-
+            
                 <h5>7. International Users:</h5>
                 <p>SyriaBooking.sy is based in Syria. By using our platform, you agree that your personal data will be processed and stored within Syria or in other countries where our systems operate.</p>
-
+            
                 <h5>8. Your Rights:</h5>
                 <ul>
                     <li>Access your personal data</li>
@@ -260,12 +260,12 @@ class PrivacyPolicyViewController: UIViewController {
                     <li>Withdraw your consent for marketing communication</li>
                     <li>Lodge a complaint with a data protection authority (if applicable)</li>
                 </ul>
-
+            
                 <h5>9. Contact Us:</h5>
                 <p>For questions, requests, or concerns related to privacy or cookies, please contact:</p>
                 <p><strong>Email:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a><br>
                 <strong>Phone:</strong> +963-123-456789</p>
-
+            
                 <h6>Thank you for visiting!</h6>
                 <p>By using our website or services, you consent to the terms of this Privacy Policy. Please review this policy periodically for updates or changes.</p>
             </body>
@@ -275,5 +275,5 @@ class PrivacyPolicyViewController: UIViewController {
         
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
-
+    
 }

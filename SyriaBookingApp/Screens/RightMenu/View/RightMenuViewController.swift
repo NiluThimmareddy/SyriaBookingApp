@@ -22,13 +22,12 @@ class RightMenuViewController: UIViewController, UIViewControllerTransitioningDe
     var popoverdirection: UIPopoverArrowDirection = .any
     
     var profileViewModle = ProfileViewModel()
-   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         rightMenuTableView.applyCardStyle()
         rightMenuTableView.semanticContentAttribute = .forceLeftToRight
-//        rightMenuTableView.isScrollEnabled = true
         rightMenuTableView.rowHeight = UITableView.automaticDimension
         rightMenuTableView.estimatedRowHeight = 50
         let rowHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 44.0 : 51.0
@@ -62,7 +61,6 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         switch indexPath.row {
         case 0 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
-//            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true)
         case 1 :
             let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
@@ -79,7 +77,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             controller.titleText = "Report an app"
             present(controller, animated: true)
         case 5 :
-           let title = menuArray[indexPath.row]
+            let title = menuArray[indexPath.row]
             if  title == "Profile" ||  title == "الملف الشخصي"{
                 let storyboard = UIStoryboard(name: "Profile", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
@@ -149,7 +147,7 @@ extension RightMenuViewController{
         
         alert.addAction(UIAlertAction(title: "Request to Delete Account", style: .default, handler: { _ in
             
-           
+            
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AccountDeletionVC") as! AccountDeletionVC
             self.present(controller, animated: true)
@@ -159,7 +157,7 @@ extension RightMenuViewController{
         
         present(alert, animated: true)
     }
-
+    
     
     private func confirmPermanentDeletion() {
         let confirmAlert = UIAlertController(
@@ -178,7 +176,7 @@ extension RightMenuViewController{
     }
     
     private func callDeleteAccountAPI() {
-       
+        
         if let user = UserSessionManager.getUser() {
             let usermobile = "\(user.mobile)-Block"
             let useremail = "\(user.email)-Block"
@@ -222,22 +220,7 @@ extension RightMenuViewController{
                 }
             }
         }
-       
     }
-
-    
-//    private func openGoogleSheetForDeletion() {
-//        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSdCgN1fhtcpoyD7yqhQIc3SKukItcUEWwWeLj-ytpH_VHn6mw/formResponse") else { return }
-//        
-//        let safariVC = SFSafariViewController(url: url)
-//        safariVC.delegate = self
-//        safariVC.dismissButtonStyle = .close
-//        present(safariVC, animated: true)
-//    }
-
-   
-
-   
 }
 
 extension RightMenuViewController: SFSafariViewControllerDelegate {

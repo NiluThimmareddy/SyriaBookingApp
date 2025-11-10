@@ -8,7 +8,7 @@
 import UIKit
 
 class HotelListTVC : UITableViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImgView: UIImageView!
     @IBOutlet weak var rightView: UIView!
@@ -41,7 +41,7 @@ class HotelListTVC : UITableViewCell {
         } else {
             hotelImgView.loadImage(from: model.coverImageURL)
         }
-
+        
         if let discount = model.discountText, !discount.isEmpty {
             offerPercentLabel.text = discount
             offerPercentLabel.isHidden = false
@@ -51,15 +51,15 @@ class HotelListTVC : UITableViewCell {
             offerPercentLabel.isHidden = true
             bookMarkImageView.isHidden = true
         }
-
+        
         let ratingValue = model.starRating
         let intRating = Int(ratingValue)
-
+        
         let hotelNameAttributed = NSMutableAttributedString(
             string: "\(model.localizedName()) ",
             attributes: [.foregroundColor: UIColor.label]
         )
-
+        
         if intRating > 0 && intRating <= 5 {
             let stars = String(repeating: "★", count: intRating)
             let starAttributed = NSAttributedString(
@@ -68,7 +68,7 @@ class HotelListTVC : UITableViewCell {
             )
             hotelNameAttributed.append(starAttributed)
         }
-
+        
         hotelNameLabel.attributedText = hotelNameAttributed
         distanceLabel.text = model.landmarkDescription
         cityLabel.text = model.localizedCity()
@@ -76,11 +76,11 @@ class HotelListTVC : UITableViewCell {
         var fullText = ""
         if AppSettings.shared.selectedLanguage == .arabic{
             fullText = "من \(price) / ليلة"
-
+            
         } else {
             fullText = "From \(price) / night"
         }
-       
+        
         priceLabel.setHighlightedText(
             fullText: fullText,
             highlightText: price,
@@ -89,7 +89,7 @@ class HotelListTVC : UITableViewCell {
             normalColor: .darkGray,
             highlightColor: .label
         )
-       // reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
+        // reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
         
         if AppSettings.shared.selectedLanguage == .english {
             reviewLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
@@ -102,8 +102,7 @@ class HotelListTVC : UITableViewCell {
         
         if AppSettings.shared.selectedLanguage == .english{
             seeAvailabilityButton.setTitle("See Availability", for: .normal)
-        }else{
-            
+        } else {
             seeAvailabilityButton.setTitle("شاهد التوافر", for: .normal)
         }
     }

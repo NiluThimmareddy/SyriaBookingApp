@@ -7,15 +7,15 @@
 
 import UIKit
 import libPhoneNumber
- 
+
 enum ComingFromToLogin {
     case tabbarBooking
     case HomeSliderView
     case HotelDetails
     case profile
 }
- 
-class RegisterMobileNumberVC : UIViewController {
+
+class RegisterMobileNumberVC : BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
@@ -125,11 +125,7 @@ class RegisterMobileNumberVC : UIViewController {
         totalTime = 300 // 5 minutes in seconds
         updateResendCountdownText()
         // Create and start new timer
-        resendTimer = Timer.scheduledTimer(timeInterval: 1.0,
-                                         target: self,
-                                         selector: #selector(updateTimer),
-                                         userInfo: nil,
-                                         repeats: true)
+        resendTimer = Timer.scheduledTimer(timeInterval: 1.0,target: self,selector: #selector(updateTimer),userInfo: nil,repeats: true)
         
         // Ensure timer runs even when scrolling
         RunLoop.main.add(resendTimer!, forMode: .common)
@@ -159,19 +155,19 @@ class RegisterMobileNumberVC : UIViewController {
         
         // Style the static text
         attributedString.addAttribute(.foregroundColor, value: UIColor.label,
-                                    range: NSRange(location: 0, length: staticText.count))
+                                      range: NSRange(location: 0, length: staticText.count))
         attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 13),
-                                    range: NSRange(location: 0, length: staticText.count))
+                                      range: NSRange(location: 0, length: staticText.count))
         
         // Style the resend text (make it clickable)
         if let resendRange = fullText.range(of: resendText) {
             let nsRange = NSRange(resendRange, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue,
-                                        range: nsRange)
+                                          range: nsRange)
             attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 15, weight: .semibold),
-                                        range: nsRange)
+                                          range: nsRange)
             attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue,
-                                        range: nsRange)
+                                          range: nsRange)
         }
         
         resendLabel.attributedText = attributedString
@@ -193,16 +189,16 @@ class RegisterMobileNumberVC : UIViewController {
         let attributedString = NSMutableAttributedString(string: fullText)
         
         attributedString.addAttribute(.foregroundColor, value: UIColor.label,
-                                    range: NSRange(location: 0, length: fullText.count))
+                                      range: NSRange(location: 0, length: fullText.count))
         attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 13),
-                                    range: NSRange(location: 0, length: fullText.count))
+                                      range: NSRange(location: 0, length: fullText.count))
         
         if let resendRange = fullText.range(of: resendText) {
             let nsRange = NSRange(resendRange, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.systemGreen,
-                                        range: nsRange)
+                                          range: nsRange)
             attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 15, weight: .semibold),
-                                        range: nsRange)
+                                          range: nsRange)
         }
         
         resendLabel.attributedText = attributedString
@@ -367,7 +363,7 @@ class RegisterMobileNumberVC : UIViewController {
         
     }
     
-   func verifyEmailOTPCode(email:String,otp:String,completion: @escaping (VerifyEmailOTPModel?) -> Void) {
+    func verifyEmailOTPCode(email:String,otp:String,completion: @escaping (VerifyEmailOTPModel?) -> Void) {
         showLoader()
         viewModel.onEmailVerifyOTPSuccess = { response in
             self.hideLoader()
@@ -411,7 +407,7 @@ class RegisterMobileNumberVC : UIViewController {
             self.sendCodeButton.isEnabled = false
         }
     }
-
+    
     @IBAction func registerButtonAction(_ sender: Any) {
         
         guard let fname = enterFirstNameTF.text, !fname.trimmingCharacters(in: .whitespaces).isEmpty else {
@@ -465,7 +461,7 @@ class RegisterMobileNumberVC : UIViewController {
         
         let prefix = selectPrefixButton.titleLabel?.text ?? ""
         
-       let name = "\(prefix) \(fname) \(lname)"
+        let name = "\(prefix) \(fname) \(lname)"
         
         let dummydob = getDummyDOB()
         viewModel.SubmitUserRegistrationInfo(name: name, mobile: mobileNumberwithCode, gender: gendr , email: email, country: country, dob: selectDateofBirthTF.text ?? dummydob )
@@ -502,10 +498,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
         setupDateOfBirthTextField()
         
-//        viewModel.loadCountries { countryName in
-//            self.countryCodeList = countryName
-//            self.configureCountryNameMenu()
-//        }
         viewModel.loadCountries { countryName in
             self.countryCodeList = countryName
             self.configureCountryNameMenu()
@@ -525,14 +517,14 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     func findSyriaCountry() -> CountryModel? {
         return countryCodeList.first { $0.name.lowercased().contains("syria") }
     }
-
+    
     func setupResendLabel() {
         resendLabel.isUserInteractionEnabled = true
         sendCodeButton.isUserInteractionEnabled = true
         resendTap = UITapGestureRecognizer(target: self, action: #selector(resendTapped))
         resendLabel.addGestureRecognizer(resendTap!)
     }
-
+    
     @objc func resendTapped() {
         if resendTimer == nil || !resendTimer!.isValid {
             guard let email = enterEmailTF.text, isValidEmail(email) else {
@@ -662,7 +654,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let selectTitle = AppSettings.shared.selectedLanguage == .english ? " Select Prefix" : "اختر الجنس"
         
         selectPrefixButton.setTitle(selectTitle, for: .normal)
- 
+        
         let mr = UIAction(title: mrTitle) { _ in
             self.selectPrefixButton.setTitle(mrTitle, for: .normal)
         }
@@ -687,7 +679,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let selectGenderTitle = AppSettings.shared.selectedLanguage == .english ? "Select Gender" : "اختر الجنس"
         
         selectGenderButton.setTitle(selectGenderTitle, for: .normal)
- 
+        
         let male = UIAction(title: maleTitle) { _ in
             self.selectGenderButton.setTitle(maleTitle, for: .normal)
         }
@@ -756,7 +748,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
     
     @objc private func dateTextFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-            
+        
         let digits = text.replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
         
         var result = ""
@@ -820,7 +812,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             genderTitleLabel.text = "Gender"
             countryTitleLabel.text = "Country"
             dateOfBirthTitleLabel.text = "Date of Birth"
-//            mobileNumberCountryCodeButton.setTitle("Select Code", for: .normal)
             updateMobileNumberCountryCodeFont()
             continueButton.setTitle("Continue", for: .normal)
             continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -835,7 +826,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             genderTitleLabel.text = "الجنس"
             countryTitleLabel.text = "البلد"
             dateOfBirthTitleLabel.text = "تاريخ الميلاد"
-//            mobileNumberCountryCodeButton.setTitle("اختر الرمز", for: .normal)
             updateMobileNumberCountryCodeFont()
             continueButton.setTitle("متابعة", for: .normal)
             continueButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -845,7 +835,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         mobileNumberNoteLabel.textAlignment = .center
     }
 }
- 
+
 extension RegisterMobileNumberVC : SelectCountryDelegate {
     
     func didSelectCountry(_ country: CountryModel) {
@@ -926,7 +916,7 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-
+        
         if text.count >= 1 {
             textField.text = String(text.prefix(1))
             if textField.tag < otpTF.count - 1 {

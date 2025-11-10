@@ -5,6 +5,7 @@
 //  Created by ToqSoft on 25/07/25.
 //
 
+
 import UIKit
 
 enum DatePickerMode {
@@ -30,7 +31,7 @@ protocol recentlyViewdHotelsProtocol{
     func reladRecentlyViewedData()
 }
 
-class HomeViewController: UIViewController, UIViewControllerTransitioningDelegate {
+class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
@@ -50,8 +51,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var recentlyCollectionView: UICollectionView!
     @IBOutlet weak var propertyTypeCollectionView: UICollectionView!
     @IBOutlet weak var topView: UIView!
-    //Mark
-    
     @IBOutlet weak var subTitleMessageLabel: UILabel!
     @IBOutlet weak var recentlyHeadLineLabel: UILabel!
     @IBOutlet weak var whereToNextHeadLineLabel: UILabel!
@@ -110,11 +109,16 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         return []
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         showLoader()
     }
+    
+//    override func networkCameBackOnline() {
+//        print("✅ Internet is back — refetching hotels")
+//        viewModel.fetchHotels()
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -266,8 +270,8 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         let date = formater.date(from: sender.titleLabel?.text ?? "")
         
         guard let date = date else { return }
-       
-                currentDatePickerMode = .checkOut
+        
+        currentDatePickerMode = .checkOut
         setNextDateInCkechout(checkInDate: date)
         updateDatePickerLimits()
     }
@@ -278,7 +282,7 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         formater.dateStyle = .medium
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
-       
+        
         
         guard let date = date else { return }
         setNextDateInCkechout(checkInDate: date)
@@ -290,7 +294,6 @@ class HomeViewController: UIViewController, UIViewControllerTransitioningDelegat
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         controller.comingFrom = .filter
         controller.viewModel = self.viewModel
-//        controller.shouldShowAllHotels = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -380,7 +383,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                     self.reloadDataOnHomeScreen()
                 }
                 self.present(controller, animated: true)
-//                self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
             }
             return cell
         } else if collectionView == recommendedHotelsCollectionView {
@@ -771,8 +773,6 @@ extension HomeViewController {
             handPickedHotelsDescriptionLabel.text = "Experience the finest stays with our handpicked hotels, selected for their exceptional comfort, service, and location."
             handpickedHotelsLabel.text = "Handpicked Hotels"
             navigationTitleNameLabel.title = "SyriaBooking"
-            // messageLabel.text = "Good Morning User!"
-            // subTitleMessageLabel.text = "Your Gateway to Discover Syria"
             recentlyHeadLineLabel.text = "Recently Viewed"
             whereToNextHeadLineLabel.text = "Where to next?"
             topHotelHeadLineLabel.text = "Top Hotels"
@@ -806,8 +806,6 @@ extension HomeViewController {
             handPickedHotelsDescriptionLabel.text = "ختبر أرقى الإقامات مع فنادقنا المختارة بعناية، والتي تم اختيارها لراحتها الاستثنائية وخدماتها ومواقعها المميزة."
             handpickedHotelsLabel.text = "فنادق مختارة بعناية"
             navigationTitleNameLabel.title = "سيريا بوكينغ"
-            // messageLabel.text = "صباح الخير المستخدم!"
-            // subTitleMessageLabel.text = "بوابتك لاكتشاف سوريا"
             recentlyHeadLineLabel.text = "شوهدت مؤخرا"
             whereToNextHeadLineLabel.text = "إلى أين بعد؟"
             topHotelHeadLineLabel.text = "أفضل الفنادق"
@@ -918,7 +916,7 @@ extension HomeViewController {
             self.datePickerContainerView.isHidden = true
         })
     }
-
+    
     @objc func doneDatePicker() {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -960,7 +958,7 @@ extension HomeViewController {
             self.datePickerContainerView.isHidden.toggle()
         })
     }
-
+    
     func updateDatePickerLimits() {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date()) // Strip time
@@ -998,7 +996,7 @@ extension HomeViewController {
         case .checkOut:
             break
         }
-
+        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         let selectedDate = formatter.string(from: sender.date)
@@ -1026,10 +1024,10 @@ extension HomeViewController {
             guard let self = self,
                   let collectionView = self.promotionsCollectionView,
                   self.promotionsList.count > 1 else { return }
-
+            
             self.currentPromotionIndex = (self.currentPromotionIndex + 1) % self.promotionsList.count
             let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
-
+            
             DispatchQueue.main.async {
                 collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
             }
@@ -1204,4 +1202,5 @@ extension UINavigationController {
         navigationBar.tintColor = .white
     }
 }
+
 

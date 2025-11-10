@@ -16,14 +16,14 @@ protocol ScrollToTopCapable: AnyObject {
 
 class ScrollToTopHelper: NSObject, UIScrollViewDelegate {
     weak var parent: (UIViewController & ScrollToTopCapable)?
-
+    
     init(parent: UIViewController & ScrollToTopCapable) {
         self.parent = parent
         super.init()
         setupButton()
-      //parent.tableView.delegate = self
+        //parent.tableView.delegate = self
     }
-
+    
     private func setupButton() {
         guard let vc = parent else { return }
         let btn = vc.scrollToTopButton
@@ -59,8 +59,8 @@ class ScrollToTopHelper: NSObject, UIScrollViewDelegate {
         hideButton()
         
     }
-
-
+    
+    
     private func showButton() {
         guard let btn = parent?.scrollToTopButton, btn.isHidden else { return }
         btn.isHidden = false
@@ -70,14 +70,13 @@ class ScrollToTopHelper: NSObject, UIScrollViewDelegate {
         guard let btn = parent?.scrollToTopButton, !btn.isHidden else { return }
         UIView.animate(withDuration: 0.3, animations: { btn.alpha = 0 }) { _ in btn.isHidden = true }
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let vc = parent else { return }
         let shouldShow = scrollView.contentOffset.y > vc.view.bounds.height / 2
         shouldShow ? showButton() : hideButton()
     }
 }
-
 
 extension UIScrollView {
     

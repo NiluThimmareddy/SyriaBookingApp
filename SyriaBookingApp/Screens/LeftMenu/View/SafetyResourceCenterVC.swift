@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 class SafetyResourceCenterVC : UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var safetyResourceCenterTitleLabel: UILabel!
@@ -28,12 +28,12 @@ class SafetyResourceCenterVC : UIViewController {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
     }
-
+    
     private func setupWebView() {
         webView = WKWebView(frame: self.view.bounds)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bottomView.addSubview(webView)
-
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             webView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
@@ -42,7 +42,7 @@ class SafetyResourceCenterVC : UIViewController {
             webView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
     }
-
+    
     private func loadHTMLContent() {
         let htmlString: String
         
@@ -63,7 +63,7 @@ class SafetyResourceCenterVC : UIViewController {
                         direction: rtl;
                         text-align: right;
                     }
-
+            
                     h1 { font-size: 16px; font-weight: 700; margin-top: 0; margin-bottom: 6px; }
                     h2 { font-size: 15px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; }
                     h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 4px; }
@@ -72,7 +72,7 @@ class SafetyResourceCenterVC : UIViewController {
                     li { margin-bottom: 4px; }
                     strong { font-weight: 600; font-size: 13px; }
                     em { font-style: italic; color: #666666; }
-
+            
                     @media (min-width: 768px) {
                         h1 { font-size: 18px; }
                         h2 { font-size: 16px; }
@@ -83,18 +83,18 @@ class SafetyResourceCenterVC : UIViewController {
             </head>
             <body>
                 <h1>سلامتك هي أولويتنا</h1>
-
+            
                 <p><strong>في SyriaBooking.sy</strong>، راحة بالك هي جوهر كل ما نقوم به. نحن ملتزمون بتوفير تجربة سفر آمنة ومطمئنة منذ لحظة الحجز وحتى تسجيل المغادرة.</p>
-
+            
                 <p>يقدم مركز موارد السلامة هذا إرشادات ودعماً أساسياً لمساعدتك على السفر بثقة في جميع أنحاء سوريا.</p>
-
+            
                 <h3>١. أمان الحجز والخصوصية</h3>
                 <ul>
                     <li><strong>فنادق موثقة فقط:</strong> جميع العقارات تمر بعملية تحقق صارمة قبل النشر.</li>
                     <li><strong>منصة آمنة:</strong> يتم حماية بياناتك باستخدام بروتوكولات التشفير والمعايير العالمية.</li>
                     <li><strong>بدون دفعات مقدمة:</strong> من خلال نظام <em>“الدفع عند الوصول”</em>، لست بحاجة إلى إدخال بيانات الدفع عبر الإنترنت.</li>
                 </ul>
-
+            
                 <h3>٢. تدابير السلامة في الفنادق</h3>
                 <p>نشجع شركاء الفنادق على تبني الممارسات التالية:</p>
                 <ul>
@@ -105,7 +105,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>بروتوكولات الصحة والنظافة خاصة في الأماكن كثيرة الاستخدام</li>
                 </ul>
                 <p>ابحث عن شارة <em>“معتمد للسلامة”</em> للفنادق التي تقدم المزيد.</p>
-
+            
                 <h3>٣. مسؤولية المسافر</h3>
                 <ul>
                     <li>اتبع إرشادات الصحة والسلامة المحلية</li>
@@ -113,7 +113,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>احمل بطاقة هوية ووثائق سفر صالحة</li>
                     <li>احتفظ بأرقام الطوارئ في متناول يدك</li>
                 </ul>
-
+            
                 <h3>٤. في حالة الطوارئ</h3>
                 <ul>
                     <li><strong>الشرطة المحلية:</strong> 112</li>
@@ -121,7 +121,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li><strong>البريد الإلكتروني:</strong> info@syriabooking.sy</li>
                     <li><strong>الهاتف:</strong> +963-123-456789</li>
                 </ul>
-
+            
                 <h3>٥. نصائح السفر لسوريا</h3>
                 <ul>
                     <li>التزم بالمناطق والفنادق المعروفة</li>
@@ -130,7 +130,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>استخدم خزائن الفنادق متى ما كان ذلك ممكناً</li>
                     <li>شارك خط سير رحلتك مع العائلة أو الأصدقاء</li>
                 </ul>
-
+            
                 <h3>هل تحتاج للمساعدة؟</h3>
                 <p>إذا كان لديك أي قلق قبل أو أثناء أو بعد إقامتك، فإن فريق خدمة العملاء لدينا هنا لمساعدتك.</p>
                 <p><strong>متاحون على مدار الساعة</strong> لضمان سلامتك ورضاك.</p>
@@ -154,7 +154,7 @@ class SafetyResourceCenterVC : UIViewController {
                         direction: ltr;
                         text-align: left;
                     }
-
+            
                     h1 { font-size: 16px; font-weight: 700; margin-top: 0; margin-bottom: 6px; }
                     h2 { font-size: 15px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; }
                     h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 4px; }
@@ -163,7 +163,7 @@ class SafetyResourceCenterVC : UIViewController {
                     li { margin-bottom: 4px; }
                     strong { font-weight: 600; font-size: 13px; }
                     em { font-style: italic; color: #666666; }
-
+            
                     @media (min-width: 768px) {
                         h1 { font-size: 18px; }
                         h2 { font-size: 16px; }
@@ -174,18 +174,18 @@ class SafetyResourceCenterVC : UIViewController {
             </head>
             <body>
                 <h1>Your Safety Is Our Priority</h1>
-
+            
                 <p><strong>At SyriaBooking.sy</strong>, your peace of mind is at the heart of everything we do. We are committed to providing a safe, secure, and informed travel experience — from the moment you book until you check out.</p>
-
+            
                 <p>This Safety Resource Center offers essential guidance and support to help you travel confidently across Syria.</p>
-
+            
                 <h3>1. Booking Safety & Privacy</h3>
                 <ul>
                     <li><strong>Verified Hotels Only:</strong> All listed properties on our platform go through a strict verification process before being published.</li>
                     <li><strong>Secure Platform:</strong> Your data is protected using industry-standard encryption and privacy protocols.</li>
                     <li><strong>No Advance Payment Required:</strong> With our “Pay on Arrival” system, you don’t need to enter any payment details online.</li>
                 </ul>
-
+            
                 <h3>2. Hotel Safety Measures</h3>
                 <p>We encourage our hotel partners to adopt and maintain the following safety practices:</p>
                 <ul>
@@ -196,7 +196,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Health & hygiene protocols especially for high-contact areas</li>
                 </ul>
                 <p>Look for the <em>“Safety Certified”</em> badge on hotels that go the extra mile.</p>
-
+            
                 <h3>3. Traveler Responsibility</h3>
                 <ul>
                     <li>Follow local health, safety, and travel guidelines</li>
@@ -204,7 +204,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Carry proper ID and travel documents</li>
                     <li>Keep emergency numbers accessible</li>
                 </ul>
-
+            
                 <h3>4. In Case of Emergency</h3>
                 <ul>
                     <li><strong>Local Police:</strong> 112</li>
@@ -212,7 +212,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li><strong>Email:</strong> info@syriabooking.sy</li>
                     <li><strong>Phone:</strong> +963-123-456789</li>
                 </ul>
-
+            
                 <h3>5. Travel Tips for Syria</h3>
                 <ul>
                     <li>Stick to well-known destinations and hotel areas</li>
@@ -221,7 +221,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Use hotel safes whenever possible</li>
                     <li>Share your travel itinerary with family or friends</li>
                 </ul>
-
+            
                 <h3>Need Help?</h3>
                 <p>If you have any concerns before, during, or after your stay, our customer care team is here to support you.</p>
                 <p><strong>We’re available 24/7</strong> to ensure your safety and satisfaction.</p>
@@ -232,6 +232,6 @@ class SafetyResourceCenterVC : UIViewController {
         
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
-
+    
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 class SecurityVC: UIViewController {
-
+    
     @IBOutlet weak var securityTV: UITableView!
     @IBOutlet weak var settingsContentLbl: UILabel!
     
@@ -18,14 +18,14 @@ class SecurityVC: UIViewController {
         SecurityData(securityTitle: "Account Deletion", securityContent: ""),
     ]
     let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.text = "Security"
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
-   
+        let label = UILabel()
+        label.textColor = .white
+        label.text = "Security"
+        label.font = UIFont.poppinsBold(16)
+        label.textAlignment = .center
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         fontStyle()
@@ -36,11 +36,6 @@ class SecurityVC: UIViewController {
         settingsContentLbl.font = UIFont.poppinsBold(16)
         
     }
-
-    
-    
-    
-
 }
 
 extension SecurityVC: UITableViewDelegate, UITableViewDataSource{
@@ -69,8 +64,8 @@ extension SecurityVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if  indexPath.row == securityCall.count - 1  {
-          return 100
-        }else{
+            return 100
+        } else {
             return 120
         }
     }

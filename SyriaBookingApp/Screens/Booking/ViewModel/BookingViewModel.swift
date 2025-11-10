@@ -27,9 +27,6 @@ class BookingViewModel {
             self.onError?("Enter valid data")
         }
         
-        
-        
-        
         let url = URL(string: getUrl)
         
         guard let url = url else{
@@ -221,7 +218,7 @@ class BookingViewModel {
             }
         }
     }
-
+    
     func loadCountries(completion: @escaping ([CountryModel]) -> Void) {
         DispatchQueue.global().async {
             guard let url = Bundle.main.url(forResource: "countries_with_lengths", withExtension: "json"),
@@ -391,5 +388,5 @@ class BookingViewModel {
             }
         }
     }
-
+    
 }

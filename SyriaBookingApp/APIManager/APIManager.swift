@@ -14,7 +14,7 @@ enum APIError: LocalizedError {
     case invalidResponse
     case serverError(Int)
     case userNotFound
-
+    
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -41,7 +41,7 @@ class APIManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-       
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let error = error {
@@ -60,7 +60,7 @@ class APIManager {
                     }
                 }
                 
-               
+                
                 
             }  else {
                 completion(.failure(APIError.invalidResponse))

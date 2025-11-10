@@ -5,6 +5,7 @@
 //  Created by ToqSoft on 27/07/25.
 //
 
+
 import Foundation
 
 class HotelViewModel {
@@ -91,7 +92,7 @@ class HotelViewModel {
     }
 
     
-    func   fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
+    func fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
       NetworkRetryManager.executeWithNetworkRetry(
           observerKey: "FetchHotelsRetry",
           showAlertOnFail: true,

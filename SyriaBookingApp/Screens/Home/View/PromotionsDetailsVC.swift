@@ -16,7 +16,6 @@ class PromotionsDetailsVC: UIViewController {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var averageRatingsLabel: UILabel!
     @IBOutlet weak var totalReviewsLabel: UILabel!
-//    @IBOutlet weak var promotionsTitleLabel: UILabel!
     
     var promotionsList: [Hotel] = []
     var selectedHotel: Hotel?
@@ -26,7 +25,7 @@ class PromotionsDetailsVC: UIViewController {
         super.viewDidLoad()
         setUpUI()
     }
-
+    
     @IBAction func dismissButtonAction(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
@@ -48,10 +47,8 @@ extension PromotionsDetailsVC {
         averageRatingsLabel.text = "\(hotel.averageRating)/5"
         if AppSettings.shared.selectedLanguage == .english {
             totalReviewsLabel.text = "\(hotel.reviewCount) reviews"
-//            promotionsTitleLabel.text = "Promotions"
         } else {
             totalReviewsLabel.text = "\(hotel.reviewCount) تقييمات"
-//            promotionsTitleLabel.text = "عروض"
         }
         if let imageUrl = hotel.images.first, !imageUrl.isEmpty {
             hotelImageView.loadImage(from: imageUrl)
@@ -61,6 +58,6 @@ extension PromotionsDetailsVC {
         hotelImageView.applyFullBlackGradientOverlay()
         subdiscriptionTextView.layer.cornerRadius = 10
         subdiscriptionTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        subdiscriptionTextView.clipsToBounds = true 
+        subdiscriptionTextView.clipsToBounds = true
     }
 }

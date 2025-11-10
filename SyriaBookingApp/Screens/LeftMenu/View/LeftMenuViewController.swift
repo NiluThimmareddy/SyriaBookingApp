@@ -45,10 +45,10 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         MenuItem(titleEN: "Sustainability", titleAR: "الاستدامة", icon: "leaf.circle.fill"),
         MenuItem(titleEN: "Safety Resource Center", titleAR: "مركز موارد السلامة", icon: "shield.lefthalf.filled.badge.checkmark")
     ]
-
+    
     var onDismiss: (()->Void)?
     let languages = ["English", "العربية"]
-     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -66,7 +66,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         self.navigationItem.backButtonTitle = ""
         loadUserDetails()
     }
-
+    
     @IBAction func DismissButtonAction(_ sender: UIButton) {
         onDismiss?()
     }
@@ -83,7 +83,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         }
         self.present(controller, animated: true)
     }
-
+    
     @IBAction func rightArrowButtonAction(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
         self.navigationController?.pushViewController(storyboard, animated: true)
@@ -129,7 +129,7 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         let indexPath = tableView.indexPathForSelectedRow
         
         guard let indexPath = indexPath else { return }
-       
+        
         switch indexPath.row {
         case 0 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
@@ -175,7 +175,7 @@ extension LeftMenuViewController {
         }
         LeftMenuUITableView.register(UINib(nibName: "LeftMenuTVC", bundle: nil), forCellReuseIdentifier: "LeftMenuTVC")
         applyCornerRadiusToLanguageButtons()
-
+        
         languageButton.applyTopRightLightGreyGradient()
     }
     
@@ -193,7 +193,7 @@ extension LeftMenuViewController {
     
     func updateLanguageButtonsUI() {
         let selectedLanguage = AppSettings.shared.selectedLanguage
-
+        
         englishButton.layer.borderWidth = 1
         arabicButton.layer.borderWidth = 1
         englishButton.layer.borderColor = UIColor.lightGray.cgColor

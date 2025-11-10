@@ -1,7 +1,8 @@
 
 import UIKit
 import Reachability
-class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
+
+class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
@@ -48,7 +49,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
     var datePickerBottomConstraint: NSLayoutConstraint?
     var isDatePickerShown = false
     var formattedTotal = ""
-   
+    
     var totalAmount = 0.0
     var netAmountAfterDiscount =  0.0
     
@@ -74,7 +75,7 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
         numberOfGuestsTF.delegate = self
         checkInTF.delegate = self
         checkOutTF.delegate = self
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -188,8 +189,6 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
             self.showAlert(error.description)
         }
         
-//        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalNetAmount,bookingDetails: roomRatesData, bookingType: bookingTypeLabel.text ?? "", totalDiscount: totalDiscountAmount, netTotal: netAmountAfterDiscount)
-        
         viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
         
     }
@@ -222,19 +221,19 @@ class ConfirmYourBookingVC : UIViewController, UITextFieldDelegate {
 }
 
 extension ConfirmYourBookingVC {
-
+    
     func setUpUI() {
         backView.applyCardStyle()
         guestNameLabel.text = guestName
         guestEmailLabel.text = guestEmail
         guestMobileNumberTF.text = guestMobileNumber
-
+        
         // --- Setup date format ---
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
-
+        
         if let checkIn = selectedCheckInDate {
             checkInTF.text = formatter.string(from: checkIn)
             if let checkOut = selectedCheckOutDate {
@@ -249,62 +248,62 @@ extension ConfirmYourBookingVC {
                 checkOutTF.text = formatter.string(from: tomorrow)
             }
         }
-
+        
         // --- Reset totals ---
         totalGrossAmount = 0.0
         totalNetAmount = 0.0
         totalDiscountAmount = 0.0
         roomRatesDataDisplay = ""
         roomRatesDataAPI = ""
-
+        
         for rate in selectedRates where rate.isSelected {
             let qty = Double(rate.selectedQuantity)
             let discountPercent = rate.isLocal ? (rate.localDiscount ?? 0.0) : (rate.discount ?? 0.0)
             let price = rate.isLocal ? (rate.localPrice ?? 0.0) : rate.price
             let currency = rate.isLocal ? "SYP" : "$"
-
+            
             let gross = price * qty
             let discountValue = gross * (discountPercent / 100.0)
             let net = gross - discountValue
-
+            
             totalGrossAmount += gross
             totalDiscountAmount += discountValue
-
+            
             let qtyInt = Int(qty)
-
+            
             let displayLine = String(
                 format: "Qty %d × %.2f %@ (−%.2f%%) = Gross %.2f %@, Discount %.2f %@, Net %.2f %@",
                 qtyInt, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
             )
-
+            
             let apiLine = String(
                 format: "Rate Id(%@) : qty %d, price %.2f %@, discount %.2f%%, gross %.2f %@, discount %.2f %@, net %.2f %@",
                 rate.id, qtyInt, price, currency, discountPercent, gross, currency, discountValue, currency, net, currency
             )
-
+            
             if !roomRatesDataDisplay.isEmpty {
                 roomRatesDataDisplay += "\r\n"
                 roomRatesDataAPI += "\r\n"
             }
-
+            
             roomRatesDataDisplay += displayLine
             roomRatesDataAPI += apiLine
         }
-
-
+        
+        
         // --- Update Labels ---
         if let firstSelected = selectedRates.first(where: { $0.isSelected }) {
             let currency = firstSelected.isLocal ? "SYP" : "$"
             bookingTypeLabel.text = firstSelected.isLocal ? "Local(SYP)" : "International($)"
         }
-
+        
         selectedRoomAndRatesLabel.text = roomRatesDataDisplay
         setupDatePickerUI()
         Arabic()
         updateTotalAmountLabel(isLocal: selectedRoom?.rates.first?.isLocal ?? false)
     }
-
-
+    
+    
     
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
@@ -315,7 +314,7 @@ extension ConfirmYourBookingVC {
         datePickerContainerView.layer.shadowOpacity = 0.2
         datePickerContainerView.layer.shadowOffset = CGSize(width: 0, height: -2)
         datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // ✅ Toolbar setup
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -325,32 +324,32 @@ extension ConfirmYourBookingVC {
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
         toolbar.setItems([cancelButton, flexSpace, doneButton], animated: false)
-
+        
         // Date Picker setup
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
         datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // Add subviews
         datePickerContainerView.addSubview(toolbar)
         datePickerContainerView.addSubview(datePicker)
         view.addSubview(datePickerContainerView)
-
+        
         // Constraints
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
             toolbar.topAnchor.constraint(equalTo: datePickerContainerView.topAnchor),
             toolbar.heightAnchor.constraint(equalToConstant: 44),
-
+            
             datePicker.leadingAnchor.constraint(equalTo: datePickerContainerView.leadingAnchor),
             datePicker.trailingAnchor.constraint(equalTo: datePickerContainerView.trailingAnchor),
             datePicker.topAnchor.constraint(equalTo: toolbar.bottomAnchor, constant: 8),
             datePicker.bottomAnchor.constraint(equalTo: datePickerContainerView.bottomAnchor, constant: -16)
         ])
-
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             NSLayoutConstraint.activate([
                 datePickerContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -364,7 +363,7 @@ extension ConfirmYourBookingVC {
                 datePickerContainerView.heightAnchor.constraint(equalToConstant: 450)
             ])
         }
-
+        
         datePickerBottomConstraint = datePickerContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 450)
         datePickerBottomConstraint?.isActive = true
         
@@ -373,7 +372,7 @@ extension ConfirmYourBookingVC {
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc func doneDatePicker() {
         let selectedDate = datePicker.date
         let formatter = DateFormatter()
@@ -391,15 +390,15 @@ extension ConfirmYourBookingVC {
             selectedCheckOutDate = selectedDate
             checkOutTF.text = selectedDateString
         }
-
+        
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
         dismissDatePicker()
     }
-
+    
     @objc func cancelDatePicker() {
         dismissDatePicker()
     }
-
+    
     
     func toggleDatePicker(for button: UIButton) {
         activeButton = button
@@ -419,11 +418,11 @@ extension ConfirmYourBookingVC {
     @objc func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
-
+        
         let selectedDateString = formatter.string(from: sender.date)
-
+        
         print("Selected Date: \(selectedDateString)")
-
+        
         switch currentDatePickerMode {
         case .checkIn:
             print("Setting Check-In Text Field")
@@ -437,7 +436,7 @@ extension ConfirmYourBookingVC {
             dismissDatePicker()
         }
         
-       
+        
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
     
@@ -464,7 +463,7 @@ extension ConfirmYourBookingVC {
         }
     }
     
-   
+    
     func calculateNumberOfNights(checkIn: Date?, checkOut: Date?) -> Int {
         guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
         
@@ -481,29 +480,6 @@ extension ConfirmYourBookingVC {
         let totalNights = max(days, 0) == 0 ? 1 : days
         return totalNights
     }
-
-//
-//    func updateTotalAmountLabel(isLocal: Bool) {
-//        let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
-//        let currency = isLocal ? "SYP" : "$"
-//        bookingTypeLabel.text =  isLocal ? "Local(SYP)" :"International($)"
-//        guard nights > 0 else {
-//            totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalGrossAmount))"
-//            netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalNetAmount))"
-//            return
-//        }
-//        
-//        totalNightsCountLabel.text = "\(nights)"
-//        finaltotalDiscountAmount = totalDiscountAmount * Double(nights)
-//        totalAmount = totalGrossAmount * Double(nights)
-//        netAmountAfterDiscount = Double(totalAmount) -  Double(finaltotalDiscountAmount)
-//
-//        totalAmountLabel.text = "\(currency) \(String(format: "%.2f", totalAmount))"
-//        totalDiscountAmountLabel.text = "\(currency) \(String(format: "%.2f", finaltotalDiscountAmount))"
-//        netTotalAmountLabel.text = "\(currency) \(String(format: "%.2f", netAmountAfterDiscount))"
-//        
-//       
-//    }
     
     func updateTotalAmountLabel(isLocal: Bool) {
         let nights = calculateNumberOfNights(checkIn: selectedCheckInDate, checkOut: selectedCheckOutDate)
@@ -533,8 +509,8 @@ extension ConfirmYourBookingVC {
         totalDiscountAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: finaltotalDiscountAmount)) ?? "0.00")"
         netTotalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: netAmountAfterDiscount)) ?? "0.00")"
     }
-
-
+    
+    
     @objc func Arabic() {
         if AppSettings.shared.selectedLanguage == .english {
             confirmYourBookingTitleLabel.text = "Confirm Your Booking"

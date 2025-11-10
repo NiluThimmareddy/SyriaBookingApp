@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReportAnAppVC: UIViewController {
+class ReportAnAppVC: BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
@@ -65,7 +65,7 @@ class ReportAnAppVC: UIViewController {
             contactTitleLabel.text = AppSettings.shared.selectedLanguage == .arabic ? "اتصل بنا" : "Contact Us"
         }
         contactTitleLabel.textAlignment = .center
-
+        
     }
     
     func setupContactUsTypeDropdownMenu() {
@@ -98,7 +98,7 @@ class ReportAnAppVC: UIViewController {
         selectTypeButton.showsMenuAsPrimaryAction = true
         selectTypeButton.menu = menu
         
-          let defaultTitle = AppSettings.shared.selectedLanguage == .arabic ? "اختر الموضوع" : "Select Subject"
+        let defaultTitle = AppSettings.shared.selectedLanguage == .arabic ? "اختر الموضوع" : "Select Subject"
         let attributedTitle = NSAttributedString(
             string: defaultTitle,
             attributes: [
@@ -107,36 +107,25 @@ class ReportAnAppVC: UIViewController {
         )
         selectTypeButton.setAttributedTitle(attributedTitle, for: .normal)
     }
-
+    
     
     @IBAction func submitButtonAction(_ sender: Any) {
         // Validate subject
-        
         guard let subject = selectTypeButton.titleLabel?.text,
               !subject.isEmpty, subject.lowercased() != "select subject" else {
             showAlert("Please select subject")
             return
         }
-        
         // Validate message
         guard let message = enterMessageTextView.text,
               !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             showAlert("Please enter message")
             return
         }
-    
-       
+        
         showLoader()
         hotelViewModel.onReporAnAppSucess = { response in
             self.hideLoader()
-//            self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onOK: {
-//                if self.comingfrom == .RightMenu || self.comingfrom == .HotelDetail{
-//                    self.dismiss(animated: true)
-//                }else{
-//                    self.dismissPopup()
-////                    UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
-//                }
-//            })
             self.showAlert(title: "Success", message: response.message, OkButtonTitle: "Ok", onOK: {
                 self.goToHomeTab()
             })
@@ -158,7 +147,7 @@ class ReportAnAppVC: UIViewController {
             
             
         } else if comingfrom == .HotelDetail {
-           
+            
             hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
         }else if comingfrom == .BookingHistory{

@@ -8,7 +8,7 @@
 import UIKit
 
 class HotelThumbnailImagesCVC : UICollectionViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var thumbnailImgView: UIImageView!
     

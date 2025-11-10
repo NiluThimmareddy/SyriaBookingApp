@@ -12,7 +12,7 @@ protocol TopHotelsCollectionViewCellDelegate: AnyObject {
 }
 
 class TopHotelsCollectionViewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var hotelImgView: UIImageView!
     @IBOutlet weak var offerLabel: UILabel!
@@ -41,7 +41,7 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         hotelImgView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         priceLabel.font = .captionFont
     }
-
+    
     @IBAction func bookNowButtonAction(_ sender: Any) {
         if let hotel = hotel {
             delegate?.didTapBookNow(for: hotel)
@@ -55,7 +55,7 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
         } else {
             hotelImgView.loadImage(from: model.coverImageURL)
         }
-
+        
         if let discount = model.discountText, !discount.isEmpty {
             offerLabel.text = "\(discount) Off"
             offerView.isHidden = false
@@ -63,16 +63,16 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
             offerLabel.text = ""
             offerView.isHidden = true
         }
-
+        
         let ratingValue = model.starRating
         let intRating = Int(ratingValue)
-
+        
         let hotelNameAttributed = NSMutableAttributedString(
             string: "\(model.localizedName()) ",
             attributes: [.foregroundColor: UIColor.label]
         )
-
-    
+        
+        
         if intRating > 0 && intRating <= 5 {
             let stars = String(repeating: "★", count: intRating)
             let starAttributed = NSAttributedString(
@@ -81,30 +81,23 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
             )
             hotelNameAttributed.append(starAttributed)
         }
-
+        
         hotelNameLabel.attributedText = hotelNameAttributed
-
         cityNameLabel.text = model.localizedCity()
         distanceLabel.text = model.landmarkDescription
         starRatingView.rating = Double(ratingValue)
-     //   priceLabel.text = "\(model.minRoomPrice) / night"
-        //reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
-        
         if AppSettings.shared.selectedLanguage == .english {
             priceLabel.text = "From \(model.minRoomPrice) / night"
-            
-        }else{
-            
+        } else {
             priceLabel.text = "\(model.minRoomPrice) / نان"
         }
         
-      
         if AppSettings.shared.selectedLanguage == .english {
             reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) reviews)"
         } else {
             reviewsLabel.text = "\(model.averageRating) (\(model.reviewCount) مراجعات)"
         }
-
+        
         if AppSettings.shared.selectedLanguage == .arabic {
             bookNowButton.setTitle("احجز الآن", for: .normal)
         } else {

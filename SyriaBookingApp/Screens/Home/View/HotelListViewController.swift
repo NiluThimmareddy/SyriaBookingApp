@@ -13,7 +13,7 @@ enum hotelListSource{
     case filter
 }
 
-class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTopCapable {
+class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollToTopCapable {
    
     @IBOutlet weak var HotelListtableView: UITableView!
     @IBOutlet weak var filterButton: UIButton!
@@ -52,6 +52,11 @@ class HotelListViewController: UIViewController, ApplyFilterDelegate, ScrollToTo
             }
         }
     }
+    
+//    override func networkCameBackOnline() {
+//        print("✅ Internet is back — refetching hotels")
+//        viewModel.fetchHotels()
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

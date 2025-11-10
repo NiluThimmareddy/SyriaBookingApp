@@ -11,7 +11,7 @@ protocol SelectCountryDelegate: AnyObject {
     func didSelectCountry(_ country: CountryModel)
 }
 
-class SelectCountryViewController: UIViewController {
+class SelectCountryViewController: BaseViewController {
     
     var countryList: [CountryModel] = []
     var filteredList: [CountryModel] = []
@@ -52,7 +52,7 @@ class SelectCountryViewController: UIViewController {
         ])
         filteredList = countryList
     }
-
+    
 }
 
 extension SelectCountryViewController: UISearchBarDelegate {

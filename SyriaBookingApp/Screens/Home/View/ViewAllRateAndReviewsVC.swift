@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewAllRateAndReviewsVC : UIViewController {
+class ViewAllRateAndReviewsVC : BaseViewController {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var rateAndReviewsLabel: UILabel!
@@ -33,7 +33,7 @@ class ViewAllRateAndReviewsVC : UIViewController {
                 .filter {
                     $0.reviewerName == username.name
                 }
-           
+            
             rateAndReviewsTableView.reloadData()
         }else{
             rateAndReviewsLabel.text = ""
@@ -56,11 +56,11 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
         if comingFrom == .profile {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC") as! RateAndReviewsTVC
             if let reviews = reviewsArray?[indexPath.row] {
-               
+                
                 cell.configure(with: reviews)
             }
             return cell
-           
+            
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC") as! RateAndReviewsTVC
             if let reviews = selectedHotel?.reviews, indexPath.row < reviews.count {
@@ -69,7 +69,7 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         }
-       
+        
     }
 }
 
@@ -85,7 +85,6 @@ extension ViewAllRateAndReviewsVC {
         }else {
             guard let hotel = selectedHotel else { return }
             
-            //        rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
             if AppSettings.shared.selectedLanguage == .arabic {
                 rateAndReviewsLabel.text = "التقييمات والمراجعات \(hotel.averageRating) (\(hotel.reviewCount) مراجعات)"
             } else {

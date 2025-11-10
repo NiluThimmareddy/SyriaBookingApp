@@ -10,7 +10,7 @@ enum comingFromLogin {
     case TabBar
 }
 
-class VerificationVC : UIViewController {
+class VerificationVC : BaseViewController {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
@@ -71,7 +71,7 @@ class VerificationVC : UIViewController {
                 )
             }
         }else{
-             self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
+            self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
                 guard let self = self, let UserId = UserId else { return }
                 
                 self.viewModel.onSuccess = { response in
@@ -113,7 +113,7 @@ class VerificationVC : UIViewController {
             }
         }
     }
-
+    
     func performNavigationAfterVerification() {
         switch self.comingFrom {
         case .Home:
@@ -141,12 +141,12 @@ class VerificationVC : UIViewController {
             break
         }
     }
-
+    
     func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
         showLoader()
         viewModel.onVerifyOTPSucess = { response in
             self.hideLoader()
-           completion(response)
+            completion(response)
         }
         viewModel.onError = { error in
             self.hideLoader()
@@ -158,24 +158,12 @@ class VerificationVC : UIViewController {
         }
         viewModel.verifyOTP(mobile: mobile, otp: otp)
     }
-    
-//    func isMobileRegistered(_ mobile: String) -> Bool {
-//        let registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
-//        return registeredNumbers.contains(mobile)
-//    }
-//
-//    func registerMobile(_ mobile: String) {
-//        var registeredNumbers = UserDefaults.standard.stringArray(forKey: "registeredMobileNumbers") ?? []
-//        registeredNumbers.append(mobile)
-//        UserDefaults.standard.set(registeredNumbers, forKey: "registeredMobileNumbers")
-//    }
-
 }
 
 extension VerificationVC : UITextFieldDelegate {
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
-
+        
         if text.count >= 1 {
             textField.text = String(text.prefix(1))
             if textField.tag < otpTF.count - 1 {
@@ -208,7 +196,6 @@ extension VerificationVC : UITextFieldDelegate {
 extension VerificationVC {
     func setUpUI() {
         mobileNumberTF.text = mobileNumber
-//        messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
         for (index, textField) in otpTF.enumerated() {
             textField.delegate = self
             textField.keyboardType = .numberPad

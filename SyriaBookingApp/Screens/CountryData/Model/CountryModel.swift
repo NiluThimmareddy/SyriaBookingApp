@@ -19,15 +19,15 @@ struct CountryCodeDataSource: Codable {
     let label: String
     let phone: String
     let phoneLength: PhoneLength?
-
+    
     enum CodingKeys: String, CodingKey {
         case code, label, phone, phoneLength
     }
-
+    
     enum PhoneLength: Codable {
         case single(Int)
         case multiple([Int])
-
+        
         init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             if let intValue = try? container.decode(Int.self) {
@@ -44,7 +44,7 @@ struct CountryCodeDataSource: Codable {
                 )
             }
         }
-
+        
         func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             switch self {

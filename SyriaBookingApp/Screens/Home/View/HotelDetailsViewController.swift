@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HotelDetailsViewController : UIViewController {
+class HotelDetailsViewController : BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backView: UIView!
@@ -18,7 +18,6 @@ class HotelDetailsViewController : UIViewController {
     @IBOutlet weak var overView: UIView!
     @IBOutlet weak var overViewButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
-    //    @IBOutlet weak var descriptionLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var facilitiesView: UIView!
     @IBOutlet weak var facilitiesButton: UIButton!
     @IBOutlet weak var verticalStackview: UIStackView!
@@ -178,18 +177,6 @@ class HotelDetailsViewController : UIViewController {
                 self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
                 
                 self.hotelviewModel.onSuccess = {[weak self] response in
-//                    self?.selectedHotel?.reviews.insert(response, at: 0)
-                    //here main hotelviewmodel hotel variable i want to add review means i whole application i want to add this review where review is using
-                    
-//                    if let index = HotelDataMaganer.shared.allHotels.firstIndex(where: { $0.id == selectedHotel.id }) {
-//                        var updatedHotel = HotelDataMaganer.shared.allHotels[index]
-//                        updatedHotel.reviews.insert(response, at: 0)
-//                        HotelDataMaganer.shared.allHotels[index] = updatedHotel
-//                    }
-                    
-//                    DispatchQueue.main.async {
-//                        self?.rateAndReviewsTableview.reloadData()
-//                    }
                 }
             })
             
@@ -251,8 +238,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
             return selectedHotel?.rooms.count ?? 0
         }
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == hotelImagesCollectionView {
@@ -323,10 +308,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                         self.dismissPopup()
                         
                     }
-                    
                     self.present(controller, animated: true)
-//                    self.showPopup(controller,widthMultiplier: 0.9, heightMultiplier: 0.3)
-                    
                 } else {
                     guard let room = selectedRoom else { return }
                     self.selectedRoom = room
@@ -421,9 +403,6 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
 }
 
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
-   
-    
-    
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         if let user = UserSessionManager.getUser(){
             let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
@@ -490,7 +469,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 totalPriceView.isHidden = total == 0
                 
             }
-        }else{
+        } else {
             totalPriceView.isHidden = true
         }
     }
@@ -511,9 +490,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
         scrollToTopButton.imageView?.contentMode = .scaleToFill
-        
-//        scrolltoTopHelper = ScrollToTopHelper(parent: self)
-        
         rateAndReviewsTableview.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
         hotelImagesCollectionView.register(UINib(nibName: "DetailsPageHotelImagesCVC", bundle: nil), forCellWithReuseIdentifier: "DetailsPageHotelImagesCVC")
         hotelImagesCollectionView.reloadData()

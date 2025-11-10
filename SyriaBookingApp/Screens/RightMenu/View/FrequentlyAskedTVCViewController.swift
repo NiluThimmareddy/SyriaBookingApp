@@ -17,9 +17,7 @@ class FrequentlyAskedTVCViewController : UIViewController {
     @IBOutlet weak var frequentlyAskedQuestionsTitleLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
-    
     var selectedIndexPath: IndexPath?
-    
     var count = ["01","02","03","04","05","06","07","08","09","10"]
     var faqQuestion: [String] = []
     var faqAnswers: [String] = []
@@ -36,21 +34,21 @@ class FrequentlyAskedTVCViewController : UIViewController {
 }
 
 extension FrequentlyAskedTVCViewController: UITableViewDelegate, UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return faqQuestion.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FrequentlyAskedTVC", for: indexPath) as! FrequentlyAskedTVC
-
+        
         let imageName = (selectedIndexPath == indexPath) ? "chevron.up" : "chevron.down"
         cell.imageLabel.image = UIImage(systemName: imageName)
         cell.imageLabel.tintColor = .darkGray
         cell.serialNumLabel.text = count[indexPath.row]
         cell.headLineLabel.text = faqQuestion[indexPath.row]
         cell.descriptionLabel.text = faqAnswers[indexPath.row]
-
+        
         if selectedIndexPath == indexPath {
             cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.15)
             cell.contentView.layer.cornerRadius = 10
@@ -60,7 +58,7 @@ extension FrequentlyAskedTVCViewController: UITableViewDelegate, UITableViewData
         
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return (selectedIndexPath == indexPath) ? 140 : 61
@@ -68,21 +66,21 @@ extension FrequentlyAskedTVCViewController: UITableViewDelegate, UITableViewData
             return (selectedIndexPath == indexPath) ? 170 : 61
         }
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previousIndexPath = selectedIndexPath
-
+        
         if selectedIndexPath == indexPath {
             selectedIndexPath = nil
         } else {
             selectedIndexPath = indexPath
         }
-
+        
         var indexPathsToReload: [IndexPath] = [indexPath]
         if let previous = previousIndexPath, previous != indexPath {
             indexPathsToReload.append(previous)
         }
-
+        
         tableView.beginUpdates()
         tableView.endUpdates()
         tableView.reloadRows(at: indexPathsToReload, with: .none)

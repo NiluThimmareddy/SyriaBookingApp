@@ -24,7 +24,7 @@ class ProfileViewModel {
             onProfileUpdated?(false, "Invalid URL", nil)
             return
         }
-
+        
         let body: [String: Any] = [
             "name": profile.name,
             "mobile": profile.mobile,
