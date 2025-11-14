@@ -6,6 +6,7 @@
 
 
 import UIKit
+import SkeletonView
 
 protocol AvailabilityRoomsCVCDelegate: AnyObject {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate)
@@ -40,6 +41,8 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         setUpUI()
     }
     

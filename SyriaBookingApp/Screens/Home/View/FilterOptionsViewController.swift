@@ -4,12 +4,13 @@
 //
 //  Created by ToqSoft on 17/06/25.
 //
- 
+
 protocol ApplyFilterDelegate {
     func applyFilter(filterdHotels: [Hotel])
 }
 
 import UIKit
+import SkeletonView
 
 class FilterOptionsViewController: UIViewController {
     
@@ -41,10 +42,17 @@ class FilterOptionsViewController: UIViewController {
     var selectedStarRatings: [String] = []
     var selectedReviewScores: [String] = []
     var selectedAmenities: [String] = []
-    
+    var isLoadingData = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSkeletonView()
         setUpUI()
+        
+        // Simulate loading data
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.hideAllSkeletons()
+        }
     }
     
     // MARK: - Actions
@@ -78,6 +86,8 @@ class FilterOptionsViewController: UIViewController {
     // MARK: - Hotel Type Selection
     
     @IBAction func hotelTypeButtonAction(_ sender: UIButton) {
+        guard !isLoadingData else { return }
+        
         sender.isSelected.toggle()
         updateButtonUI(sender)
 
@@ -123,6 +133,8 @@ class FilterOptionsViewController: UIViewController {
     // MARK: - Amenities Selection
     
     @IBAction func amenitiesButtonAction(_ sender: UIButton) {
+        guard !isLoadingData else { return }
+        
         sender.isSelected.toggle()
         updateButtonUI(sender)
         
@@ -142,6 +154,8 @@ class FilterOptionsViewController: UIViewController {
     // MARK: - Star Rating & Review Score
     
     @IBAction func starRatingsButtonAction(_ sender: UIButton) {
+        guard !isLoadingData else { return }
+        
         sender.isSelected.toggle()
         updateButtonUI(sender)
         
@@ -158,6 +172,8 @@ class FilterOptionsViewController: UIViewController {
     }
     
     @IBAction func reviewScoreButtonAction(_ sender: UIButton) {
+        guard !isLoadingData else { return }
+        
         sender.isSelected.toggle()
         updateButtonUI(sender)
         
@@ -254,10 +270,175 @@ class FilterOptionsViewController: UIViewController {
                 message = "No hotels found for the selected criteria."
             }
         }
-
         completion(filteredHotels, message)
     }
+}
 
+// MARK: - SkeletonView Configuration
+extension FilterOptionsViewController {
+    
+    private func setupSkeletonView() {
+        configureSkeletonAppearance()
+        makeElementsSkeletonable()
+        showSkeletonViews()
+    }
+    
+    private func configureSkeletonAppearance() {
+        let gradient = SkeletonGradient(baseColor: UIColor.systemGray5)
+        SkeletonAppearance.default.gradient = gradient
+        SkeletonAppearance.default.tintColor = UIColor.systemGray4
+        SkeletonAppearance.default.multilineHeight = 12
+        SkeletonAppearance.default.multilineSpacing = 8
+        SkeletonAppearance.default.multilineCornerRadius = 4
+    }
+    
+    private func makeElementsSkeletonable() {
+        let skeletonLabels: [UILabel] = [
+            filterTitleLabel,
+            filterPriceTitleLabel,
+            hotelTypeLabel,
+            starRatingTitleLabel,
+            reviewScoreTitleLabel,
+            amenitiesLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.isSkeletonable = true
+            label.linesCornerRadius = 4
+            label.skeletonTextLineHeight = .fixed(12)
+            label.lastLineFillPercent = 100
+        }
+        
+        let allButtons = hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton + [clearButton, seeResultButton, dismissButton]
+        allButtons.forEach { button in
+            button?.isSkeletonable = true
+            button?.skeletonCornerRadius = 6
+            button?.titleLabel?.isSkeletonable = true
+            button?.titleLabel?.linesCornerRadius = 4
+            button?.titleLabel?.skeletonTextLineHeight = .fixed(12)
+        }
+        
+        let skeletonViews: [UIView] = [
+            bottomView,
+            filterPriceView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.isSkeletonable = true
+            view.skeletonCornerRadius = 8
+        }
+        
+        priceRangeSlider.isSkeletonable = true
+        priceRangeSlider.skeletonCornerRadius = 8
+    }
+    
+    private func showSkeletonViews() {
+        let skeletonLabels: [UILabel] = [
+            filterTitleLabel,
+            filterPriceTitleLabel,
+            hotelTypeLabel,
+            starRatingTitleLabel,
+            reviewScoreTitleLabel,
+            amenitiesLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.text = ""
+            label.showAnimatedGradientSkeleton()
+        }
+        
+        let allButtons = hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton + [clearButton, seeResultButton, dismissButton]
+        allButtons.forEach { button in
+            button?.setTitle("", for: .normal)
+            button?.setImage(nil, for: .normal)
+            button?.showAnimatedGradientSkeleton()
+            button?.titleLabel?.showAnimatedGradientSkeleton()
+        }
+        
+        let skeletonViews: [UIView] = [
+            bottomView,
+            filterPriceView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.showAnimatedGradientSkeleton()
+        }
+        
+        priceRangeSlider.showAnimatedGradientSkeleton()
+    }
+    
+    private func hideAllSkeletons() {
+        isLoadingData = false
+        
+        let skeletonLabels: [UILabel] = [
+            filterTitleLabel,
+            filterPriceTitleLabel,
+            hotelTypeLabel,
+            starRatingTitleLabel,
+            reviewScoreTitleLabel,
+            amenitiesLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.hideSkeleton()
+        }
+        
+        let allButtons = hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton + [clearButton, seeResultButton, dismissButton]
+        allButtons.forEach { button in
+            button?.hideSkeleton()
+            button?.titleLabel?.hideSkeleton()
+        }
+        
+        let skeletonViews: [UIView] = [
+            bottomView,
+            filterPriceView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.hideSkeleton()
+        }
+        
+        priceRangeSlider.hideSkeleton()
+        setDefaultEnglishTitles()
+        setupLanguage()
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
+        
+        for button in hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton {
+            button.isSelected = false
+            button.setImage(UIImage(systemName: "square"), for: .normal)
+        }
+    }
+    
+    private func setDefaultEnglishTitles() {
+        let defaultHotelTypes = ["All", "Hotel", "Resort", "Motel", "Hostel", "Bed and Breakfast", "Apartment", "Villa", "Guesthouse", "Boutique", "Lodge", "Capsule", "Homestay"]
+        for (index, button) in hotelTypesButton.enumerated() {
+            if index < defaultHotelTypes.count {
+                button.setTitle(defaultHotelTypes[index], for: .normal)
+            }
+        }
+        
+        let defaultReviewScores = ["5.0+ stars", "4.0+ stars", "3.0+ stars", "2.0+ stars", "1.0+ stars"]
+        for (index, button) in reviewScoreButton.enumerated() {
+            if index < defaultReviewScores.count {
+                button.setTitle(defaultReviewScores[index], for: .normal)
+            }
+        }
+        
+        let defaultAmenities = ["Air Conditioning", "Balcony", "Bathtub", "Coffeemaker", "Extra Pillows", "Hairdryer", "Heater", "Iron", "Minibar", "Room Service", "Safe", "Television", "Wi-Fi", "Work Desk"]
+        for (index, button) in amenitiesButton.enumerated() {
+            if index < defaultAmenities.count {
+                button.setTitle(defaultAmenities[index], for: .normal)
+            }
+        }
+        
+        for button in starRatingsButton {
+            let stars = button.tag
+            button.setTitle("\(stars) stars", for: .normal)
+        }
+        
+        clearButton.setTitle("Clear", for: .normal)
+        seeResultButton.setTitle("See Results", for: .normal)
+    }
 }
 
 // MARK: - UI Setup
@@ -266,9 +447,12 @@ extension FilterOptionsViewController {
     func setUpUI() {
         bottomView.addTopShadow()
         
-        for button in hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton {
-            button.isSelected = false
-            button.setImage(UIImage(systemName: "square"), for: .normal)
+        // Only set up buttons if not loading
+        if !isLoadingData {
+            for button in hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton {
+                button.isSelected = false
+                button.setImage(UIImage(systemName: "square"), for: .normal)
+            }
         }
         
         updateSeeResultButtonTitleBasedOnFilteredHotels()
@@ -298,6 +482,8 @@ extension FilterOptionsViewController {
     }
     
     func updateSeeResultButtonTitleBasedOnFilteredHotels() {
+        guard !isLoadingData else { return }
+        
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
         let baseTitle = isArabic ? "عرض النتائج" : "See Results"
         
@@ -329,6 +515,8 @@ extension FilterOptionsViewController {
 
 extension FilterOptionsViewController {
     func setupLanguage() {
+        guard !isLoadingData else { return }
+        
         let hotelTypeTranslations: [String: String] = [
             "all": "الكل",
             "hotel": "فندق",

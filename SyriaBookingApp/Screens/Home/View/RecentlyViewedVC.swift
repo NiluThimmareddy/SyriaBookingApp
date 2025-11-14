@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RecentlyViewedVC: UIViewController, UIViewControllerTransitioningDelegate {
     
@@ -24,9 +25,16 @@ class RecentlyViewedVC: UIViewController, UIViewControllerTransitioningDelegate 
     var todayHotels: [Hotel] = []
     var earlierHotels: [Hotel] = []
     
+    // Skeleton state management
+    private var isShowingSkeleton = false
+    private var minimumSkeletonTime: TimeInterval = 2.0
+    private var skeletonStartTime: Date?
+    private var skeletonHideWorkItem: DispatchWorkItem?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        setupSkeleton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +54,17 @@ class RecentlyViewedVC: UIViewController, UIViewControllerTransitioningDelegate 
         }
         self.present(controller, animated: true)
     }
+    
 }
 
-extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
+// MARK: - TableView DataSource & Delegate
+extension RecentlyViewedVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isShowingSkeleton {
+            return 2 // Show both sections during skeleton
+        }
+        
         if recentlyViewedHotels.isEmpty {
             return 1
         }
@@ -62,6 +76,10 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isShowingSkeleton {
+            return 3 // Show 3 skeleton rows per section
+        }
+        
         if recentlyViewedHotels.isEmpty {
             return 1
         }
@@ -78,12 +96,19 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if isShowingSkeleton {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecentlyViewedListTVC", for: indexPath) as! RecentlyViewedListTVC
+            cell.showSkeleton()
+            return cell
+        }
+        
         if recentlyViewedHotels.isEmpty {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NoRecentlyViewedTVC", for: indexPath) as! NoRecentlyViewedTVC
             return cell
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecentlyViewedListTVC", for: indexPath) as! RecentlyViewedListTVC
+        cell.hideSkeleton()
         
         let hotel: Hotel
         if numberOfSections(in: tableView) == 1 {
@@ -97,7 +122,7 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if recentlyViewedHotels.isEmpty {
+        if recentlyViewedHotels.isEmpty && !isShowingSkeleton {
             return 90
         }
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -108,33 +133,47 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if recentlyViewedHotels.isEmpty {
-            return 0
+        if (recentlyViewedHotels.isEmpty && !isShowingSkeleton) || isShowingSkeleton {
+            return 40
         }
         return 40
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if recentlyViewedHotels.isEmpty {
+        if recentlyViewedHotels.isEmpty && !isShowingSkeleton {
             return nil
         }
         
         let headerView = UIView()
+        headerView.isSkeletonable = true
+        headerView.backgroundColor = .systemBackground
+        
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textColor = .label
+        titleLabel.isSkeletonable = true
         
-        let lang = AppSettings.shared.selectedLanguage
-        
-        if numberOfSections(in: tableView) == 1 {
-            titleLabel.text = !todayHotels.isEmpty ?
-            (lang == .english ? "Today" : "اليوم") :
-            (lang == .english ? "Earlier" : "سابق")
+        if isShowingSkeleton {
+            // Show skeleton for header
+            titleLabel.text = "Loading"
+            titleLabel.skeletonTextLineHeight = .fixed(20)
+            titleLabel.linesCornerRadius = 4
+            titleLabel.lastLineFillPercent = 70
+            titleLabel.showAnimatedGradientSkeleton()
         } else {
-            titleLabel.text = section == 0 ?
-            (lang == .english ? "Today" : "اليوم") :
-            (lang == .english ? "Earlier" : "سابق")
+            let lang = AppSettings.shared.selectedLanguage
+            
+            if numberOfSections(in: tableView) == 1 {
+                titleLabel.text = !todayHotels.isEmpty ?
+                (lang == .english ? "Today" : "اليوم") :
+                (lang == .english ? "Earlier" : "سابق")
+            } else {
+                titleLabel.text = section == 0 ?
+                (lang == .english ? "Today" : "اليوم") :
+                (lang == .english ? "Earlier" : "سابق")
+            }
+            titleLabel.hideSkeleton()
         }
         
         headerView.addSubview(titleLabel)
@@ -148,7 +187,7 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard !recentlyViewedHotels.isEmpty else { return }
+        guard !recentlyViewedHotels.isEmpty && !isShowingSkeleton else { return }
         
         let hotel: Hotel
         if numberOfSections(in: tableView) == 1 {
@@ -170,6 +209,101 @@ extension RecentlyViewedVC : UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+// MARK: - Skeleton Configuration
+extension RecentlyViewedVC {
+    private func setupSkeleton() {
+        // Configure skeleton appearance for the main view
+        view.isSkeletonable = true
+        
+        // Table view skeleton configuration
+        recentlyViewedTableview.isSkeletonable = true
+        recentlyViewedTableview.skeletonCornerRadius = 8
+        
+        // Other elements
+        loginDescriptionLabel.isSkeletonable = true
+        loginButton.isSkeletonable = true
+        deleteButton.isSkeletonable = true
+        
+        // Skeleton configuration for labels
+        loginDescriptionLabel.skeletonTextLineHeight = .relativeToFont
+        loginDescriptionLabel.lastLineFillPercent = 70
+        loginDescriptionLabel.linesCornerRadius = 4
+        
+        // Button skeleton configuration
+        loginButton.skeletonCornerRadius = 6
+        deleteButton.skeletonCornerRadius = 6
+    }
+    
+    private func showSkeleton() {
+        guard !isShowingSkeleton else { return }
+        
+        // Cancel any pending hide operations
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.isShowingSkeleton = true
+            self.skeletonStartTime = Date()
+            
+            // Show skeleton on login view elements if visible
+            if !self.loginView.isHidden {
+                self.loginDescriptionLabel.showAnimatedGradientSkeleton()
+                self.loginButton.showAnimatedGradientSkeleton()
+            }
+            
+            // Show skeleton on delete button
+            if !self.deleteButton.isHidden {
+                self.deleteButton.showAnimatedGradientSkeleton()
+            }
+            
+            // Show table view skeleton with proper animation
+            self.recentlyViewedTableview.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
+            self.recentlyViewedTableview.reloadData()
+        }
+    }
+    
+    private func hideSkeleton() {
+        // Cancel any pending hide operations
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let elapsedTime = self.skeletonStartTime.map { Date().timeIntervalSince($0) } ?? 0
+            let remainingTime = max(0, self.minimumSkeletonTime - elapsedTime)
+            
+            if remainingTime > 0 {
+                // Schedule hiding after minimum time
+                let workItem = DispatchWorkItem { [weak self] in
+                    self?.performHideSkeleton()
+                }
+                self.skeletonHideWorkItem = workItem
+                DispatchQueue.main.asyncAfter(deadline: .now() + remainingTime, execute: workItem)
+            } else {
+                self.performHideSkeleton()
+            }
+        }
+    }
+    
+    private func performHideSkeleton() {
+        guard isShowingSkeleton else { return }
+        
+        self.isShowingSkeleton = false
+        self.skeletonHideWorkItem = nil
+        
+        // Hide skeleton from all elements
+        self.loginDescriptionLabel.hideSkeleton()
+        self.loginButton.hideSkeleton()
+        self.deleteButton.hideSkeleton()
+        self.recentlyViewedTableview.hideSkeleton()
+        
+        // Ensure table view is properly configured after skeleton
+        self.recentlyViewedTableview.reloadData()
+    }
+}
+
+// MARK: - UI Setup & Data Management
 extension RecentlyViewedVC {
     func setUpUI() {
         recentlyViewedTableview.register(UINib(nibName: "RecentlyViewedListTVC", bundle: nil), forCellReuseIdentifier: "RecentlyViewedListTVC")
@@ -211,21 +345,34 @@ extension RecentlyViewedVC {
     }
     
     func loadRecentlyViewedHotels() {
-        if let user = UserSessionManager.getUser() {
-            viewModel?.fetchRecentlyViewedHotels { [weak self] in
-                DispatchQueue.main.async {
-                    self?.recentlyViewedHotels = self?.viewModel?.recentlyViewdHotels ?? []
-                    self?.categorizeHotelsByDate()
-                    self?.recentlyViewedTableview.reloadData()
-                    self?.updateDeleteButtonVisibility()
+        // Show skeleton before loading data
+        showSkeleton()
+        
+        // Use a delay to ensure skeleton shows properly
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
+            
+            if let user = UserSessionManager.getUser() {
+                self.viewModel?.fetchRecentlyViewedHotels { [weak self] in
+                    DispatchQueue.main.async {
+                        self?.handleDataLoaded()
+                    }
+                }
+            } else {
+                // Simulate loading for non-logged in users
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                    self?.recentlyViewedHotels = HotelDataMaganer.shared.getAllRecentlyViewedHotels()
+                    self?.handleDataLoaded()
                 }
             }
-        } else {
-            recentlyViewedHotels = HotelDataMaganer.shared.getAllRecentlyViewedHotels()
-            categorizeHotelsByDate()
-            recentlyViewedTableview.reloadData()
-            updateDeleteButtonVisibility()
         }
+    }
+    
+    private func handleDataLoaded() {
+        self.categorizeHotelsByDate()
+        self.hideSkeleton()
+        self.recentlyViewedTableview.reloadData()
+        self.updateDeleteButtonVisibility()
     }
     
     func categorizeHotelsByDate() {
@@ -338,7 +485,11 @@ extension RecentlyViewedVC {
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: clearTitle, style: .destructive) { [weak self] _ in
             HotelDataMaganer.shared.clearTodaysRecentlyViewedHotels()
-            self?.loadRecentlyViewedHotels() // Reload to update the sections
+            // Show skeleton while reloading
+            self?.showSkeleton()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self?.loadRecentlyViewedHotels()
+            }
         })
         
         present(alert, animated: true)
@@ -358,7 +509,11 @@ extension RecentlyViewedVC {
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: clearTitle, style: .destructive) { [weak self] _ in
             HotelDataMaganer.shared.clearEarlierRecentlyViewedHotels()
-            self?.loadRecentlyViewedHotels() // Reload to update the sections
+            // Show skeleton while reloading
+            self?.showSkeleton()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self?.loadRecentlyViewedHotels()
+            }
         })
         
         present(alert, animated: true)

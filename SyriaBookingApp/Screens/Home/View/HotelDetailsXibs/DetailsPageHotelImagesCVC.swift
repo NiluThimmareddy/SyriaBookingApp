@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol DetailsPageHotelImagesCVCDelegate: AnyObject {
     func didTapImageFive(in cell: DetailsPageHotelImagesCVC)
@@ -29,6 +30,8 @@ class DetailsPageHotelImagesCVC : UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         shadowViewButton.alpha = 0.3
         addTapGestureToImageFive()
     }

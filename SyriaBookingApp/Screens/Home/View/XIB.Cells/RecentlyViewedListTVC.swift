@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RecentlyViewedListTVC: UITableViewCell {
 
@@ -19,10 +20,72 @@ class RecentlyViewedListTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupSkeleton()
         backView.applyCardStyle()
     }
     
+    private func setupSkeleton() {
+        // Make the cell and its content skeletonable
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
+        
+        // Make all subviews skeletonable
+        backView.isSkeletonable = true
+        hotelImgView.isSkeletonable = true
+        hotelNameLabel.isSkeletonable = true
+        hotelTypeLabel.isSkeletonable = true
+        hotelReviewsLabel.isSkeletonable = true
+        pricePerNightLabel.isSkeletonable = true
+        viewedDateLabel.isSkeletonable = true
+        
+        // Configure skeleton for labels
+        hotelNameLabel.skeletonTextLineHeight = .fixed(20)
+        hotelNameLabel.lastLineFillPercent = 80
+        hotelNameLabel.linesCornerRadius = 4
+        
+        hotelTypeLabel.skeletonTextLineHeight = .fixed(16)
+        hotelTypeLabel.lastLineFillPercent = 60
+        hotelTypeLabel.linesCornerRadius = 4
+        
+        hotelReviewsLabel.skeletonTextLineHeight = .fixed(16)
+        hotelReviewsLabel.lastLineFillPercent = 50
+        hotelReviewsLabel.linesCornerRadius = 4
+        
+        pricePerNightLabel.skeletonTextLineHeight = .fixed(18)
+        pricePerNightLabel.lastLineFillPercent = 70
+        pricePerNightLabel.linesCornerRadius = 4
+        
+        viewedDateLabel.skeletonTextLineHeight = .fixed(14)
+        viewedDateLabel.lastLineFillPercent = 40
+        viewedDateLabel.linesCornerRadius = 4
+        
+        // Configure image view skeleton
+        hotelImgView.skeletonCornerRadius = 8
+    }
+    
+    func showSkeleton() {
+        // Ensure all elements show skeleton
+        hotelImgView.showAnimatedGradientSkeleton()
+        hotelNameLabel.showAnimatedGradientSkeleton()
+        hotelTypeLabel.showAnimatedGradientSkeleton()
+        hotelReviewsLabel.showAnimatedGradientSkeleton()
+        pricePerNightLabel.showAnimatedGradientSkeleton()
+        viewedDateLabel.showAnimatedGradientSkeleton()
+    }
+    
+    func hideSkeleton() {
+        hotelImgView.hideSkeleton()
+        hotelNameLabel.hideSkeleton()
+        hotelTypeLabel.hideSkeleton()
+        hotelReviewsLabel.hideSkeleton()
+        pricePerNightLabel.hideSkeleton()
+        viewedDateLabel.hideSkeleton()
+    }
+    
     func configure(with hotel: Hotel) {
+        // Hide skeleton first
+        hideSkeleton()
+        
         let lang = AppSettings.shared.selectedLanguage
         hotelNameLabel.text = hotel.name
         hotelTypeLabel.text = lang == .english ? "\(hotel.type) • \(hotel.city)" : "\(hotel.type) • \(hotel.cityAR)"
@@ -40,6 +103,7 @@ class RecentlyViewedListTVC: UITableViewCell {
         } else {
             viewedDateLabel.text = ""
         }
+        
         if let imageUrl = hotel.images.first, let url = URL(string: imageUrl) {
             loadImage(from: url)
         } else {

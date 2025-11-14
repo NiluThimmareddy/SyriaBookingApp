@@ -3,9 +3,9 @@
 //  SyriaBookingApp
 //
 //  Created by toqsoft on 17/10/25.
-//
 
 import UIKit
+import SkeletonView
 
 class WhereToNextListCVC: UICollectionViewCell {
     
@@ -19,6 +19,9 @@ class WhereToNextListCVC: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
+        setupSkeleton()
     }
     
     override func layoutSubviews() {
@@ -27,6 +30,8 @@ class WhereToNextListCVC: UICollectionViewCell {
     }
     
     func configure(with hotel: Hotel, language: Languages) {
+        hideSkeleton()
+        
         let hotelName = language == .english ? hotel.name : hotel.nameAR
         hotelNameLabel.text = hotelName
         
@@ -45,7 +50,6 @@ class WhereToNextListCVC: UICollectionViewCell {
         
         ratingLabel?.text = String(format: "%.1f", hotel.averageRating)
         
-        // Fixed: Remove unnecessary casting
         if let firstImage = hotel.images.first,
            let url = URL(string: firstImage) {
             loadHotelImage(from: url)
@@ -53,6 +57,7 @@ class WhereToNextListCVC: UICollectionViewCell {
             hotelImgLabel.image = UIImage(named: "hotel_placeholder")
         }
     }
+    
     private func loadHotelImage(from url: URL) {
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let self = self,
@@ -70,5 +75,69 @@ class WhereToNextListCVC: UICollectionViewCell {
             }
         }.resume()
     }
+    
+    // MARK: - Skeleton Methods
+    private func setupSkeleton() {
+        backView.isSkeletonable = true
+        hotelNameLabel.isSkeletonable = true
+        hotelTypeLabel.isSkeletonable = true
+        pricePerNightLabel.isSkeletonable = true
+        hotelImgLabel.isSkeletonable = true
+        ratingLabel?.isSkeletonable = true
+        ratingContainerView?.isSkeletonable = true
+        hotelNameLabel.skeletonTextLineHeight = .fixed(18)
+        hotelNameLabel.lastLineFillPercent = 100
+        hotelNameLabel.linesCornerRadius = 4
+        
+        hotelTypeLabel.skeletonTextLineHeight = .fixed(14)
+        hotelTypeLabel.lastLineFillPercent = 70
+        hotelTypeLabel.linesCornerRadius = 4
+        
+        pricePerNightLabel.skeletonTextLineHeight = .fixed(16)
+        pricePerNightLabel.lastLineFillPercent = 80
+        pricePerNightLabel.linesCornerRadius = 4
+        
+        if let ratingLabel = ratingLabel {
+            ratingLabel.skeletonTextLineHeight = .fixed(12)
+            ratingLabel.lastLineFillPercent = 60
+            ratingLabel.linesCornerRadius = 4
+        }
+        hotelImgLabel.skeletonCornerRadius = 8
+        ratingContainerView?.skeletonCornerRadius = 4
+    }
+    
+    func showSkeleton() {
+        hotelNameLabel.text = nil
+        hotelTypeLabel.text = nil
+        pricePerNightLabel.text = nil
+        ratingLabel?.text = nil
+        hotelImgLabel.image = nil
+        backView.showAnimatedGradientSkeleton()
+        hotelNameLabel.showAnimatedGradientSkeleton()
+        hotelTypeLabel.showAnimatedGradientSkeleton()
+        pricePerNightLabel.showAnimatedGradientSkeleton()
+        hotelImgLabel.showAnimatedGradientSkeleton()
+        ratingLabel?.showAnimatedGradientSkeleton()
+        ratingContainerView?.showAnimatedGradientSkeleton()
+    }
+    
+    func hideSkeleton() {
+        backView.hideSkeleton()
+        hotelNameLabel.hideSkeleton()
+        hotelTypeLabel.hideSkeleton()
+        pricePerNightLabel.hideSkeleton()
+        hotelImgLabel.hideSkeleton()
+        ratingLabel?.hideSkeleton()
+        ratingContainerView?.hideSkeleton()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        hotelNameLabel.text = nil
+        hotelTypeLabel.text = nil
+        pricePerNightLabel.text = nil
+        ratingLabel?.text = nil
+        hotelImgLabel.image = nil
+        hideSkeleton()
+    }
 }
-

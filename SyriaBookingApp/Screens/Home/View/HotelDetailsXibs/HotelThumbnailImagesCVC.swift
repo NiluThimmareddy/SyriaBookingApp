@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class HotelThumbnailImagesCVC : UICollectionViewCell {
     
@@ -22,6 +23,8 @@ class HotelThumbnailImagesCVC : UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         thumbnailImgView.contentMode = .scaleToFill
         thumbnailImgView.clipsToBounds = true
     }

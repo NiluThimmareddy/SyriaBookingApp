@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SkeletonView
 
-class ArchiveTableViewCell : UITableViewCell {
+class ArchiveTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var backView: UIView!
@@ -22,10 +23,69 @@ class ArchiveTableViewCell : UITableViewCell {
         backView.applyCardStyle()
         pendingLabel.layer.cornerRadius = 6
         pendingLabel.clipsToBounds = true
+        
+        // Setup skeleton
+        setupSkeleton()
     }
     
+    private func setupSkeleton() {
+        // Make the main container skeletonable
+        backView.isSkeletonable = true
+        contentView.isSkeletonable = true
+        
+        // Make all subviews skeletonable
+        imgView.isSkeletonable = true
+        hotelIdLabel.isSkeletonable = true
+        datesLabel.isSkeletonable = true
+        pendingLabel.isSkeletonable = true
+        featureDateLabel.isSkeletonable = true
+        totalAmountLabel.isSkeletonable = true
+        
+        // Configure skeleton for labels
+        hotelIdLabel.linesCornerRadius = 4
+        datesLabel.linesCornerRadius = 4
+        pendingLabel.linesCornerRadius = 4
+        featureDateLabel.linesCornerRadius = 4
+        totalAmountLabel.linesCornerRadius = 4
+        
+        // Configure skeleton for image view
+        imgView.skeletonCornerRadius = 8
+    }
+    
+    func showSkeleton() {
+        // Hide actual content
+        hotelIdLabel.text = "Loading..."
+        datesLabel.text = "Loading..."
+        pendingLabel.text = "Loading"
+        featureDateLabel.text = "Loading"
+        totalAmountLabel.text = "Loading..."
+        
+        // Show skeleton
+        backView.showAnimatedGradientSkeleton()
+        imgView.showAnimatedGradientSkeleton()
+        hotelIdLabel.showAnimatedGradientSkeleton()
+        datesLabel.showAnimatedGradientSkeleton()
+        pendingLabel.showAnimatedGradientSkeleton()
+        featureDateLabel.showAnimatedGradientSkeleton()
+        totalAmountLabel.showAnimatedGradientSkeleton()
+    }
+    
+    func hideSkeleton() {
+        // Hide skeleton
+        backView.hideSkeleton()
+        imgView.hideSkeleton()
+        hotelIdLabel.hideSkeleton()
+        datesLabel.hideSkeleton()
+        pendingLabel.hideSkeleton()
+        featureDateLabel.hideSkeleton()
+        totalAmountLabel.hideSkeleton()
+    }
     
     func configure(booking: BookingHistoryModel) {
+        // Hide skeleton first
+        hideSkeleton()
+        
+        // Set actual data
         hotelIdLabel.text = "\(booking.hotelName) ᐧ \(booking.roomType)"
         datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
         featureDateLabel.text = booking.lastUpdatedUtc.toDayMonth()
@@ -61,4 +121,9 @@ class ArchiveTableViewCell : UITableViewCell {
         }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // Reset cell state when reused
+        hideSkeleton()
+    }
 }

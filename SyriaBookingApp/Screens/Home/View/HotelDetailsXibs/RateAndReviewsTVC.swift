@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RateAndReviewsTVC : UITableViewCell {
     
@@ -18,8 +19,11 @@ class RateAndReviewsTVC : UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         setupStarSize()
     }
+    
     func setupStarSize() {
         if UIDevice.current.userInterfaceIdiom == .pad {
             starRatings.settings.starSize = 22

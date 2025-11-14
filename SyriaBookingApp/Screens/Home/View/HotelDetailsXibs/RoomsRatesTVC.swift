@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RoomsRatesTVC : UITableViewCell {
     
@@ -21,6 +22,8 @@ class RoomsRatesTVC : UITableViewCell {
    
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
     }
     
     func configure(with selectedRoom: RoomElement, ratesForLocal: Bool, onQuantityChanged: @escaping (Int) -> Void) {

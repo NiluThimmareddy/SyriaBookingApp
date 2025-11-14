@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class RecentlyViewedCVC: UICollectionViewCell {
 
@@ -16,6 +17,8 @@ class RecentlyViewedCVC: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         hotelNameLabel.font = .captionFont
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
     }
     
     func configure(with hotel: Hotel) {

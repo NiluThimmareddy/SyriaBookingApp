@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol PromotionsCollectionViewCellDelegate: AnyObject {
     func didTapExploreMore(in cell: PromotionsCollectionViewCell)
@@ -25,6 +26,8 @@ class PromotionsCollectionViewCell : UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         backView.applyCardStyle()
         activityInfoLabel.font = .captionFont
     }

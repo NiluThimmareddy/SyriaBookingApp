@@ -5,7 +5,6 @@
 //  Created by ToqSoft on 06/08/25.
 //
 
-
 import Network
 
 class NetworkMonitor {

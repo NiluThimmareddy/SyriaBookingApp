@@ -5,8 +5,8 @@
 //  Created by ToqSoft on 25/07/25.
 //
 
-
 import UIKit
+import SkeletonView
 
 enum DatePickerMode {
     case checkIn
@@ -112,21 +112,18 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        showLoader()
+//        showLoader()
+        setupSkeletonView()
+        setupBasicUI()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.loadData()
+        }
     }
-    
-//    override func networkCameBackOnline() {
-//        print("✅ Internet is back — refetching hotels")
-//        viewModel.fetchHotels()
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
-        setupUI()
-        if HotelDataMaganer.shared.allHotels.isEmpty{
-            viewModel.fetchHotels()
-        }
         sliderCollectionView.reloadData()
     }
     
@@ -310,8 +307,14 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
 }
 
+// MARK: - UICollectionView Delegate & DataSource
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // If skeleton is active, return skeleton count
+        if collectionView.sk.isSkeletonActive {
+            return collectionSkeletonView(collectionView, numberOfItemsInSection: section)
+        }
+        
         if collectionView == topHotelsCollectionView {
             return min(10, viewModel.filteredHotels.count)
         } else if collectionView == recentlyCollectionView {
@@ -330,6 +333,18 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // If skeleton is active, return skeleton cell
+        if collectionView.sk.isSkeletonActive {
+            let cellIdentifier = collectionSkeletonView(collectionView, cellIdentifierForItemAt: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+            
+            // Make the cell and its content views skeletonable
+            cell.isSkeletonable = true
+            cell.contentView.isSkeletonable = true
+            
+            return cell
+        }
+        
         if collectionView == topHotelsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopHotelsCollectionViewCell", for: indexPath) as! TopHotelsCollectionViewCell
             let hotel = viewModel.filteredHotels[indexPath.row]
@@ -401,6 +416,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.sk.isSkeletonActive { return }
+        
         if collectionView == propertyTypeCollectionView {
             let HotelCity = WhereToNextCityList[indexPath.row].City
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
@@ -516,31 +533,340 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     
 }
 
-extension HomeViewController {
+// MARK: - SkeletonView Data Source
+extension HomeViewController: SkeletonCollectionViewDataSource {
     
-    func reloadDataOnHomeScreen(){
-        print("HomeAge reloading")
-        setupAppNavigationBar()
-        self.sliderCollectionView.reloadData()
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if skeletonView == topHotelsCollectionView {
+            return 6
+        } else if skeletonView == recentlyCollectionView {
+            return 4
+        } else if skeletonView == propertyTypeCollectionView {
+            return 5
+        } else if skeletonView == promotionsCollectionView {
+            return 3
+        } else if skeletonView == recommendedHotelsCollectionView {
+            return 6
+        } else if skeletonView == sliderCollectionView {
+            return sliderImages.count
+        }
+        return 4
     }
     
-    func setupUI() {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == topHotelsCollectionView {
+            return "TopHotelsCollectionViewCell"
+        } else if skeletonView == recentlyCollectionView {
+            return "RecentlyViewedCVC"
+        } else if skeletonView == propertyTypeCollectionView {
+            return "WhereToNextCVC"
+        } else if skeletonView == promotionsCollectionView {
+            return "PromotionsCollectionViewCell"
+        } else if skeletonView == sliderCollectionView {
+            return "SliderCollectionViewCell"
+        } else if skeletonView == recommendedHotelsCollectionView {
+            return "TopHotelsCollectionViewCell"
+        }
+        return "TopHotelsCollectionViewCell"
+    }
+}
+
+// MARK: - SkeletonView Configuration
+extension HomeViewController {
+    
+    // MARK: - Skeleton Configuration
+    func setupSkeletonView() {
+        configureSkeletonAppearance()
+        makeElementsSkeletonable()
+        showSkeletonOnAllElements()
+    }
+    
+    private func configureSkeletonAppearance() {
+        let gradient = SkeletonGradient(baseColor: UIColor.systemGray5)
+        SkeletonAppearance.default.gradient = gradient
+        SkeletonAppearance.default.tintColor = UIColor.systemGray4
+        SkeletonAppearance.default.multilineHeight = 12
+        SkeletonAppearance.default.multilineSpacing = 8
+        SkeletonAppearance.default.multilineCornerRadius = 4
+    }
+    
+    private func makeElementsSkeletonable() {
+        makeCollectionViewsSkeletonable()
+        makeLabelsSkeletonable()
+        makeButtonsSkeletonable()
+        makeViewsSkeletonable()
+    }
+    
+    private func makeCollectionViewsSkeletonable() {
+        let skeletonCollectionViews: [UICollectionView] = [
+            topHotelsCollectionView,
+            recentlyCollectionView,
+            propertyTypeCollectionView,
+            promotionsCollectionView,
+            sliderCollectionView,
+            recommendedHotelsCollectionView
+        ].compactMap { $0 }
+        
+        skeletonCollectionViews.forEach { collectionView in
+            collectionView.isSkeletonable = true
+        }
+    }
+    
+    private func makeLabelsSkeletonable() {
+        let skeletonLabels: [UILabel] = [
+            recentlyHeadLineLabel,
+            whereToNextHeadLineLabel,
+            topHotelHeadLineLabel,
+            handpickedHotelsLabel,
+            handPickedHotelsDescriptionLabel,
+            recommendedHotelsTitleLabel,
+            dealOfferLabel,
+            newYearTitleLabel,
+            messageLabel,
+            subTitleMessageLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.isSkeletonable = true
+            label.skeletonTextLineHeight = .fixed(16)
+            label.lastLineFillPercent = 100
+            label.linesCornerRadius = 4
+        }
+    }
+    
+    private func makeButtonsSkeletonable() {
+        let skeletonButtons: [UIButton] = [
+            recentlySeeMoreButton,
+            whereToNextSeeMoreButton,
+            viewAllButton,
+            viewAllRecommendedButton,
+            findDealButton,
+            selectCityButton,
+            checkInButton,
+            checkOutButton,
+            searchButton
+        ].compactMap { $0 }
+        
+        skeletonButtons.forEach { button in
+            // Configure button for skeleton
+            button.isSkeletonable = true
+            button.skeletonCornerRadius = 6
+            
+            // Configure title label for skeleton
+            button.titleLabel?.isSkeletonable = true
+            button.titleLabel?.skeletonTextLineHeight = .fixed(16)
+            button.titleLabel?.lastLineFillPercent = 100
+            button.titleLabel?.linesCornerRadius = 4
+            
+            // Set temporary plain titles for skeleton (remove attributed strings)
+            let temporaryTitle: String
+            switch button {
+            case recentlySeeMoreButton, whereToNextSeeMoreButton:
+                temporaryTitle = ""
+            case viewAllButton, viewAllRecommendedButton:
+                temporaryTitle = ""
+            case findDealButton:
+                temporaryTitle = ""
+            case selectCityButton:
+                temporaryTitle = ""
+            case checkInButton:
+                temporaryTitle = ""
+            case checkOutButton:
+                temporaryTitle = ""
+            case searchButton:
+                temporaryTitle = ""
+            default:
+                temporaryTitle = ""
+            }
+            
+            // Remove any attributed titles and set plain text for skeleton
+            button.setAttributedTitle(nil, for: .normal)
+            button.setTitle(temporaryTitle, for: .normal)
+        }
+    }
+    
+    private func makeViewsSkeletonable() {
+        let skeletonViews: [UIView] = [
+            dealsview,
+            searchView,
+            selectCityView,
+            selectCheckInView,
+            selectCheckOutView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.isSkeletonable = true
+            view.skeletonCornerRadius = 8
+        }
+    }
+    
+    private func showSkeletonOnAllElements() {
+        showSkeletonOnCollectionViews()
+        showSkeletonOnLabels()
+        showSkeletonOnButtons()
+        showSkeletonOnViews()
+    }
+    
+    private func showSkeletonOnCollectionViews() {
+        let skeletonCollectionViews: [UICollectionView] = [
+            topHotelsCollectionView,
+            recentlyCollectionView,
+            propertyTypeCollectionView,
+            promotionsCollectionView,
+            sliderCollectionView,
+            recommendedHotelsCollectionView
+        ].compactMap { $0 }
+        
+        skeletonCollectionViews.forEach { collectionView in
+            collectionView.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    private func showSkeletonOnLabels() {
+        let skeletonLabels: [UILabel] = [
+            recentlyHeadLineLabel,
+            whereToNextHeadLineLabel,
+            topHotelHeadLineLabel,
+            handpickedHotelsLabel,
+            handPickedHotelsDescriptionLabel,
+            recommendedHotelsTitleLabel,
+            dealOfferLabel,
+            newYearTitleLabel,
+            messageLabel,
+            subTitleMessageLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    private func showSkeletonOnButtons() {
+        let skeletonButtons: [UIButton] = [
+            recentlySeeMoreButton,
+            whereToNextSeeMoreButton,
+            viewAllButton,
+            viewAllRecommendedButton,
+            findDealButton,
+            selectCityButton,
+            checkInButton,
+            checkOutButton,
+            searchButton
+        ].compactMap { $0 }
+        
+        skeletonButtons.forEach { button in
+            button.showAnimatedGradientSkeleton()
+            button.titleLabel?.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    private func showSkeletonOnViews() {
+        let skeletonViews: [UIView] = [
+            dealsview,
+            searchView,
+            selectCityView,
+            selectCheckInView,
+            selectCheckOutView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    func hideSkeletonViews() {
+        hideSkeletonFromCollectionViews()
+        hideSkeletonFromLabels()
+        hideSkeletonFromButtons()
+        hideSkeletonFromViews()
+        restoreOriginalButtonTitles()
+    }
+    
+    private func hideSkeletonFromCollectionViews() {
+        let skeletonCollectionViews: [UICollectionView] = [
+            topHotelsCollectionView,
+            recentlyCollectionView,
+            propertyTypeCollectionView,
+            promotionsCollectionView,
+            sliderCollectionView,
+            recommendedHotelsCollectionView
+        ].compactMap { $0 }
+        
+        skeletonCollectionViews.forEach { collectionView in
+            collectionView.hideSkeleton()
+        }
+    }
+    
+    private func hideSkeletonFromLabels() {
+        let skeletonLabels: [UILabel] = [
+            recentlyHeadLineLabel,
+            whereToNextHeadLineLabel,
+            topHotelHeadLineLabel,
+            handpickedHotelsLabel,
+            handPickedHotelsDescriptionLabel,
+            recommendedHotelsTitleLabel,
+            dealOfferLabel,
+            newYearTitleLabel,
+            messageLabel,
+            subTitleMessageLabel
+        ].compactMap { $0 }
+        
+        skeletonLabels.forEach { label in
+            label.hideSkeleton()
+        }
+    }
+    
+    private func hideSkeletonFromButtons() {
+        let skeletonButtons: [UIButton] = [
+            recentlySeeMoreButton,
+            whereToNextSeeMoreButton,
+            viewAllButton,
+            viewAllRecommendedButton,
+            findDealButton,
+            selectCityButton,
+            checkInButton,
+            checkOutButton,
+            searchButton
+        ].compactMap { $0 }
+        
+        skeletonButtons.forEach { button in
+            button.hideSkeleton()
+            button.titleLabel?.hideSkeleton()
+        }
+    }
+    
+    private func hideSkeletonFromViews() {
+        let skeletonViews: [UIView] = [
+            dealsview,
+            searchView,
+            selectCityView,
+            selectCheckInView,
+            selectCheckOutView
+        ].compactMap { $0 }
+        
+        skeletonViews.forEach { view in
+            view.hideSkeleton()
+        }
+    }
+    
+    private func restoreOriginalButtonTitles() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.updateTexts()
+        }
+    }
+}
+
+// MARK: - Main Implementation
+extension HomeViewController {
+    
+    private func setupBasicUI() {
         searchView.isHidden = true
         searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
-        startSliderAutoScroll()
         
         if UIDevice.current.userInterfaceIdiom != .pad{
             sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
-        }
-        
-        DispatchQueue.main.async {
-            self.sliderCollectionView.reloadData()
-            let middleIndex = IndexPath(item: self.sliderImages.count, section: 0)
-            if middleIndex.item < self.sliderImages.count {
-                self.sliderCollectionView.scrollToItem(at: middleIndex, at: .centeredHorizontally, animated: false)
-            }
         }
         
         sliderCollectionView.register(UINib(nibName: "SliderCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "SliderCollectionViewCell")
@@ -561,16 +887,78 @@ extension HomeViewController {
         }
         
         setUpTomorrowDate()
+        setupCollectionViews()
+        setupDatePickerUI()
+        
+        NavigationBackGroundColour()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
+        selectCityView.addBottomShadow()
+        selectCheckInView.addBottomShadow()
+        selectCheckOutView.addBottomShadow()
+        updateTexts()
+    }
+    
+    private func setupCollectionViews() {
+        topHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
+        if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            topHotelsLayout.estimatedItemSize = .zero
+        }
+        
+        recommendedHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
+        if let recommendedHotelsLayout = recommendedHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            recommendedHotelsLayout.estimatedItemSize = .zero
+        }
+        
+        recentlyCollectionView.register(UINib(nibName: "NoRecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "NoRecentlyViewedCVC")
+        recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")
+        if let layouts = recentlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layouts.estimatedItemSize = .zero
+        }
+        
+        propertyTypeCollectionView.register(UINib(nibName: "WhereToNextCVC", bundle: nil), forCellWithReuseIdentifier: "WhereToNextCVC")
+        if let propertyLayouts = propertyTypeCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            propertyLayouts.estimatedItemSize = .zero
+        }
+        
+        promotionsCollectionView.register(UINib(nibName: "PromotionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PromotionsCollectionViewCell")
+        if let promotionsLayout = promotionsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            promotionsLayout.scrollDirection = .horizontal
+            promotionsLayout.estimatedItemSize = .zero
+        }
+        
+        stackView.clipsToBounds = true
+        stackView.layer.cornerRadius = 20
+        stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        searchView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+    }
+    
+    private func loadData() {
+        if HotelDataMaganer.shared.allHotels.isEmpty{
+            viewModel.fetchHotels()
+        }
+        setupDataBindings()
+    }
+    
+    private func setupDataBindings() {
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
                 guard let self = self else { return }
+                
+                // Hide skeleton when data is loaded
+                self.hideSkeletonViews()
                 
                 self.viewModel.fetchRecentlyViewedHotels {
                     self.recentlyCollectionView.reloadData()
                     self.updateRecentlyViewedSectionVisibility()
                 }
                 
-                self.hideLoader()
+//                self.hideLoader()
                 
                 self.viewModel.filteredHotels = self.viewModel.filteredHotels.sorted {
                     $0.averageRating > $1.averageRating
@@ -617,69 +1005,26 @@ extension HomeViewController {
                         Cityar: cityAR     // Arabic
                     )
                 } ?? []
+                
+                // Start auto scroll only after data is loaded
+                self.startSliderAutoScroll()
+                self.startPromotionAutoScroll()
             }
         }
         
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async{
-                self?.hideLoader()
+//                self?.hideLoader()
+                self?.hideSkeletonViews() // Hide skeleton on error too
                 self?.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
-        
-        topHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
-        if let topHotelsLayout = topHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            topHotelsLayout.estimatedItemSize = .zero
-        }
-        
-        recommendedHotelsCollectionView.register(UINib(nibName: "TopHotelsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TopHotelsCollectionViewCell")
-        if let recommendedHotelsLayout = recommendedHotelsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            recommendedHotelsLayout.estimatedItemSize = .zero
-        }
-        
-        recentlyCollectionView.register(UINib(nibName: "NoRecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "NoRecentlyViewedCVC")
-        recentlyCollectionView.register(UINib(nibName: "RecentlyViewedCVC", bundle: nil), forCellWithReuseIdentifier: "RecentlyViewedCVC")
-        if let layouts = recentlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layouts.estimatedItemSize = .zero
-        }
-        
-        propertyTypeCollectionView.register(UINib(nibName: "WhereToNextCVC", bundle: nil), forCellWithReuseIdentifier: "WhereToNextCVC")
-        if let propertyLayouts = propertyTypeCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            propertyLayouts.estimatedItemSize = .zero
-        }
-        
-        promotionsCollectionView.register(UINib(nibName: "PromotionsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PromotionsCollectionViewCell")
-        if let promotionsLayout = promotionsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            promotionsLayout.scrollDirection = .horizontal
-            promotionsLayout.estimatedItemSize = .zero
-        }
-        
-        stackView.clipsToBounds = true
-        stackView.layer.cornerRadius = 20
-        stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        searchView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        
-        setupDatePickerUI()
-        startPromotionAutoScroll()
-        
-        [recentlyHeadLineLabel,whereToNextHeadLineLabel,topHotelHeadLineLabel,handpickedHotelsLabel,recommendedHotelsTitleLabel].forEach { fontSize in
-            fontSize?.font = .titleFont
-        }
-        handPickedHotelsDescriptionLabel.font = .captionFont
-        
-        NavigationBackGroundColour()
-        viewModel.fetchHotels()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateTexts),
-            name: .languageChanged,
-            object: nil
-        )
-        
-        selectCityView.addBottomShadow()
-        selectCheckInView.addBottomShadow()
-        selectCheckOutView.addBottomShadow()
-        updateTexts()
+    }
+    
+    func reloadDataOnHomeScreen(){
+        print("HomeAge reloading")
+        setupAppNavigationBar()
+        self.sliderCollectionView.reloadData()
     }
     
     func updateRecentlyViewedSectionVisibility() {
@@ -758,6 +1103,9 @@ extension HomeViewController {
     }
     
     @objc func updateTexts() {
+        // Don't update texts if skeleton is still active
+        if topHotelsCollectionView.sk.isSkeletonActive { return }
+        
         let lang = AppSettings.shared.selectedLanguage
         topHotelsCollectionView.reloadData()
         propertyTypeCollectionView.reloadData()
@@ -1202,5 +1550,3 @@ extension UINavigationController {
         navigationBar.tintColor = .white
     }
 }
-
-

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class SliderCollectionViewCell: UICollectionViewCell {
     
@@ -17,6 +18,8 @@ class SliderCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         if AppSettings.shared.selectedLanguage == .arabic {
             loginButton.setTitle("تسجيل الدخول", for: .normal)
             loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .heavy)

@@ -5,7 +5,6 @@
 //  Created by ToqSoft on 13/08/25.
 //
 
-
 import UIKit
 
 class NetworkRetryManager {

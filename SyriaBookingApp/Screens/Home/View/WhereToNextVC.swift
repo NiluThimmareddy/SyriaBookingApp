@@ -3,9 +3,9 @@
 //  SyriaBookingApp
 //
 //  Created by toqsoft on 16/10/25.
-//
 
 import UIKit
+import SkeletonView
 
 class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
     
@@ -22,9 +22,16 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
     var selectedLanguage: Languages = .english
     var viewModel = HotelViewModel()
     
+    private var isShowingSkeleton = false
+    private var minimumSkeletonTime: TimeInterval = 2.0
+    private var skeletonStartTime: Date?
+    private var skeletonHideWorkItem: DispatchWorkItem?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
+        setupSkeleton()
+        showSkeletonImmediately()
         loadHotelsData()
     }
     
@@ -45,14 +52,54 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
         self.present(controller, animated: true)
     }
     
+    private func showSkeletonImmediately() {
+        isShowingSkeleton = true
+        skeletonStartTime = Date()
+        
+        if !self.topView.isHidden {
+            self.loginDescriptionLabel.showAnimatedGradientSkeleton()
+            self.loginButton.showAnimatedGradientSkeleton()
+        }
+        
+        self.citiesTitleLabel.showAnimatedGradientSkeleton()
+        self.whereToNextTableview.isSkeletonable = true
+        self.whereToNextTableview.showAnimatedGradientSkeleton()
+        self.whereToNextTableview.reloadData()
+    }
+    
     private func loadHotelsData() {
         if HotelDataMaganer.shared.allHotels.isEmpty {
             viewModel.fetchHotels()
             viewModel.onDataLoaded = { [weak self] in
-                DispatchQueue.main.async {
-                    self?.whereToNextTableview.reloadData()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                    self?.processDataAndHideSkeleton()
                 }
             }
+            
+            viewModel.onError = { [weak self] error in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                    self?.hideSkeleton()
+                }
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                self?.processDataAndHideSkeleton()
+            }
+        }
+    }
+    
+    private func processDataAndHideSkeleton() {
+        self.prepareWhereToNextData()
+        self.hideSkeleton()
+    }
+    
+    private func prepareWhereToNextData() {
+        let uniqueCities = Array(Set(HotelDataMaganer.shared.allHotels.map { $0.city }))
+        self.whereToNextCityList = uniqueCities.map { cityName in
+            let hotelsInCity = HotelDataMaganer.shared.allHotels.filter { $0.city == cityName }
+            let cityImage = hotelsInCity.first?.images.first ?? ""
+            
+            return WhereToNextList(image: cityImage, City: cityName, Cityar: cityName)
         }
     }
     
@@ -61,16 +108,98 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
             $0.city.lowercased() == cityName.lowercased()
         }
     }
+    
+}
+
+// MARK: - Skeleton Configuration
+extension WhereToNextVC {
+    private func setupSkeleton() {
+        view.isSkeletonable = true
+        whereToNextTableview.isSkeletonable = true
+        loginDescriptionLabel.isSkeletonable = true
+        loginButton.isSkeletonable = true
+        citiesTitleLabel.isSkeletonable = true
+        loginDescriptionLabel.skeletonTextLineHeight = .relativeToFont
+        loginDescriptionLabel.lastLineFillPercent = 70
+        loginDescriptionLabel.linesCornerRadius = 4
+        citiesTitleLabel.skeletonTextLineHeight = .relativeToFont
+        citiesTitleLabel.lastLineFillPercent = 100
+        citiesTitleLabel.linesCornerRadius = 4
+        whereToNextTableview.skeletonCornerRadius = 8
+        loginButton.skeletonCornerRadius = 6
+    }
+    
+    private func showSkeleton() {
+        guard !isShowingSkeleton else { return }
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.isShowingSkeleton = true
+            self.skeletonStartTime = Date()
+            if !self.topView.isHidden {
+                self.loginDescriptionLabel.showAnimatedGradientSkeleton()
+                self.loginButton.showAnimatedGradientSkeleton()
+            }
+            self.citiesTitleLabel.showAnimatedGradientSkeleton()
+            self.whereToNextTableview.isSkeletonable = true
+            self.whereToNextTableview.showAnimatedGradientSkeleton()
+            self.whereToNextTableview.reloadData()
+        }
+    }
+    
+    private func hideSkeleton() {
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let elapsedTime = self.skeletonStartTime.map { Date().timeIntervalSince($0) } ?? 0
+            let remainingTime = max(0, self.minimumSkeletonTime - elapsedTime)
+            
+            if remainingTime > 0 {
+                let workItem = DispatchWorkItem { [weak self] in
+                    self?.performHideSkeleton()
+                }
+                self.skeletonHideWorkItem = workItem
+                DispatchQueue.main.asyncAfter(deadline: .now() + remainingTime, execute: workItem)
+            } else {
+                self.performHideSkeleton()
+            }
+        }
+    }
+    
+    private func performHideSkeleton() {
+        guard isShowingSkeleton else { return }
+        
+        self.isShowingSkeleton = false
+        self.skeletonHideWorkItem = nil
+        self.loginDescriptionLabel.hideSkeleton()
+        self.loginButton.hideSkeleton()
+        self.citiesTitleLabel.hideSkeleton()
+        self.whereToNextTableview.hideSkeleton()
+        self.whereToNextTableview.reloadData()
+    }
 }
 
 // MARK: - UITableView DataSource & Delegate
 extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isShowingSkeleton {
+            return 5
+        }
         return min(whereToNextCityList.count, 10)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WhereToNextListTVC", for: indexPath) as! WhereToNextListTVC
+        
+        if isShowingSkeleton {
+            cell.showSkeleton()
+            return cell
+        }
+        
         let city = whereToNextCityList[indexPath.row]
         let hotels = getHotelsForCity(city.City)
         
@@ -92,6 +221,8 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !isShowingSkeleton else { return }
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         let selectedCity = whereToNextCityList[indexPath.row]
@@ -118,6 +249,8 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func navigateToHotelDetails(_ hotel: Hotel) {
+        guard !isShowingSkeleton else { return }
+        
         let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
         vc.selectedHotel = hotel
         vc.navigationItem.title = "Hotel Details"
@@ -128,6 +261,33 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - SkeletonTableViewDataSource
+extension WhereToNextVC: SkeletonTableViewDataSource {
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "WhereToNextListTVC"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+        let cell = skeletonView.dequeueReusableCell(withIdentifier: "WhereToNextListTVC", for: indexPath) as! WhereToNextListTVC
+        cell.showSkeleton()
+        return cell
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {
+        if let whereToNextCell = cell as? WhereToNextListTVC {
+            whereToNextCell.showSkeleton()
+        }
     }
 }
 
@@ -174,11 +334,8 @@ extension WhereToNextVC {
             citiesTopConstaint.constant = 20
             topView.isHidden = false
         }
-        
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
     }
 }
-
-

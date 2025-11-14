@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class HotelDetailsViewController : BaseViewController {
     
@@ -55,7 +56,7 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
-    var  hotelviewModel = HotelViewModel()
+    var hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRoomRates = [Rate]()
@@ -74,20 +75,41 @@ class HotelDetailsViewController : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureSkeletonAppearance()
+        setupSkeletonableViews()
         hideKeyboardWhenTappedAround()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.showInitialSkeleton()
+        }
+        setUpUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpUI()
-        roomsAvailabilityCollectionView.reloadData()
-        setupAppNavigationBar()
         
-        if let hotelId = selectedHotel?.id,
+        showInitialSkeleton()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//            self.setUpUI()
+            self.roomsAvailabilityCollectionView.reloadData()
+            self.setupAppNavigationBar()
+            
+            if let hotelId = self.selectedHotel?.id,
                let updatedHotel = HotelDataMaganer.shared.allHotels.first(where: { $0.id == hotelId }) {
                 self.selectedHotel = updatedHotel
-                rateAndReviewsTableview.reloadData()
+                self.rateAndReviewsTableview.reloadData()
             }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Hide skeleton after data is loaded (simulate loading time)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.hideAllSkeletons()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -95,15 +117,14 @@ class HotelDetailsViewController : BaseViewController {
         updateRateAndReviewsTableHeight()
     }
     
+    // MARK: - IBActions
     @IBAction func segmentControlAction(_ sender: Any) {
     }
-    
     
     @IBAction func overViewButtonAction(_ sender: Any) {
         isDescriptionVisible.toggle()
         
         descriptionLabel.isHidden = !isDescriptionVisible
-        //        descriptionLabelHeightConstraint.constant = isDescriptionVisible ? 300 : 40
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -170,20 +191,16 @@ class HotelDetailsViewController : BaseViewController {
         }
         
         self.hotelviewModel.onSuccess = { [weak self] review in
-            
             guard let self = self else { return }
             showAlert(title: "Syriabooking", message: "thank you for your valueable review ", onOK:  {
-                //fisrt fetch the particular hotels reviews
                 self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
                 
                 self.hotelviewModel.onSuccess = {[weak self] response in
                 }
             })
-            
         }
         
         self.hotelviewModel.onReviewError = { error in
-            
             self.showAlert("something went wrong try again! : \(error.description)")
         }
         
@@ -225,11 +242,16 @@ class HotelDetailsViewController : BaseViewController {
         viewAllVC.modalPresentationStyle = .overFullScreen
         present(viewAllVC, animated: true)
     }
-    
 }
 
+// MARK: - UICollectionView Delegate & DataSource
 extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // If skeleton is active, return skeleton count
+        if collectionView.sk.isSkeletonActive {
+            return collectionSkeletonView(collectionView, numberOfItemsInSection: section)
+        }
+        
         if collectionView == hotelImagesCollectionView {
             guard let hotel = selectedHotel else { return 0 }
             let imageCount = hotel.images.count
@@ -240,6 +262,18 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // If skeleton is active, return skeleton cell
+        if collectionView.sk.isSkeletonActive {
+            let cellIdentifier = collectionSkeletonView(collectionView, cellIdentifierForItemAt: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+            
+            // Make the cell and its content views skeletonable
+            cell.isSkeletonable = true
+            cell.contentView.isSkeletonable = true
+            
+            return cell
+        }
+        
         if collectionView == hotelImagesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailsPageHotelImagesCVC", for: indexPath) as! DetailsPageHotelImagesCVC
             guard let hotel = selectedHotel else { return cell }
@@ -293,12 +327,17 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AvailabilityRoomsCVC", for: indexPath) as! AvailabilityRoomsCVC
-            let rooms = (selectedHotel?.rooms[indexPath.row])!
+            
+            // Add safety check for rooms
+            guard let rooms = selectedHotel?.rooms, indexPath.row < rooms.count else {
+                return cell
+            }
+            
+            let room = rooms[indexPath.row]
             cell.delegate = self
             cell.parentHotel = self.selectedHotel
             cell.onBooknowBottonClick = { selectedRoom in
                 if UserSessionManager.getUser() == nil{
-                    // open loginin
                     let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                     guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
                     controller.comingFrom = .HomeSliderView
@@ -306,7 +345,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     controller.transitioningDelegate = self
                     controller.reloadScreenAfterDismiss = {
                         self.dismissPopup()
-                        
                     }
                     self.present(controller, animated: true)
                 } else {
@@ -317,7 +355,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                         cell.delegate?.didTapBookNow(for: room, selectedRate: selectedRate)
                     } else {
                         cell.delegate?.showAlertForRateSelection()
-                        
                     }
                 }
             }
@@ -340,7 +377,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                 }
                 self.updateTotalPrice()
             }
-            cell.configure(with: rooms)
+            cell.configure(with: room)
             return cell
         }
     }
@@ -351,14 +388,15 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
             let height: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 450 : 250
             return CGSize(width: totalWidth, height: height)
         } else {
-            if let room = selectedHotel?.rooms[indexPath.row] {
-                let height = calculateRoomCellHeight(for: room)
-                return CGSize(width: collectionView.frame.width, height: height)
-            } else {
+            // Add safety checks
+            guard let rooms = selectedHotel?.rooms, indexPath.row < rooms.count else {
                 return CGSize(width: collectionView.frame.width, height: 400)
             }
+            
+            let room = rooms[indexPath.row]
+            let height = calculateRoomCellHeight(for: room)
+            return CGSize(width: collectionView.frame.width, height: height)
         }
-        
     }
     
     func loadImage(from urlString: String, into imageView: UIImageView, completion: @escaping () -> Void) {
@@ -382,12 +420,23 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
     }
 }
 
+// MARK: - UITableView Delegate & DataSource
 extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView.sk.isSkeletonActive {
+            return 3
+        }
         return min(selectedHotel?.reviews.count ?? 0, 5)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView.sk.isSkeletonActive {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC", for: indexPath) as! RateAndReviewsTVC
+            cell.isSkeletonable = true
+            cell.contentView.isSkeletonable = true
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC") as! RateAndReviewsTVC
         if let reviews = selectedHotel?.reviews, indexPath.row < reviews.count {
             let review = reviews[indexPath.row]
@@ -402,6 +451,39 @@ extension HotelDetailsViewController : UITableViewDelegate, UITableViewDataSourc
     }
 }
 
+// MARK: - SkeletonView Data Source
+extension HotelDetailsViewController: SkeletonCollectionViewDataSource, SkeletonTableViewDataSource {
+    
+    // MARK: Collection View Skeleton Methods
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if skeletonView == hotelImagesCollectionView {
+            return 1
+        } else if skeletonView == roomsAvailabilityCollectionView {
+            return 3
+        }
+        return 3
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        if skeletonView == hotelImagesCollectionView {
+            return "DetailsPageHotelImagesCVC"
+        } else if skeletonView == roomsAvailabilityCollectionView {
+            return "AvailabilityRoomsCVC"
+        }
+        return "AvailabilityRoomsCVC"
+    }
+    
+    // MARK: Table View Skeleton Methods
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "RateAndReviewsTVC"
+    }
+}
+
+// MARK: - Main Implementation
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         if let user = UserSessionManager.getUser(){
@@ -411,7 +493,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.guestMobileNumber = user.mobile
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
-            //            controller.selectedRate = room.rates
             controller.selectedRates = self.selectedRates
             self.present(controller, animated: true)
         }
@@ -433,7 +514,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func updateTotalPrice() {
-        
         if !selectedRates.isEmpty {
             let isLocal = selectedRates[0].isLocal
             if isLocal {
@@ -443,10 +523,9 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity) > 0 }.count
                 let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity) }
                 
-                
                 let totalDiscount = selectedRates.reduce(0) { $0 + ($1.localDiscount ?? 0) }
                 if total > 0 {
-                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: SYP \(total) (\(totalDiscount)% Discount)"
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: SYP \(total) (\(totalDiscount)% Discount"
                 } else {
                     totalAmountLabel.text = ""
                 }
@@ -458,16 +537,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 let selectedRoomsCount = selectedRates.filter { ($0.selectedQuantity) > 0 }.count
                 let totalQuantity = selectedRates.reduce(0) { $0 + ($1.selectedQuantity) }
                 
-                
-                
                 let totalDiscount = selectedRates.reduce(0) { $0 + ($1.discount ?? 0) }
                 if total > 0 {
-                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $ \(total) (\(totalDiscount)% Discount)"
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $ \(total) (\(totalDiscount)% Discount"
                 } else {
                     totalAmountLabel.text = ""
                 }
                 totalPriceView.isHidden = total == 0
-                
             }
         } else {
             totalPriceView.isHidden = true
@@ -475,7 +551,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func setUpUI() {
-        
         if let user = UserSessionManager.getUser() {
             enterYourNameTF.text = user.name
             enterYourNameTF.isUserInteractionEnabled = false
@@ -752,14 +827,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             ratingLabel.text = "التقييم"
             submitReviewButton.setTitle( "إرسال المراجعة", for: .normal)
             viewAllButton.setTitle( "عرض الكل", for: .normal)
-            selectratingButton.setTitle("اختر التقييم", for: .normal) // Arabic
+            selectratingButton.setTitle("اختر التقييم", for: .normal)
             reviewLabel.text = "مراجعة"
             overViewLabel.text = "نظرة عامة"
             pleseClickHereButton.setTitle("يرجى النقر هنا", for: .normal)
             pleseClickHereButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         }
     }
-    
 }
 
 extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
@@ -769,8 +843,350 @@ extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
         }
         galleryVC.selectedHotel = selectedHotel
         galleryVC.galleryType = .hotel
-        galleryVC.initialIndex = 0 
+        galleryVC.initialIndex = 0
         present(galleryVC, animated: true)
+    }
+}
+
+extension HotelDetailsViewController {
+    // MARK: - Skeleton Configuration
+    private func configureSkeletonAppearance() {
+        let gradient = SkeletonGradient(baseColor: UIColor.systemGray5)
+        SkeletonAppearance.default.gradient = gradient
+        SkeletonAppearance.default.tintColor = UIColor.systemGray4
+        SkeletonAppearance.default.multilineHeight = 12
+        SkeletonAppearance.default.multilineSpacing = 8
+        SkeletonAppearance.default.multilineCornerRadius = 4
+    }
+    
+    private func setupSkeletonableViews() {
+        scrollView.isSkeletonable = true
+        backView.isSkeletonable = true
+        hotelImagesCollectionView.isSkeletonable = true
+        roomsAvailabilityCollectionView.isSkeletonable = true
+        rateAndReviewsTableview.isSkeletonable = true
+        setupStackViewsForSkeleton()
+        setupButtonsForSkeleton()
+        setupEnhancedButtonSkeleton()
+        
+        let skeletonViews: [UIView?] = [
+            reviewView, hotelNameLabel, overView, facilitiesView,
+            availabilityRoomsView, addReviewView, rateAndReviewsView,
+            totalPriceView, overViewLabel, contactTypesLabel,
+            pleseClickHereButton, facilitiesLabel, averageRatingsLabel,
+            descriptionLabel, availabilityLabel, addReviewLabel,
+            yourNameLabel, ratingLabel, reviewLabel, rateAndReviewsLabel,
+            overViewButton, facilitiesButton, availabilityButton,
+            addReviewViewButton, rateAndReviewsDownButton, viewAllButton,
+            submitReviewButton, selectratingButton
+        ]
+        
+        skeletonViews.forEach { view in
+            guard let view = view else { return }
+            view.isSkeletonable = true
+            view.skeletonCornerRadius = 4
+        }
+        configureLabelSkeletonProperties()
+    }
+    
+    private func setupStackViewsForSkeleton() {
+        if let horizontalStackView = horizontalStackView {
+            horizontalStackView.isSkeletonable = true
+            horizontalStackView.clipsToBounds = false
+            horizontalStackView.backgroundColor = .clear
+            if horizontalStackView.arrangedSubviews.isEmpty {
+                addPlaceholderViewsToHorizontalStack()
+            } else {
+                horizontalStackView.arrangedSubviews.forEach { subview in
+                    subview.isSkeletonable = true
+                    subview.skeletonCornerRadius = 4
+                    subview.clipsToBounds = false
+                }
+            }
+        }
+        if let verticalStackview = verticalStackview {
+            verticalStackview.isSkeletonable = true
+            verticalStackview.arrangedSubviews.forEach { subview in
+                subview.isSkeletonable = true
+                subview.skeletonCornerRadius = 4
+            }
+        }
+    }
+    
+    private func addPlaceholderViewsToHorizontalStack() {
+        guard let horizontalStackView = horizontalStackView else { return }
+        horizontalStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        for _ in 0..<4 {
+            let placeholderView = UIView()
+            placeholderView.isSkeletonable = true
+            placeholderView.skeletonCornerRadius = 8
+            placeholderView.backgroundColor = .clear
+            placeholderView.clipsToBounds = false
+            placeholderView.translatesAutoresizingMaskIntoConstraints = false
+            placeholderView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            placeholderView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+            
+            horizontalStackView.addArrangedSubview(placeholderView)
+        }
+    }
+    
+    private func setupButtonsForSkeleton() {
+        let buttons: [UIButton?] = [
+            facilitiesButton, availabilityButton, overViewButton,
+            addReviewViewButton, rateAndReviewsDownButton, viewAllButton,
+            submitReviewButton, selectratingButton, pleseClickHereButton
+        ]
+        
+        buttons.forEach { button in
+            guard let button = button else { return }
+            button.isSkeletonable = true
+            button.skeletonCornerRadius = 8
+            
+            if button == pleseClickHereButton {
+                button.backgroundColor = .clear 
+            }
+            
+            if let titleLabel = button.titleLabel {
+                titleLabel.isSkeletonable = true
+                titleLabel.skeletonTextLineHeight = .fixed(16)
+                titleLabel.lastLineFillPercent = 100
+            }
+            
+            if let imageView = button.imageView {
+                imageView.isSkeletonable = true
+                imageView.skeletonCornerRadius = 4
+            }
+        }
+    }
+    
+    private func setupEnhancedButtonSkeleton() {
+        let rectangularButtons: [UIButton?] = [
+            facilitiesButton, availabilityButton, overViewButton,
+            addReviewViewButton, rateAndReviewsDownButton
+        ]
+        
+        rectangularButtons.forEach { button in
+            guard let button = button else { return }
+            button.isSkeletonable = true
+            button.skeletonCornerRadius = 6
+            button.layer.cornerRadius = 6
+            
+            if button.bounds.height < 30 {
+                button.translatesAutoresizingMaskIntoConstraints = false
+                button.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
+            }
+        }
+        
+        let actionButtons: [UIButton?] = [
+            viewAllButton, submitReviewButton, pleseClickHereButton
+        ]
+        
+        actionButtons.forEach { button in
+            guard let button = button else { return }
+            button.isSkeletonable = true
+            button.skeletonCornerRadius = 8 // More rounded for action buttons
+            button.layer.cornerRadius = 8
+            
+            if button.bounds.height < 40 {
+                button.translatesAutoresizingMaskIntoConstraints = false
+                button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+            }
+        }
+        
+        if let selectratingButton = selectratingButton {
+            selectratingButton.isSkeletonable = true
+            selectratingButton.skeletonCornerRadius = 6
+            selectratingButton.layer.cornerRadius = 6
+        }
+    }
+    
+    private func configureLabelSkeletonProperties() {
+        hotelNameLabel.lastLineFillPercent = 100
+        hotelNameLabel.skeletonTextLineHeight = SkeletonTextLineHeight.fixed(24)
+        
+        averageRatingsLabel.lastLineFillPercent = 70
+        averageRatingsLabel.skeletonTextLineHeight = SkeletonTextLineHeight.fixed(16)
+        descriptionLabel.lastLineFillPercent = 50
+        descriptionLabel.skeletonTextLineHeight = SkeletonTextLineHeight.fixed(16)
+        
+        let sectionTitles: [UILabel?] = [overViewLabel, facilitiesLabel, availabilityLabel, addReviewLabel, rateAndReviewsLabel]
+        sectionTitles.forEach { label in
+            guard let label = label else { return }
+            label.lastLineFillPercent = 100
+            label.skeletonTextLineHeight = SkeletonTextLineHeight.fixed(18)
+        }
+        
+        let formLabels: [UILabel?] = [yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel]
+        formLabels.forEach { label in
+            guard let label = label else { return }
+            label.lastLineFillPercent = 80
+            label.skeletonTextLineHeight = SkeletonTextLineHeight.fixed(16)
+        }
+    }
+    
+    private func showInitialSkeleton() {
+        let mainSkeletonViews: [UIView?] = [
+            reviewView, hotelNameLabel, overView, facilitiesView,
+            availabilityRoomsView, addReviewView, rateAndReviewsView,
+            totalPriceView
+        ]
+        
+        mainSkeletonViews.forEach { view in
+            guard let view = view else { return }
+            view.showAnimatedGradientSkeleton()
+        }
+        
+        [hotelNameLabel, averageRatingsLabel, descriptionLabel, overViewLabel,
+         facilitiesLabel, availabilityLabel, addReviewLabel, rateAndReviewsLabel,
+         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel].forEach { label in
+            guard let label = label else { return }
+            label.showAnimatedGradientSkeleton()
+        }
+        
+        hotelImagesCollectionView.showAnimatedGradientSkeleton()
+        roomsAvailabilityCollectionView.showAnimatedGradientSkeleton()
+        rateAndReviewsTableview.showAnimatedGradientSkeleton()
+        showSkeletonOnButtons()
+        showSkeletonOnStackViews()
+    }
+    
+    private func showSkeletonOnButtons() {
+        let buttons: [UIButton?] = [
+            facilitiesButton, availabilityButton, overViewButton,
+            addReviewViewButton, rateAndReviewsDownButton, viewAllButton,
+            submitReviewButton, selectratingButton, pleseClickHereButton
+        ]
+        
+        buttons.forEach { button in
+            guard let button = button else { return }
+            button.showAnimatedGradientSkeleton()
+            button.titleLabel?.showAnimatedGradientSkeleton()
+            button.imageView?.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    private func showSkeletonOnStackViews() {
+        if let verticalStackview = verticalStackview {
+            verticalStackview.showAnimatedGradientSkeleton()
+            verticalStackview.arrangedSubviews.forEach {
+                $0.showAnimatedGradientSkeleton()
+            }
+        }
+        
+        if let horizontalStackView = horizontalStackView {
+            horizontalStackView.layoutIfNeeded()
+            horizontalStackView.showAnimatedGradientSkeleton()
+            horizontalStackView.arrangedSubviews.forEach {
+                $0.showAnimatedGradientSkeleton()
+            }
+            if horizontalStackView.arrangedSubviews.isEmpty {
+                addTemporaryContentForSkeleton()
+            }
+        }
+    }
+    
+    private func addTemporaryContentForSkeleton() {
+        guard let horizontalStackView = horizontalStackView else { return }
+        
+        for _ in 0..<3 {
+            let skeletonLabel = UILabel()
+            skeletonLabel.isSkeletonable = true
+            skeletonLabel.skeletonTextLineHeight = .fixed(16)
+            skeletonLabel.lastLineFillPercent = 80
+            skeletonLabel.text = "Loading..."
+            skeletonLabel.font = UIFont.systemFont(ofSize: 14)
+            skeletonLabel.textAlignment = .center
+            skeletonLabel.backgroundColor = .clear
+            
+            skeletonLabel.translatesAutoresizingMaskIntoConstraints = false
+            skeletonLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            skeletonLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+            
+            horizontalStackView.addArrangedSubview(skeletonLabel)
+        }
+        
+        horizontalStackView.arrangedSubviews.forEach {
+            $0.showAnimatedGradientSkeleton()
+        }
+    }
+    
+    private func hideAllSkeletons() {
+        let mainSkeletonViews: [UIView?] = [
+            reviewView, hotelNameLabel, overView, facilitiesView,
+            availabilityRoomsView, addReviewView, rateAndReviewsView,
+            totalPriceView
+        ]
+        
+        mainSkeletonViews.forEach { view in
+            guard let view = view else { return }
+            view.hideSkeleton()
+        }
+        
+        [hotelNameLabel, averageRatingsLabel, descriptionLabel, overViewLabel,
+         facilitiesLabel, availabilityLabel, addReviewLabel, rateAndReviewsLabel,
+         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel].forEach { label in
+            guard let label = label else { return }
+            label.hideSkeleton()
+        }
+        
+        hotelImagesCollectionView.hideSkeleton()
+        roomsAvailabilityCollectionView.hideSkeleton()
+        rateAndReviewsTableview.hideSkeleton()
+        
+        hideSkeletonFromButtons()
+        hideSkeletonFromStackViews()
+        removeTemporaryContent()
+    }
+    
+    private func hideSkeletonFromButtons() {
+        let buttons: [UIButton?] = [
+            facilitiesButton, availabilityButton, overViewButton,
+            addReviewViewButton, rateAndReviewsDownButton, viewAllButton,
+            submitReviewButton, selectratingButton, pleseClickHereButton
+        ]
+        
+        buttons.forEach { button in
+            guard let button = button else { return }
+            button.hideSkeleton()
+            button.titleLabel?.hideSkeleton()
+            button.imageView?.hideSkeleton()
+            if button == pleseClickHereButton {
+                button.backgroundColor = .label
+            }
+        }
+    }
+    
+    private func hideSkeletonFromStackViews() {
+        if let verticalStackview = verticalStackview {
+            verticalStackview.hideSkeleton()
+            verticalStackview.arrangedSubviews.forEach { $0.hideSkeleton() }
+        }
+        
+        if let horizontalStackView = horizontalStackView {
+            horizontalStackView.hideSkeleton()
+            horizontalStackView.arrangedSubviews.forEach { $0.hideSkeleton() }
+        }
+    }
+    
+    private func removeTemporaryContent() {
+        guard let horizontalStackView = horizontalStackView else { return }
+        
+        let temporaryLabels = horizontalStackView.arrangedSubviews.filter {
+            $0 is UILabel && ($0 as? UILabel)?.text == "Loading..."
+        }
+        
+        if !temporaryLabels.isEmpty {
+            temporaryLabels.forEach { $0.removeFromSuperview() }
+        }
+        
+        let placeholderViews = horizontalStackView.arrangedSubviews.filter {
+            $0.backgroundColor == .clear && $0.subviews.isEmpty
+        }
+        
+        if !placeholderViews.isEmpty {
+            placeholderViews.forEach { $0.removeFromSuperview() }
+        }
     }
 }
 

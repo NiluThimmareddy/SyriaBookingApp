@@ -1,6 +1,7 @@
 
 
 import UIKit
+import SkeletonView
 
 class WhereToNextCVC : UICollectionViewCell {
 
@@ -10,6 +11,8 @@ class WhereToNextCVC : UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         hotelImageView.clipsToBounds = true
         popularPlaceLabel.font = .captionFont
     }

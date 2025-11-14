@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class YourNotificationTVC: UITableViewCell {
 
@@ -18,6 +19,8 @@ class YourNotificationTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
     }
     
     func configure(with booking: BookingHistoryModel) {

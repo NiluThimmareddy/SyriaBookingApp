@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol TopHotelsCollectionViewCellDelegate: AnyObject {
     func didTapBookNow(for hotel: Hotel)
@@ -32,7 +33,8 @@ class TopHotelsCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         backView.applyCardStyle()
         reviewsView.applyCardStyle()
         reviewsView.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 15

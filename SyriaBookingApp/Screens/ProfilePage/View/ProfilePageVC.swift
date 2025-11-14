@@ -371,7 +371,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0{
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
+            let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController") as! PersonalDetailsViewController
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
         } else if indexPath.row == 1 {
@@ -383,14 +383,35 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             let vc = storyboard.instantiateViewController(identifier: "OtherGuestVC")as! OtherGuestVC
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(vc, animated: true)
-        } else if indexPath.row == 3 {
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
-            viewAllVC.comingFrom = .profile
-            viewAllVC.modalPresentationStyle = .fullScreen
-            present(viewAllVC, animated: true)
+        }
+        else if indexPath.row == 3 {
+            if hasReviews() {
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+                viewAllVC.comingFrom = .profile
+                viewAllVC.modalPresentationStyle = .fullScreen
+                present(viewAllVC, animated: true)
+            } else {
+                showNoReviewsAlert()
+            }
         }
     }
+    
+    func hasReviews() -> Bool {
+        return false
+    }
+
+    func showNoReviewsAlert() {
+        let alert = UIAlertController(
+            title: "No Reviews Found",
+            message: "It looks like you haven't written any reviews yet. Reviews you write will help other travelers make better decisions.",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
 }
+
 
 

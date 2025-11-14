@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MyBookingsViewController: BaseViewController {
     
@@ -20,9 +21,14 @@ class MyBookingsViewController: BaseViewController {
     let viewModel = NotificationViewModel()
     let bookingViewModel = BookingViewModel()
     var selectedSegmentIndex: Int = 0
-    //    var selectedHotel: Hotel?
     var isLoginPopupPresented = false
     var comingFrom : String?
+                                       
+    // Skeleton state management - UPDATED
+    private var isShowingSkeleton = false
+    private var minimumSkeletonTime: TimeInterval = 2.0 // Minimum 2 seconds
+    private var skeletonStartTime: Date?
+    private var skeletonHideWorkItem: DispatchWorkItem?
     
     var guestName: String?
     var guestEmail: String?
@@ -39,6 +45,8 @@ class MyBookingsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSkeleton()
+        setupTableView()
         setupUI()
     }
     
@@ -55,19 +63,166 @@ class MyBookingsViewController: BaseViewController {
         refreshBookingData()
     }
     
+    private func setupTableView() {
+        HistoryTableView.delegate = self
+        HistoryTableView.dataSource = self
+        
+        HistoryTableView.register(
+            UINib(nibName: "MyBookingTableViewCell", bundle: nil),
+            forCellReuseIdentifier: "MyBookingTableViewCell"
+        )
+        HistoryTableView.register(
+            UINib(nibName: "ArchiveTableViewCell", bundle: nil),
+            forCellReuseIdentifier: "ArchiveTableViewCell"
+        )
+        
+        HistoryTableView.rowHeight = UITableView.automaticDimension
+        HistoryTableView.estimatedRowHeight = 150
+    }
+    
+    private func setupSkeleton() {
+        // Configure skeleton appearance for all elements
+        view.isSkeletonable = true
+        
+        HistoryTableView.isSkeletonable = true
+        myBookigsTitleLabel.isSkeletonable = true
+        myBookingsDescriptionLabel.isSkeletonable = true
+        segmentControl.isSkeletonable = true
+        noBookingsLabel.isSkeletonable = true
+        
+        // Skeleton configuration for labels
+        myBookigsTitleLabel.skeletonTextLineHeight = .relativeToFont
+        myBookigsTitleLabel.lastLineFillPercent = 100
+        myBookigsTitleLabel.linesCornerRadius = 4
+        
+        myBookingsDescriptionLabel.skeletonTextLineHeight = .relativeToFont
+        myBookingsDescriptionLabel.lastLineFillPercent = 70
+        myBookingsDescriptionLabel.linesCornerRadius = 4
+        
+        noBookingsLabel.skeletonTextLineHeight = .relativeToFont
+        noBookingsLabel.lastLineFillPercent = 100
+        noBookingsLabel.linesCornerRadius = 4
+        
+        // Table view skeleton configuration
+        HistoryTableView.skeletonCornerRadius = 8
+    }
+    
+    private func showSkeleton() {
+        guard !isShowingSkeleton else { return }
+        
+        // Cancel any pending hide operations
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.isShowingSkeleton = true
+            self.skeletonStartTime = Date()
+            
+            // Hide actual content first
+            self.noBookingsLabel.isHidden = true
+            self.HistoryTableView.isHidden = false // Always show table view for skeleton cells
+            
+            // Show skeleton on labels
+            self.myBookigsTitleLabel.showAnimatedGradientSkeleton()
+            self.myBookingsDescriptionLabel.showAnimatedGradientSkeleton()
+            
+            // Hide segment control text during skeleton by making it transparent
+            self.hideSegmentControlText()
+            
+            // Configure and show table view skeleton
+            self.HistoryTableView.isSkeletonable = true
+            self.HistoryTableView.showAnimatedGradientSkeleton()
+            
+            self.HistoryTableView.alpha = 1.0
+        }
+    }
+    
+    private func hideSegmentControlText() {
+        // Store original titles
+        let upcomingTitle = segmentControl.titleForSegment(at: 0) ?? ""
+        let archiveTitle = segmentControl.titleForSegment(at: 1) ?? ""
+        
+        // Set empty titles during skeleton
+        segmentControl.setTitle("", forSegmentAt: 0)
+        segmentControl.setTitle("", forSegmentAt: 1)
+        
+        // Show skeleton on segment control
+        segmentControl.showAnimatedGradientSkeleton()
+        
+        // Restore titles after skeleton (stored for later use)
+        DispatchQueue.main.asyncAfter(deadline: .now() + minimumSkeletonTime) {
+            if self.isShowingSkeleton {
+                self.segmentControl.setTitle(upcomingTitle, forSegmentAt: 0)
+                self.segmentControl.setTitle(archiveTitle, forSegmentAt: 1)
+            }
+        }
+    }
+    
+    private func restoreSegmentControlText() {
+        let isArabic = AppSettings.shared.selectedLanguage == .arabic
+        let upcomingTitle = isArabic ? "القادمة" : "Upcoming"
+        let archiveTitle = isArabic ? "الأرشيف" : "Archive"
+        
+        segmentControl.setTitle(upcomingTitle, forSegmentAt: 0)
+        segmentControl.setTitle(archiveTitle, forSegmentAt: 1)
+    }
+    
+    private func hideSkeleton() {
+        // Cancel any pending hide operations
+        skeletonHideWorkItem?.cancel()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let elapsedTime = self.skeletonStartTime.map { Date().timeIntervalSince($0) } ?? 0
+            let remainingTime = max(0, self.minimumSkeletonTime - elapsedTime)
+            
+            if remainingTime > 0 {
+                // Schedule hiding after minimum time
+                let workItem = DispatchWorkItem { [weak self] in
+                    self?.performHideSkeleton()
+                }
+                self.skeletonHideWorkItem = workItem
+                DispatchQueue.main.asyncAfter(deadline: .now() + remainingTime, execute: workItem)
+            } else {
+                self.performHideSkeleton()
+            }
+        }
+    }
+    
+    private func performHideSkeleton() {
+        guard isShowingSkeleton else { return }
+        
+        self.isShowingSkeleton = false
+        self.skeletonHideWorkItem = nil
+        
+        // Hide skeleton from all elements
+        self.myBookigsTitleLabel.hideSkeleton()
+        self.myBookingsDescriptionLabel.hideSkeleton()
+        self.segmentControl.hideSkeleton()
+        self.HistoryTableView.hideSkeleton()
+        
+        // Restore segment control text
+        self.restoreSegmentControlText()
+        
+        // Ensure table view is properly configured after skeleton
+        self.HistoryTableView.reloadData()
+    }
+    
     private func refreshBookingData() {
-        // Optional: prevent duplicate calls
         guard presentedViewController == nil else { return }
         
         if let user = UserSessionManager.getUser() {
-            showLoader()
+            showSkeleton() // Show skeleton before API call
             
             viewModel.onSuccess = { [weak self] _ in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.hideLoader()
+                    self.hideSkeleton() // Hide skeleton when data is ready
                     self.configureSelectedSegment {
-                        self.HistoryTableView.reloadData()
+                        self.updateUIAfterDataLoad()
                     }
                 }
             }
@@ -76,62 +231,99 @@ class MyBookingsViewController: BaseViewController {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.hideLoader()
+                    self.hideSkeleton() // Hide skeleton on error
                     self.showAlert(error)
                 }
             }
             
-            // Re-fetch booking list
-            viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+            // Add delay to ensure skeleton is visible
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+            }
             
         } else {
-            // User not logged in — show login popup
+            hideSkeleton()
             setupUI()
         }
     }
     
+    private func updateUIAfterDataLoad() {
+        // This is called after skeleton is hidden and data is loaded
+        if self.viewModel.filteredHistoryArray.isEmpty {
+            self.noBookingsLabel.isHidden = false
+            self.noBookingsLabel.applyCardStyle()
+            self.HistoryTableView.isHidden = true
+        } else {
+            self.noBookingsLabel.isHidden = true
+            self.HistoryTableView.isHidden = false
+        }
+        self.HistoryTableView.reloadData()
+    }
     
     @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
         selectedSegmentIndex = sender.selectedSegmentIndex
-        configureSelectedSegment(completion:{
-            self.HistoryTableView.reloadData()
-        })
         
+        // Show skeleton when switching segments
+        showSkeletonForSegmentSwitch()
+        
+        configureSelectedSegment {
+            // Schedule skeleton hide after minimum time
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.hideSkeleton()
+                self.updateUIAfterDataLoad()
+            }
+        }
     }
     
-    func configureSelectedSegment(completion: @escaping ()->Void){
-        if selectedSegmentIndex == 0 {
-            // UPCOMING: today or future dates
-            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
-                if let date = data.checkInUtc.toDate() {
-                    return date >= Calendar.current.startOfDay(for: Date()) // today & future
-                }
-                return false
-            }
-        } else {
-            // PAST: before today
-            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
-                if let date = data.checkInUtc.toDate() {
-                    return date < Calendar.current.startOfDay(for: Date()) // strictly past
-                }
-                return false
-            }
-        }
-        if viewModel.filteredHistoryArray.isEmpty {
-            noBookingsLabel.isHidden = false
-            noBookingsLabel.applyCardStyle()
-            HistoryTableView.isHidden = true
-        } else {
-            noBookingsLabel.isHidden = true
-            HistoryTableView.isHidden = false
-        }
-        completion()
+    private func showSkeletonForSegmentSwitch() {
+        // Cancel any pending hide operations
+        skeletonHideWorkItem?.cancel()
         
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.isShowingSkeleton = true
+            self.skeletonStartTime = Date()
+            
+            // Hide content and show skeleton
+            self.noBookingsLabel.isHidden = true
+            self.HistoryTableView.isHidden = false
+            
+            // Hide segment control text during switch
+            self.hideSegmentControlText()
+            
+            self.HistoryTableView.showAnimatedGradientSkeleton()
+            self.HistoryTableView.alpha = 1.0
+        }
+    }
+    
+    func configureSelectedSegment(completion: @escaping ()->Void) {
+        if selectedSegmentIndex == 0 {
+            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+                if let date = data.checkInUtc.toDate() {
+                    return date >= Calendar.current.startOfDay(for: Date())
+                }
+                return false
+            }
+        } else {
+            viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
+                if let date = data.checkInUtc.toDate() {
+                    return date < Calendar.current.startOfDay(for: Date())
+                }
+                return false
+            }
+        }
+        
+        DispatchQueue.main.async {
+            completion()
+        }
     }
 }
 
-extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension MyBookingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  viewModel.filteredHistoryArray.count
+        return viewModel.filteredHistoryArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -178,44 +370,86 @@ extension MyBookingsViewController : UITableViewDelegate, UITableViewDataSource{
             return UIDevice.current.userInterfaceIdiom == .pad ? 180 : 152
         }
     }
-    
 }
 
-extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
+// MARK: - SkeletonTableViewDataSource
+extension MyBookingsViewController: SkeletonTableViewDataSource {
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "MyBookingTableViewCell"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
+        let identifier = selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "MyBookingTableViewCell"
+        
+        if selectedSegmentIndex == 1 {
+            let cell = skeletonView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! ArchiveTableViewCell
+            cell.showSkeleton()
+            return cell
+        } else {
+            let cell = skeletonView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MyBookingTableViewCell
+            cell.showSkeleton()
+            return cell
+        }
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {
+        if let archiveCell = cell as? ArchiveTableViewCell {
+            archiveCell.showSkeleton()
+        } else if let bookingCell = cell as? MyBookingTableViewCell {
+            bookingCell.showSkeleton()
+        }
+    }
+}
+
+// MARK: - UI Setup
+extension MyBookingsViewController {
     func setupUI() {
         navigationController?.setNavigationBarBlack()
         
-        if let  user = UserSessionManager.getUser() {
-            self.showLoader()
-            viewModel.onSuccess = { response in
+        if let user = UserSessionManager.getUser() {
+            // Show skeleton immediately
+            showSkeleton()
+            
+            viewModel.onSuccess = { [weak self] response in
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.hideLoader()
+                    self.hideSkeleton()
                     self.selectedSegmentIndex = 0
-                    self.configureSelectedSegment(completion:{
-                        self.HistoryTableView.reloadData()
-                    })
+                    self.configureSelectedSegment {
+                        self.updateUIAfterDataLoad()
+                    }
                 }
             }
             
-            viewModel.onError = { error in
+            viewModel.onError = { [weak self] error in
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.hideLoader()
+                    self.hideSkeleton()
                     self.showAlert(error)
                 }
             }
             
-            viewModel.fetchNotificationUser(userId: user.id,includePast: true)
+            // Add delay to ensure skeleton is visible
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+            }
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
             HistoryTableView.isHidden = false
             myBookigsTitleLabel.isHidden = false
             myBookingsDescriptionLabel.isHidden = false
-            HistoryTableView.register(
-                UINib(nibName: "MyBookingTableViewCell", bundle: nil),
-                forCellReuseIdentifier: "MyBookingTableViewCell"
-            )
-            HistoryTableView.register(UINib(nibName: "ArchiveTableViewCell", bundle: nil), forCellReuseIdentifier: "ArchiveTableViewCell")
+            
             let selectedTextAttributes: [NSAttributedString.Key: Any] = [
                 .foregroundColor: UIColor.white
             ]
@@ -229,12 +463,8 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             segmentControl.selectedSegmentTintColor = UIColor.black
             segmentControl.addBottomShadow()
             
-            DispatchQueue.main.async {
-                self.selectedSegmentIndex = 0
-                self.HistoryTableView.reloadData()
-            }
         } else {
-            
+            hideSkeleton()
             segmentControl.isHidden = true
             HistoryTableView.isHidden = true
             myBookigsTitleLabel.isHidden = true
@@ -244,7 +474,6 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
             DispatchQueue.main.async {
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else {
-                    print("Failed to load RegisterMobileNumberVC")
                     return
                 }
                 controller.modalPresentationStyle = .overFullScreen
@@ -260,6 +489,7 @@ extension MyBookingsViewController: UIViewControllerTransitioningDelegate {
     }
 }
 
+// MARK: - MyBookingCellDelegate, CancelBookingDelegate
 extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate {
     
     func didTapDetails(for booking: BookingHistoryModel) {
@@ -306,7 +536,6 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
                 
                 guard let data = data else { return }
                 
-                // Dismiss cancel popup before showing success alert
                 self.presentedViewController?.dismiss(animated: true) {
                     self.showAlert(title: "Success", message: data.message, onOK: {
                         self.fetchUpdatedBookings()
@@ -319,14 +548,15 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     private func fetchUpdatedBookings() {
         guard let user = UserSessionManager.getUser() else { return }
         
-        showLoader()
+        showSkeleton()
         
         viewModel.onSuccess = { [weak self] _ in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.hideLoader()
+                self.hideSkeleton()
                 self.configureSelectedSegment {
-                    self.HistoryTableView.reloadData()
+                    self.updateUIAfterDataLoad()
                 }
             }
         }
@@ -335,29 +565,16 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.hideLoader()
+                self.hideSkeleton()
                 self.showAlert(error)
             }
         }
         
-        // Re-fetch bookings (both upcoming & past)
         viewModel.fetchNotificationUser(userId: user.id, includePast: true)
     }
 }
 
-
-extension String {
-    func toDate() -> Date? {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime] // only internet date time
-        if let date = formatter.date(from: self) {
-            return date
-        }
-        
-        // Try with fractional seconds as a fallback
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter.date(from: self)
-    }
-}
+// MARK: - Language Setup
 extension MyBookingsViewController {
     func setupLanguage() {
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
@@ -380,3 +597,16 @@ extension MyBookingsViewController {
     }
 }
 
+// MARK: - String Extension for Date Conversion
+extension String {
+    func toDate() -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        if let date = formatter.date(from: self) {
+            return date
+        }
+        
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.date(from: self)
+    }
+}

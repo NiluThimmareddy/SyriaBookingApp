@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol HotelImagesGalleryCVCDelegate: AnyObject {
     func didTap360ViewButton(in cell: HotelImagesGalleryCVC)
@@ -20,6 +21,8 @@ class HotelImagesGalleryCVC : UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         backView.applyCardStyle()
         hotelImageView.contentMode = .scaleToFill
         hotelImageView.clipsToBounds = true

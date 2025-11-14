@@ -3,9 +3,9 @@
 //  SyriaBookingApp
 //
 //  Created by toqsoft on 17/10/25.
-//
 
 import UIKit
+import SkeletonView
 
 class WhereToNextListTVC: UITableViewCell {
     
@@ -22,7 +22,10 @@ class WhereToNextListTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isSkeletonable = true
+        self.contentView.isSkeletonable = true
         setUpUI()
+        setupSkeleton()
     }
     
     override func layoutSubviews() {
@@ -35,6 +38,7 @@ class WhereToNextListTVC: UITableViewCell {
         self.hotels = hotels
         self.selectedLanguage = language
         
+        hideSkeleton()
         updateUI()
         totalHotelCollectionView.reloadData()
     }
@@ -79,12 +83,50 @@ class WhereToNextListTVC: UITableViewCell {
             }
         }.resume()
     }
+    
+    // MARK: - Skeleton Methods
+    private func setupSkeleton() {
+        backView.isSkeletonable = true
+        hotelImgView.isSkeletonable = true
+        hotelNameLabel.isSkeletonable = true
+        totalHotelsAvailableLabel.isSkeletonable = true
+        totalHotelCollectionView.isSkeletonable = true
+        hotelNameLabel.skeletonTextLineHeight = .fixed(20)
+        hotelNameLabel.lastLineFillPercent = 100
+        hotelNameLabel.linesCornerRadius = 4
+        totalHotelsAvailableLabel.skeletonTextLineHeight = .fixed(16)
+        totalHotelsAvailableLabel.lastLineFillPercent = 70
+        totalHotelsAvailableLabel.linesCornerRadius = 4
+        hotelImgView.skeletonCornerRadius = 8
+        totalHotelCollectionView.skeletonCornerRadius = 8
+    }
+    
+    func showSkeleton() {
+        hotelImgView.image = nil
+        hotelNameLabel.text = nil
+        totalHotelsAvailableLabel.text = nil
+        hotels.removeAll()
+        totalHotelCollectionView.reloadData()
+        backView.showAnimatedGradientSkeleton()
+        hotelImgView.showAnimatedGradientSkeleton()
+        hotelNameLabel.showAnimatedGradientSkeleton()
+        totalHotelsAvailableLabel.showAnimatedGradientSkeleton()
+        totalHotelCollectionView.showAnimatedGradientSkeleton()
+    }
+    
+    func hideSkeleton() {
+        backView.hideSkeleton()
+        hotelImgView.hideSkeleton()
+        hotelNameLabel.hideSkeleton()
+        totalHotelsAvailableLabel.hideSkeleton()
+        totalHotelCollectionView.hideSkeleton()
+    }
 }
 
 // MARK: - Collection View Methods
 extension WhereToNextListTVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        hotels.count
+        return hotels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -119,7 +161,23 @@ extension WhereToNextListTVC: UICollectionViewDelegate, UICollectionViewDataSour
             onHotelSelected?(selectedHotel)
         }
     }
+}
+
+// MARK: - Skeleton Collection View Data Source
+extension WhereToNextListTVC: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
     
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "WhereToNextListCVC"
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, skeletonCellForItemAt indexPath: IndexPath) -> UICollectionViewCell? {
+        let cell = skeletonView.dequeueReusableCell(withReuseIdentifier: "WhereToNextListCVC", for: indexPath) as! WhereToNextListCVC
+        cell.showSkeleton()
+        return cell
+    }
 }
 
 // MARK: - Setup Methods
@@ -129,7 +187,6 @@ extension WhereToNextListTVC {
         totalHotelCollectionView.delegate = self
         totalHotelCollectionView.dataSource = self
         hotelImgView.applyFullLightBlackGradientOverlay()
-        updateUI()
     }
     
     override func prepareForReuse() {
@@ -139,6 +196,6 @@ extension WhereToNextListTVC {
         totalHotelsAvailableLabel.text = nil
         hotels.removeAll()
         onHotelSelected = nil
+        hideSkeleton()
     }
 }
-
