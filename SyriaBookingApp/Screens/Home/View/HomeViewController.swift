@@ -1016,7 +1016,7 @@ extension HomeViewController {
             DispatchQueue.main.async{
 //                self?.hideLoader()
                 self?.hideSkeletonViews() // Hide skeleton on error too
-                self?.showAlert(title: "Error", message: error.localizedDescription)
+//                self?.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
     }

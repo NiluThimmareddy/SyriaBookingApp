@@ -5,7 +5,6 @@
 //  Created by ToqSoft on 27/07/25.
 //
 
-
 import Foundation
 
 class HotelViewModel {
@@ -15,7 +14,7 @@ class HotelViewModel {
     var recentlyViewdHotels : [Hotel] = []
     var onDataLoaded: (() -> Void)?
     var onError: ((Error) -> Void)?
-
+    
     var filteredBookings: [Booking] = []
     
     var onSuccess: ((Review) -> Void)?
@@ -25,103 +24,87 @@ class HotelViewModel {
     var filteredHotelsCopy : [Hotel] = []
     
     func fetchHotels() {
-        NetworkRetryManager.executeWithNetworkRetry(
-            observerKey: "FetchHotelsRetry",
-            showAlertOnFail: true,
-            onError: onError
-        ) { [weak self] in
-            guard let self = self else { return }
-            guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
-            
-            
-            
-            guard let url = URL(string: urlstr) else {
-                print("Invalid hotel URL")
-                return
-            }
-
-            APIManager.shared.fetchData(from: url, modelType: HotelResponse.self) { result in
-                switch result {
-                case .success(let response):
-                    self.hotels = response
-                    self.filteredHotels = response.data
-                    self.filteredHotelsCopy = response.data
-                    HotelDataMaganer.shared.allHotels = response.data
-                    self.onDataLoaded?()
-                  
-                case .failure(let error):
-                   
-                    self.onError?(error)
-                }
+        
+        guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+        
+        
+        
+        guard let url = URL(string: urlstr) else {
+            print("Invalid hotel URL")
+            return
+        }
+        
+        APIManager.shared.fetchData(from: url, modelType: HotelResponse.self) { result in
+            switch result {
+            case .success(let response):
+                self.hotels = response
+                self.filteredHotels = response.data
+                self.filteredHotelsCopy = response.data
+                HotelDataMaganer.shared.allHotels = response.data
+                self.onDataLoaded?()
+                
+            case .failure(let error):
+                
+                self.onError?(error)
             }
         }
+        
     }
     
     
     
     func fetchSingleHotels(id: String = "", completion: @escaping (Hotel) -> Void) {
-        NetworkRetryManager.executeWithNetworkRetry(
-            observerKey: "FetchHotelsRetry",
-            showAlertOnFail: true,
-            onError: onError
-        ) { [weak self] in
-            guard let self = self else { return }
-            guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
-            
-            var str = urlstr
-            if !id.isEmpty {
-                str += "\(id)"
-            }
-            
-            guard let url = URL(string: str) else {
-                print("Invalid hotel URL")
-                return
-            }
-
-            APIManager.shared.fetchData(from: url, modelType: SignleHoteResponseModel.self) { result in
-                switch result {
-                case .success(let response):
-                    completion(response.data)
-                case .failure(let error):
-                    
-                    print("Errot in fetching hotels data...")
-                    self.onError?(error)
-                }
+        
+        guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+        
+        var str = urlstr
+        if !id.isEmpty {
+            str += "\(id)"
+        }
+        
+        guard let url = URL(string: str) else {
+            print("Invalid hotel URL")
+            return
+        }
+        
+        APIManager.shared.fetchData(from: url, modelType: SignleHoteResponseModel.self) { result in
+            switch result {
+            case .success(let response):
+                completion(response.data)
+            case .failure(let error):
+                
+                print("Errot in fetching hotels data...")
+                self.onError?(error)
             }
         }
+        
     }
-
+    
     
     func fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
-      NetworkRetryManager.executeWithNetworkRetry(
-          observerKey: "FetchHotelsRetry",
-          showAlertOnFail: true,
-          onError: onError
-      ) { [weak self] in
-          guard let self = self else { return }
-          
-          guard let urlstr = APIURL.fetchHotelReviews.url?.absoluteString else { return }
-          let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
-          let url = URL(string: getUrl)
-         
         
-          guard let url = url else {
-              print("Invalid hotel URL for review")
-              return
-          }
-          
-          APIManager.shared.fetchData(from: url, modelType: Review.self) { result in
-              switch result {
-              case .success(let response):
-                  self.onSuccess?(response)
-                  self.onDataLoaded?()
-              case .failure(let error):
-                  self.onError?(error)
-              }
-          }
-      }
-  }
- 
+        guard let urlstr = APIURL.fetchHotelReviews.url?.absoluteString else { return }
+        let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
+        let url = URL(string: getUrl)
+        
+        
+        guard let url = url else {
+            print("Invalid hotel URL for review")
+            return
+        }
+        
+        APIManager.shared.fetchData(from: url, modelType: Review.self) { result in
+            switch result {
+            case .success(let response):
+                self.onSuccess?(response)
+                self.onDataLoaded?()
+            case .failure(let error):
+                self.onError?(error)
+            }
+        }
+        
+    }
+    
     
     func fetchRecentlyViewedHotels(completion: @escaping () -> Void) {
         let recentlyViewedDict = HotelDataMaganer.shared.getRecentlyViewedHotelIds()
@@ -160,14 +143,14 @@ class HotelViewModel {
                 
                 hotel.name.lowercased().contains(searchText.lowercased()) || hotel.city.lowercased().contains(searchText.lowercased())
                 
-            } 
+            }
         }
     }
     
     
     func SubmitReview(HotelId: String, reviewerName: String, rating: Int , reviewText: String)
     {
-
+        
         let params: [String: Any] = [
             "hotelId": HotelId,
             "reviewerName": reviewerName,
@@ -193,7 +176,7 @@ class HotelViewModel {
     }
     
     func submitReporAnApp(type:String,subject:String,message:String,hotelId:String,hotelName:String = "" ,BookingId:String = "",userName:String,UserEmail:String,userPhone:String){
-       
+        
         let params: [String: Any] = [
             "type": type,
             "subject": subject,
@@ -223,4 +206,4 @@ class HotelViewModel {
         }
     }
 }
- 
+

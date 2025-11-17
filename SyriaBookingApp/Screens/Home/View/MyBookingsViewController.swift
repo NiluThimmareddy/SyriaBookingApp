@@ -461,8 +461,6 @@ extension MyBookingsViewController {
             segmentControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
             segmentControl.layer.backgroundColor = UIColor.white.cgColor
             segmentControl.selectedSegmentTintColor = UIColor.black
-            segmentControl.addBottomShadow()
-            
         } else {
             hideSkeleton()
             segmentControl.isHidden = true

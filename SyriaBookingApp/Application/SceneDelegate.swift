@@ -76,29 +76,7 @@ extension UIApplication {
         return base
     }
     
-    static func showNetworkLostAlertAndRetry(observerKey: String, action: @escaping () -> Void) {
-        guard let topVC = topViewController() else { return }
-        
-        let alert = UIAlertController(
-            title: "No Internet Connection",
-            message: "Please check your internet connection.\n\nWaiting to reconnect...",
-            preferredStyle: .alert
-        )
-        
-        topVC.present(alert, animated: true)
-        
-        NetworkMonitor.shared.addStatusObserver(observerKey) { isConnected in
-            if isConnected {
-                NetworkMonitor.shared.removeStatusObserver(observerKey)
-                
-                DispatchQueue.main.async {
-                    alert.dismiss(animated: true) {
-                        action()
-                    }
-                }
-            }
-        }
-    }
+   
 }
 
 

@@ -436,4 +436,11 @@ extension UIViewController {
         textField.resignFirstResponder()
         return true
     }
+    
+    func showNoInternetConnetionView() {
+        let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(identifier: "InternetViewController") as! InternetViewController
+        controller.message = "No Internet Connection"
+        controller.modalPresentationStyle = .fullScreen
+        self.present(controller, animated: true)
+    }
 }

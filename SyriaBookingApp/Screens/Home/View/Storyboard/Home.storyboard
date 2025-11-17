@@ -5651,6 +5651,88 @@
             </objects>
             <point key="canvasLocation" x="3204" y="5"/>
         </scene>
+        <!--Internet View Controller-->
+        <scene sceneID="tbz-jL-aaV">
+            <objects>
+                <viewController storyboardIdentifier="InternetViewController" id="AhE-bv-YKo" customClass="InternetViewController" customModule="SyriaBookingApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="ojY-mn-Gci">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbN-go-Zuu">
+                                <rect key="frame" x="131.66666666666666" y="464" width="129.99999999999997" height="40"/>
+                                <color key="backgroundColor" red="0.20392156859999999" green="0.30588235289999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="130" id="J7P-NO-8T3"/>
+                                    <constraint firstAttribute="height" constant="40" id="m8f-4j-fSt"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Try again!">
+                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="15"/>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="tryAgainButton:" destination="AhE-bv-YKo" eventType="touchUpInside" id="Wjz-9K-6GG"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opps!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhg-FR-3aD">
+                                <rect key="frame" x="10" y="99" width="373" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="PwP-u9-iB5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y1U-0p-JVO">
+                                <rect key="frame" x="10" y="144" width="373" height="220"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="220" id="ZbX-ZL-kqY"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3t-fR-Jmm">
+                                <rect key="frame" x="83" y="394" width="227" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="IxW-JX-erE"/>
+                                </constraints>
+                                <string key="text">Check Your Internet Connection! 
+And Try Again.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="c5w-su-srf"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="w3t-fR-Jmm" firstAttribute="top" secondItem="Y1U-0p-JVO" secondAttribute="bottom" constant="30" id="7OC-kR-U5l"/>
+                            <constraint firstItem="Y1U-0p-JVO" firstAttribute="top" secondItem="lhg-FR-3aD" secondAttribute="bottom" constant="20" id="8Yp-uy-FKV"/>
+                            <constraint firstItem="gbN-go-Zuu" firstAttribute="top" secondItem="w3t-fR-Jmm" secondAttribute="bottom" constant="30" id="GIh-wo-8Tf"/>
+                            <constraint firstItem="Y1U-0p-JVO" firstAttribute="leading" secondItem="ojY-mn-Gci" secondAttribute="leading" constant="10" id="KKA-X7-AEF"/>
+                            <constraint firstItem="Y1U-0p-JVO" firstAttribute="centerY" secondItem="ojY-mn-Gci" secondAttribute="centerY" id="P6w-fm-BCj"/>
+                            <constraint firstItem="c5w-su-srf" firstAttribute="trailing" secondItem="lhg-FR-3aD" secondAttribute="trailing" constant="10" id="RdJ-Py-UH9"/>
+                            <constraint firstItem="lhg-FR-3aD" firstAttribute="top" secondItem="c5w-su-srf" secondAttribute="top" constant="40" id="XXe-y5-gmX"/>
+                            <constraint firstAttribute="trailing" secondItem="Y1U-0p-JVO" secondAttribute="trailing" constant="10" id="XvY-Sd-UfP"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="gbN-go-Zuu" secondAttribute="bottom" constant="100" id="ZvL-AS-GoF"/>
+                            <constraint firstItem="lhg-FR-3aD" firstAttribute="leading" secondItem="c5w-su-srf" secondAttribute="leading" constant="10" id="dJJ-p9-60l"/>
+                            <constraint firstItem="w3t-fR-Jmm" firstAttribute="centerX" secondItem="ojY-mn-Gci" secondAttribute="centerX" id="egm-Kf-x3l"/>
+                            <constraint firstItem="gbN-go-Zuu" firstAttribute="centerX" secondItem="ojY-mn-Gci" secondAttribute="centerX" id="gDp-ao-Chg"/>
+                            <constraint firstItem="w3t-fR-Jmm" firstAttribute="centerX" secondItem="ojY-mn-Gci" secondAttribute="centerX" id="vks-Tc-gGM"/>
+                            <constraint firstItem="Y1U-0p-JVO" firstAttribute="centerX" secondItem="ojY-mn-Gci" secondAttribute="centerX" id="zRQ-Rw-vev"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="bF7-eF-53P"/>
+                    <connections>
+                        <outlet property="image" destination="Y1U-0p-JVO" id="Wht-xe-dpe"/>
+                        <outlet property="internetButton" destination="gbN-go-Zuu" id="7LI-4Y-BS8"/>
+                        <outlet property="messageTextLabel" destination="w3t-fR-Jmm" id="RKH-KN-NHn"/>
+                        <outlet property="oppsNameLabel" destination="lhg-FR-3aD" id="6az-e1-ibe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1LI-t9-Khb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5481.679389312977" y="1407.7464788732395"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow.right" catalog="system" width="128" height="95"/>

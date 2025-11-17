@@ -116,10 +116,10 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
         
-        guard let reachability = try? Reachability(), reachability.connection != .unavailable else {
-            showAlert("No Internet Connection. Please check your network and try again.")
-            return
-        }
+//        guard let reachability = try? Reachability(), reachability.connection != .unavailable else {
+//            showAlert("No Internet Connection. Please check your network and try again.")
+//            return
+//        }
         
         guard let noOfGuestText = numberOfGuestsTF.text,
               !noOfGuestText.isEmpty,
