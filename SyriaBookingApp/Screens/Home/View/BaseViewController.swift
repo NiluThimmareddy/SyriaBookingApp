@@ -5,7 +5,6 @@
 
 import UIKit
 
-
 class BaseViewController: UIViewController {
     
     private let networkObserverKey = UUID().uuidString
@@ -27,12 +26,10 @@ class BaseViewController: UIViewController {
     }
     
     @objc func checkInternet() {
-        // Your internet check logic
         if !Reachability.isConnectedToNetwork() {
                    internetCheckTimer?.invalidate()
                   showNoInternetConnetionView()
                }
-        print("Checking internet...")
     }
     
     deinit {

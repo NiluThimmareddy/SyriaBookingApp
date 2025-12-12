@@ -8,20 +8,22 @@
 import UIKit
 import WebKit
 
-class SafetyResourceCenterVC : UIViewController {
+class SafetyResourceCenterVC: UIViewController, WKNavigationDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var safetyResourceCenterTitleLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
+    @IBOutlet weak var followLinksView: UIView!
     
     private var webView: WKWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupWebView()
-        loadHTMLContent()
-        scrollView.addTopShadow()
+        setupSocialMediaView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,16 +32,38 @@ class SafetyResourceCenterVC : UIViewController {
     }
     
     private func setupWebView() {
-        webView = WKWebView(frame: self.view.bounds)
-        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        let configuration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
+        webView.scrollView.isScrollEnabled = false
+        
         bottomView.addSubview(webView)
         
-        webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             webView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
             webView.topAnchor.constraint(equalTo: bottomView.topAnchor),
             webView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
+        ])
+        
+        loadHTMLContent()
+    }
+    
+    private func setupSocialMediaView() {
+        let nib = UINib(nibName: "SocialMedia", bundle: nil)
+        guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
+            return
+        }
+
+        followLinksView.addSubview(socialView)
+
+        socialView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
+            socialView.bottomAnchor.constraint(equalTo: followLinksView.bottomAnchor),
+            socialView.leadingAnchor.constraint(equalTo: followLinksView.leadingAnchor),
+            socialView.trailingAnchor.constraint(equalTo: followLinksView.trailingAnchor)
         ])
     }
     
@@ -56,29 +80,23 @@ class SafetyResourceCenterVC : UIViewController {
                 <style>
                     body {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-                        padding: 18px;
+                        padding: 20px;
                         color: #333333;
                         font-size: 13px;
-                        line-height: 1.3; /* ↓ tighter line gap */
+                        line-height: 1.3;
                         direction: rtl;
                         text-align: right;
                     }
-            
-                    h1 { font-size: 16px; font-weight: 700; margin-top: 0; margin-bottom: 6px; }
-                    h2 { font-size: 15px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; }
-                    h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 4px; }
-                    p  { font-size: 13px; font-weight: 400; line-height: 1.4; margin-bottom: 8px; }
-                    ul { padding-right: 16px; margin-bottom: 8px; }
-                    li { margin-bottom: 4px; }
-                    strong { font-weight: 600; font-size: 13px; }
+                    h1 { font-size: 18px; font-weight: 700; margin-top: 0; margin-bottom: 8px; color: #000000; }
+                    h3 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 6px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-right: 16px; margin-top: 2px; margin-bottom: 12px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
-            
-                    @media (min-width: 768px) {
-                        h1 { font-size: 18px; }
-                        h2 { font-size: 16px; }
-                        h3 { font-size: 15px; }
-                        p, strong { font-size: 14px; }
-                    }
                 </style>
             </head>
             <body>
@@ -88,14 +106,14 @@ class SafetyResourceCenterVC : UIViewController {
             
                 <p>يقدم مركز موارد السلامة هذا إرشادات ودعماً أساسياً لمساعدتك على السفر بثقة في جميع أنحاء سوريا.</p>
             
-                <h3>١. أمان الحجز والخصوصية</h3>
+                <h5>١. أمان الحجز والخصوصية</h5>
                 <ul>
                     <li><strong>فنادق موثقة فقط:</strong> جميع العقارات تمر بعملية تحقق صارمة قبل النشر.</li>
                     <li><strong>منصة آمنة:</strong> يتم حماية بياناتك باستخدام بروتوكولات التشفير والمعايير العالمية.</li>
-                    <li><strong>بدون دفعات مقدمة:</strong> من خلال نظام <em>“الدفع عند الوصول”</em>، لست بحاجة إلى إدخال بيانات الدفع عبر الإنترنت.</li>
+                    <li><strong>بدون دفعات مقدمة:</strong> من خلال نظام <em>"الدفع عند الوصول"</em>، لست بحاجة إلى إدخال بيانات الدفع عبر الإنترنت.</li>
                 </ul>
             
-                <h3>٢. تدابير السلامة في الفنادق</h3>
+                <h5>٢. تدابير السلامة في الفنادق</h5>
                 <p>نشجع شركاء الفنادق على تبني الممارسات التالية:</p>
                 <ul>
                     <li>تنظيف الغرف وتعقيمها يومياً</li>
@@ -104,9 +122,9 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>موظفون مدربون للسلامة والاستجابة للحالات الطارئة</li>
                     <li>بروتوكولات الصحة والنظافة خاصة في الأماكن كثيرة الاستخدام</li>
                 </ul>
-                <p>ابحث عن شارة <em>“معتمد للسلامة”</em> للفنادق التي تقدم المزيد.</p>
+                <p>ابحث عن شارة <em>"معتمد للسلامة"</em> للفنادق التي تقدم المزيد.</p>
             
-                <h3>٣. مسؤولية المسافر</h3>
+                <h5>٣. مسؤولية المسافر</h5>
                 <ul>
                     <li>اتبع إرشادات الصحة والسلامة المحلية</li>
                     <li>احترم قوانين الفندق وتعليمات الموظفين</li>
@@ -114,7 +132,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>احتفظ بأرقام الطوارئ في متناول يدك</li>
                 </ul>
             
-                <h3>٤. في حالة الطوارئ</h3>
+                <h5>٤. في حالة الطوارئ</h5>
                 <ul>
                     <li><strong>الشرطة المحلية:</strong> 112</li>
                     <li><strong>الإسعاف:</strong> 110</li>
@@ -122,7 +140,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li><strong>الهاتف:</strong> +963-123-456789</li>
                 </ul>
             
-                <h3>٥. نصائح السفر لسوريا</h3>
+                <h5>٥. نصائح السفر لسوريا</h5>
                 <ul>
                     <li>التزم بالمناطق والفنادق المعروفة</li>
                     <li>تجنب التنقل ليلاً في أماكن غير مألوفة</li>
@@ -131,7 +149,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>شارك خط سير رحلتك مع العائلة أو الأصدقاء</li>
                 </ul>
             
-                <h3>هل تحتاج للمساعدة؟</h3>
+                <h5>هل تحتاج للمساعدة؟</h5>
                 <p>إذا كان لديك أي قلق قبل أو أثناء أو بعد إقامتك، فإن فريق خدمة العملاء لدينا هنا لمساعدتك.</p>
                 <p><strong>متاحون على مدار الساعة</strong> لضمان سلامتك ورضاك.</p>
             </body>
@@ -147,29 +165,23 @@ class SafetyResourceCenterVC : UIViewController {
                 <style>
                     body {
                         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-                        padding: 18px;
+                        padding: 20px;
                         color: #333333;
                         font-size: 13px;
-                        line-height: 1.3; /* ↓ reduced line gap */
+                        line-height: 1.3;
                         direction: ltr;
                         text-align: left;
                     }
-            
-                    h1 { font-size: 16px; font-weight: 700; margin-top: 0; margin-bottom: 6px; }
-                    h2 { font-size: 15px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; }
-                    h3 { font-size: 14px; font-weight: 600; margin-top: 12px; margin-bottom: 4px; }
-                    p  { font-size: 13px; font-weight: 400; line-height: 1.4; margin-bottom: 8px; }
-                    ul { padding-left: 16px; margin-bottom: 8px; }
-                    li { margin-bottom: 4px; }
-                    strong { font-weight: 600; font-size: 13px; }
+                    h1 { font-size: 18px; font-weight: 700; margin-top: 0; margin-bottom: 8px; color: #000000; }
+                    h3 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h5 { font-size: 14px; font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: #000000; }
+                    h6 { font-size: 13px; font-weight: 500; margin-top: 12px; margin-bottom: 6px; color: #222222; }
+                    p { margin-bottom: 8px; font-size: 13px; font-weight: 400; color: #333333; }
+                    ul { padding-left: 16px; margin-top: 2px; margin-bottom: 12px; }
+                    li { margin-bottom: 4px; font-size: 13px; }
+                    a { color: #007AFF; text-decoration: none; font-size: 13px; font-weight: 500; }
+                    strong { font-weight: 600; font-size: 14px; }
                     em { font-style: italic; color: #666666; }
-            
-                    @media (min-width: 768px) {
-                        h1 { font-size: 18px; }
-                        h2 { font-size: 16px; }
-                        h3 { font-size: 15px; }
-                        p, strong { font-size: 14px; }
-                    }
                 </style>
             </head>
             <body>
@@ -179,14 +191,14 @@ class SafetyResourceCenterVC : UIViewController {
             
                 <p>This Safety Resource Center offers essential guidance and support to help you travel confidently across Syria.</p>
             
-                <h3>1. Booking Safety & Privacy</h3>
+                <h5>1. Booking Safety & Privacy</h5>
                 <ul>
                     <li><strong>Verified Hotels Only:</strong> All listed properties on our platform go through a strict verification process before being published.</li>
                     <li><strong>Secure Platform:</strong> Your data is protected using industry-standard encryption and privacy protocols.</li>
-                    <li><strong>No Advance Payment Required:</strong> With our “Pay on Arrival” system, you don’t need to enter any payment details online.</li>
+                    <li><strong>No Advance Payment Required:</strong> With our "Pay on Arrival" system, you don't need to enter any payment details online.</li>
                 </ul>
             
-                <h3>2. Hotel Safety Measures</h3>
+                <h5>2. Hotel Safety Measures</h5>
                 <p>We encourage our hotel partners to adopt and maintain the following safety practices:</p>
                 <ul>
                     <li>Daily room cleaning and sanitization</li>
@@ -195,9 +207,9 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Trained staff for guest safety and emergency response</li>
                     <li>Health & hygiene protocols especially for high-contact areas</li>
                 </ul>
-                <p>Look for the <em>“Safety Certified”</em> badge on hotels that go the extra mile.</p>
+                <p>Look for the <em>"Safety Certified"</em> badge on hotels that go the extra mile.</p>
             
-                <h3>3. Traveler Responsibility</h3>
+                <h5>3. Traveler Responsibility</h5>
                 <ul>
                     <li>Follow local health, safety, and travel guidelines</li>
                     <li>Respect hotel rules and staff instructions</li>
@@ -205,7 +217,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Keep emergency numbers accessible</li>
                 </ul>
             
-                <h3>4. In Case of Emergency</h3>
+                <h5>4. In Case of Emergency</h5>
                 <ul>
                     <li><strong>Local Police:</strong> 112</li>
                     <li><strong>Medical Emergency:</strong> 110</li>
@@ -213,7 +225,7 @@ class SafetyResourceCenterVC : UIViewController {
                     <li><strong>Phone:</strong> +963-123-456789</li>
                 </ul>
             
-                <h3>5. Travel Tips for Syria</h3>
+                <h5>5. Travel Tips for Syria</h5>
                 <ul>
                     <li>Stick to well-known destinations and hotel areas</li>
                     <li>Avoid traveling late at night in unfamiliar locations</li>
@@ -222,9 +234,9 @@ class SafetyResourceCenterVC : UIViewController {
                     <li>Share your travel itinerary with family or friends</li>
                 </ul>
             
-                <h3>Need Help?</h3>
+                <h5>Need Help?</h5>
                 <p>If you have any concerns before, during, or after your stay, our customer care team is here to support you.</p>
-                <p><strong>We’re available 24/7</strong> to ensure your safety and satisfaction.</p>
+                <p><strong>We're available 24/7</strong> to ensure your safety and satisfaction.</p>
             </body>
             </html>
             """
@@ -233,5 +245,38 @@ class SafetyResourceCenterVC : UIViewController {
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
     
+    // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
+            if let height = result as? CGFloat {
+                DispatchQueue.main.async {
+                    self.updateWebViewHeight(height)
+                }
+            }
+        }
+    }
+    
+    private func updateWebViewHeight(_ height: CGFloat) {
+        bottomView.constraints.forEach { constraint in
+            if constraint.firstAttribute == .height {
+                bottomView.removeConstraint(constraint)
+            }
+        }
+        let newHeight = height
+        let heightConstraint = bottomView.heightAnchor.constraint(equalToConstant: newHeight)
+        heightConstraint.priority = UILayoutPriority(750)
+        heightConstraint.isActive = true
+        self.view.layoutIfNeeded()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let contentHeight = contentView.systemLayoutSizeFitting(
+            CGSize(width: contentView.frame.width, height: UIView.layoutFittingCompressedSize.height)
+        ).height
+        
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
+    }
 }
-

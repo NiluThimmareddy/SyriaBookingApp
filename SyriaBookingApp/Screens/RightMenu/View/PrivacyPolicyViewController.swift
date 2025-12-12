@@ -2,38 +2,59 @@
 import UIKit
 import WebKit
 
-class PrivacyPolicyViewController: UIViewController {
+class PrivacyPolicyViewController: UIViewController, WKNavigationDelegate {
     
-    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var privacyPolicyTitleLabel: UILabel!
     @IBOutlet weak var privacyPolicyLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
+    @IBOutlet weak var followLinksView: UIView!
     
     private var webView: WKWebView!
+    private var webViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView = WKWebView(frame: self.view.bounds)
-        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        setupWebView()
+        setupSocialMediaView()
+    }
+    
+    private func setupWebView() {
+        let configuration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
+        webView.scrollView.isScrollEnabled = false
+        
         bottomView.addSubview(webView)
         
-        webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             webView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
             webView.topAnchor.constraint(equalTo: bottomView.topAnchor),
             webView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
-        loadHTMLContent()
-        if AppSettings.shared.selectedLanguage == .arabic {
-            privacyPolicyTitleLabel.text = "سياسة الخصوصية"
-            privacyPolicyTitleLabel.textAlignment = .center
-        } else {
-            privacyPolicyTitleLabel.text = "Privacy Policy"
-            privacyPolicyTitleLabel.textAlignment = .center
-        }
         
+        loadHTMLContent()
+    }
+    
+    private func setupSocialMediaView() {
+        let nib = UINib(nibName: "SocialMedia", bundle: nil)
+        guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
+            return
+        }
+
+        followLinksView.addSubview(socialView)
+
+        socialView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
+            socialView.bottomAnchor.constraint(equalTo: followLinksView.bottomAnchor),
+            socialView.leadingAnchor.constraint(equalTo: followLinksView.leadingAnchor),
+            socialView.trailingAnchor.constraint(equalTo: followLinksView.trailingAnchor)
+        ])
     }
     
     private func loadHTMLContent() {
@@ -152,6 +173,10 @@ class PrivacyPolicyViewController: UIViewController {
             
                 <h6>شكراً لزيارتكم!</h6>
                 <p>باستخدامك موقعنا أو خدماتنا، فإنك توافق على شروط سياسة الخصوصية هذه. يرجى مراجعتها دورياً للتحديثات أو التغييرات.</p>
+            <p style="margin-top: 20px; font-weight: 500;">
+                مع أطيب التحيات،<br>
+                فريق SyriaBooking
+            </p>
             </body>
             </html>
             """
@@ -268,6 +293,10 @@ class PrivacyPolicyViewController: UIViewController {
             
                 <h6>Thank you for visiting!</h6>
                 <p>By using our website or services, you consent to the terms of this Privacy Policy. Please review this policy periodically for updates or changes.</p>
+            <p style="margin-top: 20px; font-weight: 500;">
+                Best regards,<br>
+                SyriaBooking Team
+            </p>
             </body>
             </html>
             """
@@ -276,4 +305,35 @@ class PrivacyPolicyViewController: UIViewController {
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
+            if let height = result as? CGFloat {
+                DispatchQueue.main.async {
+                    self.updateWebViewHeight(height)
+                }
+            }
+        }
+    }
+    
+    private func updateWebViewHeight(_ height: CGFloat) {
+        bottomView.constraints.forEach { constraint in
+            if constraint.firstAttribute == .height {
+                bottomView.removeConstraint(constraint)
+            }
+        }
+        
+        let newHeight = height
+        let heightConstraint = bottomView.heightAnchor.constraint(equalToConstant: newHeight)
+        heightConstraint.priority = UILayoutPriority(750)
+        heightConstraint.isActive = true
+        self.view.layoutIfNeeded()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let contentHeight = contentView.systemLayoutSizeFitting(
+            CGSize(width: contentView.frame.width, height: UIView.layoutFittingCompressedSize.height)
+        ).height
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: contentHeight)
+    }
 }

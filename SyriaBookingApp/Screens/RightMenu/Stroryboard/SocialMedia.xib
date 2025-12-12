@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SocialMediaView" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="150"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xf-aR-QUa">
+                    <rect key="frame" x="5" y="5" width="383" height="140"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow us:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yih-QE-MXr">
+                            <rect key="frame" x="10" y="10" width="363" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="UNM-kv-JEF">
+                            <rect key="frame" x="100" y="38" width="183" height="40"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z31-ng-sZ6">
+                                    <rect key="frame" x="0.0" y="0.0" width="42" height="40"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="ic_facebook"/>
+                                    <connections>
+                                        <action selector="facebookButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="64D-rO-Aig"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6e-ja-F3x">
+                                    <rect key="frame" x="47" y="0.0" width="42" height="40"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="ic_instagram"/>
+                                    <connections>
+                                        <action selector="instagramButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Fhl-tB-plT"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L1H-EI-AQh">
+                                    <rect key="frame" x="94" y="0.0" width="42" height="40"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="ic_linkedin"/>
+                                    <connections>
+                                        <action selector="linkedinButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="hbf-5k-Zxu"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XR2-5s-NaO">
+                                    <rect key="frame" x="141" y="0.0" width="42" height="40"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="ic_tiktok"/>
+                                    <connections>
+                                        <action selector="tiktokButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="eSI-8S-Gh7"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="bTd-6c-twh"/>
+                            </constraints>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="© 2025-26 SyriaBooking Inc. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTM-sh-KPJ">
+                            <rect key="frame" x="10" y="90.666666666666671" width="363" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="yih-QE-MXr" firstAttribute="leading" secondItem="6xf-aR-QUa" secondAttribute="leading" constant="10" id="7z9-bT-Vla"/>
+                        <constraint firstAttribute="trailing" secondItem="eTM-sh-KPJ" secondAttribute="trailing" constant="10" id="8hV-uF-hoL"/>
+                        <constraint firstAttribute="trailing" secondItem="yih-QE-MXr" secondAttribute="trailing" constant="10" id="EX4-Tf-RBK"/>
+                        <constraint firstAttribute="trailing" secondItem="UNM-kv-JEF" secondAttribute="trailing" constant="100" id="Eeb-om-9KP">
+                            <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                        </constraint>
+                        <constraint firstItem="UNM-kv-JEF" firstAttribute="leading" secondItem="6xf-aR-QUa" secondAttribute="leading" constant="100" id="HTL-CQ-5DY">
+                            <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                        </constraint>
+                        <constraint firstItem="eTM-sh-KPJ" firstAttribute="top" secondItem="UNM-kv-JEF" secondAttribute="bottom" constant="12.5" id="TLa-CU-Ihb">
+                            <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                        </constraint>
+                        <constraint firstItem="yih-QE-MXr" firstAttribute="top" secondItem="6xf-aR-QUa" secondAttribute="top" constant="10" id="U1e-x2-3Kc"/>
+                        <constraint firstItem="eTM-sh-KPJ" firstAttribute="leading" secondItem="6xf-aR-QUa" secondAttribute="leading" constant="10" id="aUm-CY-uix"/>
+                        <constraint firstItem="UNM-kv-JEF" firstAttribute="top" secondItem="yih-QE-MXr" secondAttribute="bottom" constant="10" id="nVL-fg-3AB">
+                            <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                        </constraint>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="6xf-aR-QUa" secondAttribute="bottom" constant="5" id="F5I-g2-OHL"/>
+                <constraint firstItem="6xf-aR-QUa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="KNn-WM-54h"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6xf-aR-QUa" secondAttribute="trailing" constant="5" id="OCP-lg-CMV"/>
+                <constraint firstItem="6xf-aR-QUa" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="5" id="Rfe-je-IRd"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="faceBookButton" destination="z31-ng-sZ6" id="B8C-Yl-sX1"/>
+                <outlet property="followLabel" destination="yih-QE-MXr" id="n16-4D-nsE"/>
+                <outlet property="instagramButton" destination="n6e-ja-F3x" id="N6T-X6-bg2"/>
+                <outlet property="linkedinButton" destination="L1H-EI-AQh" id="Hkl-v2-A6a"/>
+                <outlet property="syriabookingIncLabel" destination="eTM-sh-KPJ" id="a95-hS-QcW"/>
+                <outlet property="tiktokButton" destination="XR2-5s-NaO" id="Rhy-YK-trH"/>
+            </connections>
+            <point key="canvasLocation" x="235.87786259541983" y="-67.605633802816911"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_facebook" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="ic_instagram" width="25" height="25"/>
+        <image name="ic_linkedin" width="25" height="25"/>
+        <image name="ic_tiktok" width="25" height="25"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

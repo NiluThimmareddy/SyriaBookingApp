@@ -9,6 +9,10 @@ import UIKit
 
 class Covid19FAQsVC : UIViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var followLinksView: UIView!
+    @IBOutlet weak var emailUsView: UIView!
     @IBOutlet weak var frequentlyAskedTVC: UITableView!
     @IBOutlet weak var covid19TitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -184,6 +188,42 @@ extension Covid19FAQsVC {
             covid19FaqsTitleLabel.text = "COVID-19 FAQs"
             redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
         }
+        setupSocialMediaView()
+        setupEmailUsView()
+    }
+    
+    private func setupSocialMediaView() {
+        let nib = UINib(nibName: "SocialMedia", bundle: nil)
+        guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
+            return
+        }
+
+        followLinksView.addSubview(socialView)
+
+        socialView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
+            socialView.bottomAnchor.constraint(equalTo: followLinksView.bottomAnchor),
+            socialView.leadingAnchor.constraint(equalTo: followLinksView.leadingAnchor),
+            socialView.trailingAnchor.constraint(equalTo: followLinksView.trailingAnchor)
+        ])
+    }
+    
+    private func setupEmailUsView() {
+        let nib = UINib(nibName: "EmailIDView", bundle: nil)
+        guard let emailView = nib.instantiate(withOwner: nil, options: nil).first as? EmailIDView else {
+            return
+        }
+
+        emailUsView.addSubview(emailView)
+        emailView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            emailView.topAnchor.constraint(equalTo: emailUsView.topAnchor),
+            emailView.bottomAnchor.constraint(equalTo: emailUsView.bottomAnchor),
+            emailView.leadingAnchor.constraint(equalTo: emailUsView.leadingAnchor),
+            emailView.trailingAnchor.constraint(equalTo: emailUsView.trailingAnchor)
+        ])
     }
 }
 

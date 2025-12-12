@@ -8,16 +8,17 @@
 import UIKit
 
 class ContactUSVC: UIViewController {
-
-    @IBOutlet weak var continueButton: UIButton!
-    @IBOutlet weak var uiView: UIView!
-    @IBOutlet weak var designView: UIView!
+    
+    @IBOutlet weak var contactUsButton: UIButton!
+    
+    var comingfrom : comingFromLogin?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    @IBAction func continueButtonAction(_ sender: Any) {
+    @IBAction func contactUsButtonAction(_ sender: Any) {
+        let storyboard = storyboard?.instantiateViewController(identifier: "ReportAnAppVC") as! ReportAnAppVC
+        self.present(storyboard, animated: true)
     }
-
 }

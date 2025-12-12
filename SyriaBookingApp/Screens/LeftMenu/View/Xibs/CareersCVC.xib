@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CareersCVC" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="198"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="390" height="198"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5y-xK-Vdf">
+                        <rect key="frame" x="5" y="5" width="380" height="188"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feels like being part of something bigger" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wGF-66-HGz">
+                                <rect key="frame" x="10" y="9.9999999999999982" width="360" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncb-iN-EzZ">
+                                <rect key="frame" x="10" y="39.333333333333343" width="360" height="46.666666666666657"/>
+                                <string key="text">Working at SyriaBooking.sy feels like being part of something bigger - we're not just booking hotels, we're helping rebuild confidence in Syrian tourism.</string>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lina A." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="28e-cV-QNz">
+                                <rect key="frame" x="10" y="111" width="360" height="19.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hotel Onboarding Manager" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvP-II-wE5">
+                                <rect key="frame" x="10" y="135.33333333333334" width="360" height="17"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ncb-iN-EzZ" firstAttribute="leading" secondItem="wGF-66-HGz" secondAttribute="leading" id="7yc-dd-1El"/>
+                            <constraint firstItem="BvP-II-wE5" firstAttribute="leading" secondItem="28e-cV-QNz" secondAttribute="leading" id="A13-7N-Nq9"/>
+                            <constraint firstItem="ncb-iN-EzZ" firstAttribute="top" secondItem="wGF-66-HGz" secondAttribute="bottom" constant="10" id="BCl-JF-eQl"/>
+                            <constraint firstItem="BvP-II-wE5" firstAttribute="top" secondItem="28e-cV-QNz" secondAttribute="bottom" constant="5" id="EGv-Qy-R6n"/>
+                            <constraint firstItem="28e-cV-QNz" firstAttribute="trailing" secondItem="ncb-iN-EzZ" secondAttribute="trailing" id="EWf-bR-UkW"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvP-II-wE5" secondAttribute="bottom" constant="15" id="Faz-zP-ikD"/>
+                            <constraint firstAttribute="trailing" secondItem="wGF-66-HGz" secondAttribute="trailing" constant="10" id="Id2-fq-l22"/>
+                            <constraint firstItem="wGF-66-HGz" firstAttribute="top" secondItem="k5y-xK-Vdf" secondAttribute="top" constant="10" id="VfE-Lf-jCh"/>
+                            <constraint firstItem="28e-cV-QNz" firstAttribute="top" secondItem="ncb-iN-EzZ" secondAttribute="bottom" constant="25" id="YUR-dA-ora"/>
+                            <constraint firstItem="28e-cV-QNz" firstAttribute="leading" secondItem="ncb-iN-EzZ" secondAttribute="leading" id="a2B-JK-TRL"/>
+                            <constraint firstItem="ncb-iN-EzZ" firstAttribute="trailing" secondItem="wGF-66-HGz" secondAttribute="trailing" id="c69-C0-UlB"/>
+                            <constraint firstItem="wGF-66-HGz" firstAttribute="leading" secondItem="k5y-xK-Vdf" secondAttribute="leading" constant="10" id="c6T-y4-53j"/>
+                            <constraint firstItem="BvP-II-wE5" firstAttribute="trailing" secondItem="28e-cV-QNz" secondAttribute="trailing" id="jbF-6i-qWd"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="k5y-xK-Vdf" secondAttribute="trailing" constant="5" id="MhA-aC-yTm"/>
+                <constraint firstAttribute="bottom" secondItem="k5y-xK-Vdf" secondAttribute="bottom" constant="5" id="enh-5P-IbS"/>
+                <constraint firstItem="k5y-xK-Vdf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="moL-JW-gnM"/>
+                <constraint firstItem="k5y-xK-Vdf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="o6l-Pz-YpF"/>
+            </constraints>
+            <size key="customSize" width="390" height="198"/>
+            <connections>
+                <outlet property="answersLabel" destination="ncb-iN-EzZ" id="Mrb-uW-ZxJ"/>
+                <outlet property="backView" destination="k5y-xK-Vdf" id="yBp-gJ-aK0"/>
+                <outlet property="designationLabel" destination="BvP-II-wE5" id="tCw-hz-jcQ"/>
+                <outlet property="questionsTitleLabel" destination="wGF-66-HGz" id="rK3-5b-CLP"/>
+                <outlet property="teammembersNameLabel" destination="28e-cV-QNz" id="bvW-p4-wJ2"/>
+            </connections>
+            <point key="canvasLocation" x="290.07633587786256" y="40.845070422535215"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

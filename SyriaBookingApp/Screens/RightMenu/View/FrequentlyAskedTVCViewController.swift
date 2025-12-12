@@ -10,12 +10,12 @@ import UIKit
 
 class FrequentlyAskedTVCViewController : UIViewController {
     
-    @IBOutlet weak var topView: UIView!
     @IBOutlet weak var frequentlyAskedTVC: UITableView!
-    @IBOutlet weak var FAQsTitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var frequentlyAskedQuestionsTitleLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
+    @IBOutlet weak var emailUsView: UIView!
+    @IBOutlet weak var followUsLinksView: UIView!
     
     var selectedIndexPath: IndexPath?
     var count = ["01","02","03","04","05","06","07","08","09","10"]
@@ -25,9 +25,8 @@ class FrequentlyAskedTVCViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
-        setupLanguageContent()
     }
-    
+
     @IBAction func dismissButton(_ sender: Any) {
         self.dismiss(animated: true)
     }
@@ -92,15 +91,50 @@ extension FrequentlyAskedTVCViewController {
         frequentlyAskedTVC.register(UINib(nibName: "FrequentlyAskedTVC", bundle: .main), forCellReuseIdentifier: "FrequentlyAskedTVC")
         frequentlyAskedTVC.dataSource = self
         frequentlyAskedTVC.delegate = self
+        
+        setupLanguageContent()
+        setupEmailUsView()
+        setupSocialMediaView()
+    }
+    
+    private func setupSocialMediaView() {
+        let nib = UINib(nibName: "SocialMedia", bundle: nil)
+        guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
+            return
+        }
+
+        followUsLinksView.addSubview(socialView)
+
+        socialView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            socialView.topAnchor.constraint(equalTo: followUsLinksView.topAnchor),
+            socialView.bottomAnchor.constraint(equalTo: followUsLinksView.bottomAnchor),
+            socialView.leadingAnchor.constraint(equalTo: followUsLinksView.leadingAnchor),
+            socialView.trailingAnchor.constraint(equalTo: followUsLinksView.trailingAnchor)
+        ])
+    }
+    
+    private func setupEmailUsView() {
+        let nib = UINib(nibName: "EmailIDView", bundle: nil)
+        guard let emailView = nib.instantiate(withOwner: nil, options: nil).first as? EmailIDView else {
+            return
+        }
+
+        emailUsView.addSubview(emailView)
+        emailView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            emailView.topAnchor.constraint(equalTo: emailUsView.topAnchor),
+            emailView.bottomAnchor.constraint(equalTo: emailUsView.bottomAnchor),
+            emailView.leadingAnchor.constraint(equalTo: emailUsView.leadingAnchor),
+            emailView.trailingAnchor.constraint(equalTo: emailUsView.trailingAnchor)
+        ])
     }
     
     func setupLanguageContent() {
         if AppSettings.shared.selectedLanguage == .arabic {
             frequentlyAskedQuestionsTitleLabel.text = "الأسئلة الشائعة"
             redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
-            FAQsTitleLabel.text = "الأسئلة المتكررة"
-            FAQsTitleLabel.textAlignment = .center
-            
             descriptionLabel.text = "يجب عليك أن تأتي مرة واحدة على الأقل في حياتك."
             descriptionLabel.textAlignment = .center
             
@@ -132,9 +166,6 @@ extension FrequentlyAskedTVCViewController {
         } else {
             frequentlyAskedQuestionsTitleLabel.text = "Frequently Asked Questions"
             redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
-            FAQsTitleLabel.text = "Frequently Asked Questions"
-            FAQsTitleLabel.textAlignment = .center
-            
             descriptionLabel.text = "You need to come at least once in your life."
             descriptionLabel.textAlignment = .center
             

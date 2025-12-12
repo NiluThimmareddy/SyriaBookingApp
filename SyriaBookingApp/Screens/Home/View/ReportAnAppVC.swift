@@ -161,11 +161,12 @@ class ReportAnAppVC: BaseViewController {
     
     
     @IBAction func dismissButton(_ sender: Any) {
-        if comingfrom == .RightMenu || comingfrom == .HotelDetail{
-            self.dismiss(animated: true)
-        }else{
-            UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
-        }
+//        if comingfrom == .RightMenu || comingfrom == .HotelDetail{
+//            self.dismiss(animated: true)
+//        }else{
+//            UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
+//        }
+        self.dismiss(animated: true)
     }
 }
 

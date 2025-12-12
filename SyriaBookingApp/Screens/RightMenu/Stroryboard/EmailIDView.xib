@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EmailIDView" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMU-qx-kyD">
+                    <rect key="frame" x="5" y="5" width="383" height="90"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_question" translatesAutoresizingMaskIntoConstraints="NO" id="57a-pQ-7GH">
+                            <rect key="frame" x="10" y="15" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="57a-pQ-7GH" secondAttribute="height" id="G1T-kw-vGC"/>
+                                <constraint firstAttribute="height" constant="60" id="qcG-Hf-qZH">
+                                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
+                                </constraint>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Still have questions?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0V-fh-6zf">
+                            <rect key="frame" x="80" y="14.999999999999998" width="293" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yj-gD-z9d">
+                            <rect key="frame" x="80" y="45" width="293" height="30"/>
+                            <color key="backgroundColor" systemColor="labelColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="ymK-ct-vqF">
+                                    <variation key="heightClass=regular-widthClass=regular" constant="50"/>
+                                </constraint>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                            <state key="normal" title="Mail us info@syriabooking.sy" image="arrow.right" catalog="system"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Mail us info@syriabooking.sy" imagePadding="20">
+                                <imageReference key="image" image="arrow.right" catalog="system" symbolScale="medium"/>
+                                <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                            </buttonConfiguration>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="emailUsButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="25e-T6-15l"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="y0V-fh-6zf" firstAttribute="top" secondItem="57a-pQ-7GH" secondAttribute="top" id="0xh-HD-Wxl"/>
+                        <constraint firstItem="9Yj-gD-z9d" firstAttribute="bottom" secondItem="57a-pQ-7GH" secondAttribute="bottom" id="60r-SH-8U1"/>
+                        <constraint firstItem="57a-pQ-7GH" firstAttribute="centerY" secondItem="sMU-qx-kyD" secondAttribute="centerY" id="BIU-PU-2ih"/>
+                        <constraint firstItem="57a-pQ-7GH" firstAttribute="leading" secondItem="sMU-qx-kyD" secondAttribute="leading" constant="10" id="OQP-Fi-ms0"/>
+                        <constraint firstItem="9Yj-gD-z9d" firstAttribute="leading" secondItem="y0V-fh-6zf" secondAttribute="leading" id="bI2-MD-l1X"/>
+                        <constraint firstItem="9Yj-gD-z9d" firstAttribute="trailing" secondItem="y0V-fh-6zf" secondAttribute="trailing" id="mML-Xl-Pg2"/>
+                        <constraint firstAttribute="trailing" secondItem="y0V-fh-6zf" secondAttribute="trailing" constant="10" id="mhy-Wr-xJL">
+                            <variation key="heightClass=regular-widthClass=regular" constant="200"/>
+                        </constraint>
+                        <constraint firstItem="y0V-fh-6zf" firstAttribute="leading" secondItem="57a-pQ-7GH" secondAttribute="trailing" constant="10" id="ove-JX-ve8"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="sMU-qx-kyD" secondAttribute="bottom" constant="5" id="6yd-Kj-Q6G"/>
+                <constraint firstItem="sMU-qx-kyD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="eEd-fI-RhF"/>
+                <constraint firstItem="sMU-qx-kyD" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="5" id="hHB-ND-GHO"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="sMU-qx-kyD" secondAttribute="trailing" constant="5" id="kVm-57-Tw0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backView" destination="sMU-qx-kyD" id="nWz-qZ-vUN"/>
+                <outlet property="emailUsButton" destination="9Yj-gD-z9d" id="JbF-so-azJ"/>
+                <outlet property="personImageview" destination="57a-pQ-7GH" id="uAb-ls-nVY"/>
+                <outlet property="stillHaveQuestionsLabel" destination="y0V-fh-6zf" id="mRG-ha-dyH"/>
+            </connections>
+            <point key="canvasLocation" x="96.946564885496173" y="-26.056338028169016"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow.right" catalog="system" width="128" height="95"/>
+        <image name="ic_question" width="42.666667938232422" height="42.666667938232422"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
