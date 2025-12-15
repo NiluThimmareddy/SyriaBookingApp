@@ -10,15 +10,17 @@ import UIKit
 class ContactUSVC: UIViewController {
     
     @IBOutlet weak var contactUsButton: UIButton!
-    
+   
     var comingfrom : comingFromLogin?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideNavigationBar(animated: true)
     }
     
     @IBAction func contactUsButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(identifier: "ReportAnAppVC") as! ReportAnAppVC
+        storyboard.modalPresentationStyle = .custom
         self.present(storyboard, animated: true)
     }
 }

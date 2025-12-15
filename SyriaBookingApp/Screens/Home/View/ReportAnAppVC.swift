@@ -1,10 +1,6 @@
-//
 //  ReportAnAppVC.swift
 //  SyriaBookingApp
-//
 //  Created by toqsoft on 04/09/25.
-//
-
 
 import UIKit
 
@@ -43,9 +39,11 @@ class ReportAnAppVC: BaseViewController {
         hideKeyboardWhenTappedAround()
         topView.layer.cornerRadius = 10
         topView.addBottomShadow()
+        scrollView.applyCardStyle()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         setupContactUsTypeDropdownMenu()
         setupLanguage()
-        
+        hideNavigationBar(animated: true)
         if comingfrom == .RightMenu {
             if AppSettings.shared.selectedLanguage == .arabic {
                 contactTitleLabel.text = "الإبلاغ عن تطبيق"
