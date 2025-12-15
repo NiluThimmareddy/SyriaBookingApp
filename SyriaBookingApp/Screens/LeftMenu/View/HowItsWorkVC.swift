@@ -23,7 +23,7 @@ class HowItsWorkVC: UIViewController {
     @IBOutlet weak var arriveAtYourHotelLabel: UILabel!
     @IBOutlet weak var howItWorksTitleLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
-    
+    @IBOutlet weak var selectYourRoomTrailingConstraint: NSLayoutConstraint!
     
     weak var delegate: YourNotificationVCDelegate?
     private var webView: WKWebView!
@@ -36,6 +36,19 @@ class HowItsWorkVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        adjustTrailingConstraint()
+    }
+
+    private func adjustTrailingConstraint() {
+        let screenWidth = UIScreen.main.bounds.width
+
+        if screenWidth <= 393 {
+            selectYourRoomTrailingConstraint.constant = 210
+        }
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
