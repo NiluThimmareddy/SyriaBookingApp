@@ -112,12 +112,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        showLoader()
-        setupSkeletonView()
         setupBasicUI()
-        
+        setupSkeletonView()
+//        setupDataBindings()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.loadData()
+            
         }
     }
     
@@ -940,6 +940,7 @@ extension HomeViewController {
     
     private func loadData() {
         if HotelDataMaganer.shared.allHotels.isEmpty{
+            
             viewModel.fetchHotels()
         }
         setupDataBindings()
@@ -1014,9 +1015,9 @@ extension HomeViewController {
         
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async{
-//                self?.hideLoader()
+
                 self?.hideSkeletonViews() // Hide skeleton on error too
-//                self?.showAlert(title: "Error", message: error.localizedDescription)
+
             }
         }
     }
