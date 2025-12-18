@@ -363,6 +363,27 @@ extension UIViewController {
         }
     }
     
+    func navigateToHomeTab() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+        
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        let tabBarVC = storyboard.instantiateViewController(
+            withIdentifier: "CustomTabBarController"
+        ) as! CustomTabBarController
+        
+        tabBarVC.selectedIndex = 1
+        
+        UIView.transition(with: window,
+                          duration: 0.4,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            window.rootViewController = tabBarVC
+        },
+                          completion: nil)
+        
+        window.makeKeyAndVisible()
+    }
     
     func goToHomeTab() {
         // Get the active window

@@ -76,29 +76,26 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             controller.comingfrom = .RightMenu
             controller.titleText = "Report an app"
             present(controller, animated: true)
-        case 5 :
+        case 5:
             let title = menuArray[indexPath.row]
             if title == "Profile" || title == "الملف الشخصي" {
-                // Dismiss the right menu first
                 self.dismiss(animated: true) {
-                    // Then push the profile view controller
                     let storyboard = UIStoryboard(name: "Profile", bundle: nil)
                     let controller = storyboard.instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
                     controller.navigationItem.backButtonTitle = ""
                     self.navnController?.pushViewController(controller, animated: true)
                 }
+
             } else {
-                // Dismiss the right menu first
                 self.dismiss(animated: true) {
-                    // Then present the registration screen
                     let storyboard = UIStoryboard(name: "Booking", bundle: nil)
-                    guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
+                    let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as! RegisterMobileNumberVC
                     controller.modalPresentationStyle = .overFullScreen
                     controller.transitioningDelegate = self
                     controller.reloadScreenAfterDismiss = {
                         self.goToHomeTab()
                     }
-                    self.present(controller, animated: true)
+                    self.navnController?.present(controller, animated: true)
                 }
             }
         case 6 :
