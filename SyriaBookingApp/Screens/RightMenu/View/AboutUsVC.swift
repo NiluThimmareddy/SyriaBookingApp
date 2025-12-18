@@ -10,7 +10,6 @@ class AboutUsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupSocialMediaView()
 
     }

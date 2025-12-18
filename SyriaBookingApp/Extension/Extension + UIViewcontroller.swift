@@ -372,7 +372,7 @@ extension UIViewController {
             withIdentifier: "CustomTabBarController"
         ) as! CustomTabBarController
         
-        tabBarVC.selectedIndex = 1
+        tabBarVC.selectedIndex = 0
         
         UIView.transition(with: window,
                           duration: 0.4,
@@ -386,19 +386,20 @@ extension UIViewController {
     }
     
     func goToHomeTab() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first,
-              let tabBarVC = window.rootViewController as? UITabBarController else {
+        guard let windowScene = UIApplication.shared.connectedScenes
+                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
             return
         }
-        tabBarVC.selectedIndex = 0
-        if let nav = tabBarVC.viewControllers?[0] as? UINavigationController {
-            nav.popToRootViewController(animated: false)
+
+        window.rootViewController?.dismiss(animated: false) {
+            if let tabBarVC = window.rootViewController as? UITabBarController {
+                tabBarVC.selectedIndex = 0
+            }
         }
     }
 
 
-    
     func iso8601String(from date: Date) -> String {
         let calendar = Calendar(identifier: .gregorian)
         
