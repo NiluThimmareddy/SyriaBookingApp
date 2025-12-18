@@ -229,6 +229,7 @@ class RegisterMobileNumberVC : BaseViewController {
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         goToHomeTab()
+//        self.dismiss(animated: true)
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {

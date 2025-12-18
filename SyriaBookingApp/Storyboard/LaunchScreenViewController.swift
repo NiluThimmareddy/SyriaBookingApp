@@ -39,7 +39,6 @@ class LaunchScreenViewController: UIViewController {
             }
             userViewModel.FetchUserData(id: user?.id)
             
-//            goToHomeTab()
             navigateToHomeTab()
         }
     }

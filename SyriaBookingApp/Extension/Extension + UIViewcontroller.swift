@@ -386,27 +386,18 @@ extension UIViewController {
     }
     
     func goToHomeTab() {
-        // Get the active window
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            guard let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? CustomTabBarController else {
-                return
-            }
-            
-            tabBarVC.selectedIndex = 0 // Set default Home tab
-            window.rootViewController = tabBarVC
-            window.makeKeyAndVisible()
-            
-            // Optional: Smooth transition
-            UIView.transition(with: window,
-                              duration: 0.5,
-                              options: .transitionCrossDissolve,
-                              animations: nil,
-                              completion: nil)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let tabBarVC = window.rootViewController as? UITabBarController else {
+            return
+        }
+        tabBarVC.selectedIndex = 0
+        if let nav = tabBarVC.viewControllers?[0] as? UINavigationController {
+            nav.popToRootViewController(animated: false)
         }
     }
+
+
     
     func iso8601String(from date: Date) -> String {
         let calendar = Calendar(identifier: .gregorian)
@@ -426,8 +417,6 @@ extension UIViewController {
         
         return formatter.string(from: utcDate)
     }
-
-
     
     func getDummyDOB() -> String {
         let formatter = DateFormatter()
