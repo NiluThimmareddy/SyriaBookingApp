@@ -70,7 +70,7 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
             }
         }
         
-        if comingFrom == .tabBar {
+        if comingFrom == .tabBar || comingFrom == .search {
             viewModel.fetchHotels()
         } else if comingFrom == .filter {
             // If coming from filter, apply filter immediately if data is already loaded
@@ -166,7 +166,7 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 250
+        return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 270
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

@@ -252,7 +252,7 @@ class RegisterMobileNumberVC : BaseViewController {
                 }
             }
             
-        }else{
+        } else {
             // Ensure country selected
             guard let country = selectedCountryName else {
                 showAlert("⚠️ Please select a country.")
@@ -299,7 +299,6 @@ class RegisterMobileNumberVC : BaseViewController {
                     })
                     self.reloadScreenAfterDismiss = {
                         self.dismiss(animated: true) {
-                            
                             let storyboard = UIStoryboard(name: "Home", bundle: nil)
                             if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
                                 tabBarVC.modalPresentationStyle = .fullScreen

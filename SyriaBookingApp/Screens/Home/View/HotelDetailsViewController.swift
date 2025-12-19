@@ -253,9 +253,10 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
         }
         
         if collectionView == hotelImagesCollectionView {
-            guard let hotel = selectedHotel else { return 0 }
-            let imageCount = hotel.images.count
-            return Int(ceil(Double(imageCount) / 5.0))
+//            guard let hotel = selectedHotel else { return 0 }
+//            let imageCount = hotel.images.count
+//            return Int(ceil(Double(imageCount) / 5.0))
+            return 1
         } else {
             return selectedHotel?.rooms.count ?? 0
         }
@@ -560,7 +561,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             addReviewViewHeightConstraint.constant = 0
             addReviewView.isHidden = true
         }
-        
         totalPriceView.isHidden = true
         
         scrollToTopButton.setImage(UIImage(systemName: "arrow.up.to.line.compact"), for: .normal)
@@ -1235,3 +1235,4 @@ class CenteredPresentationController: UIPresentationController {
         presentedView?.clipsToBounds = true
     }
 }
+

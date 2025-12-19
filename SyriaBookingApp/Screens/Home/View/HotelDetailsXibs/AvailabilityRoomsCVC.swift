@@ -240,7 +240,7 @@ extension AvailabilityRoomsCVC {
         let RoomImages = parentHotel?.images.filter  { $0.contains(rooms.room.id) }.count ?? 0
         imageCountLabel.text = "\(RoomImages)"
         
-        print("Total Room Images\(RoomImages)")
+        
         let roomType = rooms.room.roomType
         let bedType = rooms.room.bedType
         let roomSize = rooms.room.roomSize ?? "N/A"

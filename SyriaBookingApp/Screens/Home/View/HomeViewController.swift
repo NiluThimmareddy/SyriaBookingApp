@@ -113,11 +113,9 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBasicUI()
-        setupSkeletonView()
-//        setupDataBindings()
+//        setupSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.loadData()
-            
         }
     }
     
@@ -231,7 +229,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             
             guard let checkoutdate = checkoutdate else { return }
             selectedCheckOutDate = checkoutdate
-            
             
             storyboard.delegate = self
             storyboard.comingFrom = .search
