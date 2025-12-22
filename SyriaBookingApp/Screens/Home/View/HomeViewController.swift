@@ -113,16 +113,44 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBasicUI()
-//        setupSkeletonView()
+        setupSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.loadData()
         }
+        
+        NotificationCenter.default.addObserver(
+               self,
+               selector: #selector(handleLoginSuccess),
+               name: .didLoginSuccessfully,
+               object: nil
+           )
+        
+        NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleLogout),
+                name: .didLogoutSuccessfully,
+                object: nil
+            )
     }
+
+    @objc func handleLoginSuccess() {
+        hideSkeletonViews()
+        loadData()
+    }
+    
+    @objc func handleLogout() {
+        print("🚪 Logout received")
+
+        sliderCollectionView.reloadData()
+        sliderCollectionView.layoutIfNeeded()
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
         sliderCollectionView.reloadData()
+        hideSkeletonViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -936,10 +964,11 @@ extension HomeViewController {
     }
     
     private func loadData() {
-        if HotelDataMaganer.shared.allHotels.isEmpty{
+//        if HotelDataMaganer.shared.allHotels.isEmpty{
             
             viewModel.fetchHotels()
-        }
+//        }
+        
         setupDataBindings()
     }
     

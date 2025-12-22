@@ -201,9 +201,14 @@ class ProfilePageVC: BaseViewController {
     @IBAction func signOutButton(_ sender: Any) {
         showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
             UserSessionManager.clearUser()
-            self.dismiss(animated: true){
-                self.goToHomeTab()
-            }
+            
+            NotificationCenter.default.post(
+                name: .didLogoutSuccessfully,
+                object: nil
+            )
+            
+                self.navigateToHomeTab()
+            
         })
     }
 }

@@ -114,33 +114,33 @@ class VerificationVC : BaseViewController {
         }
     }
     
-    func performNavigationAfterVerification() {
-        switch self.comingFrom {
-        case .Home:
-            self.dismiss(animated: true){
-                self.goToHomeTab()
-            }
-            self.dismissPopup()
-            
-        case .BookingHistory:
-            self.dismiss(animated: true){
-                self.goToHomeTab()
-            }
-            self.dismissPopup()
-        case .HotelDetail:
-            self.dismiss(animated: true)
-            {
-                self.goToHomeTab()
-            }
-        case .none:
-            self.dismissPopup()
-            self.dismiss(animated: true){
-                self.goToHomeTab()
-            }
-        case .some(.RightMenu), .some(.TabBar):
-            break
-        }
-    }
+//    func performNavigationAfterVerification() {
+//        switch self.comingFrom {
+//        case .Home:
+//            self.dismiss(animated: true){
+//                self.goToHomeTab()
+//            }
+//            self.dismissPopup()
+//            
+//        case .BookingHistory:
+//            self.dismiss(animated: true){
+//                self.goToHomeTab()
+//            }
+//            self.dismissPopup()
+//        case .HotelDetail:
+//            self.dismiss(animated: true)
+//            {
+//                self.goToHomeTab()
+//            }
+//        case .none:
+//            self.dismissPopup()
+//            self.dismiss(animated: true){
+//                self.goToHomeTab()
+//            }
+//        case .some(.RightMenu), .some(.TabBar):
+//            break
+//        }
+//    }
     
     func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
         showLoader()
@@ -222,4 +222,15 @@ extension VerificationVC {
         enterYourMobileTitleLabel.textAlignment = .center
         verifyAndContinueButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
     }
+    
+    func performNavigationAfterVerification() {
+        NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
+        self.dismiss(animated: true)
+    }
 }
+    extension Notification.Name {
+        static let didLoginSuccessfully = Notification.Name("didLoginSuccessfully")
+        static let didLogoutSuccessfully = Notification.Name("didLogoutSuccessfully")
+    }
+
+
