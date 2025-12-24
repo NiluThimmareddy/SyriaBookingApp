@@ -6,9 +6,11 @@
 //
 
 import Foundation
+
 class HotelDataMaganer {
     static let shared = HotelDataMaganer()
     var recentlyViewedHotelIds: [String: Date] = [:]
+    
     private init() {
         // Load from UserDefaults
         if let savedDict = UserDefaults.standard.dictionary(forKey: "RecentlyViewedHotelIDs") as? [String: TimeInterval] {
@@ -16,12 +18,15 @@ class HotelDataMaganer {
         }
     }
     
-    var allHotels : [Hotel] = []
+    var allHotels: [Hotel] = []
     
     func addRecentlyViewedHotel(id: String) {
         // Update the timestamp for this hotel
         recentlyViewedHotelIds[id] = Date()
         saveRecentlyViewedHotels()
+        
+        // Post notification to update UI immediately
+        NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
     }
     
     func saveRecentlyViewedHotels() {
@@ -33,6 +38,7 @@ class HotelDataMaganer {
     func clearAllRecentlyViewedHotels() {
         recentlyViewedHotelIds.removeAll()
         saveRecentlyViewedHotels()
+        NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
     }
     
     func clearTodaysRecentlyViewedHotels() {
@@ -41,6 +47,7 @@ class HotelDataMaganer {
             !Calendar.current.isDate(entry.value, inSameDayAs: today)
         }
         saveRecentlyViewedHotels()
+        NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
     }
     
     func clearEarlierRecentlyViewedHotels() {
@@ -49,6 +56,7 @@ class HotelDataMaganer {
             Calendar.current.isDate(entry.value, inSameDayAs: today)
         }
         saveRecentlyViewedHotels()
+        NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
     }
     
     func getRecentlyViewedHotelIds() -> [String: Date] {
@@ -58,6 +66,7 @@ class HotelDataMaganer {
     func getRecentlyViewedHotelDate(hotelId: String) -> Date? {
         return recentlyViewedHotelIds[hotelId]
     }
+    
     func getAllRecentlyViewedHotels() -> [Hotel] {
         let sortedIds = recentlyViewedHotelIds.sorted { $0.value > $1.value }.map { $0.key }
         let viewedHotels = allHotels.filter { sortedIds.contains($0.id) }
@@ -69,5 +78,4 @@ class HotelDataMaganer {
         
         return sortedHotels
     }
-    
 }

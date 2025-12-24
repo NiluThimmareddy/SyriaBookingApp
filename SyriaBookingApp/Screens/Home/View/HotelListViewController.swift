@@ -22,7 +22,7 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var hotelCollectionView: UICollectionView!
     
-    var delegate : recentlyViewdHotelsProtocol?
+    var delegate : RecentlyViewedProtocol?
     var viewModel = HotelViewModel()
     var selectedCity = ""
     var shouldSortByRating: Bool = false
@@ -153,7 +153,7 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
                 let selectedHotel = viewModel.filteredHotels[indexPath.row]
                 
                 HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
-                delegate?.reladRecentlyViewedData()
+                delegate?.reloadRecentlyViewedData()
                 vc.selectedHotel = selectedHotel
                 vc.navigationItem.title = "Hotel Details"
                 let backItem = UIBarButtonItem()
@@ -206,7 +206,7 @@ extension HotelListViewController: UICollectionViewDelegate, UICollectionViewDat
         let selectedHotel = viewModel.filteredHotels[indexPath.row]
 
         HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
-        delegate?.reladRecentlyViewedData()
+        delegate?.reloadRecentlyViewedData()
         vc.selectedHotel = selectedHotel
         vc.navigationItem.title = "Hotel Details"
 

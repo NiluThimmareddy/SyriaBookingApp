@@ -8,14 +8,18 @@
 import UIKit
 import SkeletonView
 
+extension NSNotification.Name {
+    static let recentlyViewedUpdated = NSNotification.Name("RecentlyViewedUpdated")
+}
+
 enum DatePickerMode {
     case checkIn
     case checkOut
 }
 
-struct WhereToNextList{
-    var image : String
-    var City : String
+struct WhereToNextList {
+    var image: String
+    var City: String
     var Cityar: String
     init(image: String, City: String, Cityar: String) {
         self.image = image
@@ -27,11 +31,12 @@ struct WhereToNextList{
 var selectedCheckInDate: Date?
 var selectedCheckOutDate: Date?
 
-protocol recentlyViewdHotelsProtocol{
-    func reladRecentlyViewedData()
+// MARK: - Protocol with corrected spelling
+protocol RecentlyViewedProtocol {
+    func reloadRecentlyViewedData()
 }
 
-class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate {
+class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate, RecentlyViewedProtocol {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
@@ -60,7 +65,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
     @IBOutlet weak var sliderView: UIView!
     @IBOutlet weak var sliderCollectionView: UICollectionView!
-    @IBOutlet weak var searchViewHeightConstraint:   NSLayoutConstraint!
+    @IBOutlet weak var searchViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var checkoutStackView: UIStackView!
     @IBOutlet weak var tomorrowDateButton: UIButton!
     @IBOutlet weak var dayAfterTomorrowButton: UIButton!
@@ -89,14 +94,14 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var WhereToNextCityList = [WhereToNextList]()
     var leftMenuVC: LeftMenuViewController?
     var isLeftMenuVisible = false
-    var scrolltoTopHelper : ScrollToTopHelper?
+    var scrolltoTopHelper: ScrollToTopHelper?
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
-    var sliderImages = ["Slider1","Slider2","Slider3","Slider4"]
+    var sliderImages = ["Slider1", "Slider2", "Slider3", "Slider4"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
-    var delegate : recentlyViewdHotelsProtocol?
+    var delegate: RecentlyViewedProtocol?
     var isScrollingForward = true
     var currentPromotionIndex = 0
     
@@ -110,47 +115,76 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         return []
     }
     
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBasicUI()
         setupSkeletonView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        
+        // Show skeleton immediately
+        showSkeletonOnAllElements()
+        
+        // Set up notification observers
+        setupNotifications()
+        
+        // Load data after a short delay to ensure skeleton is visible
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.loadData()
         }
         
         NotificationCenter.default.addObserver(
-               self,
-               selector: #selector(handleLoginSuccess),
-               name: .didLoginSuccessfully,
-               object: nil
-           )
+            self,
+            selector: #selector(handleLoginSuccess),
+            name: .didLoginSuccessfully,
+            object: nil
+        )
         
         NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(handleLogout),
-                name: .didLogoutSuccessfully,
-                object: nil
-            )
+            self,
+            selector: #selector(handleLogout),
+            name: .didLogoutSuccessfully,
+            object: nil
+        )
+        
+        debugSkeletonState()
     }
-
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRecentlyViewedUpdate),
+            name: .recentlyViewedUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func handleRecentlyViewedUpdate() {
+        refreshRecentlyViewedData()
+    }
+    
     @objc func handleLoginSuccess() {
-        hideSkeletonViews()
+        showSkeletonOnAllElements()
         loadData()
     }
     
     @objc func handleLogout() {
         print("🚪 Logout received")
-
         sliderCollectionView.reloadData()
         sliderCollectionView.layoutIfNeeded()
+        
+        showSkeletonOnAllElements()
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
         sliderCollectionView.reloadData()
-        hideSkeletonViews()
+        
+        if viewModel.filteredHotels.isEmpty {
+            showSkeletonOnAllElements()
+        }
+        
+        refreshRecentlyViewedData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -169,6 +203,21 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         topView.addTopShadow()
     }
     
+    // MARK: - Recently Viewed Data Refresh
+    func reloadRecentlyViewedData() {
+        refreshRecentlyViewedData()
+    }
+    
+    private func refreshRecentlyViewedData() {
+        viewModel.fetchRecentlyViewedHotels {
+            DispatchQueue.main.async {
+                self.recentlyCollectionView.reloadData()
+                self.updateRecentlyViewedSectionVisibility()
+            }
+        }
+    }
+    
+    // MARK: - IBActions
     @IBAction func recentlySeeMoreButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "RecentlyViewedVC") as! RecentlyViewedVC
         
@@ -184,7 +233,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     @IBAction func whereToNextSeeMoreButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "WhereToNextVC") as! WhereToNextVC
-        controller.whereToNextCityList = self.WhereToNextCityList // Pass the city data
+        controller.whereToNextCityList = self.WhereToNextCityList
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -194,15 +243,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         if isLeftMenuVisible {
             closeLeftMenu()
             sender.isEnabled = true
-            
-            
         } else {
             let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
             let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
             self.leftMenuVC = menuVC
             
             menuVC.onDismiss = { [weak self] in
-                
                 self?.closeLeftMenu()
             }
             self.addChild(menuVC)
@@ -240,8 +286,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @IBAction func searchButtonAction(_ sender: Any) {
-        
-        if let selectedCity = self.selectCityButton.titleLabel?.text,  selectedCity != "Select City"{
+        if let selectedCity = self.selectCityButton.titleLabel?.text, selectedCity != "Select City" {
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
             storyboard.viewModel = self.viewModel
             
@@ -305,7 +350,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         
         let date = formater.date(from: sender.titleLabel?.text ?? "")
         
-        
         guard let date = date else { return }
         setNextDateInCkechout(checkInDate: date)
         currentDatePickerMode = .checkOut
@@ -319,10 +363,10 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func setNextDateInCkechout(checkInDate:Date){
+    func setNextDateInCkechout(checkInDate: Date) {
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateFormat = "dd-MM-yyyy"
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
             
@@ -330,16 +374,38 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         }
     }
     
+    // MARK: - Debug Helper
+    private func debugSkeletonState() {
+        print("🔍 Skeleton Debug State:")
+        print("Top Hotels CV skeleton active: \(topHotelsCollectionView?.sk.isSkeletonActive ?? false)")
+        print("Recently CV skeleton active: \(recentlyCollectionView?.sk.isSkeletonActive ?? false)")
+        print("Property Type CV skeleton active: \(propertyTypeCollectionView?.sk.isSkeletonActive ?? false)")
+        print("View skeleton active: \(view.sk.isSkeletonActive)")
+    }
 }
 
 // MARK: - UICollectionView Delegate & DataSource
-extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // If skeleton is active, return skeleton count
+        // Always return skeleton count if skeleton is active
         if collectionView.sk.isSkeletonActive {
-            return collectionSkeletonView(collectionView, numberOfItemsInSection: section)
+            if collectionView == topHotelsCollectionView {
+                return 6
+            } else if collectionView == recentlyCollectionView {
+                return 4
+            } else if collectionView == propertyTypeCollectionView {
+                return 5
+            } else if collectionView == promotionsCollectionView {
+                return 3
+            } else if collectionView == recommendedHotelsCollectionView {
+                return 6
+            } else if collectionView == sliderCollectionView {
+                return sliderImages.count
+            }
+            return 4
         }
         
+        // Return actual data count only when skeleton is not active
         if collectionView == topHotelsCollectionView {
             return min(10, viewModel.filteredHotels.count)
         } else if collectionView == recentlyCollectionView {
@@ -366,6 +432,9 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             // Make the cell and its content views skeletonable
             cell.isSkeletonable = true
             cell.contentView.isSkeletonable = true
+            
+            // Show skeleton on the cell
+            cell.showAnimatedGradientSkeleton()
             
             return cell
         }
@@ -394,25 +463,23 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
         } else if collectionView == sliderCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SliderCollectionViewCell", for: indexPath) as! SliderCollectionViewCell
             cell.greetingMessageLabel.isHidden = true
-            if let user = UserSessionManager.getUser()  {
-                
+            if let user = UserSessionManager.getUser() {
                 cell.loginButton.isHidden = true
-                if indexPath.row == 0{
+                if indexPath.row == 0 {
                     cell.greetingMessageLabel.isHidden = false
                     let greeting = updateGreetingMessage()
                     cell.greetingMessageLabel.text = "\(greeting) \(user.name)"
                 }
             } else {
-                if indexPath.row == 0{
+                if indexPath.row == 0 {
                     cell.loginButton.isHidden = false
-                }else{
+                } else {
                     cell.loginButton.isHidden = true
                 }
             }
             cell.imageView.image = UIImage(named: sliderImages[indexPath.row])
             
             cell.loginClicked = {
-                
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)
                 guard let controller = storyboard.instantiateViewController(withIdentifier: "RegisterMobileNumberVC") as? RegisterMobileNumberVC else { return }
                 controller.comingFrom = .HomeSliderView
@@ -461,6 +528,13 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
                 
                 vc.selectedHotel = selectedHotel
                 vc.navigationItem.title = "Hotel Details"
+                
+                // Add to recently viewed again to update timestamp
+                HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+                
+                // Post notification immediately
+                NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
+                
                 let backItem = UIBarButtonItem()
                 backItem.title = ""
                 self.navigationItem.backBarButtonItem = backItem
@@ -471,8 +545,16 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let selectedHotel = viewModel.filteredHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
+            
+            // Add to recently viewed immediately
             HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
-            delegate?.reladRecentlyViewedData()
+            
+            // Post notification to update home screen immediately
+            NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
+            
+            // Also call delegate if set
+            delegate?.reloadRecentlyViewedData()
+            
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -482,8 +564,16 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             let selectedHotel = recommendedHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
+            
+            // Add to recently viewed immediately
             HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
-            delegate?.reladRecentlyViewedData()
+            
+            // Post notification to update home screen immediately
+            NotificationCenter.default.post(name: .recentlyViewedUpdated, object: nil)
+            
+            // Also call delegate if set
+            delegate?.reloadRecentlyViewedData()
+            
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
@@ -555,7 +645,6 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
 }
 
 // MARK: - SkeletonView Data Source
@@ -603,7 +692,6 @@ extension HomeViewController {
     func setupSkeletonView() {
         configureSkeletonAppearance()
         makeElementsSkeletonable()
-        showSkeletonOnAllElements()
     }
     
     private func configureSkeletonAppearance() {
@@ -620,6 +708,9 @@ extension HomeViewController {
         makeLabelsSkeletonable()
         makeButtonsSkeletonable()
         makeViewsSkeletonable()
+        
+        // Make the main view skeletonable
+        view.isSkeletonable = true
     }
     
     private func makeCollectionViewsSkeletonable() {
@@ -684,25 +775,7 @@ extension HomeViewController {
             button.titleLabel?.linesCornerRadius = 4
             
             // Set temporary plain titles for skeleton (remove attributed strings)
-            let temporaryTitle: String
-            switch button {
-            case recentlySeeMoreButton, whereToNextSeeMoreButton:
-                temporaryTitle = ""
-            case viewAllButton, viewAllRecommendedButton:
-                temporaryTitle = ""
-            case findDealButton:
-                temporaryTitle = ""
-            case selectCityButton:
-                temporaryTitle = ""
-            case checkInButton:
-                temporaryTitle = ""
-            case checkOutButton:
-                temporaryTitle = ""
-            case searchButton:
-                temporaryTitle = ""
-            default:
-                temporaryTitle = ""
-            }
+            let temporaryTitle: String = "Loading..."
             
             // Remove any attributed titles and set plain text for skeleton
             button.setAttributedTitle(nil, for: .normal)
@@ -716,7 +789,9 @@ extension HomeViewController {
             searchView,
             selectCityView,
             selectCheckInView,
-            selectCheckOutView
+            selectCheckOutView,
+            gradientView,
+            stackView
         ].compactMap { $0 }
         
         skeletonViews.forEach { view in
@@ -726,6 +801,10 @@ extension HomeViewController {
     }
     
     private func showSkeletonOnAllElements() {
+        // Show skeleton on the main view first
+        view.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
+        
+        // Then show on individual elements
         showSkeletonOnCollectionViews()
         showSkeletonOnLabels()
         showSkeletonOnButtons()
@@ -743,7 +822,7 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonCollectionViews.forEach { collectionView in
-            collectionView.showAnimatedGradientSkeleton()
+            collectionView.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -762,7 +841,7 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonLabels.forEach { label in
-            label.showAnimatedGradientSkeleton()
+            label.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -780,8 +859,8 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonButtons.forEach { button in
-            button.showAnimatedGradientSkeleton()
-            button.titleLabel?.showAnimatedGradientSkeleton()
+            button.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
+            button.titleLabel?.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -795,11 +874,15 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonViews.forEach { view in
-            view.showAnimatedGradientSkeleton()
+            view.showAnimatedGradientSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
     func hideSkeletonViews() {
+        // Hide skeleton from main view first
+        view.hideSkeleton(transition: .crossDissolve(0.25))
+        
+        // Then hide from individual elements
         hideSkeletonFromCollectionViews()
         hideSkeletonFromLabels()
         hideSkeletonFromButtons()
@@ -818,7 +901,7 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonCollectionViews.forEach { collectionView in
-            collectionView.hideSkeleton()
+            collectionView.hideSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -837,7 +920,7 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonLabels.forEach { label in
-            label.hideSkeleton()
+            label.hideSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -855,8 +938,8 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonButtons.forEach { button in
-            button.hideSkeleton()
-            button.titleLabel?.hideSkeleton()
+            button.hideSkeleton(transition: .crossDissolve(0.25))
+            button.titleLabel?.hideSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -870,7 +953,7 @@ extension HomeViewController {
         ].compactMap { $0 }
         
         skeletonViews.forEach { view in
-            view.hideSkeleton()
+            view.hideSkeleton(transition: .crossDissolve(0.25))
         }
     }
     
@@ -889,7 +972,7 @@ extension HomeViewController {
         searchView.applyCardStyle()
         searchViewHeightConstraint.constant = 0
         
-        if UIDevice.current.userInterfaceIdiom != .pad{
+        if UIDevice.current.userInterfaceIdiom != .pad {
             sliderCollectionView.decelerationRate = .normal
             sliderCollectionView.collectionViewLayout = CubeFlowLayout()
         }
@@ -926,7 +1009,6 @@ extension HomeViewController {
         selectCityView.addBottomShadow()
         selectCheckInView.addBottomShadow()
         selectCheckOutView.addBottomShadow()
-        updateTexts()
     }
     
     private func setupCollectionViews() {
@@ -964,11 +1046,7 @@ extension HomeViewController {
     }
     
     private func loadData() {
-//        if HotelDataMaganer.shared.allHotels.isEmpty{
-            
-            viewModel.fetchHotels()
-//        }
-        
+        viewModel.fetchHotels()
         setupDataBindings()
     }
     
@@ -977,15 +1055,15 @@ extension HomeViewController {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
-                // Hide skeleton when data is loaded
-                self.hideSkeletonViews()
+                // Hide skeleton only after all data is loaded
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.hideSkeletonViews()
+                }
                 
                 self.viewModel.fetchRecentlyViewedHotels {
                     self.recentlyCollectionView.reloadData()
                     self.updateRecentlyViewedSectionVisibility()
                 }
-                
-//                self.hideLoader()
                 
                 self.viewModel.filteredHotels = self.viewModel.filteredHotels.sorted {
                     $0.averageRating > $1.averageRating
@@ -1036,20 +1114,24 @@ extension HomeViewController {
                 // Start auto scroll only after data is loaded
                 self.startSliderAutoScroll()
                 self.startPromotionAutoScroll()
+                
+                // Update texts after data is loaded
+                self.updateTexts()
             }
         }
         
         viewModel.onError = { [weak self] error in
-            DispatchQueue.main.async{
-
-                self?.hideSkeletonViews() // Hide skeleton on error too
-
+            DispatchQueue.main.async {
+                // Hide skeleton on error too, but maybe show error state
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.hideSkeletonViews()
+                }
             }
         }
     }
     
-    func reloadDataOnHomeScreen(){
-        print("HomeAge reloading")
+    func reloadDataOnHomeScreen() {
+        print("HomePage reloading")
         setupAppNavigationBar()
         self.sliderCollectionView.reloadData()
     }
@@ -1118,7 +1200,7 @@ extension HomeViewController {
         setButton(dayAfterTomorrowButton, daysToAdd: 1)
     }
     
-    func NavigationBackGroundColour(){
+    func NavigationBackGroundColour() {
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.titleTextAttributes = [
@@ -1131,7 +1213,7 @@ extension HomeViewController {
     
     @objc func updateTexts() {
         // Don't update texts if skeleton is still active
-        if topHotelsCollectionView.sk.isSkeletonActive { return }
+        if view.sk.isSkeletonActive { return }
         
         let lang = AppSettings.shared.selectedLanguage
         topHotelsCollectionView.reloadData()
@@ -1356,7 +1438,6 @@ extension HomeViewController {
                 return
             }
             
-            
             if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 1, to: date) {
                 datePicker.minimumDate = nextDayBaseOnCheckin
             }
@@ -1366,7 +1447,6 @@ extension HomeViewController {
     @objc private func dateChanged(_ sender: UIDatePicker) {
         switch currentDatePickerMode {
         case .checkIn:
-            
             setNextDateInCkechout(checkInDate: sender.date)
         case .checkOut:
             break
@@ -1485,20 +1565,14 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollectionViewCellDelegate , TopHotelsCollectionViewCellDelegate {
+// MARK: - Protocol Implementation Extension
+extension HomeViewController: PromotionsCollectionViewCellDelegate, TopHotelsCollectionViewCellDelegate {
     
     func didTapBookNow(for hotel: Hotel) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         if let hotelDetailsVC = storyboard.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController {
             hotelDetailsVC.selectedHotel = hotel
             self.navigationController?.pushViewController(hotelDetailsVC, animated: true)
-        }
-    }
-    
-    func reladRecentlyViewedData() {
-        viewModel.fetchRecentlyViewedHotels {
-            self.recentlyCollectionView.reloadData()
-            self.updateRecentlyViewedSectionVisibility()
         }
     }
     
@@ -1528,11 +1602,8 @@ extension HomeViewController : recentlyViewdHotelsProtocol, PromotionsCollection
     }
     
     override func didTapSearch(_ sender: UIBarButtonItem) {
-        
         print("Search tapped")
         if searchView.isHidden {
-            
-            
             if UIDevice.current.userInterfaceIdiom == .pad {
                 searchViewHeightConstraint.constant = 280
             } else {
