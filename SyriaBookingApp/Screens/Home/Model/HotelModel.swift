@@ -36,6 +36,7 @@ struct Hotel: Codable {
     let discountText: String?
     let coverImageURL: String?
     let facilities: String?
+    let policies: String
     let landmarkDescription: String?
     let averageRating: String
     let reviewCount: String
@@ -50,7 +51,7 @@ struct Hotel: Codable {
     enum CodingKeys: String, CodingKey {
         case id, name, nameAR, city, cityAR, shortDescription, description, type, starRating, hotelChain, addressLine1, addressLine2, stateOrProvince, postalCode, country, email, primaryPhone, checkInTime, checkOutTime, acceptedCurrencies, languagesSpoken, covidSafetyLevel, discountText,shortDescriptionAR,descriptionAR
         case coverImageURL = "coverImageUrl"
-        case facilities, landmarkDescription, averageRating, reviewCount, minRoomPrice, amenities
+        case facilities, landmarkDescription, averageRating, reviewCount, minRoomPrice, amenities, policies
         case coverImageSignedURL = "coverImageSignedUrl"
         case reviews, landmarks, images, rooms
     }

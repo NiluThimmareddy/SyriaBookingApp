@@ -101,6 +101,8 @@ class HotelDetailsViewController : BaseViewController {
                 self.rateAndReviewsTableview.reloadData()
             }
         }
+        selectedRates = []
+        selectedRoom = nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -488,13 +490,14 @@ extension HotelDetailsViewController: SkeletonCollectionViewDataSource, Skeleton
 extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewControllerTransitioningDelegate {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate) {
         if let user = UserSessionManager.getUser(){
-            let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as! ConfirmYourBookingVC
+            let controller = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "BookingPoliciesVC") as! BookingPoliciesVC
             controller.guestName = user.name
             controller.guestEmail = user.email
             controller.guestMobileNumber = user.mobile
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRates = self.selectedRates
+            controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: true)
         }
     }

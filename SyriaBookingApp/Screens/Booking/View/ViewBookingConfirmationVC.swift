@@ -101,7 +101,7 @@ class ViewBookingConfirmationVC : BaseViewController {
     }
     
     @IBAction func goToHomeButtonAction(_ sender: Any) {
-        goToHomeTab()
+        navigateToHomeTab()
     }
 }
 

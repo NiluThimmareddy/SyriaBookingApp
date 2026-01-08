@@ -97,6 +97,7 @@ class BookingConfirmationVC : BaseViewController, UITextViewDelegate {
         }
         return true
     }
+    
     @objc func setUpLanguage() {
         if AppSettings.shared.selectedLanguage == .english {
             bookingConfirmationTitleLabel.text = "Booking Confirmation"
@@ -108,7 +109,7 @@ class BookingConfirmationVC : BaseViewController, UITextViewDelegate {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        goToHomeTab()
+        navigateToHomeTab()
     }
     
     @IBAction func viewBookingConfirmationButtonAction(_ sender: Any) {
