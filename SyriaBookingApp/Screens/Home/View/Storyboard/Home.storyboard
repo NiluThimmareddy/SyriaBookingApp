@@ -2465,7 +2465,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0pX-sm-mPz">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2027"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="2065"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RoQ-hN-Dkl">
                                                 <rect key="frame" x="5" y="5" width="383" height="250"/>
@@ -2522,7 +2522,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZw-aN-6GI">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZw-aN-6GI">
                                                 <rect key="frame" x="20" y="315" width="353" height="21.666666666666686"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
@@ -2531,8 +2531,14 @@
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 </variation>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aeh-2L-ceE">
+                                                <rect key="frame" x="20" y="346.66666666666669" width="353" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fp-mz-4jZ">
-                                                <rect key="frame" x="20" y="346.66666666666669" width="353" height="134.66666666666669"/>
+                                                <rect key="frame" x="20" y="384.66666666666669" width="353" height="134.66666666666669"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHb-KU-Ff6">
                                                         <rect key="frame" x="10" y="10" width="67" height="18"/>
@@ -2583,7 +2589,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NUK-rC-8qT">
-                                                        <rect key="frame" x="103" y="92.666666666666629" width="147" height="32"/>
+                                                        <rect key="frame" x="103" y="92.666666666666686" width="147" height="32"/>
                                                         <color key="backgroundColor" systemColor="labelColor"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2640,7 +2646,7 @@
                                                 </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jui-Ma-QSs">
-                                                <rect key="frame" x="20" y="501.33333333333343" width="353" height="141.66666666666669"/>
+                                                <rect key="frame" x="20" y="539.33333333333337" width="353" height="141.66666666666663"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What this place offers(Facilities)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doy-4q-mN8">
                                                         <rect key="frame" x="10" y="10" width="231.66666666666666" height="18"/>
@@ -2705,7 +2711,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="boa-YN-ant">
-                                                <rect key="frame" x="20" y="663" width="353" height="444"/>
+                                                <rect key="frame" x="20" y="701" width="353" height="444"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availability" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haF-TB-ibk">
                                                         <rect key="frame" x="10" y="9.9999999999999982" width="77.333333333333329" height="17.333333333333329"/>
@@ -2778,7 +2784,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s4j-37-G8x">
-                                                <rect key="frame" x="20" y="1127" width="353" height="450"/>
+                                                <rect key="frame" x="20" y="1165" width="353" height="450"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lyt-po-fvu">
                                                         <rect key="frame" x="10" y="15.000000000000002" width="91.666666666666671" height="18.666666666666671"/>
@@ -2953,7 +2959,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3W-cY-IT6">
-                                                <rect key="frame" x="20" y="1597" width="353" height="400"/>
+                                                <rect key="frame" x="20" y="1635" width="353" height="400"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Rate &amp; Reviews 3.7 (6 reviews)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09k-xy-vHC">
                                                         <rect key="frame" x="10" y="15" width="219.33333333333334" height="30"/>
@@ -3048,9 +3054,12 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="Aeh-2L-ceE" firstAttribute="top" secondItem="OZw-aN-6GI" secondAttribute="bottom" constant="10" id="0YW-Il-5ge"/>
                                             <constraint firstItem="0fp-mz-4jZ" firstAttribute="trailing" secondItem="OZw-aN-6GI" secondAttribute="trailing" id="2Lo-Ij-lSz"/>
                                             <constraint firstItem="p3W-cY-IT6" firstAttribute="leading" secondItem="s4j-37-G8x" secondAttribute="leading" id="3Nj-ko-C2W"/>
+                                            <constraint firstItem="0fp-mz-4jZ" firstAttribute="top" secondItem="Aeh-2L-ceE" secondAttribute="bottom" constant="20" id="5Et-WJ-Emc"/>
                                             <constraint firstItem="3YD-PB-5Re" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="20" id="6LO-75-YSh"/>
+                                            <constraint firstItem="Aeh-2L-ceE" firstAttribute="trailing" secondItem="OZw-aN-6GI" secondAttribute="trailing" id="7rO-Z1-8nS"/>
                                             <constraint firstItem="boa-YN-ant" firstAttribute="leading" secondItem="Jui-Ma-QSs" secondAttribute="leading" id="BTT-Je-j9u"/>
                                             <constraint firstItem="OZw-aN-6GI" firstAttribute="top" secondItem="3YD-PB-5Re" secondAttribute="bottom" constant="10" id="E7f-qn-8UT"/>
                                             <constraint firstItem="Jui-Ma-QSs" firstAttribute="top" secondItem="0fp-mz-4jZ" secondAttribute="bottom" constant="20" id="Evl-7e-Yf9"/>
@@ -3060,6 +3069,7 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3YD-PB-5Re" secondAttribute="trailing" constant="20" id="MnU-0s-Uk8"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="top" secondItem="boa-YN-ant" secondAttribute="bottom" constant="20" id="NN7-xK-aPX"/>
                                             <constraint firstItem="boa-YN-ant" firstAttribute="trailing" secondItem="Jui-Ma-QSs" secondAttribute="trailing" id="PHn-1H-N3t"/>
+                                            <constraint firstItem="Aeh-2L-ceE" firstAttribute="leading" secondItem="OZw-aN-6GI" secondAttribute="leading" id="StM-tX-Zf2"/>
                                             <constraint firstItem="RoQ-hN-Dkl" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="5" id="Uex-3F-2LX"/>
                                             <constraint firstItem="OZw-aN-6GI" firstAttribute="leading" secondItem="0pX-sm-mPz" secondAttribute="leading" constant="20" id="Xga-Za-QEW"/>
                                             <constraint firstAttribute="bottom" secondItem="p3W-cY-IT6" secondAttribute="bottom" constant="30" id="aC6-lV-pgC"/>
@@ -3071,7 +3081,6 @@
                                             <constraint firstAttribute="trailing" secondItem="RoQ-hN-Dkl" secondAttribute="trailing" constant="5" id="ocT-sZ-mws"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="trailing" secondItem="boa-YN-ant" secondAttribute="trailing" id="qRH-hB-rJj"/>
                                             <constraint firstItem="p3W-cY-IT6" firstAttribute="trailing" secondItem="s4j-37-G8x" secondAttribute="trailing" id="qju-KK-jRk"/>
-                                            <constraint firstItem="0fp-mz-4jZ" firstAttribute="top" secondItem="OZw-aN-6GI" secondAttribute="bottom" constant="10" id="tIL-T3-AZI"/>
                                             <constraint firstItem="s4j-37-G8x" firstAttribute="leading" secondItem="boa-YN-ant" secondAttribute="leading" id="wNU-DG-BQy"/>
                                         </constraints>
                                     </view>
@@ -3138,6 +3147,7 @@
                         <outlet property="facilitiesView" destination="Jui-Ma-QSs" id="gYB-ew-5R9"/>
                         <outlet property="facilitiesViewHeightConstraint" destination="k8d-79-o9g" id="pgn-2k-cvJ"/>
                         <outlet property="horizontalStackView" destination="JV3-Ft-hVq" id="CdO-mS-wY7"/>
+                        <outlet property="hotelAddressLabel" destination="Aeh-2L-ceE" id="zwS-ha-6vT"/>
                         <outlet property="hotelImagesCollectionView" destination="RoQ-hN-Dkl" id="EDA-CT-9Gu"/>
                         <outlet property="hotelNameLabel" destination="OZw-aN-6GI" id="7Zv-8a-ucb"/>
                         <outlet property="overView" destination="0fp-mz-4jZ" id="ZMa-0V-I78"/>
@@ -6058,22 +6068,22 @@ And Try Again.</string>
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

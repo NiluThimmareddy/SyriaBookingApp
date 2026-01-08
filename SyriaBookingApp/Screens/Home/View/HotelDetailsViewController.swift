@@ -55,6 +55,7 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var totalPriceView: UIView!
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBOutlet weak var hotelAddressLabel: UILabel!
     
     var hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -610,7 +611,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotelNameAttributed.append(starAttributed)
         }
         hotelNameLabel.attributedText = hotelNameAttributed
-        
+        hotelAddressLabel.text = hotel.addressLine1
         descriptionLabel.text = hotel.description
         rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
         if AppSettings.shared.selectedLanguage == .arabic {
@@ -881,7 +882,7 @@ extension HotelDetailsViewController {
             yourNameLabel, ratingLabel, reviewLabel, rateAndReviewsLabel,
             overViewButton, facilitiesButton, availabilityButton,
             addReviewViewButton, rateAndReviewsDownButton, viewAllButton,
-            submitReviewButton, selectratingButton
+            submitReviewButton, selectratingButton, hotelAddressLabel
         ]
         
         skeletonViews.forEach { view in
@@ -1032,7 +1033,7 @@ extension HotelDetailsViewController {
         let mainSkeletonViews: [UIView?] = [
             reviewView, hotelNameLabel, overView, facilitiesView,
             availabilityRoomsView, addReviewView, rateAndReviewsView,
-            totalPriceView
+            totalPriceView,hotelAddressLabel
         ]
         
         mainSkeletonViews.forEach { view in
@@ -1042,7 +1043,7 @@ extension HotelDetailsViewController {
         
         [hotelNameLabel, averageRatingsLabel, descriptionLabel, overViewLabel,
          facilitiesLabel, availabilityLabel, addReviewLabel, rateAndReviewsLabel,
-         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel].forEach { label in
+         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel,hotelAddressLabel].forEach { label in
             guard let label = label else { return }
             label.showAnimatedGradientSkeleton()
         }
@@ -1118,7 +1119,7 @@ extension HotelDetailsViewController {
         let mainSkeletonViews: [UIView?] = [
             reviewView, hotelNameLabel, overView, facilitiesView,
             availabilityRoomsView, addReviewView, rateAndReviewsView,
-            totalPriceView
+            totalPriceView,hotelAddressLabel
         ]
         
         mainSkeletonViews.forEach { view in
@@ -1128,7 +1129,7 @@ extension HotelDetailsViewController {
         
         [hotelNameLabel, averageRatingsLabel, descriptionLabel, overViewLabel,
          facilitiesLabel, availabilityLabel, addReviewLabel, rateAndReviewsLabel,
-         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel].forEach { label in
+         yourNameLabel, ratingLabel, reviewLabel, contactTypesLabel,hotelAddressLabel].forEach { label in
             guard let label = label else { return }
             label.hideSkeleton()
         }
