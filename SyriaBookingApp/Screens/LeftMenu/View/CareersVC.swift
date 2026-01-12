@@ -25,6 +25,7 @@ class CareersVC: UIViewController {
     @IBOutlet weak var ourTeamSaysCollectionView: UICollectionView!
     @IBOutlet weak var leftArrowButton: UIButton!
     @IBOutlet weak var rightArrowButton: UIButton!
+    @IBOutlet weak var applyJobButton: UIButton!
     
     var currentIndex = 0
     
@@ -85,6 +86,11 @@ class CareersVC: UIViewController {
         
         let indexPath = IndexPath(item: currentIndex, section: 0)
         ourTeamSaysCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    @IBAction func applyJobButtonAction(_ sender: Any) {
+        let storyboard = storyboard?.instantiateViewController(identifier: "CareerApplicationVC") as! CareerApplicationVC
+        self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
 }

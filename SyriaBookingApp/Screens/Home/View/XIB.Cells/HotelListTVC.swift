@@ -273,7 +273,6 @@ class HotelListTVC : UITableViewCell {
         reviewLabel.text = nil
         distanceLabel.text = nil
         seeAvailabilityButton.setTitle(nil, for: .normal)
-        bookMarkImageView.image = nil
         
         // Hide elements that shouldn't show during skeleton
         offerPercentLabel.isHidden = false
@@ -330,6 +329,6 @@ class HotelListTVC : UITableViewCell {
         priceLabel.text = nil
         reviewLabel.text = nil
         distanceLabel.text = nil
-        bookMarkImageView.image = nil
+
     }
 }
