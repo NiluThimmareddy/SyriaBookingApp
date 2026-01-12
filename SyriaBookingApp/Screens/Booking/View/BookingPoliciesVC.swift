@@ -50,6 +50,7 @@ class BookingPoliciesVC: UIViewController {
     }
     
     private func setupUI() {
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         formatPoliciesText()
         acceptTermsAndConditionsLabel.isHidden = true
         originalAcceptTermsTopConstraint = acceptTermsTopConstraint.constant

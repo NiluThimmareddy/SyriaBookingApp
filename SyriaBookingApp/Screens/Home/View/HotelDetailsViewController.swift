@@ -498,7 +498,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRates = self.selectedRates
-            controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: true)
         }
     }
@@ -1239,4 +1238,3 @@ class CenteredPresentationController: UIPresentationController {
         presentedView?.clipsToBounds = true
     }
 }
-
