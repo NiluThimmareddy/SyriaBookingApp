@@ -33,15 +33,20 @@ class CareerApplicationVC: UIViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
+        self.dismiss(animated: true)
     }
     
     @IBAction func chooseFileButtonAction(_ sender: Any) {
     }
     
     @IBAction func submitApplicationButtonAction(_ sender: Any) {
+        
     }
     
+    
+    
     @IBAction func closeButtonAction(_ sender: Any) {
+        self.dismiss(animated: true)
     }
     
 }
