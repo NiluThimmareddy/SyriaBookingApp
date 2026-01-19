@@ -90,7 +90,9 @@ class CareersVC: UIViewController {
     
     @IBAction func applyJobButtonAction(_ sender: Any) {
         let storyboard = storyboard?.instantiateViewController(identifier: "CareerApplicationVC") as! CareerApplicationVC
-        self.navigationController?.pushViewController(storyboard, animated: true)
+//        self.navigationController?.pushViewController(storyboard, animated: true)
+        storyboard.modalPresentationStyle = .fullScreen
+        self.present(storyboard, animated: true)
     }
     
 }

@@ -82,7 +82,7 @@ class APIManager {
         task.resume()
     }
     
-    func postRequest<T: Codable>(urlString: URL,body: [String: Any],responseType: T.Type,completion: @escaping (Result<T, Error>) -> Void) {
+    func postRequest<T: Codable>(urlString: URL,body: [String: Any],responseType: T.Type, urlencoded : Bool? = nil ,completion: @escaping (Result<T, Error>) -> Void) {
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body) else {
             completion(.failure(NSError(domain: "Invalid Body", code: -2)))
@@ -91,8 +91,20 @@ class APIManager {
         
         var request = URLRequest(url: urlString)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+        
+        if let  urlencoded = urlencoded , urlencoded == true{
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            let bodyString = body
+                .map { "\($0.key)=\(($0.value as AnyObject).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")" }
+                    .joined(separator: "&")
+
+                request.httpBody = bodyString.data(using: .utf8)
+        } else{
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+        }
+        
+        
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

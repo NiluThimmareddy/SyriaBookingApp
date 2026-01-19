@@ -44,7 +44,7 @@ extension UIViewController {
             self.defaultActivityIndicator = indicator
         }
     }
-
+    
     
     func hideLoader() {
         DispatchQueue.main.async {
@@ -95,7 +95,7 @@ extension UIViewController {
                                          style: .plain,
                                          target: self,
                                          action: #selector(didTapMenu(_:)))
-
+        
         if let user = UserSessionManager.getUser() {
             viewModel.onCountSuccess = { data in
                 print("Count: \(data.count)")
@@ -162,7 +162,7 @@ extension UIViewController {
                     controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا","الإبلاغ عن التطبيق","الملف الشخصي","تسجيل الخروج","ديليت أن أكاونت"]
                 } else {
                     controller.menuArray = ["الأسئلة الشائعة","سياسة الخصوصية","الشروط والأحكام","معلومات عنا",
-                        "الإبلاغ عن التطبيق", "تسجيل الدخول"]
+                                            "الإبلاغ عن التطبيق", "تسجيل الدخول"]
                 }
             } else {
                 if isLoggedIn {
@@ -388,19 +388,19 @@ extension UIViewController {
     
     func goToHomeTab() {
         guard let windowScene = UIApplication.shared.connectedScenes
-                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
               let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
             return
         }
-
+        
         window.rootViewController?.dismiss(animated: false) {
             if let tabBarVC = window.rootViewController as? UITabBarController {
                 tabBarVC.selectedIndex = 0
             }
         }
     }
-
-
+    
+    
     func iso8601String(from date: Date) -> String {
         let calendar = Calendar(identifier: .gregorian)
         
@@ -430,7 +430,7 @@ extension UIViewController {
         }
         return "1900-01-01T00:00:00.000Z" // fallback hardcoded
     }
-
+    
 }
 
 extension UIViewController {
@@ -439,7 +439,7 @@ extension UIViewController {
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -455,4 +455,21 @@ extension UIViewController {
         controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true)
     }
+    
+    
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+    func isValidPhoneNumber(_ number: String) -> Bool {
+        let digitsOnly = CharacterSet.decimalDigits
+        return !number.isEmpty &&
+        number.rangeOfCharacter(from: digitsOnly.inverted) == nil &&
+        number.count >= 8 &&
+        number.count <= 15
+    }
+    
 }

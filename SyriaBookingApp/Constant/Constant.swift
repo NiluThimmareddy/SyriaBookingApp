@@ -19,7 +19,7 @@ enum APIURL{
     case notification
     case notificationCount
     case updateProfile
-        
+    case Applycareer
     //Production URL
 //    var baseURL: String {
 //        return "https://syriabooking.sy/public-api/api/"
@@ -61,6 +61,8 @@ enum APIURL{
             return URL(string: baseURL + "BookingPublic/Notifications-count-by-user/")
         case .updateProfile:
             return URL(string: baseURL + "UserPublic/")
+        case .Applycareer:
+            return URL(string: baseURL + "CareerPublic/apply/")
         }
     }
 }
