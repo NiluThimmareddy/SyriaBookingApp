@@ -164,7 +164,7 @@ class TermsAndConditionsVC: UIViewController, WKNavigationDelegate {
                 <p>للأسئلة أو المخاوف بشأن هذه الشروط، يرجى الاتصال:</p>
                 
                 <p><strong>البريد الإلكتروني:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></p>
-                <p><strong>الهاتف:</strong> +963-123-456789</p>
+                <p><strong>الهاتف:</strong> <a href="tel:+963123456789">+963-123-456789</a></p>
             
                 <h6>شكراً لزيارتكم!</h6>
                 <p>باستخدامك موقعنا أو خدماتنا، فإنك توافق على شروط هذه السياسة. يرجى مراجعتها بشكل دوري للتحديثات أو التغييرات.</p>
@@ -274,7 +274,7 @@ class TermsAndConditionsVC: UIViewController, WKNavigationDelegate {
                 <p>For questions or concerns about these Terms, please contact:</p>
                 
                 <p><strong>Email:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></p>
-                <p><strong>Phone:</strong> +963-123-456789</p>
+                <p><strong>Phone:</strong> <a href="tel:+963123456789">+963-123-456789</a></p>
             
                 <h6>Thank you for visiting!</h6>
                 <p>By using our website or services, you consent to the terms of this policy. Please review it periodically for updates or changes.</p>
@@ -291,6 +291,45 @@ class TermsAndConditionsVC: UIViewController, WKNavigationDelegate {
     }
     
     // MARK: - WKNavigationDelegate
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+        if url.scheme == "mailto" {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                    if !success {
+                        print("Failed to open email client")
+                    }
+                })
+            } else {
+                print("Mail app is not available")
+                let alert = UIAlertController(
+                    title: "Cannot Send Email",
+                    message: "Mail app is not configured on this device.",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        
+        if url.scheme == "tel" {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                    if !success {
+                        print("Failed to initiate phone call")
+                    }
+                })
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
+    }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in

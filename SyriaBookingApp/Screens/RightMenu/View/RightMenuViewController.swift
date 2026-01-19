@@ -70,6 +70,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             present(controller, animated: true)
         case 3:
             let controller = storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
+//            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true)
         case 4 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC

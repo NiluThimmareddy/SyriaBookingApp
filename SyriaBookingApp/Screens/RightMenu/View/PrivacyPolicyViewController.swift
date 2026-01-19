@@ -12,7 +12,6 @@ class PrivacyPolicyViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet weak var followLinksView: UIView!
     
     private var webView: WKWebView!
-    private var webViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -169,7 +168,7 @@ class PrivacyPolicyViewController: UIViewController, WKNavigationDelegate {
                 <h5>9. تواصل معنا:</h5>
                 <p>للاستفسارات أو الطلبات المتعلقة بالخصوصية أو ملفات تعريف الارتباط، يرجى التواصل معنا:</p>
                 <p><strong>البريد:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a><br>
-                <strong>الهاتف:</strong> +963-123-456789</p>
+                <strong>الهاتف:</strong> <a href="tel:+963123456789">+963-123-456789</a></p>
             
                 <h6>شكراً لزيارتكم!</h6>
                 <p>باستخدامك موقعنا أو خدماتنا، فإنك توافق على شروط سياسة الخصوصية هذه. يرجى مراجعتها دورياً للتحديثات أو التغييرات.</p>
@@ -289,7 +288,7 @@ class PrivacyPolicyViewController: UIViewController, WKNavigationDelegate {
                 <h5>9. Contact Us:</h5>
                 <p>For questions, requests, or concerns related to privacy or cookies, please contact:</p>
                 <p><strong>Email:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a><br>
-                <strong>Phone:</strong> +963-123-456789</p>
+                <strong>Phone:</strong> <a href="tel:+963123456789">+963-123-456789</a></p>
             
                 <h6>Thank you for visiting!</h6>
                 <p>By using our website or services, you consent to the terms of this Privacy Policy. Please review this policy periodically for updates or changes.</p>
@@ -303,6 +302,71 @@ class PrivacyPolicyViewController: UIViewController, WKNavigationDelegate {
         }
         
         webView.loadHTMLString(htmlString, baseURL: nil)
+    }
+    
+    // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+        if url.scheme == "mailto" {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                    if !success {
+                        print("Failed to open email client")
+                    }
+                })
+            } else {
+                print("Mail app is not available")
+                let alert = UIAlertController(
+                    title: AppSettings.shared.selectedLanguage == .arabic ?
+                           "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email",
+                    message: AppSettings.shared.selectedLanguage == .arabic ?
+                            "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز." :
+                            "Mail app is not configured on this device.",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        
+        if url.scheme == "tel" {
+            if UIApplication.shared.canOpenURL(url) {
+                let phoneNumber = url.absoluteString.replacingOccurrences(of: "tel:", with: "")
+                let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "الاتصال" : "Call"
+                let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
+                    "هل تريد الاتصال بـ \(phoneNumber)؟" :
+                    "Do you want to call \(phoneNumber)?"
+                let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
+                let callTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال" : "Call"
+                
+                let alert = UIAlertController(
+                    title: alertTitle,
+                    message: alertMessage,
+                    preferredStyle: .alert
+                )
+                
+                alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
+                alert.addAction(UIAlertAction(title: callTitle, style: .default, handler: { _ in
+                    UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                        if !success {
+                            print("Failed to initiate phone call")
+                        }
+                    })
+                }))
+                
+                present(alert, animated: true)
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        
+        decisionHandler(.allow)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

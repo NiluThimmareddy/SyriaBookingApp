@@ -10,6 +10,7 @@
 		B513DE3A2E7974B5003B97E3 /* libPhoneNumber in Frameworks */ = {isa = PBXBuildFile; productRef = B513DE392E7974B5003B97E3 /* libPhoneNumber */; };
 		B52D297A2EB9CBD800837128 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = B52D29792EB9CBD800837128 /* Reachability */; };
 		B58663492EC1F88500BC3C69 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = B58663482EC1F88500BC3C69 /* SkeletonView */; };
+		B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */; };
 		B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */ = {isa = PBXBuildFile; productRef = B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */; };
 		B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B5F697A62E533BAB00D5A569 /* Lottie */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 			files = (
 				B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */,
 				B52D297A2EB9CBD800837128 /* Reachability in Frameworks */,
+				B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */,
 				B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */,
 				B513DE3A2E7974B5003B97E3 /* libPhoneNumber in Frameworks */,
 				B58663492EC1F88500BC3C69 /* SkeletonView in Frameworks */,
@@ -110,6 +112,7 @@
 				B513DE392E7974B5003B97E3 /* libPhoneNumber */,
 				B52D29792EB9CBD800837128 /* Reachability */,
 				B58663482EC1F88500BC3C69 /* SkeletonView */,
+				B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */,
 			);
 			productName = SyriaBookingApp;
 			productReference = B5E63DFD2E339BF2005443FC /* SyriaBookingApp.app */;
@@ -145,6 +148,7 @@
 				B513DE382E7974B5003B97E3 /* XCRemoteSwiftPackageReference "libPhoneNumber-iOS" */,
 				B52D29782EB9CBD800837128 /* XCRemoteSwiftPackageReference "Reachability" */,
 				B58663472EC1F88500BC3C69 /* XCRemoteSwiftPackageReference "SkeletonView" */,
+				B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5E63DFE2E339BF2005443FC /* Products */;
@@ -406,6 +410,14 @@
 				minimumVersion = 1.31.0;
 			};
 		};
+		B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
 		B5DE7C062E5DA80200C6FC18 /* XCRemoteSwiftPackageReference "CTPanoramaView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scihant/CTPanoramaView.git";
@@ -439,6 +451,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B58663472EC1F88500BC3C69 /* XCRemoteSwiftPackageReference "SkeletonView" */;
 			productName = SkeletonView;
+		};
+		B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 		B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */ = {
 			isa = XCSwiftPackageProductDependency;

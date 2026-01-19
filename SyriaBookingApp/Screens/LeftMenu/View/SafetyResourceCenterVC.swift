@@ -134,10 +134,10 @@ class SafetyResourceCenterVC: UIViewController, WKNavigationDelegate {
             
                 <h5>٤. في حالة الطوارئ</h5>
                 <ul>
-                    <li><strong>الشرطة المحلية:</strong> 112</li>
-                    <li><strong>الإسعاف:</strong> 110</li>
-                    <li><strong>البريد الإلكتروني:</strong> info@syriabooking.sy</li>
-                    <li><strong>الهاتف:</strong> +963-123-456789</li>
+                    <li><strong>الشرطة المحلية:</strong> <a href="tel:112">112</a></li>
+                    <li><strong>الإسعاف:</strong> <a href="tel:110">110</a></li>
+                    <li><strong>البريد الإلكتروني:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></li>
+                    <li><strong>الهاتف:</strong> <a href="tel:+963123456789">+963-123-456789</a></li>
                 </ul>
             
                 <h5>٥. نصائح السفر لسوريا</h5>
@@ -219,10 +219,10 @@ class SafetyResourceCenterVC: UIViewController, WKNavigationDelegate {
             
                 <h5>4. In Case of Emergency</h5>
                 <ul>
-                    <li><strong>Local Police:</strong> 112</li>
-                    <li><strong>Medical Emergency:</strong> 110</li>
-                    <li><strong>Email:</strong> info@syriabooking.sy</li>
-                    <li><strong>Phone:</strong> +963-123-456789</li>
+                    <li><strong>Local Police:</strong> <a href="tel:112">112</a></li>
+                    <li><strong>Medical Emergency:</strong> <a href="tel:110">110</a></li>
+                    <li><strong>Email:</strong> <a href="mailto:info@syriabooking.sy">info@syriabooking.sy</a></li>
+                    <li><strong>Phone:</strong> <a href="tel:+963123456789">+963-123-456789</a></li>
                 </ul>
             
                 <h5>5. Travel Tips for Syria</h5>
@@ -246,6 +246,87 @@ class SafetyResourceCenterVC: UIViewController, WKNavigationDelegate {
     }
     
     // MARK: - WKNavigationDelegate
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+        
+        // Handle mailto links (email)
+        if url.scheme == "mailto" {
+            // Check if device can open mail app
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                    if !success {
+                        print("Failed to open email client")
+                    }
+                })
+            } else {
+                print("Mail app is not available")
+                // Show localized alert
+                let alert = UIAlertController(
+                    title: AppSettings.shared.selectedLanguage == .arabic ?
+                           "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email",
+                    message: AppSettings.shared.selectedLanguage == .arabic ?
+                            "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز." :
+                            "Mail app is not configured on this device.",
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        
+        // Handle tel links (phone calls)
+        if url.scheme == "tel" {
+            // Check if device can make phone calls
+            if UIApplication.shared.canOpenURL(url) {
+                // Show confirmation alert before calling (for non-emergency numbers)
+                let phoneNumber = url.absoluteString.replacingOccurrences(of: "tel:", with: "")
+                
+                // For emergency numbers (112, 110), don't show confirmation, just call
+                if phoneNumber == "112" || phoneNumber == "110" {
+                    UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                        if !success {
+                            print("Failed to initiate emergency call")
+                        }
+                    })
+                } else {
+                    // For non-emergency numbers, show confirmation
+                    let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "الاتصال" : "Call"
+                    let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
+                        "هل تريد الاتصال بـ \(phoneNumber)؟" :
+                        "Do you want to call \(phoneNumber)?"
+                    let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
+                    let callTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال" : "Call"
+                    
+                    let alert = UIAlertController(
+                        title: alertTitle,
+                        message: alertMessage,
+                        preferredStyle: .alert
+                    )
+                    
+                    alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
+                    alert.addAction(UIAlertAction(title: callTitle, style: .default, handler: { _ in
+                        UIApplication.shared.open(url, options: [:], completionHandler: { success in
+                            if !success {
+                                print("Failed to initiate phone call")
+                            }
+                        })
+                    }))
+                    
+                    present(alert, animated: true)
+                }
+            }
+            decisionHandler(.cancel)
+            return
+        }
+        
+        // Allow all other navigation (regular web content)
+        decisionHandler(.allow)
+    }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
