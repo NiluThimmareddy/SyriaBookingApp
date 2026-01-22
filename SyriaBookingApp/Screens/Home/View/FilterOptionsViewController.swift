@@ -206,7 +206,7 @@ class FilterOptionsViewController: UIViewController {
             let star = String(hotel.starRating)
             let averageRating = Float(hotel.averageRating) ?? 0.0
             let price = parsePrice(hotel.minRoomPrice)
-            
+
             let hotelAmenities = hotel.amenities?
                 .split(separator: ",")
                 .map {
@@ -215,6 +215,19 @@ class FilterOptionsViewController: UIViewController {
                       .replacingOccurrences(of: "-", with: "")
                       .replacingOccurrences(of: " ", with: "")
                 } ?? []
+
+            let roomAmenities = hotel.rooms.flatMap { roomWrapper in
+                roomWrapper.room.amenities?
+                    .split(separator: ",")
+                    .map {
+                        $0.trimmingCharacters(in: .whitespacesAndNewlines)
+                          .lowercased()
+                          .replacingOccurrences(of: "-", with: "")
+                          .replacingOccurrences(of: " ", with: "")
+                    } ?? []
+            }
+
+            let allAmenities = Array(Set(hotelAmenities + roomAmenities))
             
             let typeMatch: Bool
             if selectedHotelTypes.isEmpty || selectedHotelTypes.contains("all") {
@@ -247,7 +260,7 @@ class FilterOptionsViewController: UIViewController {
             if normalizedSelectedAmenities.isEmpty {
                 amenitiesMatch = true
             } else {
-                amenitiesMatch = normalizedSelectedAmenities.allSatisfy { hotelAmenities.contains($0) }
+                amenitiesMatch = normalizedSelectedAmenities.allSatisfy { allAmenities.contains($0) }
             }
             
             let priceMatch = (price >= minPrice && price <= maxPrice)
