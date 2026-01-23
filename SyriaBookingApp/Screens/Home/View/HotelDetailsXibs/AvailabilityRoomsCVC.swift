@@ -4,7 +4,6 @@
 //
 //  Created by toqsoft on 06/08/25.
 
-
 import UIKit
 import SkeletonView
 
@@ -30,6 +29,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var rateTitleLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var imageCountLabel: UILabel!
+    @IBOutlet weak var noRatesLabel: UILabel!
     
     var isLocalRate : Bool = false
     var selectedRoom: RoomElement?
@@ -62,30 +62,40 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
         case 0:
             self.segmentChanged?()
             isLocalRate = false
-            if var room = selectedRoom {
-                for index in room.rates.indices {
-                    room.rates[index].isSelected = false
-                    room.rates[index].isLocal = false
-                }
-                selectedRoom = room // reassign updated value
-            }
-            roomRatesTableview.reloadData()
+            updateRatesForSelectedSegment()
         case 1:
             isLocalRate = true
             self.segmentChanged?()
-            if var room = selectedRoom {
-                for index in room.rates.indices {
-                    room.rates[index].isSelected = false
-                    room.rates[index].isLocal = true
-                }
-                selectedRoom = room // reassign updated value
-            }
-            
-            roomRatesTableview.reloadData()
+            updateRatesForSelectedSegment()
         default:
             break
         }
+    }
+    
+    private func updateRatesForSelectedSegment() {
+        let hasRates = !(selectedRoom?.rates.isEmpty ?? true)
         
+        roomRatesTableview.isHidden = !hasRates
+        noRatesLabel.isHidden = hasRates
+        
+        if hasRates {
+            if var room = selectedRoom {
+                for index in room.rates.indices {
+                    room.rates[index].isSelected = false
+                    room.rates[index].isLocal = isLocalRate
+                }
+                selectedRoom = room
+            }
+            roomRatesTableview.reloadData()
+            
+            DispatchQueue.main.async {
+                self.roomRatesTableview.layoutIfNeeded()
+                self.roomRatesTableviewheightConstraint.constant = self.roomRatesTableview.contentSize.height
+                self.layoutIfNeeded()
+            }
+        } else {
+            roomRatesTableviewheightConstraint.constant = 0
+        }
     }
     
 }
@@ -98,10 +108,8 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomsRatesTVC", for: indexPath) as! RoomsRatesTVC
         guard let selectedRoom = selectedRoom else {
-            
             return cell
         }
-        
         
         if UserSessionManager.getUser() == nil{
             cell.isUserInteractionEnabled = false
@@ -111,9 +119,9 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         
         cell.checkMarkButton.tag = indexPath.row
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
-        cell.selectRoomsButton.tag =  indexPath.row
+        cell.selectRoomsButton.tag = indexPath.row
         
-        cell.configure(with: selectedRoom, ratesForLocal: isLocalRate ?? false) { [weak self] selectedQty in
+        cell.configure(with: selectedRoom, ratesForLocal: isLocalRate) { [weak self] selectedQty in
             guard let self = self else { return }
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
             if let rate = self.selectedRoom?.rates[indexPath.row] {
@@ -158,14 +166,29 @@ extension AvailabilityRoomsCVC {
         roomImageView.isUserInteractionEnabled = true
         roomImageView.addGestureRecognizer(tapGesture)
         
-        // Setup segmented control styling and localization
         setupSegmentedControlStyling()
-        segmentControl.setInternationalLocalSegments() // Add this line
+        segmentControl.setInternationalLocalSegments()
         
         self.imageCountLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         imageCountLabel.layer.cornerRadius = 10
         imageCountLabel.layer.masksToBounds = true
         imageCountLabel.layer.maskedCorners = [.layerMinXMinYCorner]
+        
+        configureNoRatesLabel()
+    }
+    
+    private func configureNoRatesLabel() {
+        noRatesLabel.isHidden = true
+        noRatesLabel.textAlignment = .center
+        noRatesLabel.textColor = .gray
+        noRatesLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        noRatesLabel.numberOfLines = 0
+        
+        if AppSettings.shared.selectedLanguage == .arabic {
+            noRatesLabel.text = "لا توجد أسعار متاحة حالياً"
+        } else {
+            noRatesLabel.text = "No rates available at the moment"
+        }
     }
     
     func setupSegmentedControlStyling() {
@@ -224,11 +247,20 @@ extension AvailabilityRoomsCVC {
     
     func configure(with rooms: RoomElement) {
         self.selectedRoom = rooms
-        roomRatesTableview.reloadData()
-        DispatchQueue.main.async {
-            self.roomRatesTableview.layoutIfNeeded()
-            self.roomRatesTableviewheightConstraint.constant = self.roomRatesTableview.contentSize.height
-            self.layoutIfNeeded()
+        
+        let hasRates = !rooms.rates.isEmpty
+        
+        updateRatesVisibility(hasRates: hasRates)
+        
+        if hasRates {
+            roomRatesTableview.reloadData()
+            DispatchQueue.main.async {
+                self.roomRatesTableview.layoutIfNeeded()
+                self.roomRatesTableviewheightConstraint.constant = self.roomRatesTableview.contentSize.height
+                self.layoutIfNeeded()
+            }
+        } else {
+            roomRatesTableviewheightConstraint.constant = 0
         }
         
         if let imageUrlString = rooms.coverImage, !imageUrlString.isEmpty {
@@ -237,10 +269,24 @@ extension AvailabilityRoomsCVC {
             roomImageView.image = UIImage(named: "HotelPlaceholder 1")
         }
         
-        let RoomImages = parentHotel?.images.filter  { $0.contains(rooms.room.id) }.count ?? 0
-        imageCountLabel.text = "\(RoomImages)"
+        let roomImagesCount = parentHotel?.images.filter { $0.contains(rooms.room.id) }.count ?? 0
+        imageCountLabel.text = "\(roomImagesCount)"
+        imageCountLabel.isHidden = roomImagesCount == 0
         
+        configureRoomDetails(rooms)
         
+        updateBookNowButtonTitle()
+    }
+    
+    private func updateRatesVisibility(hasRates: Bool) {
+        roomRatesTableview.isHidden = !hasRates
+        rateTitleLabel.isHidden = !hasRates
+        segmentControl.isHidden = !hasRates
+        bookNowButton.isHidden = !hasRates
+        noRatesLabel.isHidden = hasRates
+    }
+    
+    private func configureRoomDetails(_ rooms: RoomElement) {
         let roomType = rooms.room.roomType
         let bedType = rooms.room.bedType
         let roomSize = rooms.room.roomSize ?? "N/A"
@@ -295,8 +341,6 @@ extension AvailabilityRoomsCVC {
                 highlightColor: .label
             )
         }
-        
-        updateBookNowButtonTitle()
     }
     
     func updateBookNowButtonTitle() {
