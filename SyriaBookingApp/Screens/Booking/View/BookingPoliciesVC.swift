@@ -18,7 +18,6 @@ class BookingPoliciesVC: UIViewController {
     @IBOutlet weak var acceptTermsAndConditionsLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
-//    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var acceptTermsTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var acceptTermsbottomConstraint: NSLayoutConstraint!
     
@@ -43,11 +42,6 @@ class BookingPoliciesVC: UIViewController {
         acceptTermsTopConstraint.constant = 0
         acceptTermsbottomConstraint.constant = 0
     }
-    
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        adjustTextViewHeight()
-//    }
     
     private func setupUI() {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -86,14 +80,6 @@ class BookingPoliciesVC: UIViewController {
         let formattedPolicies = trimmedItems.map { "• \($0)" }.joined(separator: "\n\n")
         policieTextView.text = formattedPolicies
     }
-    
-//    private func adjustTextViewHeight() {
-//        let fixedWidth = policieTextView.frame.size.width
-//        let newSize = policieTextView.sizeThatFits(CGSize(width: fixedWidth, height: .greatestFiniteMagnitude))
-//        textViewHeightConstraint.constant = newSize.height
-//        
-//        self.view.layoutIfNeeded()
-//    }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

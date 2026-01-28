@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
-        let clarityConfig = ClarityConfig(projectId: "v8i13bjwp6")
+        let clarityConfig = ClarityConfig(projectId: "v8ilml24s5")
         ClaritySDK.initialize(config: clarityConfig)
         
         return true
