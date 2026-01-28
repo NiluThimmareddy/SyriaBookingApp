@@ -8,12 +8,16 @@
 import UIKit
 import CoreData
 import FirebaseCore
+import Clarity
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        let clarityConfig = ClarityConfig(projectId: "v8i13bjwp6")
+        ClaritySDK.initialize(config: clarityConfig)
+        
         return true
     }
 
