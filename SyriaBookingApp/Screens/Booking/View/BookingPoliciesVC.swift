@@ -18,7 +18,7 @@ class BookingPoliciesVC: UIViewController {
     @IBOutlet weak var acceptTermsAndConditionsLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var acceptTermsTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var acceptTermsbottomConstraint: NSLayoutConstraint!
     
@@ -44,10 +44,10 @@ class BookingPoliciesVC: UIViewController {
         acceptTermsbottomConstraint.constant = 0
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        adjustTextViewHeight()
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        adjustTextViewHeight()
+//    }
     
     private func setupUI() {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -71,7 +71,7 @@ class BookingPoliciesVC: UIViewController {
         policieTextView.textColor = .label
         policieTextView.textContainer.lineFragmentPadding = 0
         policieTextView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        policieTextView.isScrollEnabled = false
+        policieTextView.isScrollEnabled = true
         policieTextView.isEditable = false
     }
     
@@ -87,13 +87,13 @@ class BookingPoliciesVC: UIViewController {
         policieTextView.text = formattedPolicies
     }
     
-    private func adjustTextViewHeight() {
-        let fixedWidth = policieTextView.frame.size.width
-        let newSize = policieTextView.sizeThatFits(CGSize(width: fixedWidth, height: .greatestFiniteMagnitude))
-        textViewHeightConstraint.constant = newSize.height
-        
-        self.view.layoutIfNeeded()
-    }
+//    private func adjustTextViewHeight() {
+//        let fixedWidth = policieTextView.frame.size.width
+//        let newSize = policieTextView.sizeThatFits(CGSize(width: fixedWidth, height: .greatestFiniteMagnitude))
+//        textViewHeightConstraint.constant = newSize.height
+//        
+//        self.view.layoutIfNeeded()
+//    }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
