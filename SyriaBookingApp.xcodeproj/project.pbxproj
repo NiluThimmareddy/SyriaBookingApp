@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B513DE3A2E7974B5003B97E3 /* libPhoneNumber in Frameworks */ = {isa = PBXBuildFile; productRef = B513DE392E7974B5003B97E3 /* libPhoneNumber */; };
 		B52D297A2EB9CBD800837128 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = B52D29792EB9CBD800837128 /* Reachability */; };
+		B56EA3F82F2A31BB000484E2 /* Clarity in Frameworks */ = {isa = PBXBuildFile; productRef = B56EA3F72F2A31BB000484E2 /* Clarity */; };
 		B58663492EC1F88500BC3C69 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = B58663482EC1F88500BC3C69 /* SkeletonView */; };
 		B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */; };
 		B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */ = {isa = PBXBuildFile; productRef = B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */; };
@@ -60,6 +61,7 @@
 			files = (
 				B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */,
 				B52D297A2EB9CBD800837128 /* Reachability in Frameworks */,
+				B56EA3F82F2A31BB000484E2 /* Clarity in Frameworks */,
 				B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */,
 				B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */,
 				B513DE3A2E7974B5003B97E3 /* libPhoneNumber in Frameworks */,
@@ -113,6 +115,7 @@
 				B52D29792EB9CBD800837128 /* Reachability */,
 				B58663482EC1F88500BC3C69 /* SkeletonView */,
 				B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */,
+				B56EA3F72F2A31BB000484E2 /* Clarity */,
 			);
 			productName = SyriaBookingApp;
 			productReference = B5E63DFD2E339BF2005443FC /* SyriaBookingApp.app */;
@@ -149,6 +152,7 @@
 				B52D29782EB9CBD800837128 /* XCRemoteSwiftPackageReference "Reachability" */,
 				B58663472EC1F88500BC3C69 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				B56EA3F62F2A31BB000484E2 /* XCRemoteSwiftPackageReference "clarity-apps" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5E63DFE2E339BF2005443FC /* Products */;
@@ -187,23 +191,24 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R3LMCTC447;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = N69CRBBU7B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SyriaBookingApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SyriaBooking;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nilu..SyriaBookingApp;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TOQXCEL.SyriaBooking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -217,23 +222,24 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R3LMCTC447;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = N69CRBBU7B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SyriaBookingApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SyriaBooking;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nilu..SyriaBookingApp;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.TOQXCEL.SyriaBooking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -402,6 +408,14 @@
 				kind = branch;
 			};
 		};
+		B56EA3F62F2A31BB000484E2 /* XCRemoteSwiftPackageReference "clarity-apps" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/microsoft/clarity-apps";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.2;
+			};
+		};
 		B58663472EC1F88500BC3C69 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Juanpe/SkeletonView";
@@ -446,6 +460,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B52D29782EB9CBD800837128 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
+		};
+		B56EA3F72F2A31BB000484E2 /* Clarity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B56EA3F62F2A31BB000484E2 /* XCRemoteSwiftPackageReference "clarity-apps" */;
+			productName = Clarity;
 		};
 		B58663482EC1F88500BC3C69 /* SkeletonView */ = {
 			isa = XCSwiftPackageProductDependency;
