@@ -12,6 +12,7 @@
 		B56EA3F82F2A31BB000484E2 /* Clarity in Frameworks */ = {isa = PBXBuildFile; productRef = B56EA3F72F2A31BB000484E2 /* Clarity */; };
 		B58663492EC1F88500BC3C69 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = B58663482EC1F88500BC3C69 /* SkeletonView */; };
 		B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */; };
+		B5B326422F307BF400836840 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = B5B326412F307BF400836840 /* FSCalendar */; };
 		B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */ = {isa = PBXBuildFile; productRef = B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */; };
 		B5F697A72E533BAB00D5A569 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = B5F697A62E533BAB00D5A569 /* Lottie */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,7 @@
 				B56EA3F82F2A31BB000484E2 /* Clarity in Frameworks */,
 				B592BA1B2F1DFE3D00C7F306 /* FirebaseAnalytics in Frameworks */,
 				B5DE7C082E5DA80200C6FC18 /* CTPanoramaView in Frameworks */,
+				B5B326422F307BF400836840 /* FSCalendar in Frameworks */,
 				B513DE3A2E7974B5003B97E3 /* libPhoneNumber in Frameworks */,
 				B58663492EC1F88500BC3C69 /* SkeletonView in Frameworks */,
 			);
@@ -116,6 +118,7 @@
 				B58663482EC1F88500BC3C69 /* SkeletonView */,
 				B592BA1A2F1DFE3D00C7F306 /* FirebaseAnalytics */,
 				B56EA3F72F2A31BB000484E2 /* Clarity */,
+				B5B326412F307BF400836840 /* FSCalendar */,
 			);
 			productName = SyriaBookingApp;
 			productReference = B5E63DFD2E339BF2005443FC /* SyriaBookingApp.app */;
@@ -153,6 +156,7 @@
 				B58663472EC1F88500BC3C69 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B56EA3F62F2A31BB000484E2 /* XCRemoteSwiftPackageReference "clarity-apps" */,
+				B5B326402F307BF400836840 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B5E63DFE2E339BF2005443FC /* Products */;
@@ -432,6 +436,14 @@
 				minimumVersion = 12.8.0;
 			};
 		};
+		B5B326402F307BF400836840 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		B5DE7C062E5DA80200C6FC18 /* XCRemoteSwiftPackageReference "CTPanoramaView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scihant/CTPanoramaView.git";
@@ -475,6 +487,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B592BA192F1DFE3D00C7F306 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		B5B326412F307BF400836840 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5B326402F307BF400836840 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 		B5DE7C072E5DA80200C6FC18 /* CTPanoramaView */ = {
 			isa = XCSwiftPackageProductDependency;

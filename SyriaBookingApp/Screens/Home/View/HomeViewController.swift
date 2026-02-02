@@ -36,7 +36,7 @@ protocol RecentlyViewedProtocol {
     func reloadRecentlyViewedData()
 }
 
-class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate, RecentlyViewedProtocol {
+class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate, RecentlyViewedProtocol, CalenderVCDelegate {
     
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
@@ -82,6 +82,11 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var recommendedHotelsCollectionView: UICollectionView!
     @IBOutlet weak var viewAllRecommendedButton: UIButton!
     @IBOutlet weak var recommendedHotelsCollectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var hotelSearchView: UIView!
+    @IBOutlet weak var whereAreYouGoingButton: UIButton!
+    @IBOutlet weak var checkInCheckOutButton: UIButton!
+    @IBOutlet weak var searchHotelButton: UIButton!
+    @IBOutlet weak var searchStackView: UIStackView!
     
     var viewModel = HotelViewModel()
     var datePickerContainerView: UIView!
@@ -104,6 +109,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var delegate: RecentlyViewedProtocol?
     var isScrollingForward = true
     var currentPromotionIndex = 0
+    var selectedDateRange: String?
+    var selectedRooms: Int = 1
     
     var recommendedHotels: [Hotel] {
         let startIndex = 10
@@ -123,7 +130,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         
         // Show skeleton immediately
         showSkeletonOnAllElements()
-        
+        configureHotelSearchView()
         // Set up notification observers
         setupNotifications()
         
@@ -147,32 +154,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         )
         
         debugSkeletonState()
-    }
-    
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleRecentlyViewedUpdate),
-            name: .recentlyViewedUpdated,
-            object: nil
-        )
-    }
-    
-    @objc func handleRecentlyViewedUpdate() {
-        refreshRecentlyViewedData()
-    }
-    
-    @objc func handleLoginSuccess() {
-        showSkeletonOnAllElements()
-        loadData()
-    }
-    
-    @objc func handleLogout() {
-        print("🚪 Logout received")
-        sliderCollectionView.reloadData()
-        sliderCollectionView.layoutIfNeeded()
-        
-        showSkeletonOnAllElements()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -203,6 +184,43 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         topView.addTopShadow()
     }
     
+    private func configureHotelSearchView() {
+        hotelSearchView.layer.cornerRadius = 15
+        hotelSearchView.backgroundColor = .white
+        
+        hotelSearchView.layer.shadowColor = UIColor.black.cgColor
+        hotelSearchView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        hotelSearchView.layer.shadowOpacity = 0.2
+        hotelSearchView.layer.shadowRadius = 6
+        hotelSearchView.layer.masksToBounds = false
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRecentlyViewedUpdate),
+            name: .recentlyViewedUpdated,
+            object: nil
+        )
+    }
+    
+    @objc func handleRecentlyViewedUpdate() {
+        refreshRecentlyViewedData()
+    }
+    
+    @objc func handleLoginSuccess() {
+        showSkeletonOnAllElements()
+        loadData()
+    }
+    
+    @objc func handleLogout() {
+        print("🚪 Logout received")
+        sliderCollectionView.reloadData()
+        sliderCollectionView.layoutIfNeeded()
+        
+        showSkeletonOnAllElements()
+    }
+    
     // MARK: - Recently Viewed Data Refresh
     func reloadRecentlyViewedData() {
         refreshRecentlyViewedData()
@@ -215,6 +233,48 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
                 self.updateRecentlyViewedSectionVisibility()
             }
         }
+    }
+    
+    @IBAction func whereAreYouGoingButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func checkInCheckOutButtonTapped(_ sender: UIButton) {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "CalenderVC") as? CalenderVC else { return }
+        controller.delegate = self
+        
+        controller.selectedRooms = selectedRooms
+        
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [
+                .custom { context in
+                    return context.maximumDetentValue * 0.65
+                }
+            ]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                sheet.largestUndimmedDetentIdentifier = .medium
+                controller.preferredContentSize = CGSize(
+                    width: UIScreen.main.bounds.width,
+                    height: UIScreen.main.bounds.height * 0.5
+                )
+            }
+        }
+        
+        controller.modalPresentationStyle = .pageSheet
+        present(controller, animated: true)
+
+    }
+    
+    func didSelectDateRange(_ dateRangeText: String) {
+        checkInCheckOutButton.setTitle(dateRangeText, for: .normal)
+        selectedDateRange = dateRangeText
+    }
+    
+    @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
+        
     }
     
     // MARK: - IBActions
@@ -1043,6 +1103,10 @@ extension HomeViewController {
         stackView.layer.cornerRadius = 20
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         searchView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        
+        searchStackView.clipsToBounds = true
+        searchStackView.layer.cornerRadius = 20
+        searchStackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     private func loadData() {
