@@ -555,7 +555,7 @@
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                         <state key="normal" title="Where are you going?"/>
                                                                         <buttonConfiguration key="configuration" style="plain" title="Where are you going?" subtitle="Search by city, area, or hotel name">
-                                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
                                                                             <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </buttonConfiguration>
                                                                         <connections>
@@ -593,7 +593,7 @@
                                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </state>
                                                                         <buttonConfiguration key="configuration" style="plain" title="Check-in -&gt; Check-out" subtitle="Select your stay dates">
-                                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
                                                                             <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </buttonConfiguration>
                                                                         <connections>
@@ -5545,13 +5545,13 @@ And Try Again.</string>
                                 <rect key="frame" x="0.0" y="79" width="393" height="739"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Dates" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWF-6F-akX">
-                                        <rect key="frame" x="20" y="20" width="353" height="24"/>
+                                        <rect key="frame" x="20" y="10" width="353" height="24"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Ejx-PB-j6z">
-                                        <rect key="frame" x="20" y="60" width="353" height="41"/>
+                                        <rect key="frame" x="20" y="55" width="353" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="MlB-lq-lS8">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="50"/>
@@ -5559,22 +5559,22 @@ And Try Again.</string>
                                         </constraints>
                                         <segments>
                                             <segment title="Calender"/>
-                                            <segment title=""/>
+                                            <segment title="I'm flexible"/>
                                         </segments>
                                         <color key="selectedSegmentTintColor" red="0.94117647059999998" green="0.59607843140000005" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </segmentedControl>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B3e-fj-evd">
-                                        <rect key="frame" x="0.0" y="110" width="393" height="1"/>
+                                        <rect key="frame" x="0.0" y="105" width="393" height="1"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="fOx-Wh-DRH"/>
                                         </constraints>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gbz-RI-igs">
-                                        <rect key="frame" x="0.0" y="110.99999999999997" width="393" height="477.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="106" width="393" height="533"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HSc-Pd-Hm9">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="477.33333333333331"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="533"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                         </subviews>
@@ -5590,7 +5590,7 @@ And Try Again.</string>
                                         <viewLayoutGuide key="frameLayoutGuide" id="8LX-1b-djD"/>
                                     </scrollView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UeJ-pU-FJN">
-                                        <rect key="frame" x="0.0" y="588.33333333333337" width="393" height="150.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="639" width="393" height="100"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="YhP-Dl-Y6o">
                                                 <rect key="frame" x="20" y="5" width="373" height="50"/>
@@ -5611,13 +5611,13 @@ And Try Again.</string>
                                                 </connections>
                                             </collectionView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Jun - 5 Jun (3 nights)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDa-we-CeW">
-                                                <rect key="frame" x="0.0" y="65" width="393" height="21.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="14.333333333333373" width="393" height="21.666666666666671"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sjp-PN-yF4">
-                                                <rect key="frame" x="25" y="106.66666666666663" width="343" height="34"/>
+                                                <rect key="frame" x="25" y="56" width="343" height="34"/>
                                                 <color key="backgroundColor" red="0.94117647059999998" green="0.59607843140000005" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -5645,14 +5645,19 @@ And Try Again.</string>
                                             <constraint firstItem="sjp-PN-yF4" firstAttribute="top" secondItem="MDa-we-CeW" secondAttribute="bottom" constant="20" id="j3C-Xd-or7"/>
                                             <constraint firstItem="MDa-we-CeW" firstAttribute="top" secondItem="YhP-Dl-Y6o" secondAttribute="bottom" constant="10" id="l3o-iX-QVM"/>
                                             <constraint firstItem="YhP-Dl-Y6o" firstAttribute="leading" secondItem="UeJ-pU-FJN" secondAttribute="leading" constant="20" id="lGA-cl-QAM"/>
-                                            <constraint firstAttribute="height" constant="150.66999999999999" id="uYX-Kl-XPb">
+                                            <constraint firstAttribute="height" constant="100" id="uYX-Kl-XPb">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="170"/>
                                             </constraint>
                                             <constraint firstAttribute="bottom" secondItem="sjp-PN-yF4" secondAttribute="bottom" constant="10" id="zAi-i3-IFr"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="YhP-Dl-Y6o"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HVu-N5-QJx">
-                                        <rect key="frame" x="0.0" y="49" width="393" height="1"/>
+                                        <rect key="frame" x="0.0" y="44" width="393" height="1"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="HWO-7L-4Ad"/>
@@ -5668,9 +5673,9 @@ And Try Again.</string>
                                     <constraint firstItem="Ejx-PB-j6z" firstAttribute="leading" secondItem="kWF-6F-akX" secondAttribute="leading" id="NbC-2c-b6l"/>
                                     <constraint firstItem="Ejx-PB-j6z" firstAttribute="top" secondItem="HVu-N5-QJx" secondAttribute="bottom" constant="10" id="Q6S-Iq-Dac"/>
                                     <constraint firstItem="HVu-N5-QJx" firstAttribute="leading" secondItem="CFt-Km-Fhd" secondAttribute="leading" id="WKD-uj-T9T"/>
-                                    <constraint firstItem="kWF-6F-akX" firstAttribute="top" secondItem="CFt-Km-Fhd" secondAttribute="top" constant="20" id="bEg-Kv-apd"/>
+                                    <constraint firstItem="kWF-6F-akX" firstAttribute="top" secondItem="CFt-Km-Fhd" secondAttribute="top" constant="10" id="bEg-Kv-apd"/>
                                     <constraint firstItem="kWF-6F-akX" firstAttribute="leading" secondItem="CFt-Km-Fhd" secondAttribute="leading" constant="20" id="cBt-X7-cBw"/>
-                                    <constraint firstItem="HVu-N5-QJx" firstAttribute="top" secondItem="kWF-6F-akX" secondAttribute="bottom" constant="5" id="ckf-zC-7Tp"/>
+                                    <constraint firstItem="HVu-N5-QJx" firstAttribute="top" secondItem="kWF-6F-akX" secondAttribute="bottom" constant="10" id="ckf-zC-7Tp"/>
                                     <constraint firstItem="B3e-fj-evd" firstAttribute="top" secondItem="Ejx-PB-j6z" secondAttribute="bottom" constant="10" id="f4d-Eq-PWa"/>
                                     <constraint firstItem="Ejx-PB-j6z" firstAttribute="trailing" secondItem="kWF-6F-akX" secondAttribute="trailing" id="f67-ua-m81"/>
                                     <constraint firstItem="gbz-RI-igs" firstAttribute="leading" secondItem="CFt-Km-Fhd" secondAttribute="leading" id="j6L-wu-aZm"/>
@@ -5705,7 +5710,7 @@ And Try Again.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f0e-3g-DeV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-732" y="1408"/>
+            <point key="canvasLocation" x="-732.06106870229007" y="1407.7464788732395"/>
         </scene>
     </scenes>
     <resources>
