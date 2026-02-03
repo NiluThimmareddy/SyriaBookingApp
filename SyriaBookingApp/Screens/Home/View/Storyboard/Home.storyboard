@@ -524,7 +524,9 @@
                                                 <rect key="frame" x="15" y="210" width="363" height="200"/>
                                                 <color key="backgroundColor" red="0.94117647059999998" green="0.59607843140000005" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="200" id="fsm-64-zsk"/>
+                                                    <constraint firstAttribute="height" constant="200" id="fsm-64-zsk">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                                                    </constraint>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -592,7 +594,7 @@
                                                                         <state key="normal" title="Check-in -&gt; Check-out">
                                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </state>
-                                                                        <buttonConfiguration key="configuration" style="plain" title="Check-in -&gt; Check-out" subtitle="Select your stay dates">
+                                                                        <buttonConfiguration key="configuration" style="plain" title="Check-in -&gt; Check-out">
                                                                             <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="14"/>
                                                                             <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </buttonConfiguration>
@@ -5621,7 +5623,7 @@ And Try Again.</string>
                                                 <color key="backgroundColor" red="0.94117647059999998" green="0.59607843140000005" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Select Dates">
+                                                <state key="normal" title="Confirm">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -5638,9 +5640,13 @@ And Try Again.</string>
                                         <constraints>
                                             <constraint firstItem="MDa-we-CeW" firstAttribute="leading" secondItem="UeJ-pU-FJN" secondAttribute="leading" id="1Cc-oE-xbS"/>
                                             <constraint firstItem="YhP-Dl-Y6o" firstAttribute="top" secondItem="UeJ-pU-FJN" secondAttribute="top" constant="5" id="HU4-W6-X2H"/>
-                                            <constraint firstItem="sjp-PN-yF4" firstAttribute="leading" secondItem="UeJ-pU-FJN" secondAttribute="leading" constant="25" id="RXw-tl-NlZ"/>
+                                            <constraint firstItem="sjp-PN-yF4" firstAttribute="leading" secondItem="UeJ-pU-FJN" secondAttribute="leading" constant="25" id="RXw-tl-NlZ">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                                            </constraint>
                                             <constraint firstAttribute="trailing" secondItem="MDa-we-CeW" secondAttribute="trailing" id="UeO-9S-t7A"/>
-                                            <constraint firstAttribute="trailing" secondItem="sjp-PN-yF4" secondAttribute="trailing" constant="25" id="hyO-mU-X9k"/>
+                                            <constraint firstAttribute="trailing" secondItem="sjp-PN-yF4" secondAttribute="trailing" constant="25" id="hyO-mU-X9k">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                                            </constraint>
                                             <constraint firstAttribute="trailing" secondItem="YhP-Dl-Y6o" secondAttribute="trailing" id="igC-DV-tuy"/>
                                             <constraint firstItem="sjp-PN-yF4" firstAttribute="top" secondItem="MDa-we-CeW" secondAttribute="bottom" constant="20" id="j3C-Xd-or7"/>
                                             <constraint firstItem="MDa-we-CeW" firstAttribute="top" secondItem="YhP-Dl-Y6o" secondAttribute="bottom" constant="10" id="l3o-iX-QVM"/>
