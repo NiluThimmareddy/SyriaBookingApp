@@ -46,16 +46,15 @@ class WhereToNextListTVC: UITableViewCell {
     private func updateUI() {
         guard let city = city else { return }
         
-        if let imageUrlString = city.image as? String,
-           let url = URL(string: imageUrlString) {
-            loadImageFromURL(url)
-        } else if !city.image.isEmpty {
-            hotelImgView.image = UIImage(named: city.image)
+        hotelImgView.image = nil
+        let cityName = selectedLanguage == .english ? city.City : city.Cityar
+        let imageName = getImageAssetName(for: cityName)
+        if let image = UIImage(named: imageName) {
+            hotelImgView.image = image
         } else {
             hotelImgView.image = UIImage(named: "city_placeholder")
         }
         
-        let cityName = selectedLanguage == .english ? city.City : city.Cityar
         hotelNameLabel.text = cityName
         
         let hotelsCount = hotels.count
@@ -66,22 +65,42 @@ class WhereToNextListTVC: UITableViewCell {
         }
     }
     
-    private func loadImageFromURL(_ url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self,
-                  let data = data,
-                  error == nil,
-                  let image = UIImage(data: data) else {
-                DispatchQueue.main.async {
-                    self?.hotelImgView.image = UIImage(named: "city_placeholder")
-                }
-                return
+    private func getImageAssetName(for cityName: String) -> String {
+        // Clean the city name: trim whitespace and normalize
+        let cleanedName = cityName
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        
+        // Map city names to image asset names
+        // Handle both English and Arabic names
+        switch cleanedName {
+        case "aleppo", "حلب":
+            return "ic_aleppo"
+        case "damascus", "دمشق":
+            return "ic_damascus"
+        case "daraa", "درعا":
+            return "ic_daraa"
+        case "hama", "حماة":
+            return "ic_hama"
+        case "homs", "حمص":
+            return "ic_homs"
+        case "lattakia", "latakia", "اللاذقية":
+            return "ic_lattakia"
+        case "mashta al hilu", "mashta_al_hilu", "mashtaalhilu", "مشتى الحلو":
+            return "ic_mashta_al_hilu"
+        case "qamishli", "القامشلي":
+            return "ic_qamishli"
+        case "raqqa", "الرقة":
+            return "ic_raqqa"
+        case "tartous", "tartus", "طرطوس":
+            return "ic_tartous"
+        default:
+            // Additional check for partial matches
+            if cleanedName.contains("tartous") || cleanedName.contains("tartus") || cleanedName.contains("طرطوس") {
+                return "ic_tartous"
             }
-            
-            DispatchQueue.main.async {
-                self.hotelImgView.image = image
-            }
-        }.resume()
+            return "city_placeholder"
+        }
     }
     
     // MARK: - Skeleton Methods
@@ -187,15 +206,21 @@ extension WhereToNextListTVC {
         totalHotelCollectionView.delegate = self
         totalHotelCollectionView.dataSource = self
         hotelImgView.applyFullLightBlackGradientOverlay()
+        
+        hotelImgView.contentMode = .scaleAspectFill
+        hotelImgView.clipsToBounds = true
+        hotelImgView.layer.cornerRadius = 8
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         hotelImgView.image = nil
         hotelNameLabel.text = nil
         totalHotelsAvailableLabel.text = nil
         hotels.removeAll()
         onHotelSelected = nil
+        
         hideSkeleton()
     }
 }
