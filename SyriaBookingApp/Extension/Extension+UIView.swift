@@ -255,8 +255,8 @@ extension UIView {
         let gradientLayer = CAGradientLayer()
         gradientLayer.name = "fullBlackGradient"
         gradientLayer.colors = [
-            UIColor.black.withAlphaComponent(0.35).cgColor, // lighter black
-            UIColor.black.withAlphaComponent(0.35).cgColor  // same for full overlay
+            UIColor.black.withAlphaComponent(0.20).cgColor, // lighter black
+            UIColor.black.withAlphaComponent(0.20).cgColor  // same for full overlay
         ]
         gradientLayer.locations = [0.0, 1.0]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)

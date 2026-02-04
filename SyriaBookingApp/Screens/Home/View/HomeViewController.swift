@@ -1783,7 +1783,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var handpickedHotelsLabel: UILabel!
     @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
     @IBOutlet weak var sliderView: UIView!
-    @IBOutlet weak var sliderCollectionView: UICollectionView!
+    @IBOutlet weak var sliderCollectionView: UICollectionView! 
     @IBOutlet weak var searchViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var checkoutStackView: UIStackView!
     @IBOutlet weak var tomorrowDateButton: UIButton!
