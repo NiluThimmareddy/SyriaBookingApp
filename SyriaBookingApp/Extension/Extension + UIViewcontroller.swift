@@ -76,13 +76,13 @@ extension UIViewController {
         navigationItem.titleView = containerView
         
         var rightButtons: [UIBarButtonItem] = []
-        if self is HomeViewController {
-            let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
-                                               style: .plain,
-                                               target: self,
-                                               action: #selector(didTapSearch))
-            rightButtons.append(searchButton)
-        }
+//        if self is HomeViewController {
+//            let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
+//                                               style: .plain,
+//                                               target: self,
+//                                               action: #selector(didTapSearch))
+//            rightButtons.append(searchButton)
+//        }
         
         let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         badgeButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)

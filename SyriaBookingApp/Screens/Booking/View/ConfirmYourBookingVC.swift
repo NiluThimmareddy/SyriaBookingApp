@@ -81,20 +81,35 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let today = Date()
-        selectedCheckInDate = today
         
-        if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
-            selectedCheckOutDate = tomorrow
+        if let checkInDate = selectedCheckInDate,
+           let checkOutDate = selectedCheckOutDate{
+            
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEE dd MMM"
+//            formatter.dateStyle = .medium
+            
+            checkInTF.text = formatter.string(from: checkInDate)
+            checkOutTF.text = formatter.string(from: checkOutDate)
+        }else{
+            let today = Date()
+            selectedCheckInDate = today
+            
+            if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
+                selectedCheckOutDate = tomorrow
+            }
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEE dd MMM"
+//            formatter.dateStyle = .medium
+            
+            checkInTF.text = formatter.string(from: selectedCheckInDate!)
+            checkOutTF.text = formatter.string(from: selectedCheckOutDate!)
         }
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
-        formatter.dateStyle = .medium
+      
         
-        checkInTF.text = formatter.string(from: selectedCheckInDate!)
-        checkOutTF.text = formatter.string(from: selectedCheckOutDate!)
-        
+       
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
     
