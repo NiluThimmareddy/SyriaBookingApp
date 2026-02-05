@@ -58,7 +58,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var handpickedHotelsLabel: UILabel!
     @IBOutlet weak var handPickedHotelsDescriptionLabel: UILabel!
     @IBOutlet weak var sliderView: UIView!
-    @IBOutlet weak var sliderCollectionView: UICollectionView! 
+    @IBOutlet weak var sliderCollectionView: UICollectionView!
     @IBOutlet weak var searchViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var checkoutStackView: UIStackView!
     @IBOutlet weak var tomorrowDateButton: UIButton!
@@ -105,6 +105,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var currentPromotionIndex = 0
     var selectedDateRange: String?
     var selectedRooms: Int = 1
+    
+    // Add this property for city mapping
+    var cityDisplayToActualMapping: [String: String] = [:]
+    
+    // Add this property to store selected city
+    var selectedCityFromDropdown: String?
     
     var recommendedHotels: [Hotel] {
         let startIndex = 10
@@ -311,16 +317,28 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
 
     @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
-
+        // Get the button title from attributed string or plain text
+        var selectedCity: String?
+        
+        if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
+            selectedCity = attributedTitle.string
+        } else {
+            selectedCity = whereAreYouGoingButton.currentTitle
+        }
+        
         // City validation
         guard
-            let selectedCity = whereAreYouGoingButton.currentTitle,
-            selectedCity != "Select City"
+            let city = selectedCity,
+            city != "Select City" && city != "اختر مدينة" &&
+            city != "Where are you going?" && city != "إلى أين أنت ذاهب؟"
         else {
             showAlert(title: "SyriaBooking", message: "Please select city")
             return
         }
-
+        
+        // Remove any count from the selected city if present
+        let cleanedCity = city.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+        
         // Date validation (from stored values)
         guard
             let checkInDate = selectedCheckInDate,
@@ -330,13 +348,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             return
         }
 
-        let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
-        ) as! HotelListViewController
+        let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController") as! HotelListViewController
 
         vc.viewModel = viewModel
         vc.delegate = self
         vc.comingFrom = .search
-        vc.selectedCity = selectedCity
+        vc.selectedCity = cleanedCity
        
         vc.navigationItem.title = "Hotel List"
 
@@ -417,7 +434,16 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @IBAction func searchButtonAction(_ sender: Any) {
-        if let selectedCity = self.selectCityButton.titleLabel?.text, selectedCity != "Select City" {
+        // Get the button title from attributed string or plain text
+        var selectedCity: String?
+        
+        if let attributedTitle = selectCityButton.attributedTitle(for: .normal) {
+            selectedCity = attributedTitle.string
+        } else {
+            selectedCity = selectCityButton.currentTitle
+        }
+        
+        if let city = selectedCity, city != "Select City" && city != "اختر مدينة" {
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
             storyboard.viewModel = self.viewModel
             
@@ -436,7 +462,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             
             storyboard.delegate = self
             storyboard.comingFrom = .search
-            storyboard.selectedCity = selectedCity
+            storyboard.selectedCity = city
             storyboard.navigationItem.title = "Hotel List"
             let backItem = UIBarButtonItem()
             backItem.title = ""
@@ -1134,6 +1160,10 @@ extension HomeViewController {
         checkInCheckOutButton.titleLabel?.numberOfLines = 2
         checkInCheckOutButton.titleLabel?.textAlignment = .center
         
+        // Configure the whereAreYouGoingButton
+        whereAreYouGoingButton.titleLabel?.numberOfLines = 2
+        whereAreYouGoingButton.titleLabel?.textAlignment = .center
+        
         NavigationBackGroundColour()
         NotificationCenter.default.addObserver(
             self,
@@ -1222,11 +1252,41 @@ extension HomeViewController {
                 self.promotionsCollectionView.reloadData()
                 self.propertyTypeCollectionView.reloadData()
                 
-                var seen = Set<String>()
-                self.cities = self.viewModel.hotels?.data.compactMap { $0.city }
-                    .filter { seen.insert($0).inserted } ?? ["No cities found"]
+                // Calculate hotel counts per city
+                var cityHotelCounts: [String: Int] = [:]
                 
-                self.cities.insert("All", at: 0)
+                // Count hotels per city
+                for hotel in self.viewModel.filteredHotels {
+                    let city = hotel.city
+                    cityHotelCounts[city, default: 0] += 1
+                }
+                
+                // Create an array of city names with counts
+                self.cities = cityHotelCounts.keys.map { city in
+                    let count = cityHotelCounts[city] ?? 0
+                    return "\(city) (\(count))"
+                }
+                
+                // Sort alphabetically
+                self.cities.sort()
+                
+                // Add "All" option with total count
+                let totalHotels = self.viewModel.filteredHotels.count
+                self.cities.insert("All (\(totalHotels))", at: 0)
+                
+                // Also create a mapping dictionary for the actual city names
+                self.cityDisplayToActualMapping = [:]
+                
+                // Add mapping for "All"
+                self.cityDisplayToActualMapping["All (\(totalHotels))"] = "All"
+                
+                // Add mapping for each city
+                for (city, count) in cityHotelCounts {
+                    let displayName = "\(city) (\(count))"
+                    self.cityDisplayToActualMapping[displayName] = city
+                }
+                
+                // Configure dropdown menu
                 if let cityButton = self.whereAreYouGoingButton {
                     self.configureDropdownMenu(for: cityButton, options: self.cities)
                 }
@@ -1374,10 +1434,60 @@ extension HomeViewController {
             whereToNextHeadLineLabel.text = "Where to next?"
             topHotelHeadLineLabel.text = "Top Hotels"
             selectCityButton.setTitle("Select City", for: .normal)
-            whereAreYouGoingButton.setTitle("Select City", for: .normal)
+            searchButton.setTitle("Search", for: .normal)
             checkInButton.setTitle("Check In", for: .normal)
             checkOutButton.setTitle("Check Out", for: .normal)
-            searchButton.setTitle("Search", for: .normal)
+            
+            // Update whereAreYouGoingButton based on whether we have selected a city
+            if let selectedCity = selectedCityFromDropdown {
+                // We have a city selected from dropdown - show ONLY the city name (remove count if present)
+                let cleanedTitle = selectedCity.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let attributedString = NSAttributedString(
+                    string: cleanedTitle,
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+            } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal),
+                      attributedTitle.string != "Where are you going?" &&
+                      attributedTitle.string != "Select City" {
+                // Check attributed title string
+                let cleanedTitle = attributedTitle.string.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                if cleanedTitle != "Where are you going?" && cleanedTitle != "Select City" {
+                    let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                    let attributedString = NSAttributedString(
+                        string: cleanedTitle,
+                        attributes: [
+                            .font: font,
+                            .foregroundColor: UIColor.label
+                        ]
+                    )
+                    whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+                } else {
+                    // No city selected - show title + subtitle
+                    setWhereAreYouGoingButtonWithTitleAndSubtitle()
+                }
+            } else if let currentTitle = whereAreYouGoingButton.currentTitle,
+                      currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
+                      currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" {
+                // We have a city selected - show ONLY the city name (remove count if present)
+                let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let attributedString = NSAttributedString(
+                    string: cleanedTitle,
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+            } else {
+                // No city selected - show title + subtitle
+                setWhereAreYouGoingButtonWithTitleAndSubtitle()
+            }
             
             // Update checkInCheckOutButton based on whether we have selected dates
             if let dateRange = selectedDateRange {
@@ -1426,10 +1536,60 @@ extension HomeViewController {
             whereToNextHeadLineLabel.text = "إلى أين بعد؟"
             topHotelHeadLineLabel.text = "أفضل الفنادق"
             selectCityButton.setTitle("اختر مدينة", for: .normal)
-            whereAreYouGoingButton.setTitle("اختر مدينة", for: .normal)
+            searchButton.setTitle("بحث", for: .normal)
             checkInButton.setTitle("تسجيل الوصول", for: .normal)
             checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
-            searchButton.setTitle("بحث", for: .normal)
+            
+            // Update whereAreYouGoingButton based on whether we have selected a city
+            if let selectedCity = selectedCityFromDropdown {
+                // We have a city selected from dropdown - show ONLY the city name (remove count if present)
+                let cleanedTitle = selectedCity.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let attributedString = NSAttributedString(
+                    string: cleanedTitle,
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+            } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal),
+                      attributedTitle.string != "إلى أين أنت ذاهب؟" &&
+                      attributedTitle.string != "اختر مدينة" {
+                // Check attributed title string
+                let cleanedTitle = attributedTitle.string.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                if cleanedTitle != "إلى أين أنت ذاهب؟" && cleanedTitle != "اختر مدينة" {
+                    let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                    let attributedString = NSAttributedString(
+                        string: cleanedTitle,
+                        attributes: [
+                            .font: font,
+                            .foregroundColor: UIColor.label
+                        ]
+                    )
+                    whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+                } else {
+                    // No city selected - show title + subtitle
+                    setWhereAreYouGoingButtonWithTitleAndSubtitle()
+                }
+            } else if let currentTitle = whereAreYouGoingButton.currentTitle,
+                      currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
+                      currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" {
+                // We have a city selected - show ONLY the city name (remove count if present)
+                let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let attributedString = NSAttributedString(
+                    string: cleanedTitle,
+                    attributes: [
+                        .font: font,
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+            } else {
+                // No city selected - show title + subtitle
+                setWhereAreYouGoingButtonWithTitleAndSubtitle()
+            }
             
             // Update checkInCheckOutButton based on whether we have selected dates
             if let dateRange = selectedDateRange {
@@ -1467,8 +1627,47 @@ extension HomeViewController {
         }
     }
     
-    // MARK: - Helper method to set button with title and subtitle
-    // MARK: - Helper method to set button with title and subtitle
+    // MARK: - Helper method to set button with title and subtitle for whereAreYouGoingButton
+    private func setWhereAreYouGoingButtonWithTitleAndSubtitle() {
+        let lang = AppSettings.shared.selectedLanguage
+        let title = lang == .english ? "Where are you going?" : "إلى أين أنت ذاهب؟"
+        let subtitle = lang == .english ? "Search by city, area, or hotel name" : "ابحث عن طريق المدينة، المنطقة، أو اسم الفندق"
+        
+        // Create a combined string with title and subtitle
+        let fullText = "\(title)\n\(subtitle)"
+        
+        // Create attributed string with different styles for title and subtitle
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // Style for title (first line) - LEADING (LEFT) ALIGNED
+        let titleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        let titleRange = (fullText as NSString).range(of: title)
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .left  // Changed from .center to .left
+        titleParagraphStyle.lineSpacing = 4
+        
+        attributedString.addAttributes([
+            .font: titleFont,
+            .foregroundColor: UIColor.label,
+            .paragraphStyle: titleParagraphStyle
+        ], range: titleRange)
+        
+        let subtitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+        let subtitleRange = (fullText as NSString).range(of: subtitle)
+        let subtitleParagraphStyle = NSMutableParagraphStyle()
+        subtitleParagraphStyle.alignment = .left
+        subtitleParagraphStyle.lineSpacing = 4
+        
+        attributedString.addAttributes([
+            .font: subtitleFont,
+            .foregroundColor: UIColor.label,
+            .paragraphStyle: subtitleParagraphStyle
+        ], range: subtitleRange)
+        
+        whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
+    }
+    
+    // MARK: - Helper method to set button with title and subtitle for checkInCheckOutButton
     private func setCheckInCheckOutButtonWithTitleAndSubtitle() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Check-in -> Check-out" : "تسجيل الوصول -> تسجيل المغادرة"
@@ -1523,6 +1722,50 @@ extension HomeViewController {
             greeting = "Good Evening"
         }
         return  "\(greeting)"
+    }
+    
+    func configureDropdownMenu(for button: UIButton, options: [String]) {
+        let actions = options.map { option in
+            UIAction(title: option, handler: { [weak self] _ in
+                // Store the actual city name from mapping
+                if let actualCity = self?.cityDisplayToActualMapping[option] {
+                    // Store the selected city in the property
+                    self?.selectedCityFromDropdown = actualCity
+                    
+                    // Show just the city name (without count) on the button
+                    let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                    let attributedString = NSAttributedString(
+                        string: actualCity,
+                        attributes: [
+                            .font: font,
+                            .foregroundColor: UIColor.label
+                        ]
+                    )
+                    button.setAttributedTitle(attributedString, for: .normal)
+                } else {
+                    // Fallback: remove the count from the display name
+                    let cleanedCity = option.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+                    
+                    // Store the selected city in the property
+                    self?.selectedCityFromDropdown = cleanedCity
+                    
+                    let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                    let attributedString = NSAttributedString(
+                        string: cleanedCity,
+                        attributes: [
+                            .font: font,
+                            .foregroundColor: UIColor.label
+                        ]
+                    )
+                    button.setAttributedTitle(attributedString, for: .normal)
+                }
+            })
+        }
+        
+        let menu = UIMenu(title: "Select City", options: .displayInline, children: actions)
+        
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
     }
     
     func setupDatePickerUI() {
@@ -1671,19 +1914,6 @@ extension HomeViewController {
         activeButton?.setTitle(selectedDate, for: .normal)
         
         datePickerContainerView.isHidden = true
-    }
-    
-    func configureDropdownMenu(for button: UIButton, options: [String]) {
-        let actions = options.map { option in
-            UIAction(title: option, handler: { [weak button] _ in
-                button?.setTitle(option, for: .normal)
-            })
-        }
-        
-        let menu = UIMenu(title: "Select City", options: .displayInline, children: actions)
-        
-        button.menu = menu
-        button.showsMenuAsPrimaryAction = true
     }
     
     func startPromotionAutoScroll() {
