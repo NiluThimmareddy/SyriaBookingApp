@@ -32,6 +32,8 @@ protocol RecentlyViewedProtocol {
 
 class HomeViewController: BaseViewController, UIViewControllerTransitioningDelegate, RecentlyViewedProtocol, CalenderVCDelegate {
     
+    
+    
     @IBOutlet weak var leftMenuBarButton: UIBarButtonItem!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -165,8 +167,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             showSkeletonOnAllElements()
         }
         
+//        selectedCheckInDate = nil
+//        selectedCheckOutDate = nil
         refreshRecentlyViewedData()
     }
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -175,6 +181,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopSliderAutoScroll()
+        
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -266,54 +274,52 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         controller.modalPresentationStyle = .pageSheet
         present(controller, animated: true)
     }
+    
+    func didSelectDateRange(checkIn: Date?, checkOut: Date?) {
+        selectedCheckInDate = checkIn
+        selectedCheckOutDate = checkOut
 
-    func didSelectDateRange(_ dateRangeText: String) {
+        let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        
+        guard let checkIn, let checkOut else {
+            
+            let title = "Check-in date － Check-out date"
+            
+            let attributedTitle = NSAttributedString(
+                string: title,
+                attributes: [
+                    .font: font,
+                    .foregroundColor: UIColor.label
+                ]
+            )
 
-        checkInCheckOutButton.setAttributedTitle(nil, for: .normal)
-        checkInCheckOutButton.setTitle(nil, for: .normal)
+            checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
+            return
+        }
 
-        let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        let attributedString = NSAttributedString(
-            string: dateRangeText,
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.timeZone = .current
+        formatter.dateFormat = "EEE dd MMM"
+
+        let startText = formatter.string(from: checkIn)
+        let endText = formatter.string(from: checkOut)
+
+        let rawNights = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut).day ?? 0
+        let nights = max(rawNights, 1)
+
+        let title = "\(startText) - \(endText) • \(nights) night\(nights > 1 ? "s" : "")"
+
+        
+        let attributedTitle = NSAttributedString(
+            string: title,
             attributes: [
                 .font: font,
                 .foregroundColor: UIColor.label
             ]
         )
-        checkInCheckOutButton.setAttributedTitle(attributedString, for: .normal)
 
-        selectedDateRange = dateRangeText
-
-        // 1️⃣ Normalize dash
-        let normalizedText = dateRangeText
-            .replacingOccurrences(of: "–", with: "-")
-            .replacingOccurrences(of: "—", with: "-")
-
-        // 2️⃣ Remove nights part (everything after • or .)
-        let cleanedText = normalizedText
-            .components(separatedBy: "•").first?
-            .components(separatedBy: ".").first ?? ""
-
-        // 3️⃣ Split dates
-        let dateParts = cleanedText.split(separator: "-")
-        guard dateParts.count == 2 else {
-            print("Invalid date range format")
-            return
-        }
-
-        let checkInRaw = dateParts[0].trimmingCharacters(in: .whitespaces)
-        let checkOutRaw = dateParts[1].trimmingCharacters(in: .whitespaces)
-
-        // 4️⃣ Date formatter
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-
-        // Check-in
-        formatter.dateFormat = "EEE dd MMM"
-        selectedCheckInDate = formatter.date(from: checkInRaw)
-
-        // Check-out
-        selectedCheckOutDate = formatter.date(from: checkOutRaw)
+        checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
     }
     
     @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
@@ -351,7 +357,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             .first?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? city
 
-        let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController") as! HotelListViewController
+        let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
+        ) as! HotelListViewController
 
         vc.viewModel = viewModel
         vc.delegate = self
@@ -1146,7 +1153,7 @@ extension HomeViewController {
         let font = UIFont.systemFont(ofSize: 14)
         if let today = Calendar.current.date(byAdding: .day, value: 0, to: Date()) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy"
+            formatter.dateFormat = "EEE dd MMM"
             formatter.dateStyle = .medium
             let todayDate = formatter.string(from: today)
             
@@ -1498,7 +1505,7 @@ extension HomeViewController {
             // Update checkInCheckOutButton based on whether we have selected dates
             if let dateRange = selectedDateRange {
                 // We have dates selected - show ONLY the dates (no subtitle)
-                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                 let attributedString = NSAttributedString(
                     string: dateRange,
                     attributes: [
@@ -1600,7 +1607,7 @@ extension HomeViewController {
             // Update checkInCheckOutButton based on whether we have selected dates
             if let dateRange = selectedDateRange {
                 // We have dates selected - show ONLY the dates (no subtitle)
-                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                 let attributedString = NSAttributedString(
                     string: dateRange,
                     attributes: [
@@ -1676,7 +1683,7 @@ extension HomeViewController {
     // MARK: - Helper method to set button with title and subtitle for checkInCheckOutButton
     private func setCheckInCheckOutButtonWithTitleAndSubtitle() {
         let lang = AppSettings.shared.selectedLanguage
-        let title = lang == .english ? "Check-in -> Check-out" : "تسجيل الوصول -> تسجيل المغادرة"
+        let title = lang == .english ? "Check-in date － Check-out date" : "تسجيل الوصول -> تسجيل المغادرة"
         let subtitle = lang == .english ? "Select your stay dates" : "حدد مواعيد إقامتك"
         
         // Create a combined string with title and subtitle
@@ -1686,7 +1693,7 @@ extension HomeViewController {
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Style for title (first line) - CENTER ALIGNED
-        let titleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        let titleFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
         let titleRange = (fullText as NSString).range(of: title)
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .center

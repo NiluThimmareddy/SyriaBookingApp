@@ -8,7 +8,7 @@ import UIKit
 import FSCalendar
  
 protocol CalenderVCDelegate: AnyObject {
-    func didSelectDateRange(_ dateRangeText: String)
+    func didSelectDateRange(checkIn: Date?, checkOut: Date?)
 }
  
 class CalenderVC: UIViewController {
@@ -71,38 +71,55 @@ class CalenderVC: UIViewController {
         ])
     }
  
+//    @IBAction func selectDatesButtonAction(_ sender: Any) {
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "EEE dd MMM"
+// 
+//        if let start = startDate, let end = endDate {
+//            let startText = formatter.string(from: start)
+//            let endText = formatter.string(from: end)
+//            
+//            let calendar = Calendar.current
+//            let numberOfNights = calendar.dateComponents([.day], from: start, to: end).day ?? 0
+//            
+//            let dateRangeText: String
+//            if numberOfNights == 0 {
+//                // Same date selected for both check-in and checkout
+//                dateRangeText = "\(startText) - \(endText) • 1 night"
+//            } else if numberOfNights == 1 {
+//                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) night"
+//            } else {
+//                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) nights"
+//            }
+//            
+//            delegate?.didSelectDateRange(dateRangeText)
+//        } else if let start = startDate {
+//            let startText = formatter.string(from: start)
+//            delegate?.didSelectDateRange("\(startText) - \(startText) • 1 night")
+//        } else {
+//            let defaultDateRange = Date.todayAndTomorrowFormattedRange()
+//            delegate?.didSelectDateRange(defaultDateRange)
+//        }
+// 
+//        dismiss(animated: true)
+//    }
+    
+    
     @IBAction func selectDatesButtonAction(_ sender: Any) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE dd MMM"
- 
+
         if let start = startDate, let end = endDate {
-            let startText = formatter.string(from: start)
-            let endText = formatter.string(from: end)
-            
-            let calendar = Calendar.current
-            let numberOfNights = calendar.dateComponents([.day], from: start, to: end).day ?? 0
-            
-            let dateRangeText: String
-            if numberOfNights == 0 {
-                // Same date selected for both check-in and checkout
-                dateRangeText = "\(startText) - \(endText) • 1 night"
-            } else if numberOfNights == 1 {
-                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) night"
-            } else {
-                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) nights"
-            }
-            
-            delegate?.didSelectDateRange(dateRangeText)
+            delegate?.didSelectDateRange(checkIn: start, checkOut: end)
         } else if let start = startDate {
-            let startText = formatter.string(from: start)
-            delegate?.didSelectDateRange("\(startText) - \(startText) • 1 night")
+            delegate?.didSelectDateRange(checkIn: start, checkOut: start)
         } else {
-            let defaultDateRange = Date.todayAndTomorrowFormattedRange()
-            delegate?.didSelectDateRange(defaultDateRange)
+            let today = Calendar.current.startOfDay(for: Date())
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            delegate?.didSelectDateRange(checkIn: today, checkOut: tomorrow)
         }
- 
+
         dismiss(animated: true)
     }
+
     
     func clearAllSelections() {
         calendar.selectedDates.forEach { calendar.deselect($0) }
