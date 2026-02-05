@@ -77,41 +77,33 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         checkOutTF.delegate = self
         
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
-        if let checkInDate = selectedCheckInDate,
-           let checkOutDate = selectedCheckOutDate{
-            
-            
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEE dd MMM"
-//            formatter.dateStyle = .medium
-            
-            checkInTF.text = formatter.string(from: checkInDate)
-            checkOutTF.text = formatter.string(from: checkOutDate)
-        }else{
-            let today = Date()
+
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "EEE dd MMM"
+
+        if let checkIn = selectedCheckInDate,
+           let checkOut = selectedCheckOutDate {
+
+            checkInTF.text = formatter.string(from: checkIn)
+            checkOutTF.text = formatter.string(from: checkOut)
+
+        } else {
+            let today = Calendar.current.startOfDay(for: Date())
             selectedCheckInDate = today
-            
-            if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
-                selectedCheckOutDate = tomorrow
-            }
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEE dd MMM"
-//            formatter.dateStyle = .medium
-            
-            checkInTF.text = formatter.string(from: selectedCheckInDate!)
-            checkOutTF.text = formatter.string(from: selectedCheckOutDate!)
+            selectedCheckOutDate = today
+
+            checkInTF.text = formatter.string(from: today)
+            checkOutTF.text = formatter.string(from: today)
         }
-        
-      
-        
-       
+
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
+    
+    
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true)
@@ -225,7 +217,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     func setNextDateInCkechout(checkInDate:Date){
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MM-yyyy" // You can change format as needed
+            formatter.dateFormat = "EEE dd MMM" // You can change format as needed
             formatter.dateStyle = .medium
             let tomorrowDate = formatter.string(from: tomorrow)
             
@@ -245,7 +237,7 @@ extension ConfirmYourBookingVC {
         
         // --- Setup date format ---
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "EEE dd MMM"
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         
@@ -391,7 +383,7 @@ extension ConfirmYourBookingVC {
     @objc func doneDatePicker() {
         let selectedDate = datePicker.date
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "EEE dd MMM"
         let selectedDateString = formatter.string(from: selectedDate)
         
         switch currentDatePickerMode {
@@ -432,7 +424,7 @@ extension ConfirmYourBookingVC {
     }
     @objc func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "EEE dd MMM"
         
         let selectedDateString = formatter.string(from: sender.date)
         
