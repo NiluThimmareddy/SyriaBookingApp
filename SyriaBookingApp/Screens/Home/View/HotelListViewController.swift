@@ -32,6 +32,9 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     var comingFrom : hotelListSource = .tabBar
     var isGridView = false
     var isLoadingData = true
+    
+    var selectedCheckInDate: Date?
+    var selectedCheckOutDate: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()

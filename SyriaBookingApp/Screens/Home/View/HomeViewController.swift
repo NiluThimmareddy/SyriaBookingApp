@@ -315,9 +315,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         // Check-out
         selectedCheckOutDate = formatter.date(from: checkOutRaw)
     }
-
+    
     @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
-        // Get the button title from attributed string or plain text
         var selectedCity: String?
         
         if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
@@ -326,27 +325,31 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             selectedCity = whereAreYouGoingButton.currentTitle
         }
         
-        // City validation
-        guard
-            let city = selectedCity,
-            city != "Select City" && city != "اختر مدينة" &&
-            city != "Where are you going?" && city != "إلى أين أنت ذاهب؟"
-        else {
+        guard let city = selectedCity else {
+            showAlert(title: "SyriaBooking", message: "Please select city")
+            return
+        }
+
+        let placeholderKeywords = ["Select City", "اختر مدينة",
+            "Where are you going","إلى أين أنت ذاهب",
+            "Search by city, area, or hotel name","ابحث عن طريق المدينة، المنطقة، أو اسم الفندق"
+        ]
+        
+        let normalizedCity = city.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        let isPlaceholder = placeholderKeywords.contains { keyword in
+            normalizedCity.contains(keyword.lowercased())
+        }
+        
+        if isPlaceholder {
             showAlert(title: "SyriaBooking", message: "Please select city")
             return
         }
         
-        // Remove any count from the selected city if present
-        let cleanedCity = city.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-        
-        // Date validation (from stored values)
-        guard
-            let checkInDate = selectedCheckInDate,
-            let checkOutDate = selectedCheckOutDate
-        else {
-            showAlert(title: "SyriaBooking", message: "Please select check-in & check-out dates")
-            return
-        }
+        let cleanedCity = city
+            .replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
+            .components(separatedBy: "\n")
+            .first?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? city
 
         let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController") as! HotelListViewController
 
@@ -354,6 +357,10 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         vc.delegate = self
         vc.comingFrom = .search
         vc.selectedCity = cleanedCity
+        
+        // Pass dates if they exist (optional)
+        vc.selectedCheckInDate = selectedCheckInDate
+        vc.selectedCheckOutDate = selectedCheckOutDate
        
         vc.navigationItem.title = "Hotel List"
 
@@ -361,7 +368,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         backItem.title = ""
         navigationItem.backBarButtonItem = backItem
         navigationController?.navigationBar.tintColor = .white
-
         navigationController?.pushViewController(vc, animated: true)
     }
 
