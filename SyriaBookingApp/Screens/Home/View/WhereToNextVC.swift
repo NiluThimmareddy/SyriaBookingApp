@@ -92,21 +92,37 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
         self.prepareWhereToNextData()
         self.hideSkeleton()
     }
-    
+
     private func prepareWhereToNextData() {
-        let uniqueCities = Array(Set(HotelDataMaganer.shared.allHotels.map { $0.city }))
+        let allHotels = HotelDataMaganer.shared.allHotels
+
+        let uniqueCities = Array(Set(allHotels.map { normalizedCity($0.city) }))
+
         self.whereToNextCityList = uniqueCities.map { cityName in
-            let hotelsInCity = HotelDataMaganer.shared.allHotels.filter { $0.city == cityName }
+            let hotelsInCity = allHotels.filter {
+                normalizedCity($0.city) == cityName
+            }
+
             let cityImage = hotelsInCity.first?.images.first ?? ""
-            
-            return WhereToNextList(image: cityImage, City: cityName, Cityar: cityName)
+
+            return WhereToNextList(
+                image: cityImage,
+                City: cityName,
+                Cityar: cityName
+            )
         }
     }
-    
+
     private func getHotelsForCity(_ cityName: String) -> [Hotel] {
+        let normalizedInput = normalizedCity(cityName)
+
         return HotelDataMaganer.shared.allHotels.filter {
-            $0.city.lowercased() == cityName.lowercased()
+            normalizedCity($0.city) == normalizedInput
         }
+    }
+
+    private func normalizedCity(_ city: String) -> String {
+        return city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
     
 }
