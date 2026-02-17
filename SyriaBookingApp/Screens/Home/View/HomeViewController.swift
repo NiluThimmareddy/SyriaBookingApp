@@ -1175,7 +1175,7 @@ extension HomeViewController {
         
         // Configure the whereAreYouGoingButton
         whereAreYouGoingButton.titleLabel?.numberOfLines = 2
-        whereAreYouGoingButton.titleLabel?.textAlignment = .center
+        whereAreYouGoingButton.titleLabel?.textAlignment = .right
         
         NavigationBackGroundColour()
         NotificationCenter.default.addObserver(
@@ -1929,21 +1929,46 @@ extension HomeViewController {
         datePickerContainerView.isHidden = true
     }
     
+//    func startPromotionAutoScroll() {
+//        promotionScrollTimer?.invalidate()
+//        promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
+//            guard let self = self,
+//                  let collectionView = self.promotionsCollectionView,
+//                  self.promotionsList.count > 1 else { return }
+//            
+//            self.currentPromotionIndex = (self.currentPromotionIndex + 1) % self.promotionsList.count
+//            let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
+//            
+//            DispatchQueue.main.async {
+//                collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+//            }
+//        }
+//    }
+    
     func startPromotionAutoScroll() {
         promotionScrollTimer?.invalidate()
+        
         promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
             guard let self = self,
-                  let collectionView = self.promotionsCollectionView,
-                  self.promotionsList.count > 1 else { return }
+                  let collectionView = self.promotionsCollectionView else { return }
             
-            self.currentPromotionIndex = (self.currentPromotionIndex + 1) % self.promotionsList.count
-            let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
+            let itemCount = collectionView.numberOfItems(inSection: 0)
+            guard itemCount > 1 else { return }
             
-            DispatchQueue.main.async {
-                collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+            self.currentPromotionIndex = (self.currentPromotionIndex + 1) % itemCount
+            
+            if self.currentPromotionIndex < itemCount {
+                let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
+                
+                DispatchQueue.main.async {
+                    collectionView.scrollToItem(at: nextIndexPath,
+                                                at: .centeredHorizontally,
+                                                animated: true)
+                }
             }
         }
     }
+
     
     func closeLeftMenu() {
         guard let menuVC = leftMenuVC else { return }
