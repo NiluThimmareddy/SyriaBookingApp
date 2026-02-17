@@ -44,6 +44,7 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+//        selectedCity = ""
         setupAppNavigationBar()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.fetchHotelData()

@@ -154,7 +154,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             name: .didLogoutSuccessfully,
             object: nil
         )
-        
+        setupDataBindings()
         debugSkeletonState()
     }
     
@@ -341,9 +341,15 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             "Search by city, area, or hotel name","ابحث عن طريق المدينة، المنطقة، أو اسم الفندق"
         ]
         
-        let normalizedCity = city.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+//        let normalizedCity = city.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+//        let isPlaceholder = placeholderKeywords.contains { keyword in
+//            normalizedCity.contains(keyword)
+//        }
+        
+        let trimmedCity = city.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let isPlaceholder = placeholderKeywords.contains { keyword in
-            normalizedCity.contains(keyword.lowercased())
+            trimmedCity.contains(keyword)
         }
         
         if isPlaceholder {
@@ -360,7 +366,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
         ) as! HotelListViewController
 
-        vc.viewModel = viewModel
+        
         vc.delegate = self
         vc.comingFrom = .search
         vc.selectedCity = cleanedCity
@@ -1175,7 +1181,7 @@ extension HomeViewController {
         
         // Configure the whereAreYouGoingButton
         whereAreYouGoingButton.titleLabel?.numberOfLines = 2
-        whereAreYouGoingButton.titleLabel?.textAlignment = .right
+        whereAreYouGoingButton.titleLabel?.textAlignment = .left
         
         NavigationBackGroundColour()
         NotificationCenter.default.addObserver(
@@ -1230,7 +1236,7 @@ extension HomeViewController {
     
     private func loadData() {
         viewModel.fetchHotels()
-        setupDataBindings()
+       
     }
     
     private func setupDataBindings() {
@@ -1270,7 +1276,7 @@ extension HomeViewController {
                 
                 // Count hotels per city
                 for hotel in self.viewModel.filteredHotels {
-                    let city = hotel.city
+                    let city = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                     cityHotelCounts[city, default: 0] += 1
                 }
                 
