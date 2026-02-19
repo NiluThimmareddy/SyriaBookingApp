@@ -219,7 +219,7 @@ class MyBookingsViewController: BaseViewController {
             viewModel.onSuccess = { [weak self] _ in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.hideLoader()
+                     
                     self.hideSkeleton() // Hide skeleton when data is ready
                     self.configureSelectedSegment {
                         self.updateUIAfterDataLoad()
@@ -230,7 +230,7 @@ class MyBookingsViewController: BaseViewController {
             viewModel.onError = { [weak self] error in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.hideLoader()
+                     
                     self.hideSkeleton() // Hide skeleton on error
                     self.showAlert(error)
                 }
@@ -421,7 +421,7 @@ extension MyBookingsViewController {
             viewModel.onSuccess = { [weak self] response in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.hideLoader()
+                     
                     self.hideSkeleton()
                     self.selectedSegmentIndex = 0
                     self.configureSelectedSegment {
@@ -433,7 +433,7 @@ extension MyBookingsViewController {
             viewModel.onError = { [weak self] error in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.hideLoader()
+                     
                     self.hideSkeleton()
                     self.showAlert(error)
                 }
@@ -520,17 +520,17 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         bookingViewModel.onError = { [weak self] error in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.hideLoader()
+                 
                 self.showAlert(error)
             }
         }
         
-        showLoader()
+        
         
         bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { [weak self] data in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.hideLoader()
+                 
                 
                 guard let data = data else { return }
                 
@@ -551,7 +551,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         viewModel.onSuccess = { [weak self] _ in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.hideLoader()
+                 
                 self.hideSkeleton()
                 self.configureSelectedSegment {
                     self.updateUIAfterDataLoad()
@@ -562,7 +562,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         viewModel.onError = { [weak self] error in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.hideLoader()
+                 
                 self.hideSkeleton()
                 self.showAlert(error)
             }

@@ -464,7 +464,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         
         if let city = selectedCity, city != "Select City" && city != "اختر مدينة" {
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
-            storyboard.viewModel = self.viewModel
+//            storyboard.viewModel = self.viewModel
             
             let formater = DateFormatter()
             formater.dateStyle = .medium
@@ -496,7 +496,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBAction func viewAllButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         controller.comingFrom = .filter
-        controller.viewModel = self.viewModel
+        controller.selectedCity = "All"
+//        controller.viewModel = self.viewModel
         controller.shouldSortByRating = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -535,7 +536,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     @IBAction func viewAllRecommendedButtonAction(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
         controller.comingFrom = .filter
-        controller.viewModel = self.viewModel
+        controller.selectedCity = "All"
+//        controller.viewModel = self.viewModel
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -689,7 +691,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView == propertyTypeCollectionView {
             let HotelCity = WhereToNextCityList[indexPath.row].City
             let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
-            storyboard.viewModel = self.viewModel
+//            storyboard.viewModel = self.viewModel
             storyboard.comingFrom = .filter
             storyboard.selectedCity = HotelCity
             storyboard.navigationItem.title = "Hotel List"
@@ -1236,7 +1238,6 @@ extension HomeViewController {
     
     private func loadData() {
         viewModel.fetchHotels()
-       
     }
     
     private func setupDataBindings() {

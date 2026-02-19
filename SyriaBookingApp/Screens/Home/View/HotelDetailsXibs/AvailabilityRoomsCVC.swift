@@ -346,9 +346,9 @@ extension AvailabilityRoomsCVC {
     func updateBookNowButtonTitle() {
         if UserSessionManager.getUser() == nil {
             if AppSettings.shared.selectedLanguage == .arabic {
-                bookNowButton.setTitle("تسجيل الدخول", for: .normal)
+                bookNowButton.setTitle("تسجيل الدخول / إنشاء حساب", for: .normal)
             } else {
-                bookNowButton.setTitle("Login", for: .normal)
+                bookNowButton.setTitle("Login / Sign Up", for: .normal)
             }
         } else {
             if AppSettings.shared.selectedLanguage == .arabic {

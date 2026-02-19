@@ -93,8 +93,18 @@ class ArchiveTableViewCell: UITableViewCell {
         // Calculate total nights between check-in and check-out
         if let checkInDate = booking.checkInUtc.toDate(),
            let checkOutDate = booking.checkOutUtc.toDate() {
-            let nights = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate).day ?? 0
-            let totalPrice = (Double(booking.totalAmount) ?? 0.0) * Double(nights)
+//            let nights = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate).day ?? 0
+            
+            let calendar = Calendar.current
+
+            let start = calendar.startOfDay(for: checkInDate)
+            let end = calendar.startOfDay(for: checkOutDate)
+
+            let rawNights = calendar.dateComponents([.day], from: start, to: end).day ?? 0
+
+            let finalNights = rawNights <= 0 ? 1 : rawNights
+            
+            let totalPrice = (Double(booking.totalAmount)) * Double(finalNights)
             totalAmountLabel.text = "Total: \(String(format: "%.2f", totalPrice))"
         } else {
             totalAmountLabel.text = "Total: \(booking.totalAmount)"

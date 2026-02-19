@@ -44,7 +44,6 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        selectedCity = ""
         setupAppNavigationBar()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.fetchHotelData()
@@ -52,13 +51,12 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     }
     
     func fetchHotelData() {
-        showLoader()
+       
         isLoadingData = true
         showSkeletonViews()
         
         viewModel.onDataLoaded = { [weak self] in
             DispatchQueue.main.async {
-                self?.hideLoader()
                 self?.isLoadingData = false
                 self?.applyFilterOnHotels()
                 self?.hideAllSkeletons()
@@ -67,25 +65,51 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
         
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async {
-                self?.hideLoader()
+               
                 self?.isLoadingData = false
                 self?.hideAllSkeletons()
                 self?.showAlert(title: "Error", message: error.localizedDescription)
             }
         }
         
-        if comingFrom == .tabBar || comingFrom == .search {
-            viewModel.fetchHotels()
-        } else if comingFrom == .filter {
+        viewModel.fetchHotels()
+//        if comingFrom == .tabBar || comingFrom == .search {
+//            viewModel.fetchHotels()
+//            
+//        } else
+        
+        if comingFrom == .filter {
             // If coming from filter, apply filter immediately if data is already loaded
             if !HotelDataMaganer.shared.allHotels.isEmpty {
                 isLoadingData = false
-                hideLoader()
+                
                 applyFilterOnHotels()
                 self.hideAllSkeletons()
-            } else {
-                viewModel.fetchHotels()
+//            } else {
+//                viewModel.fetchHotels()  
             }
+        }else{
+//            viewModel.fetchHotels()
+            if !HotelDataMaganer.shared.allHotels.isEmpty {
+                isLoadingData = false
+                applyFilterBasedOnOption()
+                self.hideAllSkeletons()
+            }
+        }
+    }
+    
+    func applyFilterBasedOnOption(){
+        let city = self.selectedCity
+        
+        if city == "All" {
+            viewModel.filteredHotels =  HotelDataMaganer.shared.allHotels
+            HotelListtableView.reloadData()
+        }else{
+            viewModel.filteredHotels =  HotelDataMaganer.shared.allHotels.filter {
+                $0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()  == city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                
+            }
+            HotelListtableView.reloadData()
         }
     }
 

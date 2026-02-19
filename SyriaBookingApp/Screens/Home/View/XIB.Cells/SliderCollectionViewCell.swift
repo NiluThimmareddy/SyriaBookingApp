@@ -33,14 +33,6 @@ class SliderCollectionViewCell: UICollectionViewCell {
 //        let hasSignedUp = UserSessionManager.hasEverSignedUp()
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
         
-//        let title: String
-        
-//        if hasSignedUp {
-//            title = isArabic ? "تسجيل الدخول" : "Login"
-//        } else {
-//            title = isArabic ? "إنشاء حساب" : "Sign Up"
-//        }
-        
         let title = isArabic
                ? "تسجيل الدخول / إنشاء حساب"
                : "Login / Sign Up"

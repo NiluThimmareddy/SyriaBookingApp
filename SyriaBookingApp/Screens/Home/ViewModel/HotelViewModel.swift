@@ -19,16 +19,13 @@ class HotelViewModel {
     
     var onSuccess: ((Review) -> Void)?
     var onReporAnAppSucess : ((ReporAnAppModel)->Void)?
-    var onReviewError: ((String) -> Void)?
-    
+    var onReviewError: ((String) -> Void)?    
     var filteredHotelsCopy : [Hotel] = []
     
     func fetchHotels() {
         
         guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
-        
-        
-        
+
         guard let url = URL(string: urlstr) else {
             print("Invalid hotel URL")
             return
