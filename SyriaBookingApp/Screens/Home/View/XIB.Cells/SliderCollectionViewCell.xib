@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Slider1" translatesAutoresizingMaskIntoConstraints="NO" id="Myd-p4-laj">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_B1" translatesAutoresizingMaskIntoConstraints="NO" id="Myd-p4-laj">
                         <rect key="frame" x="0.0" y="0.0" width="502" height="319"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -24,12 +24,14 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good morning User" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-sv-XiE">
-                        <rect key="frame" x="15.000000000000007" y="15" width="113.66666666666669" height="13"/>
-                        <fontDescription key="fontDescription" name="ZapfDingbatsITC" family="Zapf Dingbats" pointSize="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVc-sv-XiE">
+                        <rect key="frame" x="15.000000000000007" y="15.000000000000004" width="99.666666666666686" height="38.333333333333343"/>
+                        <string key="text">Good morning,
+Demo User</string>
+                        <fontDescription key="fontDescription" name="AlNile-Bold" family="Al Nile" pointSize="14"/>
                         <nil key="highlightedColor"/>
                         <variation key="heightClass=regular-widthClass=regular">
-                            <fontDescription key="fontDescription" name="ZapfDingbatsITC" family="Zapf Dingbats" pointSize="15"/>
+                            <fontDescription key="fontDescription" name="AlNile-Bold" family="Al Nile" pointSize="17"/>
                         </variation>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kik-Xf-hdt">
@@ -74,6 +76,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Slider1" width="1920" height="850"/>
+        <image name="ic_B1" width="1920" height="850"/>
     </resources>
 </document>

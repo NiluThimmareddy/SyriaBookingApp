@@ -98,7 +98,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var scrolltoTopHelper: ScrollToTopHelper?
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
-    var sliderImages = ["Banner.png (1)", "ic_B2", "ic_B3", "ic_B4"]
+    var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
@@ -477,8 +477,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             let checkoutdate = formater.date(from: checkOutButton.titleLabel?.text ?? "")
             
             guard let checkoutdate = checkoutdate else { return }
-            selectedCheckOutDate = checkoutdate
-            
+            selectedCheckOutDate = checkoutdate            
             storyboard.delegate = self
             storyboard.comingFrom = .search
             storyboard.selectedCity = city
@@ -646,7 +645,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 if indexPath.row == 0 {
                     cell.greetingMessageLabel.isHidden = false
                     let greeting = updateGreetingMessage()
-                    cell.greetingMessageLabel.text = "\(greeting) \n\n\(user.name)"
+                    cell.greetingMessageLabel.text = "\(greeting), \n\(user.name)"
                 }
             } else {
                 if indexPath.row == 0 {
