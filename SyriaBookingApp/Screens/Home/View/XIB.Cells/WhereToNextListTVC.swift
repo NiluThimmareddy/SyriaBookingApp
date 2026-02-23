@@ -99,7 +99,7 @@ class WhereToNextListTVC: UITableViewCell {
             if cleanedName.contains("tartous") || cleanedName.contains("tartus") || cleanedName.contains("طرطوس") {
                 return "ic_tartous"
             }
-            return "city_placeholder"
+            return "ic_cityPlaceHolder"
         }
     }
     
