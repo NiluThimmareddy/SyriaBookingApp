@@ -23,7 +23,6 @@ enum APIURL{
     //Production URL
 //    var baseURL: String {
 //        return "https://syriabooking.sy/public-api/api/"
-//
 //    }
     
    //Development URL

@@ -117,7 +117,7 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
         let normalizedInput = normalizedCity(cityName)
 
         return HotelDataMaganer.shared.allHotels.filter {
-            normalizedCity($0.city) == normalizedInput
+            normalizedCity($0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) == normalizedInput
         }
     }
 

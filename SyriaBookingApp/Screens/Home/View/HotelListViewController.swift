@@ -388,7 +388,7 @@ extension HotelListViewController  {
         
         // Apply city filter
         if !selectedCity.isEmpty && selectedCity != "All" && selectedCity != "Select City" {
-            filtered = filtered.filter { $0.city.lowercased() == selectedCity.lowercased() }
+            filtered = filtered.filter { $0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == selectedCity.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
             print("Filtering by city: \(selectedCity), Found \(filtered.count) hotels")
         }
         
