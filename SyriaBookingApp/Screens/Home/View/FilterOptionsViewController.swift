@@ -44,6 +44,14 @@ class FilterOptionsViewController: UIViewController {
     var selectedAmenities: [String] = []
     var isLoadingData = true
 
+    
+    private let hotelTypeKey = "selectedHotelTypes"
+    private let starRatingKey = "selectedStarRatings"
+    private let reviewScoreKey = "selectedReviewScores"
+    private let amenitiesKey = "selectedAmenities"
+    private let minPriceKey = "selectedMinPrice"
+    private let maxPriceKey = "selectedMaxPrice"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSkeletonView()
@@ -53,6 +61,7 @@ class FilterOptionsViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.hideAllSkeletons()
         }
+
     }
     
     // MARK: - Actions
@@ -62,6 +71,7 @@ class FilterOptionsViewController: UIViewController {
     }
     
     @IBAction func clearButtonAction(_ sender: Any) {
+        clearAllSelecteOptionsFromUserDefaults()
         selectedHotelTypes.removeAll()
         selectedStarRatings.removeAll()
         selectedReviewScores.removeAll()
@@ -77,6 +87,16 @@ class FilterOptionsViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(alert, animated: true)
             } else {
+                
+                let defaults = UserDefaults.standard
+
+                defaults.set(self.selectedHotelTypes, forKey: self.hotelTypeKey)
+                defaults.set(self.selectedStarRatings, forKey: self.starRatingKey)
+                defaults.set(self.selectedReviewScores, forKey: self.reviewScoreKey)
+                defaults.set(self.selectedAmenities, forKey: self.amenitiesKey)
+                defaults.set(self.priceRangeSlider.selectedMinValue, forKey: self.minPriceKey)
+                defaults.set(self.priceRangeSlider.selectedMaxValue, forKey: self.maxPriceKey)
+                
                 self.delegate?.applyFilter(filterdHotels: result)
                 self.dismiss(animated: true)
             }
@@ -286,6 +306,73 @@ class FilterOptionsViewController: UIViewController {
         completion(filteredHotels, message)
     }
 }
+//MARK: -  Save applied filter
+extension FilterOptionsViewController{
+    
+    func restoreSavedFilter() {
+
+        let defaults = UserDefaults.standard
+
+        selectedHotelTypes = defaults.stringArray(forKey: hotelTypeKey) ?? []
+        selectedStarRatings = defaults.stringArray(forKey: starRatingKey) ?? []
+        selectedReviewScores = defaults.stringArray(forKey: reviewScoreKey) ?? []
+        selectedAmenities = defaults.stringArray(forKey: amenitiesKey) ?? []
+
+        let minPrice = defaults.float(forKey: minPriceKey)
+        let maxPrice = defaults.float(forKey: maxPriceKey)
+
+        if minPrice != 0 || maxPrice != 0 {
+            priceRangeSlider.selectedMinValue = CGFloat(minPrice)
+            priceRangeSlider.selectedMaxValue = CGFloat(maxPrice)
+        }
+
+        restoreButtonSelections()
+    }
+    
+    func restoreButtonSelections() {
+
+        for button in hotelTypesButton {
+            if let title = button.titleLabel?.text?.lowercased(),
+               selectedHotelTypes.contains(title) {
+                button.isSelected = true
+                updateButtonUI(button)
+            }
+        }
+
+        for button in starRatingsButton {
+            if selectedStarRatings.contains("\(button.tag)") {
+                button.isSelected = true
+                updateButtonUI(button)
+            }
+        }
+
+        for button in reviewScoreButton {
+            if selectedReviewScores.contains("\(button.tag)") {
+                button.isSelected = true
+                updateButtonUI(button)
+            }
+        }
+
+        for button in amenitiesButton {
+            if let title = button.titleLabel?.text?.lowercased(),
+               selectedAmenities.contains(title) {
+                button.isSelected = true
+                updateButtonUI(button)
+            }
+        }
+    }
+    
+    func clearAllSelecteOptionsFromUserDefaults(){
+        let defaults = UserDefaults.standard
+
+        defaults.removeObject(forKey: hotelTypeKey)
+        defaults.removeObject(forKey: starRatingKey)
+        defaults.removeObject(forKey: reviewScoreKey)
+        defaults.removeObject(forKey: amenitiesKey)
+        defaults.removeObject(forKey: minPriceKey)
+        defaults.removeObject(forKey: maxPriceKey)
+    }
+}
 
 // MARK: - SkeletonView Configuration
 extension FilterOptionsViewController {
@@ -376,7 +463,6 @@ extension FilterOptionsViewController {
         skeletonViews.forEach { view in
             view.showAnimatedGradientSkeleton()
         }
-        
         priceRangeSlider.showAnimatedGradientSkeleton()
     }
     
@@ -414,12 +500,14 @@ extension FilterOptionsViewController {
         priceRangeSlider.hideSkeleton()
         setDefaultEnglishTitles()
         setupLanguage()
-        updateSeeResultButtonTitleBasedOnFilteredHotels()
         
         for button in hotelTypesButton + starRatingsButton + reviewScoreButton + amenitiesButton {
             button.isSelected = false
             button.setImage(UIImage(systemName: "square"), for: .normal)
         }
+        
+        restoreSavedFilter()
+        updateSeeResultButtonTitleBasedOnFilteredHotels()
     }
     
     private func setDefaultEnglishTitles() {

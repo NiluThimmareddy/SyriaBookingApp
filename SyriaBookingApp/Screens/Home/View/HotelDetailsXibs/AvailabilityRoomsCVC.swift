@@ -113,7 +113,9 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         
         if UserSessionManager.getUser() == nil{
             cell.isUserInteractionEnabled = false
+            cell.checkMarkButton.isHidden = true
         } else {
+            cell.checkMarkButton.isHidden = false
             cell.isUserInteractionEnabled = true
         }
         
@@ -346,9 +348,9 @@ extension AvailabilityRoomsCVC {
     func updateBookNowButtonTitle() {
         if UserSessionManager.getUser() == nil {
             if AppSettings.shared.selectedLanguage == .arabic {
-                bookNowButton.setTitle("تسجيل الدخول / إنشاء حساب", for: .normal)
+                bookNowButton.setTitle("تسجيل الدخول | إنشاء حساب", for: .normal)
             } else {
-                bookNowButton.setTitle("Login / Sign Up", for: .normal)
+                bookNowButton.setTitle("Login | Sign Up", for: .normal)
             }
         } else {
             if AppSettings.shared.selectedLanguage == .arabic {

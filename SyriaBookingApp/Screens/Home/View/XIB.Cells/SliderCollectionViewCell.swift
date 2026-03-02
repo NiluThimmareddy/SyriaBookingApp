@@ -34,8 +34,8 @@ class SliderCollectionViewCell: UICollectionViewCell {
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
         
         let title = isArabic
-               ? "تسجيل الدخول / إنشاء حساب"
-               : "Login / Sign Up"
+               ? "تسجيل الدخول | إنشاء حساب"
+               : "Login | Sign Up"
         
         loginButton.setTitle(title, for: .normal)
         
@@ -44,7 +44,6 @@ class SliderCollectionViewCell: UICollectionViewCell {
             weight: .heavy
         )
         loginButton.semanticContentAttribute = isArabic ? .forceRightToLeft : .forceLeftToRight
-
     }
 
 }

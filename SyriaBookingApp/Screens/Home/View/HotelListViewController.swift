@@ -193,6 +193,24 @@ extension HotelListViewController : UITableViewDelegate , UITableViewDataSource 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
+            guard !isLoadingData else { return }
+            
+            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            let selectedHotel = viewModel.filteredHotels[indexPath.row]
+
+            HotelDataMaganer.shared.addRecentlyViewedHotel(id: selectedHotel.id)
+            delegate?.reloadRecentlyViewedData()
+            vc.selectedHotel = selectedHotel
+            vc.navigationItem.title = "Hotel Details"
+
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
+
+            self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UIDevice.current.userInterfaceIdiom == .pad ? 350 : 270
     }

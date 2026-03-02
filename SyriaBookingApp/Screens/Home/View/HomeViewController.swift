@@ -1476,7 +1476,7 @@ extension HomeViewController {
                 // Check attributed title string
                 let cleanedTitle = attributedTitle.string.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
                 if cleanedTitle != "Where are you going?" && cleanedTitle != "Select City" {
-                    let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                    let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                     let attributedString = NSAttributedString(
                         string: cleanedTitle,
                         attributes: [
@@ -1494,7 +1494,7 @@ extension HomeViewController {
                       currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" {
                 // We have a city selected - show ONLY the city name (remove count if present)
                 let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                 let attributedString = NSAttributedString(
                     string: cleanedTitle,
                     attributes: [
@@ -1596,7 +1596,7 @@ extension HomeViewController {
                       currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" {
                 // We have a city selected - show ONLY the city name (remove count if present)
                 let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-                let font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
                 let attributedString = NSAttributedString(
                     string: cleanedTitle,
                     attributes: [
@@ -1659,7 +1659,7 @@ extension HomeViewController {
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Style for title (first line) - LEADING (LEFT) ALIGNED
-        let titleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        let titleFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
         let titleRange = (fullText as NSString).range(of: title)
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .left  // Changed from .center to .left
