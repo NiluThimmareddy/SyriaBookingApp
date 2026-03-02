@@ -29,6 +29,8 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     @IBOutlet weak var hoteldetailsBottomView: UIView!
     @IBOutlet weak var hotelNameLabel: UILabel!
     @IBOutlet weak var hotelCityLabel: UILabel!
+    @IBOutlet weak var goToHomeButton: UIButton!
+    @IBOutlet weak var amountLabel: UILabel!
     
     var guestName: String?
     var guestEmail: String?
@@ -43,6 +45,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     var selectedRates: [Rate] = []
     var bookingId: String?
     var roomtype: String?
+    var selectedCurrency : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,13 +87,11 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         let fullText: String
         if AppSettings.shared.selectedLanguage == .english {
             fullText = """
-            Thanks, \(name)! We've received your booking request and placed it in our processing queue.
-            We'll finalize your booking shortly and it will appear in your booking list.
+            Thanks, \(name)! We've received your booking request and placed it in our processing queue. We'll finalize your booking shortly and it will appear in your booking list.
             """
         } else {
             fullText = """
-            شكرًا، \(name)! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة.
-            سنقوم بتأكيد حجزك قريبًا وسيظهر في قائمة حجوزاتك.
+            شكرًا، \(name)! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة .سنقوم بتأكيد حجزك قريبًا وسيظهر في قائمة حجوزاتك.
             """
         }
         
@@ -101,15 +102,15 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         let customFont: UIFont
         if AppSettings.shared.selectedLanguage == .english {
             // Try to use Poppins or Georgia for English
-            if let poppinsFont = UIFont(name: "Poppins-Regular", size: 14) {
+            if let poppinsFont = UIFont(name: "Poppins-Regular", size: 13) {
                 customFont = poppinsFont
-            } else if let georgiaFont = UIFont(name: "Georgia", size: 14) {
+            } else if let georgiaFont = UIFont(name: "Georgia", size: 13) {
                 customFont = georgiaFont
             } else {
-                customFont = UIFont.systemFont(ofSize: 14)
+                customFont = UIFont.systemFont(ofSize: 13)
             }
         } else {
-            customFont = UIFont.systemFont(ofSize: 14)
+            customFont = UIFont.systemFont(ofSize: 13)
         }
         
         // Apply custom font to entire text
@@ -120,15 +121,15 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         if nameRange.location != NSNotFound {
             let boldFont: UIFont
             if AppSettings.shared.selectedLanguage == .english {
-                if let poppinsBold = UIFont(name: "Poppins-Bold", size: 17) {
+                if let poppinsBold = UIFont(name: "Poppins-Bold", size: 13) {
                     boldFont = poppinsBold
-                } else if let georgiaBold = UIFont(name: "Georgia-Bold", size: 17) {
+                } else if let georgiaBold = UIFont(name: "Georgia-Bold", size: 13) {
                     boldFont = georgiaBold
                 } else {
-                    boldFont = UIFont.boldSystemFont(ofSize: 17)
+                    boldFont = UIFont.boldSystemFont(ofSize: 13)
                 }
             } else {
-                boldFont = UIFont.boldSystemFont(ofSize: 17)
+                boldFont = UIFont.boldSystemFont(ofSize: 13)
             }
             
             attributedString.addAttributes([
@@ -151,11 +152,12 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         bookingReferenceIdLabel.text = bookingId != nil ? "SBK-\(bookingId!)" : "N/A"
         hotelNameLabel.text = selectedHotel?.name
         hotelCityLabel.text = selectedHotel?.city
+        let currency = selectedCurrency == "International ($)" ? "$" : "SAR"
         // Format price with currency
         if let price = totalPrice, !price.isEmpty {
-            payAtHotelLabel.text = "Pay at hotel: \(price)"
+            amountLabel.text = "Amount: \(price)\(currency)"
         } else {
-            payAtHotelLabel.text = "Pay at hotel"
+            amountLabel.text = "Amount"
         }
         
         if let checkIn = checkInDate, let checkOut = checkOutDate {
@@ -356,4 +358,9 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     @IBAction func viewBookingDetailsButtonAction(_ sender: Any) {
         navigateToBookingDetails()
     }
+    
+    @IBAction func goToHomeButtonAction(_ sender: Any) {
+        navigateToHomeTab()
+    }
+    
 }

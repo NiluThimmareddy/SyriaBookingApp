@@ -1336,7 +1336,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GoW-SS-iuK">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="774.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="822.33333333333337"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-gx-5f5">
                                                 <rect key="frame" x="353" y="10" width="25" height="25"/>
@@ -1351,12 +1351,13 @@
                                                     <action selector="dismissButtonTapped:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="j1J-N6-fCb"/>
                                                 </connections>
                                             </button>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_hourglass" translatesAutoresizingMaskIntoConstraints="NO" id="UIo-e5-j6X">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_hourglass" translatesAutoresizingMaskIntoConstraints="NO" id="UIo-e5-j6X">
                                                 <rect key="frame" x="176.66666666666666" y="20" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="UIo-e5-j6X" secondAttribute="height" id="0nT-Rv-BYM"/>
                                                     <constraint firstAttribute="height" constant="40" id="BbN-1a-VL2"/>
                                                 </constraints>
+                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Booking Request Queued" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1NR-T6-J6M">
                                                 <rect key="frame" x="20" y="75" width="353" height="30"/>
@@ -1364,16 +1365,15 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCF-MS-tsh">
-                                                <rect key="frame" x="60" y="115" width="273" height="79.666666666666686"/>
-                                                <string key="text">Thanks, User! We've received your booking request and placed it in our processing queue.
-We'll finalize your booking shortly and it will appear in your booking list.</string>
-                                                <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="14"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCF-MS-tsh">
+                                                <rect key="frame" x="60" y="114.99999999999999" width="273" height="59.333333333333329"/>
+                                                <string key="text">Thanks, User! We've received your booking request and placed it in our processing queue.We'll finalize your booking shortly and it will appear in your booking list.</string>
+                                                <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPy-zZ-m2g">
-                                                <rect key="frame" x="33" y="209.66666666666669" width="327" height="415.00000000000006"/>
+                                                <rect key="frame" x="33" y="189.33333333333337" width="327" height="415"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W7B-rM-3Dp">
                                                         <rect key="frame" x="0.0" y="0.0" width="327" height="220"/>
@@ -1408,7 +1408,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OP8-gS-aIR">
-                                                                                        <rect key="frame" x="40.000000000000007" y="39.999999999999943" width="98.666666666666686" height="9.6666666666666643"/>
+                                                                                        <rect key="frame" x="40.000000000000007" y="40.000000000000057" width="98.666666666666686" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
@@ -1446,7 +1446,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1R6-ZO-OMC">
-                                                                                        <rect key="frame" x="39.999999999999993" y="39.999999999999943" width="98.333333333333314" height="9.6666666666666643"/>
+                                                                                        <rect key="frame" x="39.999999999999993" y="40.000000000000057" width="98.333333333333314" height="9.6666666666666643"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
@@ -1552,14 +1552,14 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                                 </subviews>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qpx-qh-HII">
-                                                                <rect key="frame" x="15" y="138.99999999999994" width="297" height="1"/>
+                                                                <rect key="frame" x="15" y="139.00000000000006" width="297" height="1"/>
                                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="1" id="DL8-vK-DBx"/>
                                                                 </constraints>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Booking Reference" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CYA-ht-Yvz">
-                                                                <rect key="frame" x="15.000000000000007" y="154.99999999999994" width="106.66666666666669" height="20"/>
+                                                                <rect key="frame" x="15.000000000000007" y="155.00000000000006" width="106.66666666666669" height="20"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="20" id="VXS-Mv-BbM"/>
                                                                 </constraints>
@@ -1568,7 +1568,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ndz-fg-dPB">
-                                                                <rect key="frame" x="192" y="154.99999999999994" width="120" height="20"/>
+                                                                <rect key="frame" x="192" y="155.00000000000006" width="120" height="20"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SBK-BK00531" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VkO-li-dMg">
                                                                         <rect key="frame" x="5" y="0.0" width="110" height="20"/>
@@ -1609,13 +1609,13 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dnX-dn-9c1">
-                                                        <rect key="frame" x="30" y="143.66666666666663" width="267" height="26.333333333333343"/>
+                                                        <rect key="frame" x="30" y="143.66666666666666" width="267" height="26.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_Location 1" translatesAutoresizingMaskIntoConstraints="NO" id="66o-rV-4jH">
-                                                        <rect key="frame" x="30" y="180" width="20" height="20"/>
+                                                        <rect key="frame" x="30" y="179.99999999999997" width="20" height="20"/>
                                                         <color key="tintColor" systemColor="tintColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="66o-rV-4jH" secondAttribute="height" id="gb3-tv-cAR"/>
@@ -1623,7 +1623,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsR-ZJ-OuW">
-                                                        <rect key="frame" x="60" y="183" width="237" height="17"/>
+                                                        <rect key="frame" x="60" y="182.99999999999997" width="237" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -1656,7 +1656,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eV-aK-D7M">
-                                                <rect key="frame" x="33" y="639.66666666666663" width="327" height="60"/>
+                                                <rect key="frame" x="33" y="619.33333333333337" width="327" height="80"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Nights" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNl-1V-85w">
                                                         <rect key="frame" x="15" y="15" width="81" height="17"/>
@@ -1664,31 +1664,39 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pay at Hotel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hco-jN-BY1">
-                                                        <rect key="frame" x="15" y="37" width="68.333333333333329" height="14.333333333333336"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Pay at Hotel)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hco-jN-BY1">
+                                                        <rect key="frame" x="15" y="60.666666666666636" width="77.666666666666671" height="14.333333333333336"/>
                                                         <color key="backgroundColor" red="0.92549019607843142" green="0.99215686274509807" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <color key="textColor" red="0.019607843137254902" green="0.58823529411764708" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Days" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9W-Rq-qBl">
-                                                        <rect key="frame" x="254" y="15.000000000000002" width="58" height="21.666666666666671"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <rect key="frame" x="260" y="14.999999999999998" width="52" height="19.333333333333329"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="until check-in" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YC1-Eh-WlN">
-                                                        <rect key="frame" x="240.66666666666671" y="41.666666666666742" width="71.333333333333343" height="13.333333333333336"/>
+                                                        <rect key="frame" x="240.66666666666671" y="39.333333333333258" width="71.333333333333343" height="13.333333333333336"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount : $100" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onq-Nz-CtJ">
+                                                        <rect key="frame" x="15" y="37" width="94.666666666666671" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="60" id="BTx-1y-5M7"/>
-                                                    <constraint firstItem="hco-jN-BY1" firstAttribute="top" secondItem="lNl-1V-85w" secondAttribute="bottom" constant="5" id="Ocy-s9-ZRb"/>
+                                                    <constraint firstAttribute="height" constant="80" id="BTx-1y-5M7"/>
+                                                    <constraint firstItem="hco-jN-BY1" firstAttribute="top" secondItem="onq-Nz-CtJ" secondAttribute="bottom" constant="6.6699999999999999" id="Ehe-DA-xyB"/>
+                                                    <constraint firstItem="onq-Nz-CtJ" firstAttribute="top" secondItem="lNl-1V-85w" secondAttribute="bottom" constant="5" id="MYc-uG-Aef"/>
                                                     <constraint firstItem="YC1-Eh-WlN" firstAttribute="trailing" secondItem="z9W-Rq-qBl" secondAttribute="trailing" id="VFR-Sc-UH1"/>
+                                                    <constraint firstItem="onq-Nz-CtJ" firstAttribute="leading" secondItem="lNl-1V-85w" secondAttribute="leading" id="cBt-iS-mvQ"/>
                                                     <constraint firstItem="z9W-Rq-qBl" firstAttribute="top" secondItem="lNl-1V-85w" secondAttribute="top" id="hdi-jc-YJw"/>
                                                     <constraint firstItem="lNl-1V-85w" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" constant="15" id="iHm-u3-Gvp"/>
                                                     <constraint firstItem="lNl-1V-85w" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="top" constant="15" id="rBp-QP-1CQ"/>
@@ -1698,7 +1706,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-Xg-W5H">
-                                                <rect key="frame" x="33" y="719.66666666666663" width="327" height="40"/>
+                                                <rect key="frame" x="33" y="719.33333333333337" width="327" height="40"/>
                                                 <color key="backgroundColor" systemColor="labelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="vR1-hz-UUd"/>
@@ -1712,11 +1720,33 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                 </buttonConfiguration>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="16"/>
+                                                        <real key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="viewBookingDetailsButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="mFg-3a-nYA"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIL-DL-jL8">
+                                                <rect key="frame" x="33" y="767.33333333333337" width="327" height="40"/>
+                                                <color key="backgroundColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="qZg-iG-PbA"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Go to Home"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Go to Home">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="goToHomeButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="3JZ-R1-rdr"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1727,9 +1757,13 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="top" secondItem="UIo-e5-j6X" secondAttribute="bottom" constant="15" id="941-Yv-wO4"/>
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="leading" secondItem="GoW-SS-iuK" secondAttribute="leading" constant="20" id="AMe-HV-cAm"/>
                                             <constraint firstItem="hQX-gx-5f5" firstAttribute="top" secondItem="GoW-SS-iuK" secondAttribute="top" constant="10" id="APp-1Y-HHw"/>
+                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="top" secondItem="xnb-Xg-W5H" secondAttribute="bottom" constant="8" id="BDO-nt-kI9"/>
+                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="trailing" secondItem="xnb-Xg-W5H" secondAttribute="trailing" id="BQs-uC-iQt"/>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="leading" secondItem="EPy-zZ-m2g" secondAttribute="leading" id="BhE-1u-qnr"/>
+                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="leading" secondItem="xnb-Xg-W5H" secondAttribute="leading" id="CfL-Lm-1Rr"/>
                                             <constraint firstItem="XCF-MS-tsh" firstAttribute="top" secondItem="1NR-T6-J6M" secondAttribute="bottom" constant="10" id="Gyt-6s-u6Q"/>
                                             <constraint firstItem="xnb-Xg-W5H" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" id="Iyi-u5-ifo"/>
+                                            <constraint firstAttribute="bottom" secondItem="EIL-DL-jL8" secondAttribute="bottom" constant="15" id="ON8-h5-vzW"/>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="top" secondItem="EPy-zZ-m2g" secondAttribute="bottom" constant="15" id="Qd5-W0-Tfh"/>
                                             <constraint firstAttribute="trailing" secondItem="hQX-gx-5f5" secondAttribute="trailing" constant="15" id="RSX-3v-mu4"/>
                                             <constraint firstItem="EPy-zZ-m2g" firstAttribute="centerX" secondItem="GoW-SS-iuK" secondAttribute="centerX" id="Ulk-aQ-1t1"/>
@@ -1740,8 +1774,12 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                             <constraint firstItem="xnb-Xg-W5H" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="bottom" constant="20" id="qVd-3O-AoG"/>
                                             <constraint firstItem="xnb-Xg-W5H" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" id="vQe-Ys-r0B"/>
                                             <constraint firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="20" id="vpI-dc-nmG"/>
-                                            <constraint firstAttribute="bottom" secondItem="xnb-Xg-W5H" secondAttribute="bottom" constant="15" id="zZe-bZ-KtY"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="hQX-gx-5f5"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -1766,6 +1804,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="amountLabel" destination="onq-Nz-CtJ" id="BCS-Ef-3Vl"/>
                         <outlet property="bookingReferenceIdLabel" destination="VkO-li-dMg" id="fZb-SN-ic0"/>
                         <outlet property="bookingReferenceTitleLabel" destination="CYA-ht-Yvz" id="J7N-eq-yAY"/>
                         <outlet property="bookingRequestQueueLabel" destination="1NR-T6-J6M" id="i0D-tV-v5m"/>
@@ -1774,6 +1813,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                         <outlet property="checkOutDateLabel" destination="1R6-ZO-OMC" id="XnB-KB-01z"/>
                         <outlet property="checkOutTitleLabel" destination="ftp-10-9tm" id="Rf0-b9-uRc"/>
                         <outlet property="dissmissButtonTap" destination="hQX-gx-5f5" id="Q9D-5A-c4J"/>
+                        <outlet property="goToHomeButton" destination="EIL-DL-jL8" id="HyN-KB-v6B"/>
                         <outlet property="guestTitleLabel" destination="bvW-tJ-KuY" id="fHX-iR-jbo"/>
                         <outlet property="hotelCityLabel" destination="hsR-ZJ-OuW" id="9Rh-b6-ZcC"/>
                         <outlet property="hotelDetailsView" destination="EPy-zZ-m2g" id="B8S-t8-yIo"/>
@@ -1796,7 +1836,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfv-V8-pwY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2948.8549618320608" y="-35.211267605633807"/>
+            <point key="canvasLocation" x="2985.4961832061067" y="-35.211267605633807"/>
         </scene>
         <!--View Booking ConfirmationVC-->
         <scene sceneID="5iN-RX-a4K">
@@ -2968,7 +3008,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRx-HJ-9vd">
                                                                         <rect key="frame" x="10" y="45" width="373" height="41"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250: 2 Adults, 2 Child (Extra Bed) Qty 1 - Total $250.00" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDJ-2L-SAQ">
@@ -3396,7 +3436,7 @@ We'll finalize your booking shortly and it will appear in your booking list.</st
         <image name="person.2.fill" catalog="system" width="128" height="86"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
-            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
