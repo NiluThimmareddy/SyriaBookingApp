@@ -181,6 +181,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
             confirmationVC.selectedRates = self.selectedRates
             confirmationVC.bookingId = response.id
             confirmationVC.roomtype = self.selectedRoom?.room.roomType
+            confirmationVC.selectedCurrency = self.bookingTypeLabel.text?.description ?? ""
             
             // Dismiss current VC and replace root with BookingConfirmationVC
             self.dismiss(animated: true) {
