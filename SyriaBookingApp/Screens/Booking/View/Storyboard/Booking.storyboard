@@ -1336,7 +1336,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GoW-SS-iuK">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="822.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="823"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQX-gx-5f5">
                                                 <rect key="frame" x="353" y="10" width="25" height="25"/>
@@ -1705,50 +1705,64 @@
                                                     <constraint firstItem="YC1-Eh-WlN" firstAttribute="top" secondItem="z9W-Rq-qBl" secondAttribute="bottom" constant="5" id="x3q-CZ-3FJ"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-Xg-W5H">
-                                                <rect key="frame" x="33" y="719.33333333333337" width="327" height="40"/>
-                                                <color key="backgroundColor" systemColor="labelColor"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="w9F-VV-vhS">
+                                                <rect key="frame" x="33" y="763" width="327" height="40"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-Xg-W5H">
+                                                        <rect key="frame" x="0.0" y="0.0" width="161" height="40"/>
+                                                        <color key="backgroundColor" systemColor="labelColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="vR1-hz-UUd"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="View Booking Details"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="View Booking Details">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        </buttonConfiguration>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="viewBookingDetailsButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="mFg-3a-nYA"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIL-DL-jL8">
+                                                        <rect key="frame" x="166" y="0.0" width="161" height="40"/>
+                                                        <color key="backgroundColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="qZg-iG-PbA"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Go to Home"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="Go to Home">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                        </buttonConfiguration>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="goToHomeButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="3JZ-R1-rdr"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="vR1-hz-UUd"/>
+                                                    <constraint firstAttribute="height" constant="40" id="6YJ-jP-nGG"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="View Booking Details"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="View Booking Details">
-                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                </buttonConfiguration>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="viewBookingDetailsButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="mFg-3a-nYA"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIL-DL-jL8">
-                                                <rect key="frame" x="33" y="767.33333333333337" width="327" height="40"/>
-                                                <color key="backgroundColor" red="0.25098039215686274" green="0.52156862745098043" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="qZg-iG-PbA"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Go to Home"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Go to Home">
-                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                </buttonConfiguration>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="goToHomeButtonAction:" destination="PCx-Pf-BF6" eventType="touchUpInside" id="3JZ-R1-rdr"/>
-                                                </connections>
-                                            </button>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A confirmation email will be sent to your registered email with all booking details." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OpH-MA-mOH">
+                                                <rect key="frame" x="48" y="709.33333333333337" width="297" height="33.666666666666629"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -1757,22 +1771,22 @@
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="top" secondItem="UIo-e5-j6X" secondAttribute="bottom" constant="15" id="941-Yv-wO4"/>
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="leading" secondItem="GoW-SS-iuK" secondAttribute="leading" constant="20" id="AMe-HV-cAm"/>
                                             <constraint firstItem="hQX-gx-5f5" firstAttribute="top" secondItem="GoW-SS-iuK" secondAttribute="top" constant="10" id="APp-1Y-HHw"/>
-                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="top" secondItem="xnb-Xg-W5H" secondAttribute="bottom" constant="8" id="BDO-nt-kI9"/>
-                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="trailing" secondItem="xnb-Xg-W5H" secondAttribute="trailing" id="BQs-uC-iQt"/>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="leading" secondItem="EPy-zZ-m2g" secondAttribute="leading" id="BhE-1u-qnr"/>
-                                            <constraint firstItem="EIL-DL-jL8" firstAttribute="leading" secondItem="xnb-Xg-W5H" secondAttribute="leading" id="CfL-Lm-1Rr"/>
+                                            <constraint firstItem="w9F-VV-vhS" firstAttribute="top" secondItem="OpH-MA-mOH" secondAttribute="bottom" constant="20" id="CIS-UN-Tlw"/>
+                                            <constraint firstItem="w9F-VV-vhS" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" id="Cfr-N4-eq9"/>
+                                            <constraint firstAttribute="bottom" secondItem="w9F-VV-vhS" secondAttribute="bottom" constant="20" id="EHS-TR-084"/>
+                                            <constraint firstItem="OpH-MA-mOH" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="bottom" constant="10" id="Fec-Pd-uwg"/>
                                             <constraint firstItem="XCF-MS-tsh" firstAttribute="top" secondItem="1NR-T6-J6M" secondAttribute="bottom" constant="10" id="Gyt-6s-u6Q"/>
-                                            <constraint firstItem="xnb-Xg-W5H" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" id="Iyi-u5-ifo"/>
-                                            <constraint firstAttribute="bottom" secondItem="EIL-DL-jL8" secondAttribute="bottom" constant="15" id="ON8-h5-vzW"/>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="top" secondItem="EPy-zZ-m2g" secondAttribute="bottom" constant="15" id="Qd5-W0-Tfh"/>
                                             <constraint firstAttribute="trailing" secondItem="hQX-gx-5f5" secondAttribute="trailing" constant="15" id="RSX-3v-mu4"/>
                                             <constraint firstItem="EPy-zZ-m2g" firstAttribute="centerX" secondItem="GoW-SS-iuK" secondAttribute="centerX" id="Ulk-aQ-1t1"/>
+                                            <constraint firstItem="OpH-MA-mOH" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" constant="15" id="VA7-2g-Y3K"/>
                                             <constraint firstItem="XCF-MS-tsh" firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="-40" id="WhP-dH-ZcF"/>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="trailing" secondItem="EPy-zZ-m2g" secondAttribute="trailing" id="ZjQ-s4-IRg"/>
+                                            <constraint firstItem="OpH-MA-mOH" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" constant="-15" id="bFL-3k-ktr"/>
                                             <constraint firstItem="XCF-MS-tsh" firstAttribute="leading" secondItem="1NR-T6-J6M" secondAttribute="leading" constant="40" id="bxw-aT-r6t"/>
                                             <constraint firstItem="UIo-e5-j6X" firstAttribute="top" secondItem="GoW-SS-iuK" secondAttribute="top" constant="20" id="dw2-iS-ODg"/>
-                                            <constraint firstItem="xnb-Xg-W5H" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="bottom" constant="20" id="qVd-3O-AoG"/>
-                                            <constraint firstItem="xnb-Xg-W5H" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" id="vQe-Ys-r0B"/>
+                                            <constraint firstItem="w9F-VV-vhS" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" id="p6F-Sl-FcK"/>
                                             <constraint firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="20" id="vpI-dc-nmG"/>
                                         </constraints>
                                         <variation key="default">
@@ -1813,6 +1827,7 @@
                         <outlet property="checkOutDateLabel" destination="1R6-ZO-OMC" id="XnB-KB-01z"/>
                         <outlet property="checkOutTitleLabel" destination="ftp-10-9tm" id="Rf0-b9-uRc"/>
                         <outlet property="dissmissButtonTap" destination="hQX-gx-5f5" id="Q9D-5A-c4J"/>
+                        <outlet property="emailLabel" destination="OpH-MA-mOH" id="4M0-x3-G1n"/>
                         <outlet property="goToHomeButton" destination="EIL-DL-jL8" id="HyN-KB-v6B"/>
                         <outlet property="guestTitleLabel" destination="bvW-tJ-KuY" id="fHX-iR-jbo"/>
                         <outlet property="hotelCityLabel" destination="hsR-ZJ-OuW" id="9Rh-b6-ZcC"/>
@@ -3436,7 +3451,7 @@
         <image name="person.2.fill" catalog="system" width="128" height="86"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

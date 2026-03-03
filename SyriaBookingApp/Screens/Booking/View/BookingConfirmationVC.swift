@@ -31,6 +31,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     @IBOutlet weak var hotelCityLabel: UILabel!
     @IBOutlet weak var goToHomeButton: UIButton!
     @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
     
     var guestName: String?
     var guestEmail: String?
@@ -56,6 +57,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         setupConfirmationMessage()
         setupBookingDetails()
         setUpLanguage()
+        setupEmailMessage()
         setupHotelImage()
         hotelDetailsView.applyCardStyle()
         setupCornerRadii()
@@ -144,6 +146,50 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         userBookingMessageLabel.attributedText = attributedString
         userBookingMessageLabel.numberOfLines = 0
         userBookingMessageLabel.isUserInteractionEnabled = false
+    }
+    
+    private func setupEmailMessage() {
+        
+        guard let email = guestEmail, !email.isEmpty else {
+            if AppSettings.shared.selectedLanguage == .english {
+                emailLabel.text = "A confirmation email will be sent to your registered email with all booking details."
+            } else {
+                emailLabel.text = "سيتم إرسال بريد تأكيد إلى بريدك الإلكتروني المسجل مع جميع تفاصيل الحجز."
+            }
+            return
+        }
+        
+        let fullText: String
+        
+        if AppSettings.shared.selectedLanguage == .english {
+            fullText = "A confirmation email will be sent to your \(email) with all booking details."
+            emailLabel.textAlignment = .left
+        } else {
+            fullText = "سيتم إرسال بريد تأكيد إلى \(email) مع جميع تفاصيل الحجز."
+            emailLabel.textAlignment = .right
+        }
+        
+        let attributedString = NSMutableAttributedString(string: fullText)
+        let nsString = fullText as NSString
+        let emailRange = nsString.range(of: email)
+        
+        // Default font for entire text
+        attributedString.addAttribute(
+            .font,
+            value: UIFont.systemFont(ofSize: 13),
+            range: NSRange(location: 0, length: fullText.count)
+        )
+        
+        // Highlight email in blue + semibold
+        if emailRange.location != NSNotFound {
+            attributedString.addAttributes([
+                .foregroundColor: UIColor.systemBlue,
+                .font: UIFont.systemFont(ofSize: 13, weight: .semibold)
+            ], range: emailRange)
+        }
+        
+        emailLabel.attributedText = attributedString
+        emailLabel.numberOfLines = 0
     }
     
     private func setupBookingDetails() {
@@ -330,8 +376,19 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         present(viewBookingConfirmationVC, animated: true)
     }
     
-    // MARK: - Language Setup
     @objc func setUpLanguage() {
+        
+        var config = viewBookingDetailsButton.configuration ?? UIButton.Configuration.plain()
+        config.attributedTitle = AttributedString(
+            AppSettings.shared.selectedLanguage == .english
+            ? "View Booking Details"
+            : "عرض تفاصيل الحجز",
+            attributes: AttributeContainer([
+                .font: UIFont.systemFont(ofSize: 13, weight: .semibold)
+            ])
+        )
+        viewBookingDetailsButton.configuration = config
+        
         if AppSettings.shared.selectedLanguage == .english {
             checkInTitleLabel.text = "CHECK-IN"
             checkOutTitleLabel.text = "CHECK-OUT"
@@ -339,7 +396,6 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             roomTypeTitleLabel.text = "ROOM TYPE"
             bookingReferenceTitleLabel.text = "BOOKING REFERENCE"
             totalNightsTitleLabel.text = "TOTAL NIGHTS"
-            viewBookingDetailsButton.setTitle("View Booking Details", for: .normal)
         } else {
             checkInTitleLabel.text = "تسجيل الوصول"
             checkOutTitleLabel.text = "تسجيل المغادرة"
@@ -347,7 +403,6 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             roomTypeTitleLabel.text = "نوع الغرفة"
             bookingReferenceTitleLabel.text = "رقم الحجز"
             totalNightsTitleLabel.text = "إجمالي الليالي"
-            viewBookingDetailsButton.setTitle("عرض تفاصيل الحجز", for: .normal)
         }
     }
     

@@ -11,6 +11,7 @@ protocol AvailabilityRoomsCVCDelegate: AnyObject {
     func didTapBookNow(for room: RoomElement, selectedRate: Rate)
     func showAlertForRateSelection()
     func showRefundPolicy(for room: RoomElement)
+    func showLoginRequiredAlert()
 }
 
 class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioningDelegate {
@@ -111,16 +112,12 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         
-        if UserSessionManager.getUser() == nil{
-            cell.isUserInteractionEnabled = false
-            cell.checkMarkButton.isHidden = true
-        } else {
-            cell.checkMarkButton.isHidden = false
-            cell.isUserInteractionEnabled = true
-        }
-        
         cell.checkMarkButton.tag = indexPath.row
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
+
+        let isLoggedIn = UserSessionManager.getUser() != nil
+        cell.selectRoomsButton.isUserInteractionEnabled = isLoggedIn
+        cell.selectRoomsButton.alpha = isLoggedIn ? 1.0 : 0.5
         cell.selectRoomsButton.tag = indexPath.row
         
         cell.configure(with: selectedRoom, ratesForLocal: isLocalRate) { [weak self] selectedQty in
@@ -134,6 +131,12 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc func checkMarkTapped(_ sender: UIButton) {
+        
+        if UserSessionManager.getUser() == nil {
+            delegate?.showLoginRequiredAlert()
+            return
+        }
+        
         let row = sender.tag
         guard var rate = selectedRoom?.rates[row] else { return }
         rate.isSelected.toggle()
@@ -145,6 +148,12 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if UserSessionManager.getUser() == nil {
+            delegate?.showLoginRequiredAlert()
+            return
+        }
+        
         guard var rate = selectedRoom?.rates[indexPath.row] else { return }
         rate.isSelected.toggle()
         rate.isLocal = isLocalRate

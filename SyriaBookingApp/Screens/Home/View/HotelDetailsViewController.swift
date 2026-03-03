@@ -519,6 +519,18 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func showAlertForRateSelection() {
         showAlert("Please select a rate and ensure hotel/room data is present.")
     }
+    func showLoginRequiredAlert() {
+
+        let alert = UIAlertController(
+            title: "Login Required",
+            message: "Please login to select a room.",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+        present(alert, animated: true)
+    }
     
     func updateTotalPrice() {
         if !selectedRates.isEmpty {
