@@ -25,5 +25,6 @@ class RefundPolicyVC: UIViewController {
     }
     
     @IBAction func closeButtonAction(_ sender: Any) {
+        self.dismiss(animated: true)
     }
 }

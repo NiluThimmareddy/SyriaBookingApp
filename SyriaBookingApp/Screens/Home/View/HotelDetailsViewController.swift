@@ -142,6 +142,7 @@ class HotelDetailsViewController : BaseViewController {
         controller.comingfrom = .HotelDetail
         controller.hotelID = selectedHotel?.id ?? ""
         controller.hotelName = selectedHotel?.name ?? ""
+        controller.modalPresentationStyle = .overFullScreen
         present(controller, animated: true)
     }
     
@@ -501,6 +502,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRates = self.selectedRates
+            controller.modalPresentationStyle = .overFullScreen
             self.present(controller, animated: true)
         }
     }
@@ -544,7 +546,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 
                 let totalDiscount = selectedRates.reduce(0) { $0 + ($1.localDiscount ?? 0) }
                 if total > 0 {
-                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: SYP \(total) (\(totalDiscount)% Discount"
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: SYP \(total) (\(totalDiscount)% Discount)"
                 } else {
                     totalAmountLabel.text = ""
                 }
@@ -873,6 +875,7 @@ extension HotelDetailsViewController: DetailsPageHotelImagesCVCDelegate {
         galleryVC.selectedHotel = selectedHotel
         galleryVC.galleryType = .hotel
         galleryVC.initialIndex = 0
+        galleryVC.modalPresentationStyle = .overFullScreen
         present(galleryVC, animated: true)
     }
 }

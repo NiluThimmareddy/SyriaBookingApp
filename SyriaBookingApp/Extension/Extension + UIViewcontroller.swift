@@ -84,7 +84,7 @@ extension UIViewController {
 //            rightButtons.append(searchButton)
 //        }
         
-        let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
         badgeButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
         badgeButton.addTarget(self, action: #selector(didTapNotification), for: .touchUpInside)
         let notificationButton = UIBarButtonItem(customView: badgeButton)
