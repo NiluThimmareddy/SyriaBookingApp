@@ -81,6 +81,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
             controller.comingfrom = .RightMenu
             controller.titleText = "Report an app"
+            controller.modalPresentationStyle = .overFullScreen
             present(controller, animated: true)
         case 5:
             let title = menuArray[indexPath.row]

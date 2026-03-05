@@ -940,6 +940,7 @@ extension UITabBarController {
             print("******\(mobileNumber)")
             verificationVC.guestName = guestName
             verificationVC.guestEmail = guestEmail
+            verificationVC.modalPresentationStyle = .overFullScreen
             self.present(verificationVC, animated: true)
         }
     }

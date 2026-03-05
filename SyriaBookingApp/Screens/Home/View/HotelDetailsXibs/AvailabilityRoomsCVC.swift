@@ -252,6 +252,8 @@ extension AvailabilityRoomsCVC {
         }
         
         if !galleryVC.roomImages.isEmpty {
+            galleryVC.modalPresentationStyle = .overFullScreen
+            topVC.modalPresentationStyle = .overFullScreen
             topVC.present(galleryVC, animated: true)
         }
     }

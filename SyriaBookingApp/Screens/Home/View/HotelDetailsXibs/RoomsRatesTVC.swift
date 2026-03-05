@@ -31,13 +31,10 @@ class RoomsRatesTVC : UITableViewCell {
         var rooms = selectedRoom.rates[selectRoomsButton.tag]
         let notes = rooms.notes ?? ""
         
-        
         // Format price with two decimal points
         let formattedPrice: String
         let discountText: String
-
-       
-        
+    
         if ratesForLocal {
             if let localPrice = rooms.localPrice {
                 formattedPrice = String(format: "%.2f", localPrice)
@@ -96,11 +93,11 @@ class RoomsRatesTVC : UITableViewCell {
 
         // Rest of your code
         self.onQuantityChanged = onQuantityChanged
-        let imageName = rooms.isSelected ?? false ? "checkmark.square.fill" : "square"
+        let imageName = rooms.isSelected ? "checkmark.square.fill" : "square"
 
-        if rooms.isSelected ?? false {
+        if rooms.isSelected {
+//            rooms.selectedQuantity = selectedQty
             selecteRoomRates.append(rooms)
-            rooms.selectedQuantity = selectedQty
         }
 
         let configuration = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
@@ -116,8 +113,10 @@ class RoomsRatesTVC : UITableViewCell {
         let actions = options.map { option in
             UIAction(title: option, handler: { [weak button] _ in
                 if let qty = Int(option) {
-                    self.onQuantityChanged?(qty)
                     self.selectedQty = qty
+                    
+                    self.onQuantityChanged?(qty)
+                    
                 }
                 button?.setTitle(option, for: .normal)
             })
