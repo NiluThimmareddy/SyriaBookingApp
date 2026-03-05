@@ -373,7 +373,12 @@ extension HotelListViewController  {
         scrollToTopButton.imageView?.contentMode = .scaleToFill
         scrolltoTopHelper = ScrollToTopHelper(parent: self)
         
-        searchBar.placeholder = "Search hotels, City"
+        let lang = AppSettings.shared.selectedLanguage
+        if lang == .english {
+            searchBar.placeholder = "Search hotels, City"
+        } else {
+            searchBar.placeholder = "ابحث عن فنادق، مدينة"
+        }
         searchBar.delegate = self
         
         hotelCollectionView.isHidden = true

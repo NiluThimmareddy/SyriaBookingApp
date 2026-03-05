@@ -15,6 +15,25 @@ class SocialMediaView: UIView {
     @IBOutlet weak var linkedinButton: UIButton!
     @IBOutlet weak var tiktokButton: UIButton!
     @IBOutlet weak var syriabookingIncLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .english {
+            // English texts
+            followLabel.text = "Follow us:"
+            syriabookingIncLabel.text = "© 2025-26 SyriaBooking Inc. All rights reserved."
+        } else {
+            // Arabic texts
+            followLabel.text = "تابعنا:"
+            syriabookingIncLabel.text = "© 2025-26 سيريا بوكينغ. جميع الحقوق محفوظة."
+        }
+    }
 
     @IBAction func facebookButtonAction(_ sender: Any) {
         openSocialApp(

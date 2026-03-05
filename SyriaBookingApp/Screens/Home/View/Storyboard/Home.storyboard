@@ -1609,13 +1609,16 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bestPricesLocalDealsLabel" destination="oRT-ww-crg" id="uRJ-H9-odU"/>
                         <outlet property="checkInButton" destination="wvW-VZ-NXm" id="iWE-cV-9CZ"/>
                         <outlet property="checkInCheckOutButton" destination="YgU-2O-uvf" id="coj-il-3t4"/>
                         <outlet property="checkOutButton" destination="c2i-bM-Asv" id="bos-Mu-uvb"/>
                         <outlet property="checkoutStackView" destination="gBz-Mv-I2U" id="ec3-eK-44O"/>
+                        <outlet property="customerSupportLabel" destination="rMs-t7-vmD" id="cxR-kn-p5C"/>
                         <outlet property="dayAfterTomorrowButton" destination="63L-2M-Qrb" id="gb9-y0-dka"/>
                         <outlet property="dealOfferLabel" destination="mhQ-oA-01H" id="dAM-sQ-TZw"/>
                         <outlet property="dealsview" destination="jTB-in-AAv" id="9xa-5V-VGe"/>
+                        <outlet property="embracingSyriaBookingLabel" destination="DNM-5W-eP6" id="Jm8-Wv-6kj"/>
                         <outlet property="findDealButton" destination="hzh-gM-oGd" id="rzr-LM-MQJ"/>
                         <outlet property="gradientView" destination="Tx0-HE-7bk" id="b09-mw-QsK"/>
                         <outlet property="handPickedHotelsDescriptionLabel" destination="Xan-zC-h98" id="XQl-zK-Kt2"/>
@@ -1634,6 +1637,8 @@
                         <outlet property="recommendedHotelsCollectionView" destination="CGx-Yp-P1K" id="xzP-AG-oyO"/>
                         <outlet property="recommendedHotelsCollectionViewHeightConstraint" destination="hSu-QP-tsy" id="vhZ-Qw-jZV"/>
                         <outlet property="recommendedHotelsTitleLabel" destination="8Ig-s1-BfM" id="uIf-IR-iwd"/>
+                        <outlet property="reserveNowPayLaterLabel" destination="eUG-mm-oDd" id="bdE-LN-7G2"/>
+                        <outlet property="seamlessTravelExperiencesLabel" destination="SeM-Cc-cFG" id="YWg-EN-qRS"/>
                         <outlet property="searchButton" destination="COU-vQ-vBN" id="Ak6-H9-093"/>
                         <outlet property="searchHotelButton" destination="qMx-ei-qB4" id="InN-Hg-Fuj"/>
                         <outlet property="searchStackView" destination="Rvv-oe-Fgk" id="GFX-ah-oHW"/>
@@ -1652,12 +1657,14 @@
                         <outlet property="topHotelsCollectionView" destination="DQx-JI-fGf" id="Aes-fN-Y8T"/>
                         <outlet property="topHotelsCollectionViewHeightConstraint" destination="lgj-S4-xNH" id="ikc-DK-ehg"/>
                         <outlet property="topView" destination="JKs-jv-tUD" id="99n-mt-YcH"/>
+                        <outlet property="verifiedHotelsLabel" destination="HpC-gm-kDy" id="ayN-bp-v9f"/>
                         <outlet property="viewAllButton" destination="y6S-6Q-ITM" id="bbL-Xx-w8w"/>
                         <outlet property="viewAllRecommendedButton" destination="rdM-YB-uhg" id="g30-Hm-B4Z"/>
                         <outlet property="whereAreYouGoingButton" destination="a4Z-cF-Xo0" id="rSg-nn-WhV"/>
                         <outlet property="whereToNextHeadLineLabel" destination="Y38-yC-gJ5" id="2Ya-TO-YBy"/>
                         <outlet property="whereToNextSeeMoreButton" destination="eoZ-Iq-443" id="gZC-ML-FsG"/>
                         <outlet property="whereToNextTopConstraint" destination="VNp-ZK-UKr" id="HpA-IQ-PrR"/>
+                        <outlet property="whyBookAtSyriabookingButton" destination="A0S-N6-gpn" id="mXS-k0-T5o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VxQ-ky-Roe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -5528,7 +5535,12 @@ And Try Again.</string>
                     </view>
                     <navigationItem key="navigationItem" id="6kg-OL-tCH"/>
                     <connections>
+                        <outlet property="anyQuestionsLabel" destination="ZEa-Hd-j18" id="mcG-pN-gzd"/>
+                        <outlet property="contactOurFriendlyExpertsLabel" destination="Iey-29-1GI" id="WLL-3d-YU7"/>
                         <outlet property="contactUsButton" destination="2WR-Pk-k2Q" id="P6R-N7-T9s"/>
+                        <outlet property="contactUsFormLabel" destination="nuF-as-uMA" id="aJN-Nl-xTO"/>
+                        <outlet property="mailusExperiencedLabel" destination="g8z-xh-iF2" id="2Hj-Kt-7Mx"/>
+                        <outlet property="packYourBagsLabel" destination="ct3-nF-nu5" id="EBT-Lu-PrB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e6p-tm-DPH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

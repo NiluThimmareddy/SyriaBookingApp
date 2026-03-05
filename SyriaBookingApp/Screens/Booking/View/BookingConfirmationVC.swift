@@ -163,10 +163,10 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         
         if AppSettings.shared.selectedLanguage == .english {
             fullText = "A confirmation email will be sent to your \(email) with all booking details."
-            emailLabel.textAlignment = .left
+            emailLabel.textAlignment = .center
         } else {
             fullText = "سيتم إرسال بريد تأكيد إلى \(email) مع جميع تفاصيل الحجز."
-            emailLabel.textAlignment = .right
+            emailLabel.textAlignment = .center
         }
         
         let attributedString = NSMutableAttributedString(string: fullText)
