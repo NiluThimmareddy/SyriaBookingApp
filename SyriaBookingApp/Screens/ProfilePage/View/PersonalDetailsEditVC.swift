@@ -9,12 +9,9 @@ import UIKit
 
 protocol PersonalDetailsEditVCDelegate: AnyObject {
     func didUpdateName(firstName: String, lastName: String)
-//    func didUpdateGender(_ gender: String)
-//    func didUpdateDOB(_ dob: String)
     func didUpdateEmail(_ email: String)
     func didUpdatePhoneNumber(_ phoneNumber: String, countryCode: String)
     func didUpdateAddress(street: String, city: String, postCode: String, country: String)
-    
 }
 
 class PersonalDetailsEditVC: BaseViewController {
@@ -54,7 +51,7 @@ class PersonalDetailsEditVC: BaseViewController {
     @IBOutlet weak var adressTF: UITextField!
     @IBOutlet weak var addressLbl: UILabel!
     @IBOutlet weak var addressTitle: UILabel!
-    @IBOutlet weak var addressView: UIView!    
+    @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var emailSaveButton: UIButton!
     @IBOutlet weak var emailTitle: UILabel!
     @IBOutlet weak var emailAddress: UILabel!
@@ -72,22 +69,31 @@ class PersonalDetailsEditVC: BaseViewController {
     @IBOutlet weak var nameTitle: UILabel!
     
     let viewModel = ProfileViewModel()
-
     let CountryNameViewModel = CountryCodeDataSourceViewModel()
     weak var delegate: PersonalDetailsEditVCDelegate?
     var selectedExpectationIndex: Int? = nil
     var selectedOption: ProfileOptions = .name
     let countryViewModel = CountryListViewModel()
     var personalData: BookingModel?
-    var genderData = ["Male","Female","Others"]
+    
+    // Gender data with Arabic translations
+    var englishGenderData = ["Male", "Female", "Others"]
+    var arabicGenderData = ["ذكر", "أنثى", "آخر"]
+    
+    var genderData: [String] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicGenderData : englishGenderData
+    }
+    
     var color = UIColor(named: "defaultColor")
     var updatePersonalData : ( () -> Void)?
+    
     var selectedGender: String {
         guard let index = selectedExpectationIndex, index >= 0, index < genderData.count else {
             return ""
         }
         return genderData[index]
     }
+    
     var dobFormattedString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM yyyy"
@@ -96,6 +102,15 @@ class PersonalDetailsEditVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add language change notification observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
         hideKeyboardWhenTappedAround()
         getFlagData()
         flagProcess()
@@ -111,6 +126,142 @@ class PersonalDetailsEditVC: BaseViewController {
         CountryNameViewModel.countries.forEach { print($0.label) }
         let matchedCountry = CountryNameViewModel.countries.first(where: { $0.label == countryViewModel.countries.first?.name })
         print(matchedCountry ?? "")
+        
+        // Set initial texts
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            // Name section
+            nameTitle.text = "تحديث الاسم"
+            firstNameLbl.text = "الاسم الأول*"
+            lastNameLbl.text = "الاسم الأخير*"
+            wellSaveContentLbl.text = "سنحفظ هذه التفاصيل لتتمكن من استخدامها أثناء عملية الحجز."
+            
+            // Email section
+            emailTitle.text = "البريد الإلكتروني"
+            emailAddress.text = "أدخل بريدك الإلكتروني الجديد*"
+            emailContent.text = "سنرسل رابط التحقق إلى بريدك الإلكتروني الجديد. يرجى التحقق من صندوق الوارد الخاص بك."
+            
+            // Phone number section
+            phoneNumberTitle.text = "رقم الهاتف"
+            phoneNumberContent.text = "سنحفظ هذا الرقم لتتمكن من استخدامه أثناء عملية الحجز."
+            phoneNumberErrorMessage.text = "يرجى إدخال رقم الهاتف"
+            
+            // Address section
+            addressTitle.text = "العنوان"
+            addressLbl.text = "العنوان"
+            townLbl.text = "المدينة/البلدة"
+            postCodeLbl.text = "الرمز البريدي"
+            countryRegionLbl.text = "البلد/المنطقة"
+            addressContent.text = "سنحفظ هذه التفاصيل لتتمكن من استخدامها أثناء عملية الحجز."
+            
+            // Gender section
+            genderTitle.text = "الجنس"
+            
+            // DOB section
+            dobTitle.text = "تاريخ الميلاد"
+            
+            // Buttons
+            let saveTitle = NSAttributedString(
+                string: "حفظ",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
+            )
+            saveButton.setAttributedTitle(saveTitle, for: .normal)
+            emailSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            phoneNumberSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            addressSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            genderSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            dobSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            
+        } else {
+            // Name section
+            nameTitle.text = "Update Name"
+            firstNameLbl.text = "First name*"
+            lastNameLbl.text = "Last name*"
+            wellSaveContentLbl.text = "We'll save this details so you can use it during the booking process."
+            
+            // Email section
+            emailTitle.text = "Email Address"
+            emailAddress.text = "Enter your new email address*"
+            emailContent.text = "We'll send a verification link to your new email address. Please check your inbox."
+            
+            // Phone number section
+            phoneNumberTitle.text = "Phone Number"
+            phoneNumberContent.text = "We'll save this number so you can use it during the booking process."
+            phoneNumberErrorMessage.text = "Please enter a phone number"
+            
+            // Address section
+            addressTitle.text = "Address"
+            addressLbl.text = "Address"
+            townLbl.text = "Town/City"
+            postCodeLbl.text = "Postcode"
+            countryRegionLbl.text = "Country/Region"
+            addressContent.text = "We'll save this details so you can use it during the booking process."
+            
+            // Gender section
+            genderTitle.text = "Gender"
+            
+            // DOB section
+            dobTitle.text = "Date of Birth"
+            
+            // Buttons
+            let saveTitle = NSAttributedString(
+                string: "Save",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
+            )
+            saveButton.setAttributedTitle(saveTitle, for: .normal)
+            emailSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            phoneNumberSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            addressSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            genderSaveButton.setAttributedTitle(saveTitle, for: .normal)
+            dobSaveButton.setAttributedTitle(saveTitle, for: .normal)
+        }
+        
+        // Reload gender table view
+        genderTV.reloadData()
+        
+        // Update text alignment based on language
+        updateTextAlignment(lang: lang)
+    }
+    
+    func updateTextAlignment(lang: Languages) {
+        let alignment: NSTextAlignment = lang == .arabic ? .right : .left
+        
+        nameTitle.textAlignment = alignment
+        firstNameLbl.textAlignment = alignment
+        lastNameLbl.textAlignment = alignment
+        wellSaveContentLbl.textAlignment = alignment
+        firstNameTF.textAlignment = alignment
+        lastName.textAlignment = alignment
+        
+        emailTitle.textAlignment = alignment
+        emailAddress.textAlignment = alignment
+        emailContent.textAlignment = alignment
+        emailTF.textAlignment = alignment
+        
+        phoneNumberTitle.textAlignment = alignment
+        phoneNumberContent.textAlignment = alignment
+        phoneNumberErrorMessage.textAlignment = alignment
+        phoneNumberTypeTF.textAlignment = alignment
+        phoneNumberCountryCodeLbl.textAlignment = alignment
+        
+        addressTitle.textAlignment = alignment
+        addressLbl.textAlignment = alignment
+        townLbl.textAlignment = alignment
+        postCodeLbl.textAlignment = alignment
+        countryRegionLbl.textAlignment = alignment
+        addressContent.textAlignment = alignment
+        adressTF.textAlignment = alignment
+        townTF.textAlignment = alignment
+        postCodeTF.textAlignment = alignment
+        selectedCountryNameLbl.textAlignment = alignment
+        
+        genderTitle.textAlignment = alignment
+        dobTitle.textAlignment = alignment
     }
     
     func getFlagData(){
@@ -134,7 +285,6 @@ class PersonalDetailsEditVC: BaseViewController {
                 print("🌍 \(country.label)")
             }
 
-            // Moved here: Now it runs after countries are loaded
             if let firstCountryName = self.countryViewModel.countries.first?.name {
                 let matchedCountry = self.CountryNameViewModel.countries.first {
                     $0.label == firstCountryName
@@ -187,9 +337,6 @@ class PersonalDetailsEditVC: BaseViewController {
         addressCountryNameTV.register(UINib(nibName: "FlagNameWithImageTVC", bundle: nil), forCellReuseIdentifier: "FlagNameWithImageTVC")
         FlagTV.isHidden = true
         addressCountryNameTV.isHidden = true
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-//        tapGesture.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tapGesture)
         saveButton.layer.cornerRadius = 10
         genderSaveButton.layer.cornerRadius = 10
         dobSaveButton.layer.cornerRadius = 10
@@ -199,10 +346,6 @@ class PersonalDetailsEditVC: BaseViewController {
         phoneNumberErrorMessage.isHidden = true
         phoneNumberTypeTF.keyboardType = .numberPad
     }
-    
-//    @objc func dismissKeyboard() {
-//         view.endEditing(true)
-//    }
     
     func getData(){
         if let data = personalData{
@@ -220,6 +363,7 @@ class PersonalDetailsEditVC: BaseViewController {
             phoneNumberCountryCodeLbl.text = data.country
         }
     }
+    
     func setupDOBPicker() {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM yyyy"
@@ -231,23 +375,22 @@ class PersonalDetailsEditVC: BaseViewController {
             dobDatePicker.date = Date()
         }
     }
-
     
     func validatePhoneNumber() {
+        let lang = AppSettings.shared.selectedLanguage
         guard let number = phoneNumberTypeTF.text?.filter({ $0.isNumber }) else {
-            phoneNumberErrorMessage.text = "Please enter a phone number"
+            phoneNumberErrorMessage.text = lang == .arabic ? "يرجى إدخال رقم الهاتف" : "Please enter a phone number"
             phoneNumberErrorMessage.isHidden = false
             return
         }
 
         if number.count < 10 {
-            phoneNumberErrorMessage.text = "Phone number must be at least 10 digits"
+            phoneNumberErrorMessage.text = lang == .arabic ? "يجب أن يتكون رقم الهاتف من 10 أرقام على الأقل" : "Phone number must be at least 10 digits"
             phoneNumberErrorMessage.isHidden = false
         } else {
             phoneNumberErrorMessage.isHidden = true
         }
     }
-
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -306,10 +449,8 @@ class PersonalDetailsEditVC: BaseViewController {
             emailBacView.isHidden = true
             phoneNumberView.isHidden = true
             addressView.isHidden = true
-            
             genderBackView.isHidden = true
             dobBackView.isHidden = false
-            
         }
     }
     
@@ -324,18 +465,14 @@ class PersonalDetailsEditVC: BaseViewController {
     
     func flagProcess() {
         let countryName = selectedCountryNameLbl.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? ""
-        print("🌍 Looking for flag for: \(countryName)")
 
         guard let countryCode = CountryCodeManager.shared.nameToCode[countryName] else {
-            print("❌ No country code found for \(countryName)")
             selectedCountryImage.image = UIImage(systemName: "photo")
             phoneNumberFlageImage.image = UIImage(systemName: "photo")
             return
         }
         let urlString = "https://flagcdn.com/w40/\(countryCode.lowercased()).png"
-        print("🌍 URL: \(urlString)")
         guard let url = URL(string: urlString) else {
-            print("❌ Invalid URL")
             selectedCountryImage.image = UIImage(systemName: "photo")
             phoneNumberFlageImage.image = UIImage(systemName: "photo")
             return
@@ -345,14 +482,12 @@ class PersonalDetailsEditVC: BaseViewController {
             if let data = try? Data(contentsOf: url),
                let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    print("✅ Flag image loaded for \(countryName)")
                     self.selectedCountryImage.image = image
                     self.phoneNumberFlageImage.image = image
                 }
             } else {
                 
                 DispatchQueue.main.async {
-                    print("❌ Failed to load image from \(urlString)")
                     self.selectedCountryImage.image = UIImage(systemName: "photo")
                     self.phoneNumberFlageImage.image = UIImage(systemName: "photo")
                 }
@@ -361,6 +496,7 @@ class PersonalDetailsEditVC: BaseViewController {
     }
     
     func fontText(){
+        // Font sizes only - text content is handled in updateTexts()
         nameTitle.font = UIFont.poppinsBold(16)
         firstNameLbl.font = UIFont.poppinsBold(14)
         lastNameLbl.font = UIFont.poppinsBold(14)
@@ -388,42 +524,6 @@ class PersonalDetailsEditVC: BaseViewController {
         postCodeTF.font = UIFont.poppinsMedium(14)
         selectedCountryNameLbl.font = UIFont.poppinsMedium(14)
         addressContent.font = UIFont.poppinsMedium(12)
-        
-        let nameSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        saveButton.setAttributedTitle(nameSave, for: .normal)
-        
-        let dobSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        dobSaveButton.setAttributedTitle(dobSave, for: .normal)
-        
-        let emailSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        emailSaveButton.setAttributedTitle(emailSave, for: .normal)
-        
-        let numberSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        phoneNumberSaveButton.setAttributedTitle(numberSave, for: .normal)
-        
-        let genderSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        genderSaveButton.setAttributedTitle(genderSave, for: .normal)
-        
-        let addressSave = NSAttributedString(
-            string: "Save",
-            attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.white]
-        )
-        addressSaveButton.setAttributedTitle(addressSave, for: .normal)
     }
     
     private func nameRoundLeftSideCorners() {
@@ -490,6 +590,11 @@ class PersonalDetailsEditVC: BaseViewController {
         guard let email = emailTF.text, !email.isEmpty else { return }
         guard let userId = personalData?.id else { return }
         
+        let lang = AppSettings.shared.selectedLanguage
+        let successTitle = lang == .arabic ? "نجاح" : "Success"
+        let failTitle = lang == .arabic ? "فشل" : "Fail"
+        let successMessage = lang == .arabic ? "تم تحديث بريدك الإلكتروني بنجاح." : "Your email has been updated successfully."
+        let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
         
         let updatedProfile = BookingModel (
             id: userId,
@@ -504,30 +609,26 @@ class PersonalDetailsEditVC: BaseViewController {
         
         if personalData?.mobile == "90000000"{
             DispatchQueue.main.async {
-                
                 self.showAlert(
-                    title: "Success",
-                    message: "Your profile email has been Updated successfully.",
+                    title: successTitle,
+                    message: successMessage,
                     type: .success,
                     onOK: {
-                       
                         UserSessionManager.saveUser(updatedProfile)
                         self.dismissWithAnimation()
                         self.updatePersonalData?()
-                        
                     }
                 )
             }
         } else {
-        
-        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile(userId: userId, profile: updatedProfile)
         
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Success",
-                            message: "Your Email has been Updated successfully.",
+                            title: successTitle,
+                            message: successMessage,
                             type: .success,
                             onOK: {
                                 guard let profile = profile else {
@@ -536,14 +637,13 @@ class PersonalDetailsEditVC: BaseViewController {
                                 UserSessionManager.saveUser(profile)
                                 self.dismissWithAnimation()
                                 self.updatePersonalData?()
-                                
                             }
                         )
                     }
                 } else {
                     self.showAlert(
-                        title: "Fail",
-                        message: message ?? "Somthing went wrong",
+                        title: failTitle,
+                        message: message ?? failMessage,
                         type: .error,
                         onOK: {}
                     )
@@ -556,6 +656,12 @@ class PersonalDetailsEditVC: BaseViewController {
         let firstName = firstNameTF.text ?? ""
         let lastName = lastName.text ?? ""
         guard let userId = personalData?.id else { return }
+
+        let lang = AppSettings.shared.selectedLanguage
+        let successTitle = lang == .arabic ? "نجاح" : "Success"
+        let failTitle = lang == .arabic ? "فشل" : "Fail"
+        let successMessage = lang == .arabic ? "تم تحديث اسمك بنجاح." : "Your name has been updated successfully."
+        let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
 
         let updatedProfile = BookingModel(
             id: userId,
@@ -570,30 +676,26 @@ class PersonalDetailsEditVC: BaseViewController {
         
         if personalData?.mobile == "90000000"{
             DispatchQueue.main.async {
-                
                 self.showAlert(
-                    title: "Success",
-                    message: "Your name has been Updated successfully.",
+                    title: successTitle,
+                    message: successMessage,
                     type: .success,
                     onOK: {
-                       
                         UserSessionManager.saveUser(updatedProfile)
                         self.dismissWithAnimation()
                         self.updatePersonalData?()
-                        
                     }
                 )
             }
         }else{
-            
             viewModel.updateProfile(userId: userId, profile: updatedProfile)
             
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Success",
-                            message: "Your name has been Updated successfully.",
+                            title: successTitle,
+                            message: successMessage,
                             type: .success,
                             onOK: {
                                 guard let profile = profile else {
@@ -602,19 +704,17 @@ class PersonalDetailsEditVC: BaseViewController {
                                 UserSessionManager.saveUser(profile)
                                 self.dismissWithAnimation()
                                 self.updatePersonalData?()
-                                
                             }
                         )
                     }
                 } else {
                     self.showAlert(
-                        title: "Fail",
-                        message: message ?? "Somthing went wrong",
+                        title: failTitle,
+                        message: message ?? failMessage,
                         type: .error,
                         onOK: {}
                     )
                 }
-                
             }
         }
     }
@@ -627,6 +727,12 @@ class PersonalDetailsEditVC: BaseViewController {
         let address = adressTF.text ?? ""
         guard let userId = personalData?.id else { return }
 
+        let lang = AppSettings.shared.selectedLanguage
+        let successTitle = lang == .arabic ? "نجاح" : "Success"
+        let failTitle = lang == .arabic ? "فشل" : "Fail"
+        let successMessage = lang == .arabic ? "تم تحديث عنوانك بنجاح." : "Your address has been updated successfully."
+        let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
+
         let updatedProfile = BookingModel(
             id: userId,
             name: personalData?.name ?? "",
@@ -637,32 +743,29 @@ class PersonalDetailsEditVC: BaseViewController {
             country: personalData?.country ?? "",
             dob: personalData?.dob ?? ""
         )
+        
         if personalData?.mobile == "90000000"{
             DispatchQueue.main.async {
-                
                 self.showAlert(
-                    title: "Success",
-                    message: "Your  address has been Updated successfully.",
+                    title: successTitle,
+                    message: successMessage,
                     type: .success,
                     onOK: {
-                       
                         UserSessionManager.saveUser(updatedProfile)
                         self.dismissWithAnimation()
                         self.updatePersonalData?()
-                        
                     }
                 )
             }
         }else{
-
-        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile(userId: userId, profile: updatedProfile)
 
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Success",
-                            message: "Your address has been Updated successfully.",
+                            title: successTitle,
+                            message: successMessage,
                             type: .success,
                             onOK: {
                                 guard let profile = profile else {
@@ -676,8 +779,8 @@ class PersonalDetailsEditVC: BaseViewController {
                     }
                 } else {
                     self.showAlert(
-                        title: "Fail",
-                        message: message ?? "Somthing went wrong",
+                        title: failTitle,
+                        message: message ?? failMessage,
                         type: .error,
                         onOK: {}
                     )
@@ -694,6 +797,12 @@ class PersonalDetailsEditVC: BaseViewController {
         guard let phone = phoneNumberTypeTF.text, !phone.isEmpty else { return }
         guard let userId = personalData?.id else { return }
 
+        let lang = AppSettings.shared.selectedLanguage
+        let successTitle = lang == .arabic ? "نجاح" : "Success"
+        let failTitle = lang == .arabic ? "فشل" : "Fail"
+        let successMessage = lang == .arabic ? "تم تحديث رقم هاتفك بنجاح." : "Your mobile number has been updated successfully."
+        let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
+
         let updatedProfile = BookingModel(
             id: userId,
             name: personalData?.name ?? "",
@@ -707,29 +816,26 @@ class PersonalDetailsEditVC: BaseViewController {
 
         if personalData?.mobile == "90000000"{
             DispatchQueue.main.async {
-                
                 self.showAlert(
-                    title: "Success",
-                    message: "Your mobile number has been Updated successfully.",
+                    title: successTitle,
+                    message: successMessage,
                     type: .success,
                     onOK: {
-                       
                         UserSessionManager.saveUser(updatedProfile)
                         self.dismissWithAnimation()
                         self.updatePersonalData?()
-                        
                     }
                 )
             }
         }else{
-        viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile(userId: userId, profile: updatedProfile)
 
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Success",
-                            message: "Your mobile number has been Updated successfully.",
+                            title: successTitle,
+                            message: successMessage,
                             type: .success,
                             onOK: {
                                 guard let profile = profile else {
@@ -743,8 +849,8 @@ class PersonalDetailsEditVC: BaseViewController {
                     }
                 } else {
                     self.showAlert(
-                        title: "Fail",
-                        message: message ?? "Somthing went wrong",
+                        title: failTitle,
+                        message: message ?? failMessage,
                         type: .error,
                         onOK: {}
                     )
@@ -752,10 +858,8 @@ class PersonalDetailsEditVC: BaseViewController {
             }
         }
     }
-
     
     @IBAction func genderSaveButton(_ sender: Any) {
-//        delegate?.didUpdateGender(selectedGender)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let transition = CATransition()
             transition.duration = 0.3
@@ -769,7 +873,6 @@ class PersonalDetailsEditVC: BaseViewController {
     }
     
     @IBAction func dobSaveButton(_ sender: Any) {
-//        delegate?.didUpdateDOB(dobFormattedString)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let transition = CATransition()
             transition.duration = 0.3
@@ -782,6 +885,9 @@ class PersonalDetailsEditVC: BaseViewController {
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
@@ -801,10 +907,12 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExpectationMeetsTVC", for: indexPath) as! ExpectationMeetsTVC
             let gender = genderData[indexPath.row]
             
+            let lang = AppSettings.shared.selectedLanguage
             let isSelected = personalData?.gender.lowercased() == gender.lowercased()
             cell.tickImage.image = UIImage(named: isSelected ? "circle-check" : "circle")
             cell.tickImage.tintColor = isSelected ? color : UIColor.darkGray
             cell.titleLbl.text = gender
+            cell.titleLbl.textAlignment = lang == .arabic ? .right : .left
             return cell
             
         } else if tableView == FlagTV {
@@ -816,7 +924,10 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
         } else if tableView == addressCountryNameTV {
             let cell = tableView.dequeueReusableCell(withIdentifier: "FlagNameWithImageTVC", for: indexPath) as! FlagNameWithImageTVC
             let country = countryViewModel.countries[indexPath.row]
+            
+            let lang = AppSettings.shared.selectedLanguage
             cell.nameLbl.text = country.name
+            cell.nameLbl.textAlignment = lang == .arabic ? .right : .left
             loadFlagImage(for: country.code, into: cell.flagImage, at: indexPath, in: tableView)
             return cell
         }
@@ -869,7 +980,6 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
         return 50
     }
 
-
     func loadFlagImage(for countryCode: String, into imageView: UIImageView, at indexPath: IndexPath? = nil, in tableView: UITableView? = nil) {
         let urlString = "https://flagcdn.com/w40/\(countryCode.lowercased()).png"
         guard let url = URL(string: urlString) else {
@@ -880,7 +990,6 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    // Prevent setting image on reused cell
                     if let indexPath = indexPath, let tableView = tableView,
                        let currentIndexPath = tableView.indexPath(for: tableView.cellForRow(at: indexPath) ?? UITableViewCell()),
                        currentIndexPath != indexPath {
@@ -895,5 +1004,5 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-
 }
+

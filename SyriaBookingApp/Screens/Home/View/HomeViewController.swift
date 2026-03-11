@@ -279,11 +279,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         selectedCheckInDate = checkIn
         selectedCheckOutDate = checkOut
 
+        let lang = AppSettings.shared.selectedLanguage
         let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         
         guard let checkIn, let checkOut else {
             
-            let title = "Check-in date － Check-out date"
+            let title = lang == .english ? "Check-in date － Check-out date" : "تاريخ الدخول － تاريخ الخروج"
             
             let attributedTitle = NSAttributedString(
                 string: title,
@@ -298,18 +299,37 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         }
 
         let formatter = DateFormatter()
-        formatter.locale = .current
         formatter.timeZone = .current
-        formatter.dateFormat = "EEE dd MMM"
+        
+        // Set locale based on language
+        if lang == .english {
+            formatter.locale = Locale(identifier: "en_US")
+            formatter.dateFormat = "EEE dd MMM"
+        } else {
+            formatter.locale = Locale(identifier: "ar_SA")
+            formatter.dateFormat = "EEE dd MMM" // Arabic dates will automatically use Arabic numerals and month names
+        }
 
         let startText = formatter.string(from: checkIn)
         let endText = formatter.string(from: checkOut)
 
         let rawNights = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut).day ?? 0
         let nights = max(rawNights, 1)
-
-        let title = "\(startText) - \(endText) • \(nights) night\(nights > 1 ? "s" : "")"
-
+        
+        var title = ""
+        
+        if lang == .english {
+            title = "\(startText) - \(endText) • \(nights) night\(nights > 1 ? "s" : "")"
+        } else {
+            // Arabic format with proper pluralization
+            if nights == 1 {
+                title = "\(startText) - \(endText) • \(nights) ليلة"
+            } else if nights == 2 {
+                title = "\(startText) - \(endText) • \(nights) ليلتين"
+            } else {
+                title = "\(startText) - \(endText) • \(nights) ليالي"
+            }
+        }
         
         let attributedTitle = NSAttributedString(
             string: title,
@@ -321,6 +341,52 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
 
         checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
     }
+//    func didSelectDateRange(checkIn: Date?, checkOut: Date?) {
+//        selectedCheckInDate = checkIn
+//        selectedCheckOutDate = checkOut
+//
+//        let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+//        
+//        guard let checkIn, let checkOut else {
+//            
+//            let title = "Check-in date － Check-out date"
+//            
+//            let attributedTitle = NSAttributedString(
+//                string: title,
+//                attributes: [
+//                    .font: font,
+//                    .foregroundColor: UIColor.label
+//                ]
+//            )
+//
+//            checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
+//            return
+//        }
+//
+//        let formatter = DateFormatter()
+//        formatter.locale = .current
+//        formatter.timeZone = .current
+//        formatter.dateFormat = "EEE dd MMM"
+//
+//        let startText = formatter.string(from: checkIn)
+//        let endText = formatter.string(from: checkOut)
+//
+//        let rawNights = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut).day ?? 0
+//        let nights = max(rawNights, 1)
+//
+//        let title = "\(startText) - \(endText) • \(nights) night\(nights > 1 ? "s" : "")"
+//
+//        
+//        let attributedTitle = NSAttributedString(
+//            string: title,
+//            attributes: [
+//                .font: font,
+//                .foregroundColor: UIColor.label
+//            ]
+//        )
+//
+//        checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
+//    }
     
     @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
         var selectedCity: String?

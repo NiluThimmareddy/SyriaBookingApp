@@ -21,6 +21,7 @@ class CalenderVC: UIViewController {
     @IBOutlet weak var numberOfDaysLabel: UILabel!
     @IBOutlet weak var selectdatesButton: UIButton!
     @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var selectDateTitleLabel: UILabel!
     
     let days = ["Exact dates", "± 1 day", "± 2 days", "± 3 days", "± 7 days"]
     
@@ -43,6 +44,50 @@ class CalenderVC: UIViewController {
         
         segmentControl.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .normal)
         segmentControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        // Set button to bold 18 font
+        let buttonFont = UIFont.boldSystemFont(ofSize: 18)
+        
+        if lang == .english {
+            // English texts
+            selectDateTitleLabel.text = "Select Dates"
+            
+            let buttonTitle = "Confirm"
+            let attributedTitle = NSAttributedString(
+                string: buttonTitle,
+                attributes: [
+                    .font: buttonFont,
+                    .foregroundColor: selectdatesButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            selectdatesButton.setAttributedTitle(attributedTitle, for: .normal)
+            
+            // Update number of days label if dates are selected
+            updateNumberOfDaysLabel()
+            
+        } else {
+            // Arabic texts
+            selectDateTitleLabel.text = "اختر التواريخ"
+            
+            let buttonTitle = "تأكيد"
+            let attributedTitle = NSAttributedString(
+                string: buttonTitle,
+                attributes: [
+                    .font: buttonFont,
+                    .foregroundColor: selectdatesButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            selectdatesButton.setAttributedTitle(attributedTitle, for: .normal)
+            
+            // Update number of days label if dates are selected
+            updateNumberOfDaysLabel()
+        }
     }
     
     func setupCalendar() {
@@ -70,40 +115,6 @@ class CalenderVC: UIViewController {
             calendar.bottomAnchor.constraint(equalTo: insideView.bottomAnchor)
         ])
     }
- 
-//    @IBAction func selectDatesButtonAction(_ sender: Any) {
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "EEE dd MMM"
-// 
-//        if let start = startDate, let end = endDate {
-//            let startText = formatter.string(from: start)
-//            let endText = formatter.string(from: end)
-//            
-//            let calendar = Calendar.current
-//            let numberOfNights = calendar.dateComponents([.day], from: start, to: end).day ?? 0
-//            
-//            let dateRangeText: String
-//            if numberOfNights == 0 {
-//                // Same date selected for both check-in and checkout
-//                dateRangeText = "\(startText) - \(endText) • 1 night"
-//            } else if numberOfNights == 1 {
-//                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) night"
-//            } else {
-//                dateRangeText = "\(startText) - \(endText) • \(numberOfNights) nights"
-//            }
-//            
-//            delegate?.didSelectDateRange(dateRangeText)
-//        } else if let start = startDate {
-//            let startText = formatter.string(from: start)
-//            delegate?.didSelectDateRange("\(startText) - \(startText) • 1 night")
-//        } else {
-//            let defaultDateRange = Date.todayAndTomorrowFormattedRange()
-//            delegate?.didSelectDateRange(defaultDateRange)
-//        }
-// 
-//        dismiss(animated: true)
-//    }
-    
     
     @IBAction func selectDatesButtonAction(_ sender: Any) {
 
@@ -212,31 +223,81 @@ extension CalenderVC: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelega
         calendar.reloadData()
     }
     
+//    func updateNumberOfDaysLabel() {
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "EEE dd MMM"
+//        
+//        if let start = startDate, let end = endDate {
+//            let nights = Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0
+//            
+//            let startText = formatter.string(from: start)
+//            let endText = formatter.string(from: end)
+//            
+//            if nights == 0 {
+//                // Same date for check-in and checkout
+//                numberOfDaysLabel.text = "\(startText) - \(endText) • 1 night"
+//            } else if nights == 1 {
+//                numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) night"
+//            } else {
+//                numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) nights"
+//            }
+//        } else if let start = startDate {
+//            let startText = formatter.string(from: start)
+//            numberOfDaysLabel.text = "\(startText) - \(startText) • 1 night"
+//        } else {
+//            numberOfDaysLabel.text = ""
+//        }
+//    }
     func updateNumberOfDaysLabel() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE dd MMM"
-        
-        if let start = startDate, let end = endDate {
-            let nights = Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0
-            
-            let startText = formatter.string(from: start)
-            let endText = formatter.string(from: end)
-            
-            if nights == 0 {
-                // Same date for check-in and checkout
-                numberOfDaysLabel.text = "\(startText) - \(endText) • 1 night"
-            } else if nights == 1 {
-                numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) night"
-            } else {
-                numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) nights"
-            }
-        } else if let start = startDate {
-            let startText = formatter.string(from: start)
-            numberOfDaysLabel.text = "\(startText) - \(startText) • 1 night"
-        } else {
-            numberOfDaysLabel.text = ""
-        }
-    }
+           let lang = AppSettings.shared.selectedLanguage
+           let formatter = DateFormatter()
+           formatter.dateFormat = "EEE dd MMM"
+           
+           // Set locale based on language
+           if lang == .arabic {
+               formatter.locale = Locale(identifier: "ar_SA")
+           } else {
+               formatter.locale = Locale(identifier: "en_US")
+           }
+           
+           if let start = startDate, let end = endDate {
+               let nights = Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0
+               
+               let startText = formatter.string(from: start)
+               let endText = formatter.string(from: end)
+               
+               if lang == .english {
+                   if nights == 0 {
+                       // Same date for check-in and checkout
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • 1 night"
+                   } else if nights == 1 {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) night"
+                   } else {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) nights"
+                   }
+               } else {
+                   // Arabic format
+                   if nights == 0 {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • ليلة واحدة"
+                   } else if nights == 1 {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) ليلة"
+                   } else if nights == 2 {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) ليلتين"
+                   } else {
+                       numberOfDaysLabel.text = "\(startText) - \(endText) • \(nights) ليالي"
+                   }
+               }
+           } else if let start = startDate {
+               let startText = formatter.string(from: start)
+               if lang == .english {
+                   numberOfDaysLabel.text = "\(startText) - \(startText) • 1 night"
+               } else {
+                   numberOfDaysLabel.text = "\(startText) - \(startText) • ليلة واحدة"
+               }
+           } else {
+               numberOfDaysLabel.text = ""
+           }
+       }
     
     // Style past dates to appear grayed out
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {

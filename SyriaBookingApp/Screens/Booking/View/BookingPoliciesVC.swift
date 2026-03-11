@@ -41,6 +41,61 @@ class BookingPoliciesVC: UIViewController {
         super.viewWillAppear(animated)
         acceptTermsTopConstraint.constant = 0
         acceptTermsbottomConstraint.constant = 0
+        
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let semibold17 = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        
+        if lang == .arabic {
+            bookingPolicieTitleLabel.text = "سياسات الحجز"
+            readAndAgreeLabel.text = "لقد قرأت وأوافق على الشروط والأحكام"
+            acceptTermsAndConditionsLabel.text = "يرجى قبول الشروط والأحكام للمتابعة"
+            
+            let continueAttributedTitle = NSAttributedString(
+                string: "متابعة",
+                attributes: [
+                    .font: semibold17,
+                    .foregroundColor: continueButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            continueButton.setAttributedTitle(continueAttributedTitle, for: .normal)
+            
+            let closeAttributedTitle = NSAttributedString(
+                string: "إغلاق",
+                attributes: [
+                    .font: semibold17,
+                    .foregroundColor: closeButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            closeButton.setAttributedTitle(closeAttributedTitle, for: .normal)
+            
+        } else {
+            bookingPolicieTitleLabel.text = "Booking Policies"
+            readAndAgreeLabel.text = "I have read and agree to the Terms & Conditions"
+            acceptTermsAndConditionsLabel.text = "Please accept the Terms & Conditions to continue."
+            
+            let continueAttributedTitle = NSAttributedString(
+                string: "Continue",
+                attributes: [
+                    .font: semibold17,
+                    .foregroundColor: continueButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            continueButton.setAttributedTitle(continueAttributedTitle, for: .normal)
+            
+            let closeAttributedTitle = NSAttributedString(
+                string: "Close",
+                attributes: [
+                    .font: semibold17,
+                    .foregroundColor: closeButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            closeButton.setAttributedTitle(closeAttributedTitle, for: .normal)
+        }
     }
     
     private func setupUI() {
@@ -56,8 +111,6 @@ class BookingPoliciesVC: UIViewController {
         checkMarkButton.setImage(graySquareImage, for: .normal)
         checkMarkButton.tintColor = .gray
         
-        acceptTermsAndConditionsLabel.textColor = .red
-        acceptTermsAndConditionsLabel.text = "Please accept the Terms & Conditions to continue."
         acceptTermsAndConditionsLabel.numberOfLines = 0
         acceptTermsAndConditionsLabel.lineBreakMode = .byWordWrapping
         
@@ -67,11 +120,14 @@ class BookingPoliciesVC: UIViewController {
         policieTextView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         policieTextView.isScrollEnabled = true
         policieTextView.isEditable = false
+        
+        updateTexts()
     }
     
     private func formatPoliciesText() {
         guard let policies = selectedHotel?.policies, !policies.isEmpty else {
-            policieTextView.text = "No policies available"
+            policieTextView.text = AppSettings.shared.selectedLanguage == .arabic ?
+                "لا توجد سياسات متاحة" : "No policies available"
             return
         }
         let policyItems = policies.components(separatedBy: ",")
@@ -87,6 +143,7 @@ class BookingPoliciesVC: UIViewController {
     
     @IBAction func checkMarkButtonAction(_ sender: Any) {
         isCheckboxSelected.toggle()
+        let lang = AppSettings.shared.selectedLanguage
         
         if isCheckboxSelected {
             let blueCheckmarkImage = UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysTemplate)
@@ -104,6 +161,9 @@ class BookingPoliciesVC: UIViewController {
             checkMarkButton.setImage(graySquareImage, for: .normal)
             checkMarkButton.tintColor = .gray
             acceptTermsAndConditionsLabel.isHidden = false
+            acceptTermsAndConditionsLabel.text = lang == .arabic ?
+                "يرجى قبول الشروط والأحكام للمتابعة" :
+                "Please accept the Terms & Conditions to continue."
             acceptTermsTopConstraint.constant = originalAcceptTermsTopConstraint
             acceptTermsbottomConstraint.constant = originalAcceptTermsBottomConstraint
             
@@ -118,9 +178,13 @@ class BookingPoliciesVC: UIViewController {
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
+        let lang = AppSettings.shared.selectedLanguage
+        
         if !isCheckboxSelected {
             acceptTermsAndConditionsLabel.isHidden = false
-            acceptTermsAndConditionsLabel.text = "Please accept the Terms & Conditions to continue."
+            acceptTermsAndConditionsLabel.text = lang == .arabic ?
+                "يرجى قبول الشروط والأحكام للمتابعة" :
+                "Please accept the Terms & Conditions to continue."
             
             acceptTermsTopConstraint.constant = originalAcceptTermsTopConstraint
             acceptTermsbottomConstraint.constant = originalAcceptTermsBottomConstraint

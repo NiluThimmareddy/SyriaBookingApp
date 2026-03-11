@@ -53,6 +53,26 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         setupUI()
     }
     
+    @objc func updateTexts() {
+        setupConfirmationMessage()
+        setupEmailMessage()
+        setUpLanguage()
+        setupBookingDetails()
+        
+        let lang = AppSettings.shared.selectedLanguage
+        let semibold13 = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        
+        var goToHomeConfig = goToHomeButton.configuration ?? UIButton.Configuration.plain()
+        goToHomeConfig.attributedTitle = AttributedString(
+            lang == .arabic ? "الرجوع إلى الرئيسية" : "Go to Home",
+            attributes: AttributeContainer([
+                .font: semibold13
+            ])
+        )
+        goToHomeButton.configuration = goToHomeConfig
+        payAtHotelLabel.text = lang == .arabic ? "(الدفع في الفندق)" : "(Pay at Hotel)"
+    }
+    
     private func setupUI() {
         setupConfirmationMessage()
         setupBookingDetails()
@@ -61,6 +81,8 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         setupHotelImage()
         hotelDetailsView.applyCardStyle()
         setupCornerRadii()
+        
+        updateTexts()
     }
     
     private func setupCornerRadii() {
@@ -77,33 +99,37 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     }
     
     private func setupConfirmationMessage() {
+        let lang = AppSettings.shared.selectedLanguage
+        
         guard let name = guestName, !name.isEmpty else {
-            if AppSettings.shared.selectedLanguage == .english {
+            if lang == .english {
                 userBookingMessageLabel.text = "Thanks! We've received your booking request and placed it in our processing queue. We'll finalize your booking shortly."
             } else {
                 userBookingMessageLabel.text = "شكرًا! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة. سنقوم بتأكيد حجزك قريبًا."
             }
+            
+            bookingRequestQueueLabel.text = lang == .english ? "Booking Request Queued" : "طلب الحجز في قائمة الانتظار"
             return
         }
         
+        bookingRequestQueueLabel.text = lang == .english ? "Booking Request Queued" : "طلب الحجز في قائمة الانتظار"
+        
         let fullText: String
-        if AppSettings.shared.selectedLanguage == .english {
+        if lang == .english {
             fullText = """
             Thanks, \(name)! We've received your booking request and placed it in our processing queue. We'll finalize your booking shortly and it will appear in your booking list.
             """
         } else {
             fullText = """
-            شكرًا، \(name)! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة .سنقوم بتأكيد حجزك قريبًا وسيظهر في قائمة حجوزاتك.
+            شكرًا، \(name)! لقد تلقينا طلب الحجز الخاص بك ووضعناه في قائمة المعالجة. سنقوم بتأكيد حجزك قريبًا وسيظهر في قائمة حجوزاتك.
             """
         }
         
         let attributedString = NSMutableAttributedString(string: fullText)
         let fullNSString = fullText as NSString
         
-        // Set custom font for the entire text
         let customFont: UIFont
-        if AppSettings.shared.selectedLanguage == .english {
-            // Try to use Poppins or Georgia for English
+        if lang == .english {
             if let poppinsFont = UIFont(name: "Poppins-Regular", size: 13) {
                 customFont = poppinsFont
             } else if let georgiaFont = UIFont(name: "Georgia", size: 13) {
@@ -115,14 +141,12 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             customFont = UIFont.systemFont(ofSize: 13)
         }
         
-        // Apply custom font to entire text
         attributedString.addAttribute(.font, value: customFont, range: NSRange(location: 0, length: fullText.count))
         
-        // Bold the user's name
         let nameRange = fullNSString.range(of: name)
         if nameRange.location != NSNotFound {
             let boldFont: UIFont
-            if AppSettings.shared.selectedLanguage == .english {
+            if lang == .english {
                 if let poppinsBold = UIFont(name: "Poppins-Bold", size: 13) {
                     boldFont = poppinsBold
                 } else if let georgiaBold = UIFont(name: "Georgia-Bold", size: 13) {
@@ -149,9 +173,10 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     }
     
     private func setupEmailMessage() {
+        let lang = AppSettings.shared.selectedLanguage
         
         guard let email = guestEmail, !email.isEmpty else {
-            if AppSettings.shared.selectedLanguage == .english {
+            if lang == .english {
                 emailLabel.text = "A confirmation email will be sent to your registered email with all booking details."
             } else {
                 emailLabel.text = "سيتم إرسال بريد تأكيد إلى بريدك الإلكتروني المسجل مع جميع تفاصيل الحجز."
@@ -161,7 +186,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         
         let fullText: String
         
-        if AppSettings.shared.selectedLanguage == .english {
+        if lang == .english {
             fullText = "A confirmation email will be sent to your \(email) with all booking details."
             emailLabel.textAlignment = .center
         } else {
@@ -173,14 +198,12 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         let nsString = fullText as NSString
         let emailRange = nsString.range(of: email)
         
-        // Default font for entire text
         attributedString.addAttribute(
             .font,
             value: UIFont.systemFont(ofSize: 13),
             range: NSRange(location: 0, length: fullText.count)
         )
         
-        // Highlight email in blue + semibold
         if emailRange.location != NSNotFound {
             attributedString.addAttributes([
                 .foregroundColor: UIColor.systemBlue,
@@ -193,17 +216,23 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     }
     
     private func setupBookingDetails() {
-        numberOfGuestLabel.text = numberOfGuests ?? "N/A"
-        roomTypeLabel.text = roomtype ?? "N/A"
-        bookingReferenceIdLabel.text = bookingId != nil ? "SBK-\(bookingId!)" : "N/A"
+        let lang = AppSettings.shared.selectedLanguage
+        
+        numberOfGuestLabel.text = numberOfGuests ?? (lang == .arabic ? "غير محدد" : "N/A")
+        roomTypeLabel.text = roomtype ?? (lang == .arabic ? "غير محدد" : "N/A")
+        bookingReferenceIdLabel.text = bookingId != nil ? "SBK-\(bookingId!)" : (lang == .arabic ? "غير محدد" : "N/A")
         hotelNameLabel.text = selectedHotel?.name
         hotelCityLabel.text = selectedHotel?.city
+        
         let currency = selectedCurrency == "International ($)" ? "$" : "SAR"
-        // Format price with currency
         if let price = totalPrice, !price.isEmpty {
-            amountLabel.text = "Amount: \(price)\(currency)"
+            if lang == .arabic {
+                amountLabel.text = "المبلغ: \(price) \(currency)"
+            } else {
+                amountLabel.text = "Amount: \(price) \(currency)"
+            }
         } else {
-            amountLabel.text = "Amount"
+            amountLabel.text = lang == .arabic ? "المبلغ" : "Amount"
         }
         
         if let checkIn = checkInDate, let checkOut = checkOutDate {
@@ -214,9 +243,9 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             checkOutDateLabel.text = formattedCheckOut
             totalNightsLabel.text = calculateNightsBetween(checkIn: checkIn, checkOut: checkOut)
         } else {
-            checkInDateLabel.text = "N/A"
-            checkOutDateLabel.text = "N/A"
-            totalNightsLabel.text = "N/A"
+            checkInDateLabel.text = lang == .arabic ? "غير محدد" : "N/A"
+            checkOutDateLabel.text = lang == .arabic ? "غير محدد" : "N/A"
+            totalNightsLabel.text = lang == .arabic ? "غير محدد" : "N/A"
         }
     }
     
@@ -225,7 +254,6 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         inputFormatter.locale = Locale(identifier: "en_US_POSIX")
         inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
-        // Try ISO8601 format first (your date format)
         let iso8601Formatter = ISO8601DateFormatter()
         iso8601Formatter.formatOptions = [.withInternetDateTime]
         
@@ -267,6 +295,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     }
     
     private func calculateNightsBetween(checkIn: String, checkOut: String) -> String {
+        let lang = AppSettings.shared.selectedLanguage
         let inputFormatter = DateFormatter()
         inputFormatter.locale = Locale(identifier: "en_US_POSIX")
         inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -282,13 +311,11 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             print("✅ Parsed checkIn with ISO8601 formatter")
         }
         
-        // Parse check-out date with ISO8601
         checkOutDate = iso8601Formatter.date(from: checkOut)
         if checkOutDate != nil {
             print("✅ Parsed checkOut with ISO8601 formatter")
         }
         
-        // If ISO8601 fails, try other formats
         let possibleFormats = [
             "yyyy-MM-dd'T'HH:mm:ssZ",
             "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
@@ -319,15 +346,27 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         }
         
         guard let inDate = checkInDate, let outDate = checkOutDate else {
-            return "N/A"
+            return lang == .arabic ? "غير محدد" : "N/A"
         }
         
-        // Calculate nights
         let nights = Calendar.current.dateComponents([.day], from: inDate, to: outDate).day ?? 0
-        if nights == 0 {
-            return "1 Night"
+        
+        if lang == .arabic {
+            if nights == 0 {
+                return "ليلة واحدة"
+            } else if nights == 1 {
+                return "ليلة واحدة"
+            } else if nights == 2 {
+                return "ليلتان"
+            } else {
+                return "\(nights) ليالي"
+            }
         } else {
-            return "\(nights) Night\(nights != 1 ? "s" : "")"
+            if nights == 0 {
+                return "1 Night"
+            } else {
+                return "\(nights) Night\(nights != 1 ? "s" : "")"
+            }
         }
     }
     
@@ -335,7 +374,6 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         if let hotel = selectedHotel, let imageUrlString = hotel.coverImageURL as? String,
            let imageUrl = URL(string: imageUrlString) {
             
-            // Load image asynchronously
             DispatchQueue.global().async { [weak self] in
                 if let data = try? Data(contentsOf: imageUrl),
                    let image = UIImage(data: data) {
@@ -377,25 +415,35 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     }
     
     @objc func setUpLanguage() {
+        let lang = AppSettings.shared.selectedLanguage
+        let semibold13 = UIFont.systemFont(ofSize: 13, weight: .semibold)
         
         var config = viewBookingDetailsButton.configuration ?? UIButton.Configuration.plain()
         config.attributedTitle = AttributedString(
-            AppSettings.shared.selectedLanguage == .english
-            ? "View Booking Details"
-            : "عرض تفاصيل الحجز",
+            lang == .english ? "View Booking Details" : "عرض تفاصيل الحجز",
             attributes: AttributeContainer([
-                .font: UIFont.systemFont(ofSize: 13, weight: .semibold)
+                .font: semibold13
             ])
         )
         viewBookingDetailsButton.configuration = config
         
-        if AppSettings.shared.selectedLanguage == .english {
+        var goToHomeConfig = goToHomeButton.configuration ?? UIButton.Configuration.plain()
+        goToHomeConfig.attributedTitle = AttributedString(
+            lang == .arabic ? "الرجوع إلى الرئيسية" : "Go to Home",
+            attributes: AttributeContainer([
+                .font: semibold13
+            ])
+        )
+        goToHomeButton.configuration = goToHomeConfig
+        
+        if lang == .english {
             checkInTitleLabel.text = "CHECK-IN"
             checkOutTitleLabel.text = "CHECK-OUT"
             guestTitleLabel.text = "GUEST"
             roomTypeTitleLabel.text = "ROOM TYPE"
             bookingReferenceTitleLabel.text = "BOOKING REFERENCE"
             totalNightsTitleLabel.text = "TOTAL NIGHTS"
+            payAtHotelLabel.text = "(Pay at Hotel)"
         } else {
             checkInTitleLabel.text = "تسجيل الوصول"
             checkOutTitleLabel.text = "تسجيل المغادرة"
@@ -403,6 +451,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
             roomTypeTitleLabel.text = "نوع الغرفة"
             bookingReferenceTitleLabel.text = "رقم الحجز"
             totalNightsTitleLabel.text = "إجمالي الليالي"
+            payAtHotelLabel.text = "(الدفع في الفندق)"
         }
     }
     
@@ -417,5 +466,4 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
     @IBAction func goToHomeButtonAction(_ sender: Any) {
         navigateToHomeTab()
     }
-    
 }
