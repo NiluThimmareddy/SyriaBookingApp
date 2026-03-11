@@ -66,8 +66,10 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     var roomRatesDataAPI = ""
     var  finaltotalDiscountAmount = 0.0
     var reachability : Reachability?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         checkInTF.text = ""
         checkOutTF.text = ""
         setUpUI()
@@ -75,8 +77,8 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         numberOfGuestsTF.delegate = self
         checkInTF.delegate = self
         checkOutTF.delegate = self
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -101,9 +103,46 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         }
 
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
+        
+        updateTexts()
     }
     
-    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            confirmYourBookingTitleLabel.text = "تأكيد الحجز"
+            guestNameTitleLabel.text = "اسم الضيف"
+            guestEmailTitleLabel.text = "البريد الإلكتروني للضيف"
+            guestPhoneTitleLabel.text = "هاتف الضيف"
+            numberOfGuestsTitleLabel.text = "عدد الضيوف"
+            checkInTitleLabel.text = "تاريخ الوصول"
+            checkOutTitleLabel.text = "تاريخ المغادرة"
+            selectedRoomsAndRatesLabel.text = "الغرف والأسعار المحددة"
+            totalAmountTitleLabel.text = "المبلغ الإجمالي"
+            bookingTypeTitleLabel.text = "نوع الحجز"
+            totalNightsTitleLabel.text = "عدد الليالي"
+            totalDiscountTitleLabel.text = "إجمالي الخصم"
+            netTotalTitleLabel.text = "الصافي المستحق"
+            submitBookingButton.setTitle("تأكيد الحجز", for: .normal)
+            
+        } else {
+            confirmYourBookingTitleLabel.text = "Confirm Your Booking"
+            guestNameTitleLabel.text = "Guest Name"
+            guestEmailTitleLabel.text = "Guest Email"
+            guestPhoneTitleLabel.text = "Guest Phone"
+            numberOfGuestsTitleLabel.text = "Number of Guests"
+            checkInTitleLabel.text = "Check-In"
+            checkOutTitleLabel.text = "Check-Out"
+            selectedRoomsAndRatesLabel.text = "Selected Rooms & Rates"
+            totalAmountTitleLabel.text = "Total Amount"
+            bookingTypeTitleLabel.text = "Booking Type"
+            totalNightsTitleLabel.text = "Total Nights"
+            totalDiscountTitleLabel.text = "Total Discount"
+            netTotalTitleLabel.text = "Net Total (Payable)"
+            submitBookingButton.setTitle("Submit Booking", for: .normal)
+        }
+    }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true)
@@ -123,30 +162,37 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     
     @IBAction func submitBookingButtonAction(_ sender: Any) {
         
+        let lang = AppSettings.shared.selectedLanguage
+        let noInternetMessage = lang == .arabic ? "لا يوجد اتصال بالإنترنت. يرجى التحقق من شبكتك والمحاولة مرة أخرى." : "No Internet Connection. Please check your network and try again."
+        let enterGuestsMessage = lang == .arabic ? "يرجى إدخال عدد صحيح من الضيوف." : "Please enter a valid number of guests."
+        let selectCheckInMessage = lang == .arabic ? "يرجى اختيار تاريخ الوصول." : "Please select a check-in date."
+        let selectCheckOutMessage = lang == .arabic ? "يرجى اختيار تاريخ المغادرة." : "Please select a check-out date."
+        let enterMobileMessage = lang == .arabic ? "يرجى إدخال رقم الهاتف." : "Please enter a mobile number."
+        
 //        guard let reachability = try? Reachability(), reachability.connection != .unavailable else {
-//            showAlert("No Internet Connection. Please check your network and try again.")
+//            showAlert(noInternetMessage)
 //            return
 //        }
         
         guard let noOfGuestText = numberOfGuestsTF.text,
               !noOfGuestText.isEmpty,
               let noOfGuest = Int(noOfGuestText) else {
-            showAlert("Please enter a valid number of guests.")
+            showAlert(enterGuestsMessage)
             return
         }
         
         guard let  checkInDate = selectedCheckInDate else {
-            showAlert("Please select a check-in date.")
+            showAlert(selectCheckInMessage)
             return
         }
         
         guard let checkOutDate = selectedCheckOutDate else {
-            showAlert("Please select a check-out date.")
+            showAlert(selectCheckOutMessage)
             return
         }
         
         guard let guestMobileNumber = guestMobileNumberTF.text, !guestMobileNumber.isEmpty else {
-            showAlert("Please enter a mobile number.")
+            showAlert(enterMobileMessage)
             return
         }
         
@@ -227,6 +273,9 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension ConfirmYourBookingVC {
@@ -308,11 +357,11 @@ extension ConfirmYourBookingVC {
         
         selectedRoomAndRatesLabel.text = roomRatesDataDisplay
         setupDatePickerUI()
-        Arabic()
+        
+        // Initial text update
+        updateTexts()
         updateTotalAmountLabel(isLocal: selectedRoom?.rates.first?.isLocal ?? false)
     }
-    
-    
     
     func setupDatePickerUI() {
         datePickerContainerView = UIView()
@@ -324,14 +373,18 @@ extension ConfirmYourBookingVC {
         datePickerContainerView.layer.shadowOffset = CGSize(width: 0, height: -2)
         datePickerContainerView.translatesAutoresizingMaskIntoConstraints = false
         
+        let lang = AppSettings.shared.selectedLanguage
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        let doneTitle = lang == .arabic ? "تم" : "Done"
+        
         // ✅ Toolbar setup
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        let cancelButton = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelDatePicker))
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
+        let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: self, action: #selector(doneDatePicker))
         toolbar.setItems([cancelButton, flexSpace, doneButton], animated: false)
         
         // Date Picker setup
@@ -408,7 +461,6 @@ extension ConfirmYourBookingVC {
         dismissDatePicker()
     }
     
-    
     func toggleDatePicker(for button: UIButton) {
         activeButton = button
         updateDatePickerLimits()
@@ -424,6 +476,7 @@ extension ConfirmYourBookingVC {
             self.view.layoutIfNeeded()
         }
     }
+    
     @objc func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE dd MMM"
@@ -444,7 +497,6 @@ extension ConfirmYourBookingVC {
             checkOutTF.text = selectedDateString
             dismissDatePicker()
         }
-        
         
         updateTotalAmountLabel(isLocal: selectedRoom?.rates[0].isLocal ?? false)
     }
@@ -471,7 +523,6 @@ extension ConfirmYourBookingVC {
             }
         }
     }
-    
     
     func calculateNumberOfNights(checkIn: Date?, checkOut: Date?) -> Int {
         guard let checkIn = checkIn, let checkOut = checkOut else { return 0 }
@@ -518,33 +569,6 @@ extension ConfirmYourBookingVC {
         totalDiscountAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: finaltotalDiscountAmount)) ?? "0.00")"
         netTotalAmountLabel.text = "\(currency) \(formatter.string(from: NSNumber(value: netAmountAfterDiscount)) ?? "0.00")"
     }
-    
-    
-    @objc func Arabic() {
-        if AppSettings.shared.selectedLanguage == .english {
-            confirmYourBookingTitleLabel.text = "Confirm Your Booking"
-            guestNameTitleLabel.text = "Guest Name"
-            guestEmailTitleLabel.text = "Guest Email"
-            guestPhoneTitleLabel.text = "Guest Phone"
-            checkOutTitleLabel.text = "Check-Out"
-            checkInTitleLabel.text = "Check-In"
-            numberOfGuestsTitleLabel.text = "Number of Guests"
-            selectedRoomsAndRatesLabel.text = "Selected Rooms & Rate"
-            totalAmountTitleLabel.text = "Total Amount"
-            submitBookingButton.setTitle("Submit Booking", for: .normal)
-        } else {
-            confirmYourBookingTitleLabel.text = "تأكيد الحجز"
-            guestNameTitleLabel.text = "اسم الضيف"
-            guestEmailTitleLabel.text = "بريد الضيف الإلكتروني"
-            guestPhoneTitleLabel.text = "هاتف الضيف"
-            checkOutTitleLabel.text = "تسجيل الخروج"
-            checkInTitleLabel.text = "تسجيل الوصول"
-            numberOfGuestsTitleLabel.text = "عدد الضيوف"
-            selectedRoomsAndRatesLabel.text = "الغرف والأسعار المحددة"
-            totalAmountTitleLabel.text = "المبلغ الإجمالي"
-            submitBookingButton.setTitle("إرسال الحجز", for: .normal)
-        }
-    }
 }
 
 extension ConfirmYourBookingVC: UIGestureRecognizerDelegate {
@@ -555,4 +579,3 @@ extension ConfirmYourBookingVC: UIGestureRecognizerDelegate {
         return !isTouchInDatePicker
     }
 }
-

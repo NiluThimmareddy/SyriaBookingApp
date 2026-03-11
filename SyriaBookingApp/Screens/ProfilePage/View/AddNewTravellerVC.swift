@@ -43,7 +43,15 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
     
     weak var delegate: AddNewTravellerDelegate?
     var guestIndex: Int?
-    var genderData = ["Male","Female","Others"]
+    
+    // Gender data with Arabic translations
+    var englishGenderData = ["Male", "Female", "Others"]
+    var arabicGenderData = ["ذكر", "أنثى", "آخر"]
+    
+    var genderData: [String] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicGenderData : englishGenderData
+    }
+    
     var selectedOption: chooseOptions = .add
     var otherGuestsEdit: Guest?
     var otherGuestsDelete: Guest?
@@ -51,6 +59,14 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add language change notification observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
         
         backView.layer.cornerRadius = 20
         backView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -71,9 +87,109 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         lastNameTF.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-//        tapGesture.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tapGesture)
+        
+        // Set initial texts
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            // Arabic texts
+            addNewTravellersTitle.text = "إضافة ضيف جديد"
+            getPermissionLbl.text = "يرجى الحصول على إذن من رفيق سفرك قبل إدخال بياناته الشخصية."
+            firstNameLbl.text = "الاسم الأول*"
+            lastNameLbl.text = "الاسم الأخير*"
+            pleaseEnterLbl.text = "يرجى إدخال اسم هذا الشخص تماماً كما هو مكتوب في جواز سفره أو بطاقة الهوية الرسمية الأخرى."
+            confirmTextLbl.text = "أؤكد أنني مفوض بتقديم البيانات الشخصية لأي ضيف مشارك (بما في ذلك الأطفال) إلى SyriaBooking.sy لهذه الخدمة."
+            
+            // Update button texts
+            let addButtonTitle = NSAttributedString(
+                string: "إضافة ضيف جديد",
+                attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
+            )
+            addNewTravellerButton.setAttributedTitle(addButtonTitle, for: .normal)
+            
+            let dobPlaceholder = NSAttributedString(
+                string: "اختر تاريخ الميلاد",
+                attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
+            )
+            if dobButton.title(for: .normal) == nil || dobButton.title(for: .normal) == "Select your DOB" {
+                dobButton.setAttributedTitle(dobPlaceholder, for: .normal)
+            }
+            
+            let genderPlaceholder = NSAttributedString(
+                string: "اختر الجنس",
+                attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
+            )
+            if genderButton.title(for: .normal) == nil || genderButton.title(for: .normal) == "Select your gender" {
+                genderButton.setAttributedTitle(genderPlaceholder, for: .normal)
+            }
+            
+            selectDateLbl.text = "اختر التاريخ"
+            
+            let okTitle = NSAttributedString(
+                string: "موافق",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
+            )
+            okButton.setAttributedTitle(okTitle, for: .normal)
+            
+            let cancelTitle = NSAttributedString(
+                string: "إلغاء",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
+            )
+            cancelButton.setAttributedTitle(cancelTitle, for: .normal)
+            
+        } else {
+            // English texts
+            addNewTravellersTitle.text = "Add New Guest"
+            getPermissionLbl.text = "Please get permission from your fellow guest before entering their personal details."
+            firstNameLbl.text = "First name*"
+            lastNameLbl.text = "Last name*"
+            pleaseEnterLbl.text = "Please enter this person's name exactly as written on their passport or other official Identity card."
+            confirmTextLbl.text = "I confirm that I'm authorised to provide the personal data of any co-guest (including children) to SyriaBooking.sy for this service."
+            
+            // Update button texts
+            let addButtonTitle = NSAttributedString(
+                string: "Add New Guest",
+                attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
+            )
+            addNewTravellerButton.setAttributedTitle(addButtonTitle, for: .normal)
+            
+            let dobPlaceholder = NSAttributedString(
+                string: "Select your DOB",
+                attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
+            )
+            if dobButton.title(for: .normal) == nil || dobButton.title(for: .normal) == "اختر تاريخ الميلاد" {
+                dobButton.setAttributedTitle(dobPlaceholder, for: .normal)
+            }
+            
+            let genderPlaceholder = NSAttributedString(
+                string: "Select your gender",
+                attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
+            )
+            if genderButton.title(for: .normal) == nil || genderButton.title(for: .normal) == "اختر الجنس" {
+                genderButton.setAttributedTitle(genderPlaceholder, for: .normal)
+            }
+            
+            selectDateLbl.text = "Select Date"
+            
+            let okTitle = NSAttributedString(
+                string: "Ok",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
+            )
+            okButton.setAttributedTitle(okTitle, for: .normal)
+            
+            let cancelTitle = NSAttributedString(
+                string: "Cancel",
+                attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
+            )
+            cancelButton.setAttributedTitle(cancelTitle, for: .normal)
+        }
+        
+        // Reload gender table view
+        selectGenderTV.reloadData()
     }
     
     private func setCheckboxState() {
@@ -130,8 +246,10 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             )
             genderButton.setAttributedTitle(gender, for: .normal)
             
+            let lang = AppSettings.shared.selectedLanguage
+            let addText = lang == .arabic ? "تعديل الضيف" : "Edit Guest"
             let add = NSAttributedString(
-                string: "Edit Guest",
+                string: addText,
                 attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
             )
             addNewTravellerButton.setAttributedTitle(add, for: .normal)
@@ -154,8 +272,10 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             )
             genderButton.setAttributedTitle(gender, for: .normal)
             
+            let lang = AppSettings.shared.selectedLanguage
+            let deleteText = lang == .arabic ? "حذف الضيف" : "Delete Guest"
             let add = NSAttributedString(
-                string: "Delete Guest",
+                string: deleteText,
                 attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
             )
             addNewTravellerButton.setAttributedTitle(add, for: .normal)
@@ -163,42 +283,47 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         }
     }
    
-//    @objc func dismissKeyboard() {
-//         view.endEditing(true)
-//    }
-    
     func buttonBoldText(){
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let okText = lang == .arabic ? "موافق" : "Ok"
         let ok = NSAttributedString(
-            string: "Ok",
+            string: okText,
             attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
         )
         okButton.setAttributedTitle(ok, for: .normal)
         
+        let cancelText = lang == .arabic ? "إلغاء" : "Cancel"
         let cancel = NSAttributedString(
-            string: "Cancel",
+            string: cancelText,
             attributes: [.font: UIFont.poppinsBold(16), .foregroundColor: UIColor.systemBlue]
         )
         cancelButton.setAttributedTitle(cancel, for: .normal)
         
+        let dobPlaceholder = lang == .arabic ? "اختر تاريخ الميلاد" : "Select your DOB"
         let dob = NSAttributedString(
-            string: "Select your DOB",
+            string: dobPlaceholder,
             attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
         )
         dobButton.setAttributedTitle(dob, for: .normal)
         
+        let genderPlaceholder = lang == .arabic ? "اختر الجنس" : "Select your gender"
         let gender = NSAttributedString(
-            string: "Select your gender",
+            string: genderPlaceholder,
             attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
         )
         genderButton.setAttributedTitle(gender, for: .normal)
         
+        let addText = lang == .arabic ? "إضافة ضيف جديد" : "Add New Guest"
         let add = NSAttributedString(
-            string: "Add New Guest",
+            string: addText,
             attributes: [.font: UIFont.poppinsMedium(16), .foregroundColor: UIColor.white]
         )
         addNewTravellerButton.setAttributedTitle(add, for: .normal)
         
         selectDateLbl.font = UIFont.poppinsBold(16)
+        selectDateLbl.text = lang == .arabic ? "اختر التاريخ" : "Select Date"
+        
         addNewTravellersTitle.font = UIFont.poppinsBold(16)
         getPermissionLbl.font = UIFont.poppinsMedium(12)
         pleaseEnterLbl.font = UIFont.poppinsMedium(12)
@@ -210,11 +335,13 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         genderLbl.font = UIFont.poppinsMedium(14)
         confirmTextLbl.font = UIFont.poppinsMedium(12)
     }
+    
     @IBAction func ckeckBoxButton(_ sender: Any) {
         isChecked.toggle()
         setCheckboxState()
         updateAddTravellerButtonColor()
     }
+    
     @IBAction func genderButton(_ sender: Any) {
         selectGenderTV.isHidden = !selectGenderTV.isHidden
     }
@@ -251,17 +378,25 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
     }
     
     func agreeDocument() {
+        let lang = AppSettings.shared.selectedLanguage
+        let alertTitle = lang == .arabic ? "تنبيه" : "Alert"
+        let missingInfoTitle = lang == .arabic ? "معلومات ناقصة" : "Missing Info"
+        let confirmMessage = lang == .arabic ? "يرجى تأكيد مربع الاختيار" : "Please confirm with the checkbox"
+        let missingMessage = lang == .arabic ? "يرجى ملء جميع الحقول قبل الإرسال." : "Please fill all the fields before submitting."
+        
         guard isChecked else {
-            showAlert(title: "Alert", message: "Please confirm with the checkbox")
+            showAlert(title: alertTitle, message: confirmMessage)
             return
         }
 
         guard let firstName = firstNameTF.text, !firstName.isEmpty,
               let lastName = lastNameTF.text, !lastName.isEmpty,
-              let dob = dobButton.title(for: .normal), dob != "Select your DOB",
-              let gender = genderButton.title(for: .normal), gender != "Select your gender"
+              let dob = dobButton.title(for: .normal),
+              (lang == .arabic ? dob != "اختر تاريخ الميلاد" : dob != "Select your DOB"),
+              let gender = genderButton.title(for: .normal),
+              (lang == .arabic ? gender != "اختر الجنس" : gender != "Select your gender")
         else {
-            showAlert(title: "Missing Info", message: "Please fill all the fields before submitting.")
+            showAlert(title: missingInfoTitle, message: missingMessage)
             return
         }
 
@@ -271,10 +406,14 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             dismiss(animated: true)
 
         case .edit:
+            let editTitle = lang == .arabic ? "تعديل الضيف" : "Edit Guest"
+            let editMessage = lang == .arabic ? "هل أنت متأكد أنك تريد تحديث هذا المسافر؟" : "Are you sure you want to update this traveller?"
+            let editAction = lang == .arabic ? "تعديل" : "Edit"
+            
             showConfirmationAlert(
-                title: "Edit Guest",
-                message: "Are you sure you want to update this traveller?",
-                actionTitle: "Edit"
+                title: editTitle,
+                message: editMessage,
+                actionTitle: editAction
             ) {
                 self.editGuest()
                 self.dismiss(animated: true)
@@ -324,18 +463,24 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
 
 
     func showConfirmationAlert(title: String, message: String, actionTitle: String, isDestructive: Bool = false, confirmed: @escaping () -> Void) {
+        let lang = AppSettings.shared.selectedLanguage
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: actionTitle, style: isDestructive ? .destructive : .default) { _ in
             confirmed()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: nil)
         
         alert.addAction(cancelAction)
         alert.addAction(confirmAction)
         
         present(alert, animated: true)
     }
-
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension AddNewTravellerVC: UITableViewDelegate, UITableViewDataSource{

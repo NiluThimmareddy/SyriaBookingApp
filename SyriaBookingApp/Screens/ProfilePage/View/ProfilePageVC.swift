@@ -22,15 +22,14 @@ class ProfilePageVC: BaseViewController {
     @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var signOutBackView: UIView!
     @IBOutlet weak var manageAccountsCV: UICollectionView!
-    
     @IBOutlet weak var completeProfileLabel: UILabel!
     @IBOutlet weak var completeProfileImage: UIImageView!
     @IBOutlet weak var completeProfileImageBackView: UIView!
     @IBOutlet weak var completeProfileBackView: UIView!
     @IBOutlet weak var profileTV: UITableView!
     
-    
-    let profileSections: [ProfileSection] = [
+    // English data
+    let englishProfileSections: [ProfileSection] = [
         ProfileSection(
             sectionTitle: "Preferences",
             options: [
@@ -39,20 +38,46 @@ class ProfilePageVC: BaseViewController {
         ),
     ]
     
-    let manageAccountsData = [
+    let englishManageAccountsData = [
         ProfileOption(listData: "Personal details", imageName: "person"),
         ProfileOption(listData: "My Bookings", imageName: "calendar"),
         ProfileOption(listData: "Other Guests", imageName: "person.2"),
         ProfileOption(listData: "My reviews", imageName: "bubble.left.and.bubble.right")
     ]
     
+    // Arabic data
+    let arabicProfileSections: [ProfileSection] = [
+        ProfileSection(
+            sectionTitle: "التفضيلات",
+            options: [
+                ProfileOption(listData: "تفضيلات البريد الإلكتروني", imageName: "envelope.fill")
+            ]
+        ),
+
+    ]
+    
+    let arabicManageAccountsData = [
+        ProfileOption(listData: "البيانات الشخصية", imageName: "person"),
+        ProfileOption(listData: "حجوزاتي", imageName: "calendar"),
+        ProfileOption(listData: "ضيوف آخرون", imageName: "person.2"),
+        ProfileOption(listData: "تقييماتي", imageName: "bubble.left.and.bubble.right")
+    ]
+    
+    // Computed properties that return data based on current language
+    var profileSections: [ProfileSection] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicProfileSections : englishProfileSections
+    }
+    
+    var manageAccountsData: [ProfileOption] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicManageAccountsData : englishManageAccountsData
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
-        
         
         profileTV.register(UINib(nibName: "ProfileTVC", bundle: nil), forCellReuseIdentifier: "ProfileTVC")
         profileTV.showsVerticalScrollIndicator = false
@@ -66,6 +91,23 @@ class ProfilePageVC: BaseViewController {
         signOutBackView.layer.cornerRadius = 10
         fontStyle()
         mixedText()
+        
+        // Set initial texts
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        // Update manage account title
+        manageAccountTitleLbl.text = lang == .arabic ? "إدارة الحساب" : "Manage Account"
+        
+        // Update sign out button
+        signOutButton.setTitle(lang == .arabic ? "تسجيل الخروج" : "Sign Out", for: .normal)
+        
+        // Reload table and collection views with new data
+        profileTV.reloadData()
+        manageAccountsCV.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -83,20 +125,35 @@ class ProfilePageVC: BaseViewController {
         self.navigationItem.backButtonTitle = ""
         setupAppNavigationBar()
         guard let username = UserSessionManager.getUser() else { return }
-        userName.text = "Hi, \(username.name)"
+        
+        let lang = AppSettings.shared.selectedLanguage
+        if lang == .arabic {
+            userName.text = "مرحباً، \(username.name)"
+        } else {
+            userName.text = "Hi, \(username.name)"
+        }
         userEmail.text = "\(username.email)"
     }
     
     func mixedText() {
-        let fullText = "Complete your profile and use this informations for your next booking"
-        let boldText = "Complete your profile"
+        let lang = AppSettings.shared.selectedLanguage
+        let fullText: String
+        let boldText: String
+        
+        if lang == .arabic {
+            fullText = "أكمل ملفك الشخصي واستخدم هذه المعلومات لحجزك القادم"
+            boldText = "أكمل ملفك الشخصي"
+        } else {
+            fullText = "Complete your profile and use this informations for your next booking"
+            boldText = "Complete your profile"
+        }
         
         let attributedString = NSMutableAttributedString(string: fullText)
         
-        // 1. Apply default font to entire text first
+        // Apply default font to entire text first
         attributedString.addAttribute(.font, value: UIFont.poppinsMedium(12), range: NSRange(location: 0, length: attributedString.length))
         
-        // 2. Apply bold to specific part
+        // Apply bold to specific part
         if let boldRange = fullText.range(of: boldText) {
             let nsRange = NSRange(boldRange, in: fullText)
             attributedString.addAttribute(.font, value: UIFont.poppinsBold(12), range: nsRange)
@@ -109,7 +166,6 @@ class ProfilePageVC: BaseViewController {
         userName.font = UIFont.poppinsBold(16)
         userEmail.font = UIFont.poppinsMedium(12)
         manageAccountTitleLbl.font = UIFont.poppinsBold(14)
-        
     }
     
     func updateProfileTableViewHeight() {
@@ -151,8 +207,6 @@ class ProfilePageVC: BaseViewController {
             self.view.layoutIfNeeded()
         }
     }
-    
-    
     
     private func roundCornersOfTopProfileView() {
         let width = topProfileView.bounds.width
@@ -199,7 +253,13 @@ class ProfilePageVC: BaseViewController {
     }
     
     @IBAction func signOutButton(_ sender: Any) {
-        showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
+        let lang = AppSettings.shared.selectedLanguage
+        let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+        let message = lang == .arabic ? "هل أنت متأكد أنك تريد تسجيل الخروج؟" : "Are you sure you want to logout"
+        let okTitle = lang == .arabic ? "نعم" : "Ok"
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        
+        showAlert(title: title, message: message, type: .error, OkButtonTitle: okTitle, cancelButtonTitle: cancelTitle, onOK: {
             UserSessionManager.clearUser()
             
             NotificationCenter.default.post(
@@ -207,9 +267,12 @@ class ProfilePageVC: BaseViewController {
                 object: nil
             )
             
-                self.navigateToHomeTab()
-            
+            self.navigateToHomeTab()
         })
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -220,7 +283,6 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return profileSections[section].options.count
     }
     
@@ -243,9 +305,7 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
         cell.profileListBackView.backViewBlackShadow()
         cell.profileListLbl.font = .poppinsMedium(12)
         
-        
         if numberOfRows == 1 {
-            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [
                 .layerMinXMinYCorner,
@@ -254,15 +314,12 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
                 .layerMaxXMaxYCorner
             ]
         } else if row == 0 {
-            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else if row == numberOfRows - 1 {
-            
             cell.profileListBackView.layer.cornerRadius = 10
             cell.profileListBackView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         } else {
-            
             cell.profileListBackView.layer.cornerRadius = 0
             cell.profileListBackView.layer.maskedCorners = []
         }
@@ -308,41 +365,43 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedOption = profileSections[indexPath.section].options[indexPath.row]
         
+        let lang = AppSettings.shared.selectedLanguage
+        
         switch selectedOption.listData {
-        case "Email Preferences":
+        case "Email Preferences", "تفضيلات البريد الإلكتروني":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "EmailPreferencesVC")as! EmailPreferencesVC
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
             
-        case "FAQ":
+        case "FAQ", "الأسئلة الشائعة":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "HelpCentreVC")as! HelpCentreVC
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
             
-        case "Abous Us":
+        case "About Us", "معلومات عنا":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
             navigationItem.backButtonTitle = ""
             controller.contentType = .about
             navigationController?.pushViewController(controller, animated: true)
             
-        case "Terms of Use":
+        case "Terms of Use", "شروط الاستخدام":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
             navigationItem.backButtonTitle = ""
             controller.contentType = .terms
             navigationController?.pushViewController(controller, animated: true)
             
-        case "Privacy and data management":
+        case "Privacy and data management", "الخصوصية وإدارة البيانات":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
             navigationItem.backButtonTitle = ""
             controller.contentType = .privacy
             navigationController?.pushViewController(controller, animated: true)
             
-        case "Customer Service":
+        case "Customer Service", "خدمة العملاء":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
             let controller = storyboard.instantiateViewController(identifier: "CustomerServiceVC")as! CustomerServiceVC
             navigationItem.backButtonTitle = ""
@@ -407,16 +466,22 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
 
     func showNoReviewsAlert() {
+        let lang = AppSettings.shared.selectedLanguage
+        let title = lang == .arabic ? "لا توجد تقييمات" : "No Reviews Found"
+        let message = lang == .arabic ?
+            "يبدو أنك لم تكتب أي تقييمات بعد. التقييمات التي تكتبها ستساعد المسافرين الآخرين على اتخاذ قرارات أفضل." :
+            "It looks like you haven't written any reviews yet. Reviews you write will help other travelers make better decisions."
+        let okTitle = lang == .arabic ? "حسناً" : "OK"
+        
         let alert = UIAlertController(
-            title: "No Reviews Found",
-            message: "It looks like you haven't written any reviews yet. Reviews you write will help other travelers make better decisions.",
+            title: title,
+            message: message,
             preferredStyle: .alert
         )
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: okTitle, style: .default, handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
 }
-
 
 

@@ -22,33 +22,86 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     @IBOutlet weak var imageBackView: UIView!
     @IBOutlet weak var bottomView: UIView!
     
-   
     let topNameLbl: UILabel = {
        let label = UILabel()
        label.textColor = .white
-       label.text = "Personal Details"
        label.font = UIFont.poppinsBold(16)
        label.textAlignment = .center
        return label
    }()
-    var infoDataTitle = ["Name"]
-    var contactDataTitle = ["Email Address", "Phone Number", "Address"]
+    
+    // English data
+    var englishInfoDataTitle = ["Name"]
+    var englishContactDataTitle = ["Email Address", "Phone Number", "Address"]
+    
+    // Arabic data
+    var arabicInfoDataTitle = ["الاسم"]
+    var arabicContactDataTitle = ["البريد الإلكتروني", "رقم الهاتف", "العنوان"]
+    
+    // Computed properties that return data based on current language
+    var infoDataTitle: [String] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicInfoDataTitle : englishInfoDataTitle
+    }
+    
+    var contactDataTitle: [String] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicContactDataTitle : englishContactDataTitle
+    }
     
     var personalData : BookingModel?
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Add language change notification observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
         fontText()
         imageBackView.layer.cornerRadius = imageBackView.frame.size.height / 2
         profileImage.layer.cornerRadius = profileImage.frame.size.height / 2
-        navigationItem.titleView = topNameLbl
+        
+        // Set navigation title based on language
+        updateNavigationTitle()
+        
         backBackView.layer.cornerRadius = backBackView.frame.size.height / 2
         contactTableView.register(UINib(nibName: "InfoAndContactTVC", bundle: nil), forCellReuseIdentifier: "InfoAndContactTVC")
         infoTableView.register(UINib(nibName: "InfoAndContactTVC", bundle: nil), forCellReuseIdentifier: "InfoAndContactTVC")
         infoTableBackView.layer.cornerRadius = 10
         contactTableBackView.layer.cornerRadius = 10
+
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        // Update all labels
+        if lang == .arabic {
+            weLlRememberLbl.text = "سنحتفظ بهذه المعلومات لتسريع عملية الحجز في المرة القادمة"
+            basicInfoTitle.text = "المعلومات الأساسية"
+            contactDetailsTitle.text = "معلومات الاتصال"
+        } else {
+            weLlRememberLbl.text = "We'll remember this information to make it faster when you book"
+            basicInfoTitle.text = "Basic Information"
+            contactDetailsTitle.text = "Contact Details"
+        }
+        
+        // Update navigation title
+        updateNavigationTitle()
+
+        
+        // Reload table views with new data
+        infoTableView.reloadData()
+        contactTableView.reloadData()
+    }
+    
+    func updateNavigationTitle() {
+        let lang = AppSettings.shared.selectedLanguage
+        topNameLbl.text = lang == .arabic ? "البيانات الشخصية" : "Personal Details"
+        navigationItem.titleView = topNameLbl
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +112,8 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
             contactTableView.reloadData()
         }
         
-       
+        // Update texts when view appears
+        updateTexts()
     }
     
     func updatePersonalData() {
@@ -84,14 +138,12 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     private func roundTopCornerOnly() {
         bottomView.layer.cornerRadius = 40
         bottomView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-      
     }
 
     func fetchUSerData(){
        
     }
     
-
     @IBAction func choosePhotoButton(_ sender: Any) {
         let picker = UIImagePickerController()
         picker.delegate = self
@@ -113,7 +165,10 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSource{
@@ -274,19 +329,8 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
 
 extension PersonalDetailsViewController: PersonalDetailsEditVCDelegate {
     func didUpdateName(firstName: String, lastName: String) {
-//        personalData?.name = "\(firstName) \(lastName)" 
         infoTableView.reloadData()
     }
-
-//    func didUpdateGender(_ gender: String) {
-//        personalData?.gender = gender
-//        infoTableView.reloadData()
-//    }
-//
-//    func didUpdateDOB(_ dob: String) {
-//        personalData?.dob = dob
-//        infoTableView.reloadData()
-//    }
 
     func didUpdateEmail(_ email: String) {
         personalData?.email = email

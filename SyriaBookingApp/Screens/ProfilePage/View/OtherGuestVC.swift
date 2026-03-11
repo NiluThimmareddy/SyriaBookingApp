@@ -15,10 +15,10 @@ class OtherGuestVC: UIViewController {
     var otherGuests: [Guest] = [
        
     ]
+    
     let topNameLbl: UILabel = {
        let label = UILabel()
        label.textColor = .white
-       label.text = "Other Guest"
        label.font = UIFont.poppinsBold(16)
        label.textAlignment = .center
        return label
@@ -26,9 +26,38 @@ class OtherGuestVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add language change notification observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
         plusButton.layer.cornerRadius = plusButton.frame.size.height /  2
         otherGuestListTV.register(UINib(nibName: "OtherGuestListTVC", bundle: nil), forCellReuseIdentifier: "OtherGuestListTVC")
+        
+        // Set navigation title based on language
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            topNameLbl.text = "ضيوف آخرون"
+        } else {
+            topNameLbl.text = "Other Guest"
+        }
+        
         navigationItem.titleView = topNameLbl
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Ensure title is updated when view appears
+        updateTexts()
     }
 
     @IBAction func plusButton(_ sender: Any) {
@@ -39,9 +68,9 @@ class OtherGuestVC: UIViewController {
         present(vc, animated: true)
     }
     
-    
-    
-
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestListTVCDelegate{
@@ -53,7 +82,16 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OtherGuestListTVC")as! OtherGuestListTVC
         let data = otherGuests[indexPath.row]
-        cell.nameLbl.text = "\(data.firstName) \(data.lastName)"
+        
+        let lang = AppSettings.shared.selectedLanguage
+        if lang == .arabic {
+            cell.nameLbl.text = "\(data.firstName) \(data.lastName)"
+            cell.nameLbl.textAlignment = .right
+        } else {
+            cell.nameLbl.text = "\(data.firstName) \(data.lastName)"
+            cell.nameLbl.textAlignment = .left
+        }
+        
         cell.delegate = self
         return cell
     }
@@ -61,6 +99,7 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
     func didTapEditButton(in cell: OtherGuestListTVC) {
         guard let indexPath = otherGuestListTV.indexPath(for: cell) else { return }
 
@@ -72,26 +111,27 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
         vc.guestIndex = indexPath.row
         vc.delegate = self
         present(vc, animated: true)
-        
-
     }
-
 }
-
 
 extension OtherGuestVC: AddNewTravellerDelegate {
     func didTapDeleteButton(in cell: OtherGuestListTVC) {
         guard let indexPath = otherGuestListTV.indexPath(for: cell) else { return }
 
         let guest = otherGuests[indexPath.row]
+        let lang = AppSettings.shared.selectedLanguage
         
-       
-        let alert = UIAlertController(title: "Delete Guest", message: "Are you sure you want to delete \(guest.firstName) \(guest.lastName)?", preferredStyle: .alert)
+        let title = lang == .arabic ? "حذف الضيف" : "Delete Guest"
+        let message = lang == .arabic ?
+            "هل أنت متأكد أنك تريد حذف \(guest.firstName) \(guest.lastName)؟" :
+            "Are you sure you want to delete \(guest.firstName) \(guest.lastName)?"
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        let deleteTitle = lang == .arabic ? "حذف" : "Delete"
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-           
+        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: deleteTitle, style: .destructive, handler: { _ in
             self.otherGuests.remove(at: indexPath.row)
             self.otherGuestListTV.deleteRows(at: [indexPath], with: .fade)
         }))

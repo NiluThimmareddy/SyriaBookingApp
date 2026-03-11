@@ -510,6 +510,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func showRefundPolicy(for room: RoomElement) {
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         guard let refundVC = storyboard.instantiateViewController(withIdentifier: "RefundPolicyVC") as? RefundPolicyVC else { return }
+        refundVC.roomType = room.room.roomType
+        refundVC.roomBedType = room.room.bedType
         refundVC.modalPresentationStyle = .overFullScreen
         self.present(refundVC, animated: true)
     }

@@ -20,6 +20,12 @@ class Covid19FAQsVC : UIViewController {
     @IBOutlet weak var covid19FaqsTitleLabel: UILabel!
     @IBOutlet weak var redefiningTravelDescriptionLabel: UILabel!
     
+    @IBOutlet weak var travelSafelyLabel: UILabel!
+    @IBOutlet weak var travelOnlyFeelWellLabel: UILabel!
+    @IBOutlet weak var keepUpLatestHealthLabel: UILabel!
+    
+    @IBOutlet weak var supportLocalBussinesLabel: UILabel!
+    
     var selectedIndexPath: IndexPath?
     
     var count = ["01","02","03","04","05","06","07"]
@@ -184,9 +190,19 @@ extension Covid19FAQsVC {
         if AppSettings.shared.selectedLanguage == .arabic {
             covid19FaqsTitleLabel.text = "الأسئلة الشائعة حول كوفيد-19"
             redefiningTravelDescriptionLabel.text = "إعادة تعريف السفر والضيافة داخل سوريا."
+            
+            travelSafelyLabel.text = "سافر بأمان مع SyriaBooking.sy"
+            travelOnlyFeelWellLabel.text = "سافر فقط إذا كنت تشعر بتحسن"
+            keepUpLatestHealthLabel.text = "تابع أحدث الإرشادات الصحية"
+            supportLocalBussinesLabel.text = "ادعم الأعمال المحلية من خلال الحجز المسؤول"
         } else {
             covid19FaqsTitleLabel.text = "COVID-19 FAQs"
             redefiningTravelDescriptionLabel.text = "Redefining travel and hospitality within Syria."
+            
+            travelSafelyLabel.text = "Travel Safely with SyriaBooking.sy"
+            travelOnlyFeelWellLabel.text = "Travel only if you feel well"
+            keepUpLatestHealthLabel.text = "Keep up with the latest health guidelines"
+            supportLocalBussinesLabel.text = "Support local businesses by booking responsibly"
         }
         setupSocialMediaView()
         setupEmailUsView()
