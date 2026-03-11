@@ -15,6 +15,9 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         delegate = self
         
+        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+                traitOverrides.horizontalSizeClass = .regular
+            } 
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithDefaultBackground()
@@ -43,26 +46,26 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         updateSelectionIndicatorPosition()
     }
     
-    override func overrideTraitCollection(
-        forChild childViewController: UIViewController
-    ) -> UITraitCollection? {
-        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-            return UITraitCollection(horizontalSizeClass: .compact)
-        }
-        return super.overrideTraitCollection(forChild: childViewController)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-            self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChild: self)
-        }
-        
-        coordinator.animate(alongsideTransition: { _ in
-            self.updateSelectionIndicatorPosition()
-        })
-    }
+//    override func overrideTraitCollection(
+//        forChild childViewController: UIViewController
+//    ) -> UITraitCollection? {
+//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+//            return UITraitCollection(horizontalSizeClass: .regular)
+//        }
+//        return super.overrideTraitCollection(forChild: childViewController)
+//    }
+//    
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        
+//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+//            self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .regular), forChild: self)
+//        }
+//        
+//        coordinator.animate(alongsideTransition: { _ in
+//            self.updateSelectionIndicatorPosition()
+//        })
+//    }
     
     private func setUpTabBarAppearance() {
         let appearance = UITabBarAppearance()
