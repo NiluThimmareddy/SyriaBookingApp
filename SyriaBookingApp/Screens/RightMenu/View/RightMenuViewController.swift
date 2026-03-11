@@ -13,16 +13,13 @@ class RightMenuViewController: UIViewController, UIViewControllerTransitioningDe
     @IBOutlet weak var rightMenuTableView: UITableView!
     
     var menuArray = [String]()
-    
     var barbuttonItem: UIBarButtonItem?
     var navnController: UINavigationController?
     var sourceView: UIView?
     var sourceRect: CGRect?
     var contentSize: CGSize?
     var popoverdirection: UIPopoverArrowDirection = .any
-    
     var profileViewModle = ProfileViewModel()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,17 +57,24 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         
         switch indexPath.row {
         case 0 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
-            present(controller, animated: true)
+            self.dismiss(animated: true) {
+                let controller = UIStoryboard(name: "RightMenu", bundle: nil).instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
+                controller.navigationItem.backButtonTitle = ""
+                self.navnController?.pushViewController(controller, animated: true)
+            }
         case 1 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
-            present(controller, animated: true)
+            self.dismiss(animated: true) {
+                let controller = UIStoryboard(name: "RightMenu", bundle: nil).instantiateViewController(withIdentifier: "PrivacyPolicyViewController") as! PrivacyPolicyViewController
+                controller.navigationItem.backButtonTitle = ""
+                self.navnController?.pushViewController(controller, animated: true)
+            }
         case 2:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "TermsAndConditionsVC") as! TermsAndConditionsVC
-            present(controller, animated: true)
+            self.dismiss(animated: true) {
+                let controller = UIStoryboard(name: "RightMenu", bundle: nil).instantiateViewController(withIdentifier: "TermsAndConditionsVC") as! TermsAndConditionsVC
+                controller.navigationItem.backButtonTitle = ""
+                self.navnController?.pushViewController(controller, animated: true)
+            }
         case 3:
-//            let controller = storyboard?.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
-//            present(controller, animated: true)
             self.dismiss(animated: true) {
                 let storyboard = UIStoryboard(name: "RightMenu", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
@@ -92,7 +96,6 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
                     controller.navigationItem.backButtonTitle = ""
                     self.navnController?.pushViewController(controller, animated: true)
                 }
-
             } else {
                 self.dismiss(animated: true) {
                     let storyboard = UIStoryboard(name: "Booking", bundle: nil)
@@ -112,7 +115,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
                     name: .didLogoutSuccessfully,
                     object: nil
                 )
-                    self.navigateToHomeTab()
+                self.navigateToHomeTab()
             })
         case 7:
             self.showDeleteAccountOptions()
@@ -160,18 +163,13 @@ extension RightMenuViewController{
         }))
         
         alert.addAction(UIAlertAction(title: "Request to Delete Account", style: .default, handler: { _ in
-            
-            
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AccountDeletionVC") as! AccountDeletionVC
             self.present(controller, animated: true)
         }))
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
         present(alert, animated: true)
-    }
-    
+    }    
     
     private func confirmPermanentDeletion() {
         let confirmAlert = UIAlertController(
@@ -185,12 +183,10 @@ extension RightMenuViewController{
         }))
         
         confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
         present(confirmAlert, animated: true)
     }
     
     private func callDeleteAccountAPI() {
-        
         if let user = UserSessionManager.getUser() {
             let usermobile = "\(user.mobile)-Block"
             let useremail = "\(user.email)-Block"
@@ -209,8 +205,6 @@ extension RightMenuViewController{
                 )
             }else{
                 profileViewModle.updateProfile(userId: user.id, profile: deleteUser)
-                
-                
                 profileViewModle.onProfileUpdated = { result, message, bookingModel in
                     if result {
                         //account deleted
@@ -243,6 +237,5 @@ extension RightMenuViewController: SFSafariViewControllerDelegate {
             self.goToHomeTab()
         }
     }
-    
 }
 
