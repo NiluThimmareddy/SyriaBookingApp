@@ -56,7 +56,6 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var hotelAddressLabel: UILabel!
-    
     @IBOutlet weak var discountImage: UIImageView!
     @IBOutlet weak var discountLabel: UILabel!
     
@@ -179,39 +178,56 @@ class HotelDetailsViewController : BaseViewController {
     }
     
     @IBAction func submitReviewButtonAction(_ sender: Any) {
+        let lang = AppSettings.shared.selectedLanguage
+        
         guard let user = UserSessionManager.getUser() else { return }
-        guard let selectedHotel = selectedHotel else { return}
+        guard let selectedHotel = selectedHotel else { return }
         
-        guard let name = enterYourNameTF?.text else {
-            showAlert("Please enter name")
+        guard let name = enterYourNameTF?.text, !name.isEmpty else {
+            let message = lang == .arabic ? "الرجاء إدخال الاسم" : "Please enter name"
+            showAlert(message)
             return
         }
         
-        guard (selectratingButton.titleLabel?.text) != nil else {
-            showAlert("Please select Rating")
+        guard selectratingButton.titleLabel?.text != nil else {
+            let message = lang == .arabic ? "الرجاء اختيار التقييم" : "Please select Rating"
+            showAlert(message)
             return
         }
         
-        guard let reviewTextView = reviewTextView.text else {
-            showAlert("Please enter review")
+        guard let reviewText = reviewTextView.text, !reviewText.isEmpty else {
+            let message = lang == .arabic ? "الرجاء إدخال التقييم" : "Please enter review"
+            showAlert(message)
             return
         }
         
         self.hotelviewModel.onSuccess = { [weak self] review in
             guard let self = self else { return }
-            showAlert(title: "Syriabooking", message: "thank you for your valueable review ", onOK:  {
-                self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id,reviewId: review.id)
+            
+            let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+            let message = lang == .arabic ? "شكراً لك على تقييمك القيم" : "Thank you for your valuable review"
+            
+            showAlert(title: title, message: message, onOK: {
+                self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id, reviewId: review.id)
                 
-                self.hotelviewModel.onSuccess = {[weak self] response in
+                self.hotelviewModel.onSuccess = { [weak self] response in
                 }
             })
         }
         
         self.hotelviewModel.onReviewError = { error in
-            self.showAlert("something went wrong try again! : \(error.description)")
+            let errorMessage = lang == .arabic ?
+                "حدث خطأ ما يرجى المحاولة مرة أخرى: \(error.description)" :
+                "Something went wrong try again: \(error.description)"
+            self.showAlert(errorMessage)
         }
         
-        hotelviewModel.SubmitReview(HotelId: selectedHotel.id, reviewerName:name, rating: selectratingButton.tag, reviewText:  reviewTextView)
+        hotelviewModel.SubmitReview(
+            HotelId: selectedHotel.id,
+            reviewerName: name,
+            rating: selectratingButton.tag,
+            reviewText: reviewText
+        )
     }
     
     @IBAction func rateAndReviewsDownButtonAction(_ sender: Any) {
@@ -521,18 +537,24 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func showAlertForRateSelection() {
-        showAlert("Please select a rate and ensure hotel/room data is present.")
+        let lang = AppSettings.shared.selectedLanguage
+        let message = lang == .arabic ?
+            "يرجى تحديد سعر والتأكد من وجود بيانات الفندق/الغرفة." :
+            "Please select a rate and ensure hotel/room data is present."
+        showAlert(message)
     }
-    func showLoginRequiredAlert() {
 
+    func showLoginRequiredAlert() {
+        let lang = AppSettings.shared.selectedLanguage
         let alert = UIAlertController(
-            title: "Login Required",
-            message: "Please login to select a room.",
+            title: lang == .arabic ? "تسجيل الدخول مطلوب" : "Login Required",
+            message: lang == .arabic ? "يرجى تسجيل الدخول لتحديد غرفة." : "Please login to select a room.",
             preferredStyle: .alert
         )
-
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-
+        
+        let okTitle = lang == .arabic ? "موافق" : "OK"
+        alert.addAction(UIAlertAction(title: okTitle, style: .default))
+        
         present(alert, animated: true)
     }
     
@@ -805,13 +827,27 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     }
     
     func setupRatingDropdownMenu() {
-        let starOptions: [(Int, String)] = [
-            (5, "★★★★★ (5 - Excellent)"),
-            (4, "★★★★ (4 - Good)"),
-            (3, "★★★ (3 - Average)"),
-            (2, "★★ (2 - Poor)"),
-            (1, "★ (1 - Terrible)")
-        ]
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let starOptions: [(Int, String)]
+        
+        if lang == .arabic {
+            starOptions = [
+                (5, "★★★★★ (٥ - ممتاز)"),
+                (4, "★★★★ (٤ - جيد)"),
+                (3, "★★★ (٣ - متوسط)"),
+                (2, "★★ (٢ - ضعيف)"),
+                (1, "★ (١ - سيئ جداً)")
+            ]
+        } else {
+            starOptions = [
+                (5, "★★★★★ (5 - Excellent)"),
+                (4, "★★★★ (4 - Good)"),
+                (3, "★★★ (3 - Average)"),
+                (2, "★★ (2 - Poor)"),
+                (1, "★ (1 - Terrible)")
+            ]
+        }
         
         var actions: [UIAction] = []
         for (rating, title) in starOptions {
@@ -822,7 +858,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             actions.append(action)
         }
         
-        let menu = UIMenu(title: "Select Rating", children: actions)
+        let menuTitle = lang == .arabic ? "اختر التقييم" : "Select Rating"
+        let menu = UIMenu(title: menuTitle, children: actions)
         selectratingButton.showsMenuAsPrimaryAction = true
         selectratingButton.menu = menu
     }

@@ -23,17 +23,51 @@ class RightMenuViewController: UIViewController, UIViewControllerTransitioningDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         rightMenuTableView.applyCardStyle()
         rightMenuTableView.semanticContentAttribute = .forceLeftToRight
         rightMenuTableView.rowHeight = UITableView.automaticDimension
         rightMenuTableView.estimatedRowHeight = 50
         let rowHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 44.0 : 51.0
         rightMenuTableView.rowHeight = rowHeight
+        
+        updateMenuTitles()
+    }
+    
+    @objc func updateMenuTitles() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            menuArray = [
+                "الأسئلة الشائعة",
+                "سياسة الخصوصية",
+                "الشروط والأحكام",
+                "معلومات عنا",
+                "الإبلاغ عن تطبيق",
+                UserSessionManager.getUser() != nil ? "الملف الشخصي" : "تسجيل الدخول",
+                "تسجيل الخروج",
+                "حذف الحساب"
+            ]
+        } else {
+            menuArray = [
+                "FAQ",
+                "Privacy Policy",
+                "Terms & Conditions",
+                "About Us",
+                "Report an app",
+                UserSessionManager.getUser() != nil ? "Profile" : "Login",
+                "Logout",
+                "Delete Account"
+            ]
+        }
+        
+        rightMenuTableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.backButtonTitle = ""
+        updateMenuTitles()
     }
 }
 
@@ -52,6 +86,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow
+        let lang = AppSettings.shared.selectedLanguage
         
         guard let indexPath = indexPath else { return }
         
@@ -84,7 +119,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         case 4 :
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
             controller.comingfrom = .RightMenu
-            controller.titleText = "Report an app"
+            controller.titleText = lang == .arabic ? "الإبلاغ عن تطبيق" : "Report an app"
             controller.modalPresentationStyle = .overFullScreen
             present(controller, animated: true)
         case 5:
@@ -109,7 +144,13 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
                 }
             }
         case 6 :
-            showAlert(title: "syiabooking", message: "Are you sure want to logout", type: .error, OkButtonTitle: "Ok", cancelButtonTitle: "Cancle", onOK: {
+            // Logout alert with Arabic localization
+            let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+            let message = lang == .arabic ? "هل أنت متأكد أنك تريد تسجيل الخروج؟" : "Are you sure you want to logout?"
+            let okTitle = lang == .arabic ? "نعم" : "Ok"
+            let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+            
+            showAlert(title: title, message: message, type: .error, OkButtonTitle: okTitle, cancelButtonTitle: cancelTitle, onOK: {
                 UserSessionManager.clearUser()
                 NotificationCenter.default.post(
                     name: .didLogoutSuccessfully,
@@ -152,51 +193,73 @@ extension RightMenuViewController: UIPopoverPresentationControllerDelegate {
 
 extension RightMenuViewController{
     func showDeleteAccountOptions() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let title = lang == .arabic ? "حذف الحساب" : "Delete Account"
+        let message = lang == .arabic ? "اختر خياراً لحذف حسابك" : "Choose an option to delete your account."
+        let deleteTitle = lang == .arabic ? "حذف الحساب" : "Delete Account"
+        let requestTitle = lang == .arabic ? "طلب حذف الحساب" : "Request to Delete Account"
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        
         let alert = UIAlertController(
-            title: "Delete Account",
-            message: "Choose an option to delete your account.",
+            title: title,
+            message: message,
             preferredStyle: .alert
         )
         
-        alert.addAction(UIAlertAction(title: "Delete Account", style: .destructive, handler: { _ in
+        alert.addAction(UIAlertAction(title: deleteTitle, style: .destructive, handler: { _ in
             self.confirmPermanentDeletion()
         }))
         
-        alert.addAction(UIAlertAction(title: "Request to Delete Account", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: requestTitle, style: .default, handler: { _ in
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "AccountDeletionVC") as! AccountDeletionVC
             self.present(controller, animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         present(alert, animated: true)
-    }    
+    }
     
     private func confirmPermanentDeletion() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let title = lang == .arabic ? "هل أنت متأكد؟" : "Are you sure?"
+        let message = lang == .arabic ? "سيؤدي هذا إلى حذف حسابك وجميع البيانات المرتبطة به بشكل دائم." : "This will permanently delete your account and all related data."
+        let confirmTitle = lang == .arabic ? "نعم، احذف" : "Yes, Delete"
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        
         let confirmAlert = UIAlertController(
-            title: "Are you sure?",
-            message: "This will permanently delete your account and all related data.",
+            title: title,
+            message: message,
             preferredStyle: .alert
         )
         
-        confirmAlert.addAction(UIAlertAction(title: "Yes, Delete", style: .destructive, handler: { _ in
+        confirmAlert.addAction(UIAlertAction(title: confirmTitle, style: .destructive, handler: { _ in
             self.callDeleteAccountAPI()
         }))
         
-        confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        confirmAlert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         present(confirmAlert, animated: true)
     }
     
     private func callDeleteAccountAPI() {
+        let lang = AppSettings.shared.selectedLanguage
+        
         if let user = UserSessionManager.getUser() {
             let usermobile = "\(user.mobile)-Block"
             let useremail = "\(user.email)-Block"
             
             let deleteUser = BookingModel(id: user.id, name: user.name, mobile: usermobile, address: user.address, gender: user.gender, email: useremail, country: user.country, dob: user.dob)
             
+            let successTitle = lang == .arabic ? "نجاح" : "Success"
+            let failTitle = lang == .arabic ? "فشل" : "Fail"
+            let successMessage = lang == .arabic ? "تم حذف حسابك بنجاح." : "Your account has been deleted successfully."
+            let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
+            
             if user.mobile == "90000000" {
                 self.showAlert(
-                    title: "Success",
-                    message: "Your account has been deleted successfully.",
+                    title: successTitle,
+                    message: successMessage,
                     type: .success,
                     onOK: {
                         UserSessionManager.clearUser()
@@ -209,8 +272,8 @@ extension RightMenuViewController{
                     if result {
                         //account deleted
                         self.showAlert(
-                            title: "Success",
-                            message: "Your  account has been deleted successfully.",
+                            title: successTitle,
+                            message: successMessage,
                             type: .success,
                             onOK: {
                                 UserSessionManager.clearUser()
@@ -219,8 +282,8 @@ extension RightMenuViewController{
                         )
                     }else{
                         self.showAlert(
-                            title: "Fail",
-                            message: "Somthing went wrong",
+                            title: failTitle,
+                            message: failMessage,
                             type: .error,
                             onOK: {}
                         )
@@ -238,4 +301,3 @@ extension RightMenuViewController: SFSafariViewControllerDelegate {
         }
     }
 }
-

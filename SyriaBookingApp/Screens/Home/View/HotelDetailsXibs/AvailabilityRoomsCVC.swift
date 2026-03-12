@@ -31,6 +31,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var segmentControl: UISegmentedControl!
     @IBOutlet weak var imageCountLabel: UILabel!
     @IBOutlet weak var noRatesLabel: UILabel!
+    @IBOutlet weak var refundTitleButton: UIButton!
     
     var isLocalRate : Bool = false
     var selectedRoom: RoomElement?
@@ -186,6 +187,29 @@ extension AvailabilityRoomsCVC {
         imageCountLabel.layer.maskedCorners = [.layerMinXMinYCorner]
         
         configureNoRatesLabel()
+        
+        let lang = AppSettings.shared.selectedLanguage
+        let buttonFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+        
+        if lang == .arabic {
+            let refundTitle = NSAttributedString(
+                string: "عرض",
+                attributes: [
+                    .font: buttonFont,
+                    .foregroundColor: refundTitleButton.titleColor(for: .normal) ?? .systemBlue
+                ]
+            )
+            refundTitleButton.setAttributedTitle(refundTitle, for: .normal)
+        } else {
+            let refundTitle = NSAttributedString(
+                string: "View",
+                attributes: [
+                    .font: buttonFont,
+                    .foregroundColor: refundTitleButton.titleColor(for: .normal) ?? .systemBlue
+                ]
+            )
+            refundTitleButton.setAttributedTitle(refundTitle, for: .normal)
+        }
     }
     
     private func configureNoRatesLabel() {
@@ -246,7 +270,6 @@ extension AvailabilityRoomsCVC {
                 galleryVC.roomImages = [coverImage]
                 galleryVC.initialIndex = 0
             } else {
-                print("No images available for this room")
                 return
             }
         }

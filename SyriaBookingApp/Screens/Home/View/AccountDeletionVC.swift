@@ -13,11 +13,62 @@ class AccountDeletionVC: UIViewController {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var phoneNumberTextField: UITextField!
+    @IBOutlet weak var accountDeletionTitleLabel: UILabel!
+    @IBOutlet weak var subjectTitleLabel: UILabel!
+    @IBOutlet weak var messageTitleLabel: UILabel!
+    @IBOutlet weak var nameTitleLabel: UILabel!
+    @IBOutlet weak var emailTitleLabel: UILabel!
+    @IBOutlet weak var phoneNumberTitleLabel: UILabel!
+    @IBOutlet weak var sendRequestTitleButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         hideKeyboardWhenTappedAround()
         attachData()
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        let bold17Font = UIFont.boldSystemFont(ofSize: 17)
+        
+        if lang == .arabic {
+            accountDeletionTitleLabel.text = "حذف الحساب"
+            subjectTitleLabel.text = "الموضوع"
+            messageTitleLabel.text = "الرسالة"
+            nameTitleLabel.text = "الاسم"
+            emailTitleLabel.text = "البريد الإلكتروني"
+            phoneNumberTitleLabel.text = "رقم الهاتف"
+            SubjectTextField.text = "طلب حذف الحساب"
+            
+            let sendRequestAttributedTitle = NSAttributedString(
+                string: "إرسال الطلب",
+                attributes: [
+                    .font: bold17Font,
+                    .foregroundColor: sendRequestTitleButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            sendRequestTitleButton.setAttributedTitle(sendRequestAttributedTitle, for: .normal)
+        } else {
+            accountDeletionTitleLabel.text = "Account Deletion"
+            subjectTitleLabel.text = "Subject"
+            messageTitleLabel.text = "Message"
+            nameTitleLabel.text = "Name"
+            emailTitleLabel.text = "Email"
+            phoneNumberTitleLabel.text = "Phone Number"
+            SubjectTextField.text = "Requesting for Deleting account"
+            
+            let sendRequestAttributedTitle = NSAttributedString(
+                string: "Send Request",
+                attributes: [
+                    .font: bold17Font,
+                    .foregroundColor: sendRequestTitleButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            sendRequestTitleButton.setAttributedTitle(sendRequestAttributedTitle, for: .normal)
+        }
     }
     
     func attachData() {
@@ -29,8 +80,11 @@ class AccountDeletionVC: UIViewController {
     }
     
     @IBAction func submitDeleteAccountButtonAction(_ sender: UIButton) {
+        let lang = AppSettings.shared.selectedLanguage
+        let enterMessageText = lang == .arabic ? "الرجاء إدخال رسالة" : "Please enter a message"
+        
         guard let message = messageTextField.text, !message.isEmpty else {
-            showAlert("Please enter a message")
+            showAlert(enterMessageText)
             return
         }
         submitDeleteAccountRequest(message: message)
@@ -38,6 +92,12 @@ class AccountDeletionVC: UIViewController {
     
     
     private func submitDeleteAccountRequest(message: String) {
+        let lang = AppSettings.shared.selectedLanguage
+        let successTitle = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+        let successMessage = lang == .arabic ?
+        "شكراً لك — لقد تلقينا طلب الحذف الخاص بك. سنقوم بمعالجته خلال 7 أيام عمل." :
+        "Thanks — we received your deletion request. We will process it within 7 business days."
+        let errorMessage = lang == .arabic ? "حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقاً." : "Something went wrong. Please try again later."
         
         guard let user = UserSessionManager.getUser() else { return }
         
@@ -86,11 +146,11 @@ class AccountDeletionVC: UIViewController {
                 
                 DispatchQueue.main.async {
                     if httpResponse.statusCode == 200 {
-                        self.showAlert(title:"SyriaBooking", message:"Thanks — we received your deletion request. We will process it within 7 business days.", onOK : {
+                        self.showAlert(title: successTitle, message: successMessage, onOK: {
                             self.goToHomeTab()
                         })
                     } else {
-                        self.showAlert("Something went wrong. Please try again later.")
+                        self.showAlert(errorMessage)
                     }
                 }
             }

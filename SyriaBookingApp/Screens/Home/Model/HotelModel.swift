@@ -21,7 +21,7 @@ struct Hotel: Codable {
     let id, name: String
     let city: String
     let nameAR: String?
-    let cityAR: String?
+    let cityAR: String
     let shortDescriptionAR, shortDescription: String?
     let descriptionAR, description: String?
     let type: HotelType

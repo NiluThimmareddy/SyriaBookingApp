@@ -14,6 +14,7 @@ class RoomsRatesTVC : UITableViewCell {
     @IBOutlet weak var checkMarkButton: UIButton!
     @IBOutlet weak var roomPriceLabel: UILabel!
     @IBOutlet weak var selectRoomsButton: UIButton!
+    @IBOutlet weak var roomsTitleLabel: UILabel!
     
     var selectedQty = 1
     var onQuantityChanged: ((Int) -> Void)?
@@ -24,6 +25,8 @@ class RoomsRatesTVC : UITableViewCell {
         super.awakeFromNib()
         self.isSkeletonable = true
         self.contentView.isSkeletonable = true
+        let lang = AppSettings.shared.selectedLanguage
+        roomsTitleLabel.text = lang == .arabic ? "الغرف" : "Rooms"
     }
     
     func configure(with selectedRoom: RoomElement, ratesForLocal: Bool, onQuantityChanged: @escaping (Int) -> Void) {

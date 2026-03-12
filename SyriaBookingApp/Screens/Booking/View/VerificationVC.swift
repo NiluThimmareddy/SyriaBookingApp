@@ -32,8 +32,21 @@ class VerificationVC : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add language change notification observer
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTexts),
+            name: .languageChanged,
+            object: nil
+        )
+        
         setUpUI()
         hideKeyboardWhenTappedAround()
+    }
+    
+    @objc func updateTexts() {
+        setUpLanguage()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,6 +59,13 @@ class VerificationVC : BaseViewController {
     }
     
     @IBAction func verifyAndContinueButtonAction(_ sender: Any) {
+        let lang = AppSettings.shared.selectedLanguage
+        let enterOTPMessage = lang == .arabic ? "الرجاء إدخال رمز التحقق." : "Please enter the OTP."
+        let errorTitle = lang == .arabic ? "خطأ" : "Error"
+        let otpMismatchMessage = lang == .arabic ? "رمز التحقق غير صحيح. يرجى إدخال الرمز الصحيح." : "OTP is not matching please enter correct otp"
+        let successTitle = lang == .arabic ? "نجاح" : "Success"
+        let registrationSuccessMessage = lang == .arabic ? "تم تسجيل رقم هاتفك المحمول بنجاح." : "Your mobile number has been Registered successfully."
+        
         guard let mobileNumber = mobileNumber else {
             return
         }
@@ -53,7 +73,7 @@ class VerificationVC : BaseViewController {
         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
         
         guard !otp.isEmpty else {
-            showAlert("Please enter the OTP.")
+            showAlert(enterOTPMessage)
             return
         }
         
@@ -62,8 +82,8 @@ class VerificationVC : BaseViewController {
                 self.performNavigationAfterVerification()
             }else{
                 self.showAlert(
-                    title: "Error",
-                    message: "OTP is not matching please enter correct otp",
+                    title: errorTitle,
+                    message: otpMismatchMessage,
                     type: .success,
                     onOK:{
                         self.otpTF.forEach { $0.text = "" }
@@ -77,13 +97,11 @@ class VerificationVC : BaseViewController {
                 self.viewModel.onSuccess = { response in
                     UserSessionManager.saveUser(response)
                     
-                    
                     if self.isNewUser {
-                        //                    self.registerMobile(response.mobile)
                         DispatchQueue.main.async {
                             self.showAlert(
-                                title: "Success",
-                                message: "Your mobile number has been Registered successfully.",
+                                title: successTitle,
+                                message: registrationSuccessMessage,
                                 type: .success,
                                 onOK: {
                                     self.dismissVerificationFlow()
@@ -99,7 +117,7 @@ class VerificationVC : BaseViewController {
                 self.viewModel.onError = { error in
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Error",
+                            title: errorTitle,
                             message: error,
                             type: .success,
                             onOK:{
@@ -114,35 +132,10 @@ class VerificationVC : BaseViewController {
         }
     }
     
-//    func performNavigationAfterVerification() {
-//        switch self.comingFrom {
-//        case .Home:
-//            self.dismiss(animated: true){
-//                self.goToHomeTab()
-//            }
-//            self.dismissPopup()
-//            
-//        case .BookingHistory:
-//            self.dismiss(animated: true){
-//                self.goToHomeTab()
-//            }
-//            self.dismissPopup()
-//        case .HotelDetail:
-//            self.dismiss(animated: true)
-//            {
-//                self.goToHomeTab()
-//            }
-//        case .none:
-//            self.dismissPopup()
-//            self.dismiss(animated: true){
-//                self.goToHomeTab()
-//            }
-//        case .some(.RightMenu), .some(.TabBar):
-//            break
-//        }
-//    }
-    
     func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
+        let lang = AppSettings.shared.selectedLanguage
+        let errorMessage = lang == .arabic ? "رمز التحقق غير صحيح. يرجى التحقق وإعادة الإدخال." : "Incorrect OTP entered. Please check and re-enter."
+        
         showLoader()
         viewModel.onVerifyOTPSucess = { response in
             self.hideLoader()
@@ -150,13 +143,17 @@ class VerificationVC : BaseViewController {
         }
         viewModel.onError = { error in
             self.hideLoader()
-            self.showAlert(title:"SyriaBooking", message: error.description, onOK: {
+            self.showAlert(title: "SyriaBooking", message: errorMessage, onOK: {
                 self.otpTF.forEach { textfield in
                     textfield.text = ""
                 }
             })
         }
         viewModel.verifyOTP(mobile: mobile, otp: otp)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -205,6 +202,7 @@ extension VerificationVC {
         }
         setUpLanguage()
     }
+    
     func setUpLanguage() {
         if AppSettings.shared.selectedLanguage == .english {
             verifyAndContinueButton.setTitle("Verify & Continue", for: .normal)
@@ -228,9 +226,8 @@ extension VerificationVC {
         self.dismiss(animated: true)
     }
 }
-    extension Notification.Name {
-        static let didLoginSuccessfully = Notification.Name("didLoginSuccessfully")
-        static let didLogoutSuccessfully = Notification.Name("didLogoutSuccessfully")
-    }
 
-
+extension Notification.Name {
+    static let didLoginSuccessfully = Notification.Name("didLoginSuccessfully")
+    static let didLogoutSuccessfully = Notification.Name("didLogoutSuccessfully")
+}

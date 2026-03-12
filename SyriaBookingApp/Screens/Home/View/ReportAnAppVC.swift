@@ -108,16 +108,21 @@ class ReportAnAppVC: BaseViewController {
     
     
     @IBAction func submitButtonAction(_ sender: Any) {
-        // Validate subject
+        let lang = AppSettings.shared.selectedLanguage
+
         guard let subject = selectTypeButton.titleLabel?.text,
-              !subject.isEmpty, subject.lowercased() != "select subject" else {
-            showAlert("Please select subject")
+              !subject.isEmpty,
+              (lang == .arabic ? subject != "اختر الموضوع" : subject.lowercased() != "select subject") else {
+            let message = lang == .arabic ? "الرجاء اختيار الموضوع" : "Please select subject"
+            showAlert(message)
             return
         }
+
         // Validate message
         guard let message = enterMessageTextView.text,
               !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            showAlert("Please enter message")
+            let message = lang == .arabic ? "الرجاء إدخال الرسالة" : "Please enter message"
+            showAlert(message)
             return
         }
         

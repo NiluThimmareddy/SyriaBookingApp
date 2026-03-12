@@ -398,7 +398,11 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         }
         
         guard let city = selectedCity else {
-            showAlert(title: "SyriaBooking", message: "Please select city")
+            let lang = AppSettings.shared.selectedLanguage
+            let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+            let message = lang == .arabic ? "الرجاء اختيار المدينة" : "Please select city"
+            
+            showAlert(title: title, message: message)
             return
         }
 
@@ -419,7 +423,11 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         }
         
         if isPlaceholder {
-            showAlert(title: "SyriaBooking", message: "Please select city")
+            let lang = AppSettings.shared.selectedLanguage
+            let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+            let message = lang == .arabic ? "الرجاء اختيار المدينة" : "Please select city"
+            
+            showAlert(title: title, message: message)
             return
         }
         
@@ -554,7 +562,11 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             self.navigationController?.navigationBar.tintColor = .white
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else {
-            showAlert(title: "SyriaBooking", message: "Please select city")
+            let lang = AppSettings.shared.selectedLanguage
+            let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
+            let message = lang == .arabic ? "الرجاء اختيار المدينة" : "Please select city"
+
+            showAlert(title: title, message: message)
         }
     }
     
@@ -1380,7 +1392,7 @@ extension HomeViewController {
                 
                 self.WhereToNextCityList = self.viewModel.hotels?.data.compactMap { hotel -> WhereToNextList? in
                     let cityEN = hotel.city.trimmingCharacters(in: .whitespacesAndNewlines)
-                    let cityAR = hotel.cityAR?.trimmingCharacters(in: .whitespacesAndNewlines) ?? hotel.city
+                    let cityAR = hotel.cityAR.trimmingCharacters(in: .whitespacesAndNewlines) ?? hotel.city
                     
                     // Avoid duplicates (English check)
                     guard !cityEN.isEmpty, seenCities.insert(cityEN.lowercased()).inserted else {
