@@ -136,19 +136,19 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
             controller.comingFrom = .tabBar
             self.navigationController?.pushViewController(controller, animated: true)
         case 1 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "CareersVC") as! CareersVC
+            let controller = storyboard?.instantiateViewController(withIdentifier: "CareersViewController") as! CareersViewController
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(controller, animated: true)
         case 2:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "HowItsWorkVC") as! HowItsWorkVC
+            let controller = storyboard?.instantiateViewController(withIdentifier: "HowItWorksViewController") as! HowItWorksViewController
             self.navigationController?.pushViewController(controller, animated: true)
         case 3:
             let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
             self.navigationController?.pushViewController(controller, animated: true)
         case 4:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsVC") as! Covid19FAQsVC
+            let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsViewController") as! Covid19FAQsViewController
             self.navigationController?.pushViewController(controller, animated: true)
         case 5:
             let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityVC") as! SustainabilityVC

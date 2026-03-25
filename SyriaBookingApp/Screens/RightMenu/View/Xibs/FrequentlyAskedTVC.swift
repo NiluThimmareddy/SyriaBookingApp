@@ -15,6 +15,7 @@ class FrequentlyAskedTVC: UITableViewCell {
     @IBOutlet weak var headLineLabel: UILabel!
     @IBOutlet weak var imageUIView: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var lineView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
