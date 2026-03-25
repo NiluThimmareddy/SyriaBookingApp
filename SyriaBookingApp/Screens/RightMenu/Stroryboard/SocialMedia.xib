@@ -26,20 +26,20 @@
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="UNM-kv-JEF">
                             <rect key="frame" x="100" y="38" width="183" height="40"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z31-ng-sZ6">
-                                    <rect key="frame" x="0.0" y="0.0" width="42" height="40"/>
-                                    <state key="normal" title="Button"/>
-                                    <buttonConfiguration key="configuration" style="plain" image="ic_facebook"/>
-                                    <connections>
-                                        <action selector="facebookButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="64D-rO-Aig"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6e-ja-F3x">
-                                    <rect key="frame" x="47" y="0.0" width="42" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="42" height="40"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" image="ic_instagram"/>
                                     <connections>
                                         <action selector="instagramButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Fhl-tB-plT"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z31-ng-sZ6">
+                                    <rect key="frame" x="47" y="0.0" width="42" height="40"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" image="ic_facebook"/>
+                                    <connections>
+                                        <action selector="facebookButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="64D-rO-Aig"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L1H-EI-AQh">
@@ -113,10 +113,10 @@
         </view>
     </objects>
     <resources>
-        <image name="ic_facebook" width="33.333332061767578" height="33.333332061767578"/>
-        <image name="ic_instagram" width="25" height="25"/>
-        <image name="ic_linkedin" width="25" height="25"/>
-        <image name="ic_tiktok" width="25" height="25"/>
+        <image name="ic_facebook" width="40" height="40"/>
+        <image name="ic_instagram" width="40" height="40"/>
+        <image name="ic_linkedin" width="40" height="40"/>
+        <image name="ic_tiktok" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

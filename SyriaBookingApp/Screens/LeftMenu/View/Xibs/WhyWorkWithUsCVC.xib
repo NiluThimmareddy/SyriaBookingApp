@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="WhyWorkWithUsCVC" customModule="SyriaBookingApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="260" height="290"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="260" height="290"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHU-r0-YlS">
+                        <rect key="frame" x="5" y="5" width="250" height="280"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_inovateLocally" translatesAutoresizingMaskIntoConstraints="NO" id="bRL-Ze-KDK">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="140"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="emT-cn-tvr"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CHj-3c-Tzm">
+                                <rect key="frame" x="0.0" y="110" width="250" height="170"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_Bulb" translatesAutoresizingMaskIntoConstraints="NO" id="BdY-eQ-abo">
+                                        <rect key="frame" x="15" y="10" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="BdY-eQ-abo" secondAttribute="height" id="RNU-5t-MFm"/>
+                                            <constraint firstAttribute="height" constant="40" id="T0N-ey-Ke4"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Innovate Locally, Impact Nationally" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaY-81-0E1">
+                                        <rect key="frame" x="15" y="60" width="225" height="33.666666666666657"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Be part of a pioneering tech company creating real change in the Syrian travel and tourism industry." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bvl-pU-Uqs">
+                                        <rect key="frame" x="15" y="103.66666666666666" width="225" height="43"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="bvl-pU-Uqs" firstAttribute="trailing" secondItem="VaY-81-0E1" secondAttribute="trailing" id="JQS-9T-acJ"/>
+                                    <constraint firstItem="BdY-eQ-abo" firstAttribute="top" secondItem="CHj-3c-Tzm" secondAttribute="top" constant="10" id="ORs-Vs-OD7"/>
+                                    <constraint firstItem="VaY-81-0E1" firstAttribute="top" secondItem="BdY-eQ-abo" secondAttribute="bottom" constant="10" id="Rvb-jj-Gcc"/>
+                                    <constraint firstItem="VaY-81-0E1" firstAttribute="leading" secondItem="BdY-eQ-abo" secondAttribute="leading" id="cql-Fj-li6"/>
+                                    <constraint firstAttribute="trailing" secondItem="VaY-81-0E1" secondAttribute="trailing" constant="10" id="dHB-Yr-SP9"/>
+                                    <constraint firstItem="bvl-pU-Uqs" firstAttribute="top" secondItem="VaY-81-0E1" secondAttribute="bottom" constant="10" id="djv-nh-fZg"/>
+                                    <constraint firstAttribute="height" constant="170" id="fPg-lL-DTi"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bvl-pU-Uqs" secondAttribute="bottom" constant="5" id="udH-bP-7VE"/>
+                                    <constraint firstItem="bvl-pU-Uqs" firstAttribute="leading" secondItem="VaY-81-0E1" secondAttribute="leading" id="uz8-L4-40L"/>
+                                    <constraint firstItem="BdY-eQ-abo" firstAttribute="leading" secondItem="CHj-3c-Tzm" secondAttribute="leading" constant="15" id="y1y-Yi-lSG"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bRL-Ze-KDK" firstAttribute="leading" secondItem="eHU-r0-YlS" secondAttribute="leading" id="1vV-CC-Id6"/>
+                            <constraint firstAttribute="bottom" secondItem="CHj-3c-Tzm" secondAttribute="bottom" id="DxG-a4-vw1"/>
+                            <constraint firstItem="bRL-Ze-KDK" firstAttribute="top" secondItem="eHU-r0-YlS" secondAttribute="top" id="SiS-WE-cY0"/>
+                            <constraint firstItem="CHj-3c-Tzm" firstAttribute="leading" secondItem="eHU-r0-YlS" secondAttribute="leading" id="YaH-Og-clD"/>
+                            <constraint firstAttribute="trailing" secondItem="CHj-3c-Tzm" secondAttribute="trailing" id="fQQ-5T-CNQ"/>
+                            <constraint firstAttribute="trailing" secondItem="bRL-Ze-KDK" secondAttribute="trailing" id="ktO-NN-tMQ"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="eHU-r0-YlS" secondAttribute="trailing" constant="5" id="Hy8-3o-Hsm"/>
+                <constraint firstItem="eHU-r0-YlS" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="iU8-oX-QtZ"/>
+                <constraint firstAttribute="bottom" secondItem="eHU-r0-YlS" secondAttribute="bottom" constant="5" id="pFL-cu-9Bu"/>
+                <constraint firstItem="eHU-r0-YlS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="vIZ-gZ-tvh"/>
+            </constraints>
+            <size key="customSize" width="327" height="216"/>
+            <connections>
+                <outlet property="backView" destination="eHU-r0-YlS" id="q4B-vA-a8z"/>
+                <outlet property="bottomView" destination="CHj-3c-Tzm" id="cfz-8U-eQ0"/>
+                <outlet property="descriptionLabel" destination="bvl-pU-Uqs" id="CC1-Dh-PY4"/>
+                <outlet property="iconImgView" destination="BdY-eQ-abo" id="h1m-fg-11M"/>
+                <outlet property="imgView" destination="bRL-Ze-KDK" id="Ztj-IO-zY6"/>
+                <outlet property="titleLabel" destination="VaY-81-0E1" id="OqL-Kf-3Za"/>
+            </connections>
+            <point key="canvasLocation" x="227.48091603053433" y="47.183098591549296"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="ic_Bulb" width="40" height="40"/>
+        <image name="ic_inovateLocally" width="258" height="140"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
