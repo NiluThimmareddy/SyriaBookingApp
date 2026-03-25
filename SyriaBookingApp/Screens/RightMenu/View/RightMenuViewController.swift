@@ -93,7 +93,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         switch indexPath.row {
         case 0 :
             self.dismiss(animated: true) {
-                let controller = UIStoryboard(name: "RightMenu", bundle: nil).instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewController") as! FrequentlyAskedTVCViewController
+                let controller = UIStoryboard(name: "RightMenu", bundle: nil).instantiateViewController(withIdentifier: "FrequentlyAskedTVCViewControllercopy") as! FrequentlyAskedTVCViewControllercopy
                 controller.navigationItem.backButtonTitle = ""
                 self.navnController?.pushViewController(controller, animated: true)
             }

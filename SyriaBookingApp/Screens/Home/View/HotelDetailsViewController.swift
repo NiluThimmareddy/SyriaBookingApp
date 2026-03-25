@@ -372,6 +372,7 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                     }
                     self.present(controller, animated: true)
                 } else {
+                    
                     guard let room = selectedRoom else { return }
                     self.selectedRoom = room
                     self.selectedRoomRates = room.rates

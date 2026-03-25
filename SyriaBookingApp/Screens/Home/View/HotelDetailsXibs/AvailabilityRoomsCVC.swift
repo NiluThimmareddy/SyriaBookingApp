@@ -954,21 +954,28 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     }
     
     @IBAction func bookNowButtonAction(_ sender: Any) {
-        if let room = selectedRoom {
-            // Check if there's at least one selected rate with valid price
-            let hasSelectedValidRate = room.rates.contains { rate in
-                let hasValidPrice = isLocalRate ? (rate.localPrice ?? 0) > 0 : rate.price > 0
-                return rate.isSelected && hasValidPrice
+        
+        // user nil
+        
+        if UserSessionManager.getUser() == nil{
+            self.onBooknowBottonClick?(selectedRoom)
+        }else{
+            if let room = selectedRoom {
+                // Check if there's at least one selected rate with valid price
+                let hasSelectedValidRate = room.rates.contains { rate in
+                    let hasValidPrice = isLocalRate ? (rate.localPrice ?? 0) > 0 : rate.price > 0
+                    return rate.isSelected && hasValidPrice
+                }
+                
+                if !hasSelectedValidRate {
+                    // No valid rate selected - show alert
+                    delegate?.showAlertForRateSelection()
+                    return
+                }
             }
             
-            if !hasSelectedValidRate {
-                // No valid rate selected - show alert
-                delegate?.showAlertForRateSelection()
-                return
-            }
+            self.onBooknowBottonClick?(selectedRoom)
         }
-        
-        self.onBooknowBottonClick?(selectedRoom)
     }
     
     @IBAction func refundPolicyButtonAction(_ sender : UIButton) {

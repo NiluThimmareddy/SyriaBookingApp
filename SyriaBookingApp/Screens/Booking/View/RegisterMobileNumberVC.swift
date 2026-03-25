@@ -106,17 +106,7 @@ class RegisterMobileNumberVC : BaseViewController {
         stopResendTimer()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        mobileNumberCountryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        
-        enterMobileNumberTF.layer.cornerRadius = 5
-        enterMobileNumberTF.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        enterMobileNumberTF.layer.masksToBounds = true
-        mobileNumberCountryCodeButton.layer.cornerRadius = 5
-        mobileNumberCountryCodeButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-        mobileNumberCountryCodeButton.layer.masksToBounds = true
-    }
+    
     
     // MARK: - Timer Methods
     func startResendTimer() {
@@ -1072,9 +1062,9 @@ class RegisterMobileNumberVC : BaseViewController {
         enterMobileNumberTF.layer.cornerRadius = 5
         enterMobileNumberTF.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         enterMobileNumberTF.layer.masksToBounds = true
-        mobileNumberCountryCodeButton.layer.cornerRadius = 5
+//        mobileNumberCountryCodeButton.layer.cornerRadius = 5
         mobileNumberCountryCodeButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-        mobileNumberCountryCodeButton.layer.masksToBounds = true
+//        mobileNumberCountryCodeButton.layer.masksToBounds = true
     }
     
     // MARK: - Timer Methods
