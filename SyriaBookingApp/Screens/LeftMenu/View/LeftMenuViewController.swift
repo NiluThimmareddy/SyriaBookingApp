@@ -151,10 +151,10 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
             let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsViewController") as! Covid19FAQsViewController
             self.navigationController?.pushViewController(controller, animated: true)
         case 5:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityVC") as! SustainabilityVC
+            let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityViewController") as! SustainabilityViewController
             self.navigationController?.pushViewController(controller, animated: true)
         case 6:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "SafetyResourceCenterVC") as! SafetyResourceCenterVC
+            let controller = storyboard?.instantiateViewController(withIdentifier: "SafetyResourceCenterViewController") as! SafetyResourceCenterViewController
             self.navigationController?.pushViewController(controller, animated: true)
         default :
             break
