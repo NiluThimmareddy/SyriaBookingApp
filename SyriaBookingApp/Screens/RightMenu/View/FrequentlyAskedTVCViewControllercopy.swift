@@ -51,7 +51,7 @@ extension FrequentlyAskedTVCViewControllercopy: UITableViewDelegate, UITableView
             cell.contentView.layer.cornerRadius = 10
         } else {
             cell.contentView.layer.cornerRadius = 6
-                 cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.04)
+                 cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.06)
         }
         
         return cell
