@@ -34,6 +34,7 @@ class RateAndReviewsTVC : UITableViewCell {
     
     func configure(with review: Review) {
         reviewerNameLabel.text = review.reviewerName
+        
         reviewDateLabel.text = formattedDate(from: review.createdOn)
         starRatings.rating = Double(review.rating)
         reviewTextLabel.text = review.reviewText

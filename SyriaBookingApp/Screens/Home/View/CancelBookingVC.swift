@@ -44,11 +44,24 @@ class CancelBookingVC: UIViewController {
     }
 
     @IBAction func confirmCancelButtonAction(_ sender: Any) {
-
         guard let booking = booking else { return }
         showLoader()
         delegate?.didConfirmCancellation(for: booking, reason: reasonTextView.text ?? "")
-       
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setUpHotelName()
+    }
+    
+    func setUpHotelName(){
+        guard let booking = booking else{
+            return
+        }
+
+        let checkIn = booking.checkInUtc.toDayMonthYear()
+        let checkOut = booking.checkOutUtc.toDayMonthYear()
+        
+        hotelNameAndDateLabel.text = "\(booking.hotelName) • \(checkIn) – \(checkOut)"
     }
     
 }
@@ -60,14 +73,12 @@ extension CancelBookingVC : UITextViewDelegate {
         placeholderLabel.font = UIFont.systemFont(ofSize: 15)
         placeholderLabel.textColor = .lightGray
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         reasonTextView.addSubview(placeholderLabel)
         
         NSLayoutConstraint.activate([
             placeholderLabel.topAnchor.constraint(equalTo: reasonTextView.topAnchor, constant: 8),
             placeholderLabel.leadingAnchor.constraint(equalTo: reasonTextView.leadingAnchor, constant: 5)
         ])
-        
         placeholderLabel.isHidden = !reasonTextView.text.isEmpty
     }
     
@@ -86,6 +97,7 @@ extension CancelBookingVC : UITextViewDelegate {
             confirmCancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         }
     }
+    
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
     }

@@ -394,12 +394,16 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                         self.selectedRates.append(rate)
                     }
                 } else {
+                    
                     self.selectedRates.removeAll { $0.id == rate.id }
+                    
                 }
                 
                 cell.segmentChanged = {
                     self.totalPriceView.isHidden = true
                 }
+                
+                
                 self.updateTotalPrice()
             }
             cell.configure(with: room)
@@ -585,7 +589,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
                 
                 let totalDiscount = selectedRates.reduce(0) { $0 + ($1.discount ?? 0) }
                 if total > 0 {
-                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $ \(total) (\(totalDiscount)% Discount"
+                    totalAmountLabel.text = "\(selectedRoomsCount) Rooms (\(totalQuantity) Qty) - Total: $ \(total) (\(totalDiscount)% Discount)"
                 } else {
                     totalAmountLabel.text = ""
                 }

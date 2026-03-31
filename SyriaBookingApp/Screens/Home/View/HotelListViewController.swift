@@ -26,13 +26,16 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     var viewModel = HotelViewModel()
     var selectedCity = ""
     var shouldSortByRating: Bool = false
-    var scrolleView: UIScrollView { HotelListtableView }
+//    var scrolleView: UIScrollView { HotelListtableView }
     var scrolltoTopHelper : ScrollToTopHelper?
     var scrollToTopButton = UIButton(type: .system)
     var comingFrom : hotelListSource = .tabBar
     var isGridView = false
-    var isLoadingData = true
+    var isLoadingData = true    
     
+    var scrolleView: UIScrollView {
+        return isGridView ? hotelCollectionView : HotelListtableView
+    }
     var selectedCheckInDate: Date?
     var selectedCheckOutDate: Date?
 

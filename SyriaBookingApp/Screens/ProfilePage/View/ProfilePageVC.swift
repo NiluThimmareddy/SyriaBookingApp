@@ -449,9 +449,11 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             navigationController?.pushViewController(vc, animated: true)
         }
         else if indexPath.row == 3 {
-            if hasReviews() {
+            let reviewsArray  =  hasReviews()
+            if  !reviewsArray.isEmpty {
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
                 let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+                viewAllVC.reviewsArray = reviewsArray
                 viewAllVC.comingFrom = .profile
                 viewAllVC.modalPresentationStyle = .fullScreen
                 present(viewAllVC, animated: true)
@@ -461,8 +463,16 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
         }
     }
     
-    func hasReviews() -> Bool {
-        return false
+    func hasReviews() -> [Review] {
+        var reviewsArray = [Review]()
+        if let username = UserSessionManager.getUser() {
+               reviewsArray = HotelDataMaganer.shared.allHotels.flatMap { $0.reviews }
+                .filter {
+                    $0.reviewerName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
+                    username.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                }
+        }
+        return reviewsArray
     }
 
     func showNoReviewsAlert() {

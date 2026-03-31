@@ -28,17 +28,12 @@ class ViewAllRateAndReviewsVC : BaseViewController {
     }
     
     func FetchuserReview(){
-        if let username = UserSessionManager.getUser() {
-            reviewsArray = HotelDataMaganer.shared.allHotels.flatMap { $0.reviews }
-                .filter {
-                    $0.reviewerName == username.name
-                }
-            
-            rateAndReviewsTableView.reloadData()
-        }else{
+        guard reviewsArray != nil else {
             rateAndReviewsLabel.text = ""
             reviewsArray = []
+            return
         }
+        rateAndReviewsTableView.reloadData()
     }
 }
 

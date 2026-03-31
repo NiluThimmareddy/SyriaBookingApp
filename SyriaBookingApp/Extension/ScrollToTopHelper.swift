@@ -55,7 +55,10 @@ class ScrollToTopHelper: NSObject, UIScrollViewDelegate {
             print("⚠️ tableView is nil")
             return
         }
+        
+        
         table.scrollToTop()
+        
         hideButton()
         
     }
@@ -78,19 +81,51 @@ class ScrollToTopHelper: NSObject, UIScrollViewDelegate {
     }
 }
 
+//extension UIScrollView {
+//    
+//    /**
+//     Scrolls to the top. If the scroll view happens to be a table view, we try scrolling to the (0, 0)
+//     index path, and otherwise we just set the content offset directly.
+//     */
+//    public func scrollToTop() {
+//        if let tableView = self as? UITableView,
+//           tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
+//            tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
+//        } else {
+//            self.setContentOffset(CGPoint(x: 0.0, y: -self.contentInset.top), animated: true)
+//        }
+//    }
+//}
+
+
 extension UIScrollView {
-    
-    /**
-     Scrolls to the top. If the scroll view happens to be a table view, we try scrolling to the (0, 0)
-     index path, and otherwise we just set the content offset directly.
-     */
-    public func scrollToTop() {
+
+    func scrollToTop() {
+
+        // UITableView
         if let tableView = self as? UITableView,
-           tableView.numberOfSections > 0 && tableView.numberOfRows(inSection: 0) > 0 {
-            tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
-        } else {
-            self.setContentOffset(CGPoint(x: 0.0, y: -self.contentInset.top), animated: true)
+           tableView.numberOfSections > 0,
+           tableView.numberOfRows(inSection: 0) > 0 {
+
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                  at: .top,
+                                  animated: true)
+            return
         }
+
+        // UICollectionView
+        if let collectionView = self as? UICollectionView,
+           collectionView.numberOfSections > 0,
+           collectionView.numberOfItems(inSection: 0) > 0 {
+
+            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0),
+                                        at: .top,
+                                        animated: true)
+            return
+        }
+
+        // Default UIScrollView
+        self.setContentOffset(CGPoint(x: 0, y: -self.contentInset.top),
+                              animated: true)
     }
 }
-

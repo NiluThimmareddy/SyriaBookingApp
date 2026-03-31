@@ -25,7 +25,6 @@ class HotelViewModel {
     func fetchHotels() {
         
         guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
-
         guard let url = URL(string: urlstr) else {
             print("Invalid hotel URL")
             return
@@ -45,15 +44,11 @@ class HotelViewModel {
                 self.onError?(error)
             }
         }
-        
     }
-    
-    
     
     func fetchSingleHotels(id: String = "", completion: @escaping (Hotel) -> Void) {
         
         guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
-        
         var str = urlstr
         if !id.isEmpty {
             str += "\(id)"
@@ -84,7 +79,6 @@ class HotelViewModel {
         let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
         let url = URL(string: getUrl)
         
-        
         guard let url = url else {
             print("Invalid hotel URL for review")
             return
@@ -99,7 +93,6 @@ class HotelViewModel {
                 self.onError?(error)
             }
         }
-        
     }
     
     
@@ -128,8 +121,7 @@ class HotelViewModel {
         }
         
         completion()
-    }
-    
+    }    
     
     func filterHotelsBasedOnSearch(searchText: String){
         
@@ -164,6 +156,7 @@ class HotelViewModel {
             DispatchQueue.main.async{
                 switch result {
                 case .success(let response):
+                   
                     self.onSuccess?(response.data)
                 case .failure(let failure):
                     self.onReviewError?(failure.localizedDescription)

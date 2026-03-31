@@ -63,7 +63,6 @@ class ReportAnAppVC: BaseViewController {
             contactTitleLabel.text = AppSettings.shared.selectedLanguage == .arabic ? "اتصل بنا" : "Contact Us"
         }
         contactTitleLabel.textAlignment = .center
-        
     }
     
     func setupContactUsTypeDropdownMenu() {
@@ -160,16 +159,10 @@ class ReportAnAppVC: BaseViewController {
             hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: hotelID, userName: user.name, UserEmail: user.email, userPhone: user.mobile
             )
         }
-    }
-    
+    }    
     
     @IBAction func dismissButton(_ sender: Any) {
-//        if comingfrom == .RightMenu || comingfrom == .HotelDetail{
-//            self.dismiss(animated: true)
-//        }else{
-//            UIApplication.topViewController()?.dismissPopup(ofType: ReportAnAppVC.self)
-//        }
-        self.dismiss(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
