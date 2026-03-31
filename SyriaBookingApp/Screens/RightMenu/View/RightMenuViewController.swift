@@ -112,7 +112,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
         case 3:
             self.dismiss(animated: true) {
                 let storyboard = UIStoryboard(name: "RightMenu", bundle: nil)
-                let controller = storyboard.instantiateViewController(withIdentifier: "AboutUsVC") as! AboutUsVC
+                let controller = storyboard.instantiateViewController(withIdentifier: "AboutUSViewController") as! AboutUSViewController
                 controller.navigationItem.backButtonTitle = ""
                 self.navnController?.pushViewController(controller, animated: true)
             }
