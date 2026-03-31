@@ -21,12 +21,18 @@ class AboutUSViewController: UIViewController {
     @IBOutlet weak var questionTwoLabel: UILabel!
     
     @IBOutlet weak var followLinksView: UIView!
+    @IBOutlet weak var aboutUsImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSocialMediaView()
+        aboutUsImageView.applyFullLightBlackGradientOverlay()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
+    }
     
     private func setupSocialMediaView() {
         let nib = UINib(nibName: "SocialMedia", bundle: nil)

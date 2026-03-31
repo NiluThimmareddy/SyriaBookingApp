@@ -24,6 +24,11 @@ class FrequentlyAskedTVCViewControllercopy : UIViewController {
         super.viewDidLoad()
         setUpUI()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppNavigationBar()
+    }
 
     @IBAction func dismissButton(_ sender: Any) {
         self.dismiss(animated: true)
