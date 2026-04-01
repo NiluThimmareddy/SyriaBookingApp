@@ -245,6 +245,7 @@ extension HotelListViewController: UICollectionViewDelegate, UICollectionViewDat
             let hotel = viewModel.filteredHotels[indexPath.row]
             cell.configuration(with: hotel)
         }
+        cell.delegate = self
         return cell
     }
 
@@ -367,7 +368,7 @@ extension HotelListViewController {
 }
 
 // MARK: - Main Implementation
-extension HotelListViewController  {
+extension HotelListViewController : TopHotelsCollectionViewCellDelegate {
     func setUpUI() {
         HotelListtableView.register(UINib(nibName: "HotelListTVC", bundle: nil), forCellReuseIdentifier: "HotelListTVC")
         scrolleView.addTopShadow()
@@ -402,6 +403,14 @@ extension HotelListViewController  {
         // Apply filter after UI setup
         if comingFrom == .filter {
             applyFilterOnHotels()
+        }
+    }
+    
+    func didTapBookNow(for hotel: Hotel) {
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+        if let hotelDetailsVC = storyboard.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController {
+            hotelDetailsVC.selectedHotel = hotel
+            self.navigationController?.pushViewController(hotelDetailsVC, animated: true)
         }
     }
     

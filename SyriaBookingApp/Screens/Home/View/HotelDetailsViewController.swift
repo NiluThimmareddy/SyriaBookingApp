@@ -58,6 +58,7 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var hotelAddressLabel: UILabel!
     @IBOutlet weak var discountImage: UIImageView!
     @IBOutlet weak var discountLabel: UILabel!
+    @IBOutlet weak var getDirectionButton: UIButton!
     
     var hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -265,6 +266,10 @@ class HotelDetailsViewController : BaseViewController {
         viewAllVC.modalPresentationStyle = .overFullScreen
         present(viewAllVC, animated: true)
     }
+    
+    @IBAction func getDirectionBuutonAction(_ sender: Any) {
+    }
+    
 }
 
 // MARK: - UICollectionView Delegate & DataSource
