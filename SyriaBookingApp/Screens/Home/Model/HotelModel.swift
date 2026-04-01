@@ -40,6 +40,8 @@ struct Hotel: Codable {
     let landmarkDescription: String?
     let averageRating: String
     let reviewCount: String
+    let latitude : String?
+    let longitude : String?
     let minRoomPrice: String
     let amenities: String?
     let coverImageSignedURL: String?
@@ -51,10 +53,63 @@ struct Hotel: Codable {
     enum CodingKeys: String, CodingKey {
         case id, name, nameAR, city, cityAR, shortDescription, description, type, starRating, hotelChain, addressLine1, addressLine2, stateOrProvince, postalCode, country, email, primaryPhone, checkInTime, checkOutTime, acceptedCurrencies, languagesSpoken, covidSafetyLevel, discountText,shortDescriptionAR,descriptionAR
         case coverImageURL = "coverImageUrl"
-        case facilities, landmarkDescription, averageRating, reviewCount, minRoomPrice, amenities, policies
+        case facilities, landmarkDescription, averageRating, reviewCount,latitude, longitude , minRoomPrice, amenities, policies
         case coverImageSignedURL = "coverImageSignedUrl"
         case reviews, landmarks, images, rooms
     }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.nameAR = try container.decodeIfPresent(String.self, forKey: .nameAR)
+        self.city = try container.decode(String.self, forKey: .city)
+        self.cityAR = try container.decode(String.self, forKey: .cityAR)
+        self.shortDescription = try container.decodeIfPresent(String.self, forKey: .shortDescription)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.type = try container.decode(HotelType.self, forKey: .type)
+        self.starRating = try container.decode(Int.self, forKey: .starRating)
+        self.hotelChain = try container.decodeIfPresent(String.self, forKey: .hotelChain)
+        self.addressLine1 = try container.decodeIfPresent(String.self, forKey: .addressLine1)
+        self.addressLine2 = try container.decodeIfPresent(String.self, forKey: .addressLine2)
+        self.stateOrProvince = try container.decodeIfPresent(StateOrProvince.self, forKey: .stateOrProvince)
+        self.postalCode = try container.decodeIfPresent(String.self, forKey: .postalCode)
+        self.country = try container.decodeIfPresent(String.self, forKey: .country)
+        self.email = try container.decodeIfPresent(String.self, forKey: .email)
+        self.primaryPhone = try container.decodeIfPresent(String.self, forKey: .primaryPhone)
+        self.checkInTime = try container.decodeIfPresent(String.self, forKey: .checkInTime)
+        self.checkOutTime = try container.decodeIfPresent(String.self, forKey: .checkOutTime)
+        self.acceptedCurrencies = try container.decodeIfPresent(String.self, forKey: .acceptedCurrencies)
+        self.languagesSpoken = try container.decode(LanguagesSpoken.self, forKey: .languagesSpoken)
+        self.covidSafetyLevel = try container.decode(CovidSafetyLevel.self, forKey: .covidSafetyLevel)
+        self.discountText = try container.decodeIfPresent(String.self, forKey: .discountText)
+        self.shortDescriptionAR = try container.decodeIfPresent(String.self, forKey: .shortDescriptionAR)
+        self.descriptionAR = try container.decodeIfPresent(String.self, forKey: .descriptionAR)
+        self.coverImageURL = try container.decodeIfPresent(String.self, forKey: .coverImageURL)
+        self.facilities = try container.decodeIfPresent(String.self, forKey: .facilities)
+        self.landmarkDescription = try container.decodeIfPresent(String.self, forKey: .landmarkDescription)
+        self.averageRating = try container.decode(String.self, forKey: .averageRating)
+        self.reviewCount = try container.decode(String.self, forKey: .reviewCount)
+        self.latitude = try container.decodeIfPresent(String.self, forKey: .latitude)
+        self.longitude = try container.decodeIfPresent(String.self, forKey: .longitude)
+        self.minRoomPrice = try container.decode(String.self, forKey: .minRoomPrice)
+        self.amenities = try container.decodeIfPresent(String.self, forKey: .amenities)
+        self.policies = try container.decode(String.self, forKey: .policies)
+        self.coverImageSignedURL = try container.decodeIfPresent(String.self, forKey: .coverImageSignedURL)
+        self.reviews = try container.decode([Review].self, forKey: .reviews)
+        self.landmarks = try container.decode([Landmark].self, forKey: .landmarks)
+        self.images = try container.decode([String].self, forKey: .images)
+        self.rooms = try container.decode([RoomElement].self, forKey: .rooms)
+    }
+    
+//    init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            nameAR = try container.decodeIfPresent(String.self, forKey: .nameAR)
+//            latitude = try container.decodeIfPresent(String.self, forKey: .latitude)
+//            longitude = try container.decodeIfPresent(String.self, forKey: .longitude)
+//            addressLine1 = try container.decodeIfPresent(String.self, forKey: .addressLine1)
+//        }
 }
 enum City: String, Codable {
     case aleppo = "Aleppo"

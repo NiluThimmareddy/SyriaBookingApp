@@ -7,7 +7,7 @@
 
 import UIKit
 import SkeletonView
-
+import MapKit
 class HotelDetailsViewController : BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -76,13 +76,14 @@ class HotelDetailsViewController : BaseViewController {
     var scrolltoTopHelper : ScrollToTopHelper?
     
     var selectedRates: [Rate] = []
-    
+    private var currentUserLocation: CLLocation?
+    let locationManager = CLLocationManager()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSkeletonAppearance()
         setupSkeletonableViews()
         hideKeyboardWhenTappedAround()
-        
+        setupLocationanager()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.showInitialSkeleton()
         }
@@ -267,9 +268,201 @@ class HotelDetailsViewController : BaseViewController {
         present(viewAllVC, animated: true)
     }
     
-    @IBAction func getDirectionBuutonAction(_ sender: Any) {
+    @IBAction func getDirectionButtonAction(_ sender: Any) {
+    
+        guard let hotel = selectedHotel else { return }
+
+        if let latString = hotel.latitude,
+           let lngString = hotel.longitude,
+           let lat = Double(latString),
+           let lng = Double(lngString),
+           lat != 0.0, lng != 0.0 {
+            
+            // ✅ Use coordinates
+            showMapOptions(lat: lat, lng: lng, hotelName: hotel.name)
+            
+        } else if let address = hotel.addressLine1, !address.isEmpty {
+            
+            // ✅ Fallback to address
+            showMapOptionsWithAddress(address: address, hotelName: hotel.name)
+            
+        } else {
+            
+            showAlert("Location not available")
+        }
     }
     
+    func showMapOptions(lat: Double, lng: Double, hotelName: String) {
+            
+            let alert = UIAlertController(title: "Get Directions",
+                                          message: "Choose map app",
+                                          preferredStyle: .actionSheet)
+            
+            let app = UIApplication.shared
+            
+            // ✅ Apple Maps (always available)
+            alert.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
+                self.openAppleMaps(lat: lat, lng: lng, hotelName: hotelName)
+            }))
+            
+            // ✅ Google Maps (only if installed)
+            if let googleURL = URL(string: "comgooglemaps://"),
+               app.canOpenURL(googleURL) {
+                
+                alert.addAction(UIAlertAction(title: "Google Maps", style: .default, handler: { _ in
+                    self.openGoogleMaps(lat: lat, lng: lng)
+                }))
+            }
+            
+            // ✅ Waze (only if installed)
+            if let wazeURL = URL(string: "waze://"),
+               app.canOpenURL(wazeURL) {
+                
+                alert.addAction(UIAlertAction(title: "Waze", style: .default, handler: { _ in
+                    self.openWaze(lat: lat, lng: lng)
+                }))
+            }
+            
+            // Cancel
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            
+            self.present(alert, animated: true)
+        }
+    
+    func showMapOptionsWithAddress(address: String, hotelName: String) {
+        
+        let alert = UIAlertController(title: "Get Directions",
+                                      message: "Choose map app",
+                                      preferredStyle: .actionSheet)
+        
+        let app = UIApplication.shared
+        
+        // Apple Maps
+        alert.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
+            self.openAppleMapsWithAddress(address: address, name: hotelName)
+        }))
+        
+        // Google Maps
+        if let googleURL = URL(string: "comgooglemaps://"),
+           app.canOpenURL(googleURL) {
+            
+            alert.addAction(UIAlertAction(title: "Google Maps", style: .default, handler: { _ in
+                self.openGoogleMapsWithAddress(address: address)
+            }))
+        }
+        
+        // Waze
+        if let wazeURL = URL(string: "waze://"),
+           app.canOpenURL(wazeURL) {
+            
+            alert.addAction(UIAlertAction(title: "Waze", style: .default, handler: { _ in
+                self.openWazeWithAddress(address: address)
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        self.present(alert, animated: true)
+    }
+    
+    func openAppleMaps(lat: Double, lng: Double, hotelName: String) {
+        
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = hotelName
+        
+        mapItem.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
+        ])
+    }
+    
+    
+    func openAppleMapsWithAddress(address: String, name: String) {
+        
+        let encodedAddress = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        if let url = URL(string: "http://maps.apple.com/?q=\(encodedAddress)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    func openGoogleMapsWithAddress(address: String) {
+        
+        let encodedAddress = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        let appURL = URL(string: "comgooglemaps://?daddr=\(encodedAddress)&directionsmode=driving")
+        
+        if let url = appURL, UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            let webURL = URL(string: "https://www.google.com/maps/dir/?api=1&destination=\(encodedAddress)")
+            UIApplication.shared.open(webURL!)
+        }
+    }
+    func openGoogleMaps(lat: Double, lng: Double) {
+        
+        let urlString = "comgooglemaps://?daddr=\(lat),\(lng)&directionsmode=driving"
+        
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    func openWazeWithAddress(address: String) {
+        
+        let encodedAddress = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        let urlString = "https://waze.com/ul?q=\(encodedAddress)&navigate=yes"
+        
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    func openWaze(lat: Double, lng: Double) {
+        
+        let urlString = "waze://?ll=\(lat),\(lng)&navigate=yes"
+        
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+}
+
+extension HotelDetailsViewController : CLLocationManagerDelegate{
+
+    func setupLocationanager() {
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation]) {
+        
+        guard let location = locations.last else { return }
+        
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        print("Latitude: \(latitude), Longitude: \(longitude)")
+        
+        currentUserLocation = location
+        
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager,
+                         didChangeAuthorization status: CLAuthorizationStatus) {
+        
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
+            locationManager.startUpdatingLocation()
+        }
+    }
 }
 
 // MARK: - UICollectionView Delegate & DataSource
