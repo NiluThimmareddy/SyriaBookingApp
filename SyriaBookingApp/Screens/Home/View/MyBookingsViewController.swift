@@ -342,7 +342,8 @@ extension MyBookingsViewController: UITableViewDelegate, UITableViewDataSource {
                     contactVC.hotelID = booking.hotelId
                     contactVC.hotelName = booking.hotelName
                     contactVC.BookingID = booking.id
-                    self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
+                    contactVC.modalPresentationStyle = .fullScreen
+                    self.present(contactVC, animated: true)
                 }
             }
             cell.delegate = self
