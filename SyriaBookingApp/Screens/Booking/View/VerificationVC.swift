@@ -118,7 +118,7 @@ class VerificationVC : BaseViewController {
                     DispatchQueue.main.async {
                         self.showAlert(
                             title: errorTitle,
-                            message: error,
+                            message: error.userMessage,
                             type: .success,
                             onOK:{
                                 self.otpTF.forEach { $0.text = "" }

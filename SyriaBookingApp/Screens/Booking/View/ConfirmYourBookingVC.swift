@@ -241,7 +241,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         
         viewModel.onError = { error in
             self.hideLoader()
-            self.showAlert(error.description)
+            self.showAlert(error.userMessage)
         }
         
         viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)

@@ -85,7 +85,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @IBAction func rightArrowButtonAction(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as! ProfilePageVC
+       guard let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as? ProfilePageVC else { return }
         self.navigationController?.pushViewController(storyboard, animated: true)
     }
     
@@ -132,29 +132,29 @@ extension LeftMenuViewController : UITableViewDelegate, UITableViewDataSource{
         
         switch indexPath.row {
         case 0 :
-            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            guard let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "HotelListViewController") as? HotelListViewController else { return}
             controller.comingFrom = .tabBar
             self.navigationController?.pushViewController(controller, animated: true)
         case 1 :
-            let controller = storyboard?.instantiateViewController(withIdentifier: "CareersViewController") as! CareersViewController
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "CareersViewController") as? CareersViewController else { return}
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(controller, animated: true)
         case 2:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "HowItWorksViewController") as! HowItWorksViewController
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "HowItWorksViewController") as? HowItWorksViewController else { return}
             self.navigationController?.pushViewController(controller, animated: true)
         case 3:
-            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
+            guard let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController  else { return}
             self.navigationController?.pushViewController(controller, animated: true)
         case 4:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsViewController") as! Covid19FAQsViewController
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "Covid19FAQsViewController") as? Covid19FAQsViewController  else { return}
             self.navigationController?.pushViewController(controller, animated: true)
         case 5:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityViewController") as! SustainabilityViewController
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "SustainabilityViewController") as? SustainabilityViewController  else { return}
             self.navigationController?.pushViewController(controller, animated: true)
         case 6:
-            let controller = storyboard?.instantiateViewController(withIdentifier: "SafetyResourceCenterViewController") as! SafetyResourceCenterViewController
+            guard let controller = storyboard?.instantiateViewController(withIdentifier: "SafetyResourceCenterViewController") as? SafetyResourceCenterViewController  else { return}
             self.navigationController?.pushViewController(controller, animated: true)
         default :
             break

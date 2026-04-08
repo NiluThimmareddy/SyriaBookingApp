@@ -232,7 +232,7 @@ class MyBookingsViewController: BaseViewController {
                 DispatchQueue.main.async {
                      
                     self.hideSkeleton() // Hide skeleton on error
-                    self.showAlert(error)
+                    self.showAlert(error.userMessage)
                 }
             }
             
@@ -435,7 +435,7 @@ extension MyBookingsViewController {
                 DispatchQueue.main.async {
                      
                     self.hideSkeleton()
-                    self.showAlert(error)
+                    self.showAlert(error.userMessage)
                 }
             }
             
@@ -521,7 +521,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             guard let self = self else { return }
             DispatchQueue.main.async {
                  
-                self.showAlert(error)
+                self.showAlert(error.userMessage)
             }
         }
         
@@ -564,7 +564,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             DispatchQueue.main.async {
                  
                 self.hideSkeleton()
-                self.showAlert(error)
+                self.showAlert(error.userMessage)
             }
         }
         

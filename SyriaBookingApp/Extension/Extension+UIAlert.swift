@@ -48,3 +48,28 @@ extension UIViewController{
     }
     
 }
+
+
+extension Error {
+    var userMessage: String {
+        if let apiError = self as? APIError {
+            switch apiError {
+            case .userNotFound:
+                return "User not found"
+            case .invalidURL:
+                return "Something went wrong. Please try again."
+            case .noData:
+                return "No data available."
+            case .serverError:
+                return "Server error. Please try later."
+            case .invalidResponse:
+                return "Invalid response from server."
+            case .decodingFailed:
+                return "Something went wrong. Please try again."
+            case .EnterValidData:
+                return "Enter valid data"
+            }
+        }
+        return "Something went wrong. Please try again."
+    }
+}

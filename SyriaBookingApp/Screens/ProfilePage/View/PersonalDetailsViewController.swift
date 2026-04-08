@@ -227,7 +227,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             if indexPath.row == 0{
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard  let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.personalData = data
                 controller.updatePersonalData = { [weak self] in
@@ -246,7 +246,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 
             }else if indexPath.row == 1{
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .gender
@@ -257,7 +257,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 present(controller, animated: false)
             }else if indexPath.row == 2{
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .dob
@@ -271,7 +271,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             if indexPath.row == 0{
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .email
@@ -291,7 +291,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             }else if indexPath.row == 1{
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.personalData = data
                 controller.selectedOption = .number
@@ -308,7 +308,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             }else if indexPath.row == 2{
                 
                 let stortyBoard = UIStoryboard(name: "Profile", bundle: nil)
-                let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as! PersonalDetailsEditVC
+                guard let controller = stortyBoard.instantiateViewController(identifier: "PersonalDetailsEditVC")as? PersonalDetailsEditVC  else { return}
                 let data = personalData
                 controller.selectedOption = .address
                 controller.personalData = data

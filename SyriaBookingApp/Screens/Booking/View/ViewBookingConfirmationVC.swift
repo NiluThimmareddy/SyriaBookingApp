@@ -139,7 +139,7 @@ extension ViewBookingConfirmationVC {
         viewModel.onError = { error in
             DispatchQueue.main.async {
                 self.hideLoader()
-                self.showAlert(error)
+                self.showAlert(error.userMessage)
             }
         }
         
@@ -301,16 +301,37 @@ extension ViewBookingConfirmationVC {
         }
     }
     
+//    func savePDFToDocuments() {
+//        let pdfData = createPDF()
+//        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//        let pdfURL = documentsURL.appendingPathComponent("BookingConfirmation.pdf")
+//        
+//        do {
+//            try pdfData.write(to: pdfURL)
+//            
+//            print("PDF saved to: \(pdfURL)")
+//        } catch {
+//            print("Could not save PDF file: \(error)")
+//        }
+//    }
+    
     func savePDFToDocuments() {
         let pdfData = createPDF()
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let pdfURL = documentsURL.appendingPathComponent("BookingConfirmation.pdf")
+        
+        let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let pdfURL = cacheURL.appendingPathComponent("BookingConfirmation.pdf")
         
         do {
             try pdfData.write(to: pdfURL)
+            
+            #if DEBUG
             print("PDF saved to: \(pdfURL)")
+            #endif
+            
         } catch {
-            print("Could not save PDF file: \(error)")
+            #if DEBUG
+            print("❌ Could not save PDF file:", error)
+            #endif
         }
     }
     

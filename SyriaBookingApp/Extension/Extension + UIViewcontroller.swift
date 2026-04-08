@@ -103,7 +103,9 @@ extension UIViewController {
             }
             
             viewModel.onError = { error in
+                #if DEBUG
                 print("Notification count error")
+                #endif
                 print(error)
             }
             
@@ -368,9 +370,9 @@ extension UIViewController {
               let window = windowScene.windows.first else { return }
         
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let tabBarVC = storyboard.instantiateViewController(
+       guard let tabBarVC = storyboard.instantiateViewController(
             withIdentifier: "CustomTabBarController"
-        ) as! CustomTabBarController
+       ) as? CustomTabBarController else { return }
         
         tabBarVC.selectedIndex = 0
         
@@ -450,14 +452,12 @@ extension UIViewController {
     }
     
     func showNoInternetConnetionView() {
-        let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(identifier: "InternetViewController") as! InternetViewController
+        guard let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(identifier: "InternetViewController") as? InternetViewController else { return }
         controller.message = "No Internet Connection"
         controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true)
     }
-    
-    
-    
+
     func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

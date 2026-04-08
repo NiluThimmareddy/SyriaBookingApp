@@ -139,7 +139,7 @@ class HotelDetailsViewController : BaseViewController {
     }
     
     @IBAction func pleaseClickHereButtonAction(_ sender: Any) {
-        let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as! ReportAnAppVC
+        guard let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC else { return }
         controller.comingfrom = .HotelDetail
         controller.hotelID = selectedHotel?.id ?? ""
         controller.hotelName = selectedHotel?.name ?? ""
@@ -262,7 +262,7 @@ class HotelDetailsViewController : BaseViewController {
     }
     
     @IBAction func viewAllRateAndReviewsButtonAction(_ sender: Any) {
-        let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+        guard let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as? ViewAllRateAndReviewsVC else { return }
         viewAllVC.selectedHotel = selectedHotel
         viewAllVC.modalPresentationStyle = .overFullScreen
         present(viewAllVC, animated: true)

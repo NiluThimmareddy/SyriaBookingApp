@@ -10,7 +10,7 @@ class NotificationViewModel {
     var BookingHistoryArray = [BookingHistoryModel]()
     var BookingListArray = [BookingDetailsModel]()
     var filteredHistoryArray =  [BookingHistoryModel]()
-    var onError : ((String)->Void)?
+    var onError : ((Error)->Void)?
     var onSuccess : (([BookingHistoryModel])->Void)?
     var onBookingSuccess : (([BookingDetailsModel])->Void)?
     var onCountSuccess : ((NotificationCountModel) -> Void)?
@@ -21,7 +21,7 @@ class NotificationViewModel {
         url += "\(userId)?includePast=\(includePast)&take=50"
         
         guard let url = URL(string: url) else{
-            onError?("Invalid Url")
+            onError?(APIError.invalidURL)
             return
         }
         
@@ -32,7 +32,10 @@ class NotificationViewModel {
                 self.BookingHistoryArray = success.data
                 self.onSuccess?(success.data)
             case .failure(let failure):
-                self.onError?(failure.localizedDescription)
+                #if DEBUG
+                print("fetchNotificationUser :", failure.localizedDescription)
+                #endif
+                self.onError?(failure)
             }
         }
     }
@@ -43,7 +46,7 @@ class NotificationViewModel {
         url += "\(userId)"
         
         guard let url = URL(string: url) else{
-            onError?("Invalid Url")
+            onError?(APIError.invalidURL)
             return
         }
         
@@ -54,7 +57,11 @@ class NotificationViewModel {
                 self.BookingListArray = success.data
                 self.onBookingSuccess?(success.data)
             case .failure(let failure):
-                self.onError?(failure.localizedDescription)
+                #if DEBUG
+                    print("fetchUserBookings Error :", failure.localizedDescription)
+                #endif
+                self.onError?(failure)
+                
             }
         }
     }
@@ -64,7 +71,7 @@ class NotificationViewModel {
         url += "\(userId)"
         
         guard let url = URL(string: url) else{
-            onError?("Invalid Url")
+            onError?(APIError.invalidURL)
             return
         }
         
@@ -76,7 +83,11 @@ class NotificationViewModel {
               print(success)
                 self.onCountSuccess?(success)
             case .failure(let failure):
-                self.onError?(failure.localizedDescription)
+                
+#if DEBUG
+                print("fetchUserBookings Error :", failure.localizedDescription)
+#endif
+                self.onError?(failure)
             }
         }
         

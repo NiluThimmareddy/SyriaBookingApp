@@ -62,7 +62,7 @@ class OtherGuestVC: UIViewController {
 
     @IBAction func plusButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC")as! AddNewTravellerVC
+        guard let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC") as? AddNewTravellerVC  else { return}
         vc.selectedOption = .add
         vc.delegate = self
         present(vc, animated: true)
@@ -105,7 +105,7 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
 
         let guest = otherGuests[indexPath.row]
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC")as! AddNewTravellerVC
+        guard let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC")as? AddNewTravellerVC  else { return }
         vc.selectedOption = .edit
         vc.otherGuestsEdit = guest
         vc.guestIndex = indexPath.row

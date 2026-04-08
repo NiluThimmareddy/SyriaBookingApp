@@ -437,8 +437,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             .first?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? city
 
-        let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
-        ) as! HotelListViewController
+      guard let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
+        ) as? HotelListViewController else { return }
 
         
         vc.delegate = self
@@ -460,7 +460,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
 
     // MARK: - IBActions
     @IBAction func recentlySeeMoreButtonAction(_ sender: Any) {
-        let controller = storyboard?.instantiateViewController(withIdentifier: "RecentlyViewedVC") as! RecentlyViewedVC
+        guard  let controller = storyboard?.instantiateViewController(withIdentifier: "RecentlyViewedVC") as? RecentlyViewedVC else { return }
         
         controller.recentlyViewedHotels = viewModel.recentlyViewdHotels
         controller.viewModel = viewModel
@@ -473,7 +473,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @IBAction func whereToNextSeeMoreButtonAction(_ sender: Any) {
-        let controller = storyboard?.instantiateViewController(withIdentifier: "WhereToNextVC") as! WhereToNextVC
+        guard  let controller = storyboard?.instantiateViewController(withIdentifier: "WhereToNextVC") as? WhereToNextVC else { return }
         controller.whereToNextCityList = self.WhereToNextCityList
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -486,7 +486,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             sender.isEnabled = true
         } else {
             let storyboard = UIStoryboard(name: "Leftmenu", bundle: nil)
-            let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as! LeftMenuViewController
+            guard let menuVC = storyboard.instantiateViewController(withIdentifier: "LeftMenuViewController") as?  LeftMenuViewController else { return }
             self.leftMenuVC = menuVC
             
             menuVC.onDismiss = { [weak self] in
@@ -537,7 +537,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         }
         
         if let city = selectedCity, city != "Select City" && city != "اختر مدينة" {
-            let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+            guard  let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as? HotelListViewController else { return }
 //            storyboard.viewModel = self.viewModel
             
             let formater = DateFormatter()
@@ -571,7 +571,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @IBAction func viewAllButtonAction(_ sender: Any) {
-        let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+        guard  let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as?  HotelListViewController else { return }
         controller.comingFrom = .filter
         controller.selectedCity = "All"
 //        controller.viewModel = self.viewModel
@@ -611,10 +611,9 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @IBAction func viewAllRecommendedButtonAction(_ sender: Any) {
-        let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as? HotelListViewController else { return }
         controller.comingFrom = .filter
         controller.selectedCity = "All"
-//        controller.viewModel = self.viewModel
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -767,8 +766,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         if collectionView == propertyTypeCollectionView {
             let HotelCity = WhereToNextCityList[indexPath.row].City
-            let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as! HotelListViewController
-//            storyboard.viewModel = self.viewModel
+            guard let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as? HotelListViewController else { return }
             storyboard.comingFrom = .filter
             storyboard.selectedCity = HotelCity
             storyboard.navigationItem.title = "Hotel List"
@@ -777,7 +775,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(storyboard, animated: true)
         } else if collectionView == recentlyCollectionView {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            guard let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController else { return }
             if !viewModel.recentlyViewdHotels.isEmpty {
                 let selectedHotel = viewModel.recentlyViewdHotels[indexPath.row]
                 
@@ -796,7 +794,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         } else if collectionView == topHotelsCollectionView {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            guard let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController else { return }
             let selectedHotel = viewModel.filteredHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"
@@ -815,7 +813,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.navigationItem.backBarButtonItem = backItem
             self.navigationController?.pushViewController(vc, animated: true)
         } else if collectionView == recommendedHotelsCollectionView {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
+            guard let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as? HotelDetailsViewController else { return }
             let selectedHotel = recommendedHotels[indexPath.row]
             vc.selectedHotel = selectedHotel
             vc.navigationItem.title = "Hotel Details"

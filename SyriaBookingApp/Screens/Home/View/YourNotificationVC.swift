@@ -113,7 +113,7 @@ extension YourNotificationVC {
         viewModel.onError = { [weak self] error in
             DispatchQueue.main.async {
                 self?.hideLoader()
-                self?.showAlert(error)
+                self?.showAlert(error.userMessage)
             }
         }
         

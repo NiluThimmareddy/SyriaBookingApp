@@ -13,7 +13,9 @@ extension Date {
         dateFormatter.dateFormat = "E dd MMM"
         
         let today = Date()
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+        guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) else {
+            return dateFormatter.string(from: today)
+        }
         
         let todayString = dateFormatter.string(from: today)
         let tomorrowString = dateFormatter.string(from: tomorrow)

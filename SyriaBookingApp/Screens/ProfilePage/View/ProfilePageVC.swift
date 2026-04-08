@@ -230,7 +230,7 @@ class ProfilePageVC: BaseViewController {
     @objc func messageButtonTapped() {
         print("message tapped")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "CustomerServiceChatVC")as! CustomerServiceChatVC
+        guard let controller = storyboard.instantiateViewController(identifier: "CustomerServiceChatVC")as? CustomerServiceChatVC else { return }
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -238,7 +238,7 @@ class ProfilePageVC: BaseViewController {
     @objc func bellButtonTapped() {
         print("bell tapped")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "YourNotificationVC")as! YourNotificationVC
+        guard let controller = storyboard.instantiateViewController(identifier: "YourNotificationVC")as? YourNotificationVC  else { return }
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -246,7 +246,7 @@ class ProfilePageVC: BaseViewController {
     @IBAction func completeProfileButton(_ sender: Any) {
         print("Button tapped....")
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as! PersonalDetailsViewController
+        guard let controller = storyboard.instantiateViewController(identifier: "PersonalDetailsViewController")as? PersonalDetailsViewController  else { return }
         
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
@@ -370,40 +370,40 @@ extension ProfilePageVC: UITableViewDelegate, UITableViewDataSource{
         switch selectedOption.listData {
         case "Email Preferences", "تفضيلات البريد الإلكتروني":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "EmailPreferencesVC")as! EmailPreferencesVC
+            guard let controller = storyboard.instantiateViewController(identifier: "EmailPreferencesVC")as? EmailPreferencesVC  else { return }
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
             
         case "FAQ", "الأسئلة الشائعة":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "HelpCentreVC")as! HelpCentreVC
+            guard let controller = storyboard.instantiateViewController(identifier: "HelpCentreVC")as? HelpCentreVC  else { return }
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
             
         case "About Us", "معلومات عنا":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            guard let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as? PrivacyPolicyVC  else { return }
             navigationItem.backButtonTitle = ""
             controller.contentType = .about
             navigationController?.pushViewController(controller, animated: true)
             
         case "Terms of Use", "شروط الاستخدام":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            guard let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as? PrivacyPolicyVC  else { return }
             navigationItem.backButtonTitle = ""
             controller.contentType = .terms
             navigationController?.pushViewController(controller, animated: true)
             
         case "Privacy and data management", "الخصوصية وإدارة البيانات":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as! PrivacyPolicyVC
+            guard let controller = storyboard.instantiateViewController(identifier: "PrivacyPolicyVC")as? PrivacyPolicyVC  else { return }
             navigationItem.backButtonTitle = ""
             controller.contentType = .privacy
             navigationController?.pushViewController(controller, animated: true)
             
         case "Customer Service", "خدمة العملاء":
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let controller = storyboard.instantiateViewController(identifier: "CustomerServiceVC")as! CustomerServiceVC
+            guard let controller = storyboard.instantiateViewController(identifier: "CustomerServiceVC")as? CustomerServiceVC  else { return }
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
             
@@ -444,7 +444,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             
         } else if indexPath.row == 2 {
             let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-            let vc = storyboard.instantiateViewController(identifier: "OtherGuestVC")as! OtherGuestVC
+            guard let vc = storyboard.instantiateViewController(identifier: "OtherGuestVC")as? OtherGuestVC  else { return }
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(vc, animated: true)
         }

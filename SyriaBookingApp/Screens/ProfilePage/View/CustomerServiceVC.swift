@@ -223,7 +223,7 @@ class CustomerServiceVC: UIViewController, UIImagePickerControllerDelegate, UINa
     
     @IBAction func chatButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let controller = storyboard.instantiateViewController(identifier: "CustomerServiceChatVC")as! CustomerServiceChatVC
+       guard let controller = storyboard.instantiateViewController(identifier: "CustomerServiceChatVC") as? CustomerServiceChatVC  else { return}
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(controller, animated: true)
     }

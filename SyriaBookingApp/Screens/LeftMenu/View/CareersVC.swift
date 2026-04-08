@@ -331,7 +331,7 @@ class CareersVC: UIViewController {
     }
     
     @IBAction func applyJobButtonAction(_ sender: Any) {
-        let storyboard = storyboard?.instantiateViewController(identifier: "CareerApplicationVC") as! CareerApplicationVC
+        guard let storyboard = storyboard?.instantiateViewController(identifier: "CareerApplicationVC") as? CareerApplicationVC else { return }
         storyboard.modalPresentationStyle = .fullScreen
         self.present(storyboard, animated: true)
     }

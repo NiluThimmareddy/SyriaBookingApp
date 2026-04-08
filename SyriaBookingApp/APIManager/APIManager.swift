@@ -10,10 +10,11 @@ import UIKit
 enum APIError: LocalizedError {
     case invalidURL
     case noData
-    case decodingFailed(Error)
+    case decodingFailed
     case invalidResponse
-    case serverError(Int)
+    case serverError
     case userNotFound
+   case EnterValidData
     
     var errorDescription: String? {
         switch self {
@@ -21,14 +22,18 @@ enum APIError: LocalizedError {
             return "Invalid URL."
         case .noData:
             return "No data returned from server."
-        case .decodingFailed(let error):
-            return "Decoding failed: \(error.localizedDescription)"
+        case .decodingFailed:
+            return "Something went wrong. Please try again."
         case .invalidResponse:
             return "Invalid server response."
-        case .serverError(let code):
-            return "Server responded with error code \(code)."
+        case .serverError:
+            return "Server error. Please try later."
         case .userNotFound:
-            return "User not found (404)."
+            return "User not found"
+        case .EnterValidData:
+            return "Enter valid data"
+        
+            
         }
     }
 }
@@ -45,6 +50,9 @@ class APIManager {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let error = error {
+#if DEBUG
+                        print("fetchData APIMAnager : \(error)")
+#endif
                 completion(.failure(error))
                 return
             }
@@ -55,7 +63,9 @@ class APIManager {
                         completion(.failure(APIError.userNotFound))
                         return
                     }else{
-                        completion(.failure(APIError.serverError(httpResponse.statusCode)))
+                        
+
+                        completion(.failure(APIError.serverError))
                         return
                     }
                 }
@@ -76,7 +86,8 @@ class APIManager {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(decodedData))
             } catch {
-                completion(.failure(APIError.decodingFailed(error)))
+                
+                completion(.failure(APIError.decodingFailed))
             }
         }
         task.resume()
@@ -103,9 +114,7 @@ class APIManager {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
         }
-        
-        
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -131,10 +140,10 @@ class APIManager {
             completion(.failure(NSError(domain: "Invalid Body", code: -2)))
             return
         }
-        
+#if DEBUG
         print("🟢 PUT URL:", urlString)
         print("🟡 Request Body:", body)
-        
+#endif
         var request = URLRequest(url: urlString)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -143,7 +152,9 @@ class APIManager {
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             if let error = error {
+#if DEBUG
                 print("🔴 Network Error:", error.localizedDescription)
+#endif
                 completion(.failure(error))
                 return
             }
@@ -153,12 +164,20 @@ class APIManager {
                 completion(.failure(APIError.invalidResponse))
                 return
             }
-            print("🔵 Response Code:", httpResponse.statusCode)
+           
             guard (200...299).contains(httpResponse.statusCode) else {
                 if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                    print("🟣 Server Error Response:", responseString)
+#if DEBUG
+                    print("🟣 Server Response:", responseString)
+                
+#endif
                 }
-                completion(.failure(APIError.serverError(httpResponse.statusCode)))
+                
+#if DEBUG
+                print("🔵 Response Code:", httpResponse.statusCode)
+                
+#endif
+                completion(.failure(APIError.serverError))
                 return
             }
             
@@ -168,15 +187,19 @@ class APIManager {
                 return
             }
             if let responseString = String(data: data, encoding: .utf8) {
+#if DEBUG
                 print("🟣 Response Data:", responseString)
+#endif
             }
             
             do {
                 let decoded = try JSONDecoder().decode(responseType, from: data)
                 completion(.success(decoded))
             } catch {
+#if DEBUG
                 print("🔴 Decoding Failed:", error)
-                completion(.failure(APIError.decodingFailed(error)))
+#endif
+                completion(.failure(APIError.decodingFailed))
             }
         }.resume()
     }
