@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol CancelBookingDelegate: AnyObject {
-    func didConfirmCancellation(for booking: BookingHistoryModel,reason:String)
-}
+//protocol CancelBookingDelegate: AnyObject {
+//    func didConfirmCancellation(for booking: BookingHistoryModel,reason:String)
+//}
 
 class CancelBookingVC: UIViewController {
     

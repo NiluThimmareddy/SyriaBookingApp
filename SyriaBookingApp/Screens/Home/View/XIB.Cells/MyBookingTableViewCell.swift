@@ -8,10 +8,10 @@
 import UIKit
 import SkeletonView
 
-protocol MyBookingCellDelegate: AnyObject {
-    func didTapDetails(for booking: BookingHistoryModel)
-    func didTapCancel(for booking: BookingHistoryModel)
-}
+//protocol MyBookingCellDelegate: AnyObject {
+//    func didTapDetails(for booking: BookingHistoryModel)
+//    func didTapCancel(for booking: BookingHistoryModel)
+//}
 
 class MyBookingTableViewCell: UITableViewCell {
     
