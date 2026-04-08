@@ -59,6 +59,10 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var discountImage: UIImageView!
     @IBOutlet weak var discountLabel: UILabel!
     @IBOutlet weak var getDirectionButton: UIButton!
+    @IBOutlet weak var exploringtheAreaButton: UIButton!
+    @IBOutlet weak var addressView: UIView!
+    @IBOutlet weak var nearByLandMarkLabel: UILabel!
+    @IBOutlet weak var mapsImgView: UIImageView!
     
     var hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -96,7 +100,7 @@ class HotelDetailsViewController : BaseViewController {
         showInitialSkeleton()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-//            self.setUpUI()
+            //            self.setUpUI()
             self.roomsAvailabilityCollectionView.reloadData()
             self.setupAppNavigationBar()
             
@@ -219,8 +223,8 @@ class HotelDetailsViewController : BaseViewController {
         
         self.hotelviewModel.onReviewError = { error in
             let errorMessage = lang == .arabic ?
-                "حدث خطأ ما يرجى المحاولة مرة أخرى: \(error.description)" :
-                "Something went wrong try again: \(error.description)"
+            "حدث خطأ ما يرجى المحاولة مرة أخرى: \(error.description)" :
+            "Something went wrong try again: \(error.description)"
             self.showAlert(errorMessage)
         }
         
@@ -269,9 +273,9 @@ class HotelDetailsViewController : BaseViewController {
     }
     
     @IBAction func getDirectionButtonAction(_ sender: Any) {
-    
+        
         guard let hotel = selectedHotel else { return }
-
+        
         if let latString = hotel.latitude,
            let lngString = hotel.longitude,
            let lat = Double(latString),
@@ -293,41 +297,50 @@ class HotelDetailsViewController : BaseViewController {
     }
     
     func showMapOptions(lat: Double, lng: Double, hotelName: String) {
+        
+        let alert = UIAlertController(title: "Get Directions",
+                                      message: "Choose map app",
+                                      preferredStyle: .actionSheet)
+        
+        let app = UIApplication.shared
+        
+        // Apple Maps
+        alert.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
+            self.openAppleMaps(lat: lat, lng: lng, hotelName: hotelName)
+        }))
+        
+        // Google Maps
+        if let googleURL = URL(string: "comgooglemaps://"),
+           app.canOpenURL(googleURL) {
             
-            let alert = UIAlertController(title: "Get Directions",
-                                          message: "Choose map app",
-                                          preferredStyle: .actionSheet)
-            
-            let app = UIApplication.shared
-            
-            // ✅ Apple Maps (always available)
-            alert.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
-                self.openAppleMaps(lat: lat, lng: lng, hotelName: hotelName)
+            alert.addAction(UIAlertAction(title: "Google Maps", style: .default, handler: { _ in
+                self.openGoogleMaps(lat: lat, lng: lng)
             }))
-            
-            // ✅ Google Maps (only if installed)
-            if let googleURL = URL(string: "comgooglemaps://"),
-               app.canOpenURL(googleURL) {
-                
-                alert.addAction(UIAlertAction(title: "Google Maps", style: .default, handler: { _ in
-                    self.openGoogleMaps(lat: lat, lng: lng)
-                }))
-            }
-            
-            // ✅ Waze (only if installed)
-            if let wazeURL = URL(string: "waze://"),
-               app.canOpenURL(wazeURL) {
-                
-                alert.addAction(UIAlertAction(title: "Waze", style: .default, handler: { _ in
-                    self.openWaze(lat: lat, lng: lng)
-                }))
-            }
-            
-            // Cancel
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            
-            self.present(alert, animated: true)
         }
+        
+        // Waze
+        if let wazeURL = URL(string: "waze://"),
+           app.canOpenURL(wazeURL) {
+            
+            alert.addAction(UIAlertAction(title: "Waze", style: .default, handler: { _ in
+                self.openWaze(lat: lat, lng: lng)
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        // ✅ FIX (IMPORTANT)
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = self.view
+            popover.sourceRect = CGRect(x: self.view.bounds.midX,
+                                        y: self.view.bounds.midY,
+                                        width: 0,
+                                        height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        self.present(alert, animated: true)
+    }
     
     func showMapOptionsWithAddress(address: String, hotelName: String) {
         
@@ -362,9 +375,18 @@ class HotelDetailsViewController : BaseViewController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
+        // ✅ FIX (IMPORTANT)
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = self.view
+            popover.sourceRect = CGRect(x: self.view.bounds.midX,
+                                        y: self.view.bounds.midY,
+                                        width: 0,
+                                        height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
         self.present(alert, animated: true)
     }
-    
     func openAppleMaps(lat: Double, lng: Double, hotelName: String) {
         
         let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
@@ -432,7 +454,7 @@ class HotelDetailsViewController : BaseViewController {
 }
 
 extension HotelDetailsViewController : CLLocationManagerDelegate{
-
+    
     func setupLocationanager() {
         
         locationManager.delegate = self
@@ -474,9 +496,9 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
         }
         
         if collectionView == hotelImagesCollectionView {
-//            guard let hotel = selectedHotel else { return 0 }
-//            let imageCount = hotel.images.count
-//            return Int(ceil(Double(imageCount) / 5.0))
+            //            guard let hotel = selectedHotel else { return 0 }
+            //            let imageCount = hotel.images.count
+            //            return Int(ceil(Double(imageCount) / 5.0))
             return 1
         } else {
             return selectedHotel?.rooms.count ?? 0
@@ -742,11 +764,11 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func showAlertForRateSelection() {
         let lang = AppSettings.shared.selectedLanguage
         let message = lang == .arabic ?
-            "يرجى تحديد سعر والتأكد من وجود بيانات الفندق/الغرفة." :
-            "Please select a rate and ensure hotel/room data is present."
+        "يرجى تحديد سعر والتأكد من وجود بيانات الفندق/الغرفة." :
+        "Please select a rate and ensure hotel/room data is present."
         showAlert(message)
     }
-
+    
     func showLoginRequiredAlert() {
         let lang = AppSettings.shared.selectedLanguage
         let alert = UIAlertController(
@@ -855,6 +877,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         }
         hotelNameLabel.attributedText = hotelNameAttributed
         hotelAddressLabel.text = hotel.addressLine1
+        nearByLandMarkLabel.text = hotel.landmarkDescription
         descriptionLabel.text = hotel.description
         
         if let discount = hotel.discountText {
@@ -1218,7 +1241,7 @@ extension HotelDetailsViewController {
             button.skeletonCornerRadius = 8
             
             if button == pleseClickHereButton {
-                button.backgroundColor = .clear 
+                button.backgroundColor = .clear
             }
             
             if let titleLabel = button.titleLabel {

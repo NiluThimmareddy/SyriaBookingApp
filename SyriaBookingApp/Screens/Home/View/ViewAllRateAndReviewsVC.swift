@@ -49,7 +49,7 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if comingFrom == .profile {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC") as! RateAndReviewsTVC
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = reviewsArray?[indexPath.row] {
                 
                 cell.configure(with: reviews)
@@ -57,7 +57,7 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
             return cell
             
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RateAndReviewsTVC") as! RateAndReviewsTVC
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = selectedHotel?.reviews, indexPath.row < reviews.count {
                 let review = reviews[indexPath.row]
                 cell.configure(with: review)
@@ -72,7 +72,7 @@ extension ViewAllRateAndReviewsVC {
     func setUpUI() {
         rateAndReviewsTableView.delegate = self
         rateAndReviewsTableView.dataSource = self
-        rateAndReviewsTableView.register(UINib(nibName: "RateAndReviewsTVC", bundle: nil), forCellReuseIdentifier: "RateAndReviewsTVC")
+        rateAndReviewsTableView.register(UINib(nibName: "MyReviewsTVC", bundle: nil), forCellReuseIdentifier: "MyReviewsTVC")
         
         if comingFrom == .profile {
             FetchuserReview()

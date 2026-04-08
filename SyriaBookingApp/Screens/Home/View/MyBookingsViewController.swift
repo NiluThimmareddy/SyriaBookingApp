@@ -68,9 +68,10 @@ class MyBookingsViewController: BaseViewController {
         HistoryTableView.dataSource = self
         
         HistoryTableView.register(
-            UINib(nibName: "MyBookingTableViewCell", bundle: nil),
-            forCellReuseIdentifier: "MyBookingTableViewCell"
+            UINib(nibName: "UpcomingBookingTVC", bundle: nil),
+            forCellReuseIdentifier: "UpcomingBookingTVC"
         )
+        
         HistoryTableView.register(
             UINib(nibName: "ArchiveTableViewCell", bundle: nil),
             forCellReuseIdentifier: "ArchiveTableViewCell"
@@ -334,7 +335,7 @@ extension MyBookingsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.configure(booking: booking)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MyBookingTableViewCell", for: indexPath) as! MyBookingTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UpcomingBookingTVC", for: indexPath) as! UpcomingBookingTVC
             cell.configure(booking: booking)
             cell.contactSupprtButtonAction = { booking in
                 if let contactVC = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "ReportAnAppVC") as? ReportAnAppVC {
@@ -342,7 +343,8 @@ extension MyBookingsViewController: UITableViewDelegate, UITableViewDataSource {
                     contactVC.hotelID = booking.hotelId
                     contactVC.hotelName = booking.hotelName
                     contactVC.BookingID = booking.id
-                    self.showPopup(contactVC, widthMultiplier: 0.85, heightMultiplier: 0.85)
+                    contactVC.modalPresentationStyle = .fullScreen
+                    self.present(contactVC, animated: true)
                 }
             }
             cell.delegate = self
@@ -367,7 +369,7 @@ extension MyBookingsViewController: UITableViewDelegate, UITableViewDataSource {
         if selectedSegmentIndex == 1 {
             return UIDevice.current.userInterfaceIdiom == .pad ? 130 : 110
         } else {
-            return UIDevice.current.userInterfaceIdiom == .pad ? 180 : 152
+            return UIDevice.current.userInterfaceIdiom == .pad ? 339 : 339
         }
     }
 }
@@ -383,18 +385,18 @@ extension MyBookingsViewController: SkeletonTableViewDataSource {
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "MyBookingTableViewCell"
+        return selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "UpcomingBookingTVC"
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, skeletonCellForRowAt indexPath: IndexPath) -> UITableViewCell? {
-        let identifier = selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "MyBookingTableViewCell"
+        let identifier = selectedSegmentIndex == 1 ? "ArchiveTableViewCell" : "UpcomingBookingTVC"
         
         if selectedSegmentIndex == 1 {
             let cell = skeletonView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! ArchiveTableViewCell
             cell.showSkeleton()
             return cell
         } else {
-            let cell = skeletonView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MyBookingTableViewCell
+            let cell = skeletonView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! UpcomingBookingTVC
             cell.showSkeleton()
             return cell
         }
@@ -403,7 +405,7 @@ extension MyBookingsViewController: SkeletonTableViewDataSource {
     func collectionSkeletonView(_ skeletonView: UITableView, prepareCellForSkeleton cell: UITableViewCell, at indexPath: IndexPath) {
         if let archiveCell = cell as? ArchiveTableViewCell {
             archiveCell.showSkeleton()
-        } else if let bookingCell = cell as? MyBookingTableViewCell {
+        } else if let bookingCell = cell as? UpcomingBookingTVC {
             bookingCell.showSkeleton()
         }
     }
@@ -505,7 +507,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     }
     
     func didTapCancel(for booking: BookingHistoryModel) {
-        if let cancelVC = storyboard?.instantiateViewController(withIdentifier: "CancelBookingVC") as? CancelBookingVC {
+        if let cancelVC = storyboard?.instantiateViewController(withIdentifier: "CancelBookingViewController") as? CancelBookingViewController {
             cancelVC.modalPresentationStyle = .overFullScreen
             cancelVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             cancelVC.booking = booking
