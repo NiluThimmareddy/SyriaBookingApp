@@ -353,7 +353,6 @@ class RegisterMobileNumberVC : BaseViewController {
             showAlert(enterEmailMessage)
             return
         }
-
         
         if isValidEmail(email) {
             print("✅ Valid Email")
@@ -372,37 +371,12 @@ class RegisterMobileNumberVC : BaseViewController {
                
             }
         } else {
-           
             enterEmailTF.layer.borderColor = UIColor.red.cgColor
             enterEmailTF.layer.borderWidth = 0.5
             showAlert(validEmailMessage)
             return
         }
         
-        if isValidEmail(email) {
-            print("✅ Valid Email")
-            enterEmailTF.layer.borderColor = UIColor.systemGreen.cgColor
-            enterEmailTF.layer.borderWidth = 0.5
-            
-            self.getEmailOTP(email: email) { otpResponse in
-                if lang == .arabic {
-                    self.otpMessageLable.text = "لقد أرسلنا رمز التحقق إلى \(email)"
-                } else {
-                    self.otpMessageLable.text = "We sent verification code to \(email)"
-                }
-                self.changeLabelStyle(Email: false)
-                self.otpView.isHidden = false
-                self.startResendTimer()
-                
-                
-            }
-        } else {
-            print("❌ Invalid Email")
-            enterEmailTF.layer.borderColor = UIColor.red.cgColor
-            enterEmailTF.layer.borderWidth = 0.5
-            showAlert(validEmailMessage)
-            return
-        }
     }
     
     func changeLabelStyle(Email:Bool = true){
@@ -495,7 +469,7 @@ class RegisterMobileNumberVC : BaseViewController {
         
         let lname = enterLastNameTF.text ?? ""
         
-        guard let email = enterEmailTF.text,!email.trimmingCharacters(in: .whitespaces).isEmpty, isValidEmail(email) else {
+        guard let email = enterEmailTF.text,!email.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert(enterEmailMessage)
             return
         }
