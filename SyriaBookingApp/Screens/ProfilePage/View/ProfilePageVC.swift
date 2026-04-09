@@ -439,7 +439,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             navigationItem.backButtonTitle = ""
             navigationController?.pushViewController(controller, animated: true)
         } else if indexPath.row == 1 {
-            let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as! MyBookingsViewController
+            guard let controller = UIStoryboard(name: "Home", bundle: nil).instantiateViewController(withIdentifier: "MyBookingsViewController") as? MyBookingsViewController else { return  }
             self.navigationController?.pushViewController(controller, animated: true)
             
         } else if indexPath.row == 2 {
@@ -452,7 +452,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             let reviewsArray  =  hasReviews()
             if  !reviewsArray.isEmpty {
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as! ViewAllRateAndReviewsVC
+               guard let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as? ViewAllRateAndReviewsVC  else { return  }
                 viewAllVC.reviewsArray = reviewsArray
                 viewAllVC.comingFrom = .profile
                 viewAllVC.modalPresentationStyle = .fullScreen

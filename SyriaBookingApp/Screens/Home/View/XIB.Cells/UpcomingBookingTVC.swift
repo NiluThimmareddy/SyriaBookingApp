@@ -64,8 +64,14 @@ class UpcomingBookingTVC: UITableViewCell {
     
     func configure(booking: BookingHistoryModel) {
         currentBooking = booking
+        if let imageURL = getHotelImage(for: booking) {
+            hotelImgView.loadImage(from: imageURL) // your image loading method
+        }else{
+            hotelImgView.image = UIImage(named: "HotelPlaceholder")
+        }
+        
         hotelNameLabel.text = booking.hotelName
-        hotelImgView.image = UIImage(named: "HotelPlaceholder")
+        
         let checkInDateStr = booking.checkInUtc.toDayMonthYear()
         let checkOutDateStr = booking.checkOutUtc.toDayMonthYear()
         checkInAndCheckOutDatesLabel.text = "\(checkInDateStr) - \(checkOutDateStr)"
@@ -100,6 +106,11 @@ class UpcomingBookingTVC: UITableViewCell {
             statusView.backgroundColor = .darkGray
             cancelButton.isHidden = true
         }
+    }
+    
+    func getHotelImage(for history: BookingHistoryModel) -> String? {
+        let hotelDict = Dictionary(uniqueKeysWithValues: HotelDataMaganer.shared.allHotels.map { ($0.id, $0) })
+        return hotelDict[history.hotelId]?.coverImageURL
     }
     
     func calculateTotalNights(checkIn: String, checkOut: String) -> Int {

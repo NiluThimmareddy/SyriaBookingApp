@@ -117,12 +117,17 @@ extension CancelBookingViewController: UITextViewDelegate {
         guard let booking = booking else {
             return
         }
+        
+        if let imageURL = getHotelImage(for: booking) {
+            hotelImageView.loadImage(from: imageURL) // your image loading method
+        }else{
+            hotelImageView.image = UIImage(named: "HotelPlaceholder")
+        }
         hotelNameLabel.text = "\(booking.hotelName)"
         let checkIn = booking.checkInUtc.toDayMonthYear()
         let checkOut = booking.checkOutUtc.toDayMonthYear()
         datesLabel.text = "\(checkIn) – \(checkOut)"
         roomTypeLabel.text = booking.roomType
-        hotelImageView.image = UIImage(named: "HotelPlaceholder")
     }
     
     func setupPlaceholder() {

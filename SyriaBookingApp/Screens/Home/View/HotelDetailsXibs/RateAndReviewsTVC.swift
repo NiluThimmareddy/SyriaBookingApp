@@ -34,10 +34,23 @@ class RateAndReviewsTVC : UITableViewCell {
     
     func configure(with review: Review) {
         reviewerNameLabel.text = review.reviewerName
-        
-        reviewDateLabel.text = formattedDate(from: review.createdOn)
-        starRatings.rating = Double(review.rating)
-        reviewTextLabel.text = review.reviewText
+     
+        if let firstChar = review.reviewerName.first,
+           firstChar.isLetter {
+            
+            let letter = String(firstChar).lowercased()
+            let imageName = "\(letter).circle.fill"
+            
+            let image = UIImage(systemName: imageName)
+            personImageView.image = image
+            
+            // Apply random color
+            personImageView.tintColor = colorFromName(review.reviewerName)
+            
+            reviewDateLabel.text = formattedDate(from: review.createdOn)
+            starRatings.rating = Double(review.rating)
+            reviewTextLabel.text = review.reviewText
+        }
     }
     
     private func formattedDate(from isoString: String) -> String {
@@ -53,6 +66,5 @@ class RateAndReviewsTVC : UITableViewCell {
         } else {
             return isoString
         }
-    }
-    
+    }    
 }

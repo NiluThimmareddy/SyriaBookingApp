@@ -14,9 +14,9 @@ class ViewAllRateAndReviewsVC : BaseViewController {
     @IBOutlet weak var rateAndReviewsTableView: UITableView!
     
     var selectedHotel : Hotel?
-    
     var reviewsArray : [Review]?
     var comingFrom : ComingFromToLogin?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -52,7 +52,7 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = reviewsArray?[indexPath.row] {
                 
-                cell.configure(with: reviews)
+                cell.configure(with: reviews, comingFromProfile: true)
             }
             return cell
             
@@ -60,7 +60,7 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = selectedHotel?.reviews, indexPath.row < reviews.count {
                 let review = reviews[indexPath.row]
-                cell.configure(with: review)
+                cell.configure(with: review, comingFromProfile: false)
             }
             return cell
         }

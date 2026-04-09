@@ -31,11 +31,48 @@ class MyReviewsTVC: UITableViewCell {
         }
     }
     
-    func configure(with review: Review) {
-        hotelImageView.image = UIImage(named: "HotelPlaceholder")
+    func configure(with review: Review, comingFromProfile:Bool) {
+  
+        if comingFromProfile{
+            let data = getHotelImage(for: review)
+            hotelNameLabel.text = data.1
+            if let url = data.0 {
+                hotelImageView.loadImage(from: url)
+            }else{
+                hotelImageView.image = UIImage(named: "HotelPlaceholder")
+            }
+        }else {
+            hotelNameLabel.text = review.reviewerName
+            
+            if let firstChar = review.reviewerName.first,
+               firstChar.isLetter {
+                
+                let letter = String(firstChar).lowercased()
+                let imageName = "\(letter).circle.fill"
+                
+                let image = UIImage(systemName: imageName)
+                hotelImageView.image = image
+                
+                // Apply random color
+                hotelImageView.tintColor = colorFromName(review.reviewerName)
+                
+            } else {
+                hotelImageView.image = UIImage(systemName: "person.circle.fill")
+                hotelImageView.tintColor = .systemGray
+            }
+        }
+
         reviewedDateLabel.text = formattedDate(from: review.createdOn)
         ratingsView.rating = Double(review.rating)
         reviewDescriptionLabel.text = review.reviewText
+    }
+    
+    
+    
+    
+    func getHotelImage(for history: Review) -> (String?,String?) {
+        let hotelDict = Dictionary(uniqueKeysWithValues: HotelDataMaganer.shared.allHotels.map { ($0.id, $0) })
+        return (hotelDict[history.hotelID]?.coverImageURL, hotelDict[history.hotelID]?.name)
     }
     
     private func formattedDate(from isoString: String) -> String {

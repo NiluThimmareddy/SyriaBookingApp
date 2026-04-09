@@ -268,6 +268,7 @@ class HotelDetailsViewController : BaseViewController {
     @IBAction func viewAllRateAndReviewsButtonAction(_ sender: Any) {
         guard let viewAllVC = storyboard?.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as? ViewAllRateAndReviewsVC else { return }
         viewAllVC.selectedHotel = selectedHotel
+        
         viewAllVC.modalPresentationStyle = .overFullScreen
         present(viewAllVC, animated: true)
     }

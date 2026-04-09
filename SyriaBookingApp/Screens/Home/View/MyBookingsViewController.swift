@@ -20,6 +20,7 @@ class MyBookingsViewController: BaseViewController {
     
     let viewModel = NotificationViewModel()
     let bookingViewModel = BookingViewModel()
+    let hotelViewModel = HotelViewModel()
     var selectedSegmentIndex: Int = 0
     var isLoginPopupPresented = false
     var comingFrom : String?

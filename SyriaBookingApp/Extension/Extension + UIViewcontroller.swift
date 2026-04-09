@@ -472,4 +472,29 @@ extension UIViewController {
         number.count <= 15
     }
     
+    func getHotelImage(for history: BookingHistoryModel) -> String? {
+        let hotelDict = Dictionary(uniqueKeysWithValues: HotelDataMaganer.shared.allHotels.map { ($0.id, $0) })
+        return hotelDict[history.hotelId]?.coverImageURL
+    }
+    
+}
+
+
+extension UITableViewCell {
+    func colorFromName(_ name: String) -> UIColor {
+        let colors: [UIColor] = [
+            .systemBlue,
+            .systemRed,
+            .systemGreen,
+            .systemOrange,
+            .systemPurple,
+            .systemPink,
+            .systemTeal,
+            .systemIndigo,
+            .brown
+        ]
+        
+        let index = abs(name.hashValue) % colors.count
+        return colors[index]
+    }
 }
