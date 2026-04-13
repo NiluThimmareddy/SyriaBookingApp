@@ -1000,6 +1000,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         }
             
         mapsImgView.applyWhiteGradientOverlay()
+    
     }
     
     func hideViewAllButton() {

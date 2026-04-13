@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2Kw-Ff-cEL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2Kw-Ff-cEL">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -2987,7 +2987,7 @@
                                                         <color key="textColor" systemColor="systemPurpleColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="biX-kJ-U5B">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="biX-kJ-U5B">
                                                         <rect key="frame" x="233" y="0.0" width="120" height="120"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="QjN-we-IdK">
@@ -2995,17 +2995,23 @@
                                                             </constraint>
                                                         </constraints>
                                                     </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Gp-Vx-bq3">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DGU-jM-Rey">
+                                                        <rect key="frame" x="273" y="39.999999999999943" width="40" height="40"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="0Tz-OY-8Je"/>
+                                                            <constraint firstAttribute="width" secondItem="DGU-jM-Rey" secondAttribute="height" id="aPc-5G-TEX"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Gp-Vx-bq3">
                                                         <rect key="frame" x="233" y="0.0" width="120" height="120"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
-                                                        <color key="tintColor" red="0.019607843140000001" green="0.58823529409999997" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="tintColor" systemColor="labelColor"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                                                         <state key="normal" title=" Get directions" image="arrow.trianglehead.turn.up.right.circle.fill" catalog="system">
                                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration"/>
                                                         </state>
-                                                        <buttonConfiguration key="configuration" style="plain" imagePlacement="top" title=" Get directions" imagePadding="20">
-                                                            <imageReference key="image" image="arrow.trianglehead.turn.up.right.circle.fill" catalog="system" symbolScale="large"/>
-                                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title=" Get directions">
                                                             <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="13"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -3013,14 +3019,16 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" red="1" green="0.58431372550000005" blue="0.0" alpha="0.040000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="eqX-7x-STm" firstAttribute="leading" secondItem="Aeh-2L-ceE" secondAttribute="leading" id="6ln-RW-PST"/>
                                                     <constraint firstAttribute="trailing" secondItem="biX-kJ-U5B" secondAttribute="trailing" id="A4n-JZ-o4a"/>
                                                     <constraint firstItem="z55-LY-lJB" firstAttribute="top" secondItem="Vtg-zg-94h" secondAttribute="top" constant="10" id="OqD-A7-KM7">
                                                         <variation key="heightClass=regular-widthClass=regular" constant="20"/>
                                                     </constraint>
+                                                    <constraint firstItem="DGU-jM-Rey" firstAttribute="centerX" secondItem="biX-kJ-U5B" secondAttribute="centerX" id="Vd0-UP-Ev8"/>
                                                     <constraint firstItem="biX-kJ-U5B" firstAttribute="leading" secondItem="Aeh-2L-ceE" secondAttribute="trailing" constant="10" id="apK-aq-Mss"/>
+                                                    <constraint firstItem="DGU-jM-Rey" firstAttribute="centerY" secondItem="biX-kJ-U5B" secondAttribute="centerY" id="gJq-u3-FW2"/>
                                                     <constraint firstItem="5Gp-Vx-bq3" firstAttribute="leading" secondItem="biX-kJ-U5B" secondAttribute="leading" id="gYk-2d-Nlr"/>
                                                     <constraint firstItem="z55-LY-lJB" firstAttribute="leading" secondItem="Vtg-zg-94h" secondAttribute="leading" constant="10" id="jqJ-57-CMt"/>
                                                     <constraint firstAttribute="height" constant="120" id="jtJ-Ep-6Do">
@@ -3682,6 +3690,7 @@
                         <outlet property="hotelAddressLabel" destination="Aeh-2L-ceE" id="zwS-ha-6vT"/>
                         <outlet property="hotelImagesCollectionView" destination="RoQ-hN-Dkl" id="EDA-CT-9Gu"/>
                         <outlet property="hotelNameLabel" destination="OZw-aN-6GI" id="7Zv-8a-ucb"/>
+                        <outlet property="mapView" destination="DGU-jM-Rey" id="WDT-Va-Fw4"/>
                         <outlet property="mapsImgView" destination="biX-kJ-U5B" id="z5F-3o-BtM"/>
                         <outlet property="nearByLandMarkLabel" destination="eqX-7x-STm" id="def-a7-htQ"/>
                         <outlet property="overView" destination="0fp-mz-4jZ" id="ZMa-0V-I78"/>
@@ -6264,6 +6273,7 @@ And Try Again.</string>
         <image name="ic_verifiedkey" width="170.66667175292969" height="170.66667175292969"/>
         <image name="line.horizontal.3" catalog="system" width="128" height="65"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
+        <image name="map_placeholder" width="1789" height="1815"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="pin.fill" catalog="system" width="116" height="128"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="99"/>
@@ -6281,40 +6291,40 @@ And Try Again.</string>
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPurpleColor">
-            <color red="0.79607843137254897" green="0.18823529411764706" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

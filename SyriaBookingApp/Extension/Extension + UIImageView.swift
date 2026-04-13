@@ -27,6 +27,22 @@ extension UIImageView {
             }
         }.resume()
     }
+    
+    func applyWhiteGradientOverlay(){
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.white.withAlphaComponent(0.9).cgColor,
+            UIColor.white.withAlphaComponent(0.6).cgColor,
+            UIColor.white.withAlphaComponent(0.0).cgColor
+        ]
+
+        gradientLayer.locations = [0.0, 0.3, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5) // left
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)   // right
+
+        gradientLayer.frame = self.bounds
+        self.layer.addSublayer(gradientLayer)
+    }
 }
 
 extension UIImage {

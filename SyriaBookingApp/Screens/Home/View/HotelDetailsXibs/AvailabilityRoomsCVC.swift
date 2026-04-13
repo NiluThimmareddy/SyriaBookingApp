@@ -118,17 +118,26 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
                 unavailablePricingLabel.text = "أسعار العملة المحلية غير متوفرة حالياً"
             } else {
                 unavailablePricingLabel.text = "Local currency pricing is currently unavailable"
+                unavailablePricingLabel.textColor = .systemRed
             }
         } else {
-            // At least one valid price exists - show book button and enable selection
-            bookNowButton.isHidden = false
-            unavailablePricingLabel.isHidden = true
-            roomRatesTableview.alpha = 1.0
-            updateBookNowButtonTitle()
-            bookNowButton.backgroundColor = UIColor.label
-            bookNowButton.setTitleColor(.white, for: .normal)
-            bookNowButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
-            bookNowButton.isEnabled = true
+            if let status = selectedRoom?.room.roomStatus, status.lowercased() != "available" {
+                bookNowButton.isHidden = true
+                unavailablePricingLabel.isHidden = false
+                roomRatesTableview.alpha = 0.8
+                unavailablePricingLabel.text = ""
+            }else{
+                unavailablePricingLabel.text = ""
+                // At least one valid price exists - show book button and enable selection
+                bookNowButton.isHidden = false
+                unavailablePricingLabel.isHidden = true
+                roomRatesTableview.alpha = 1.0
+                updateBookNowButtonTitle()
+                bookNowButton.backgroundColor = UIColor.label
+                bookNowButton.setTitleColor(.white, for: .normal)
+                bookNowButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+                bookNowButton.isEnabled = true
+            }
         }
     }
     
@@ -211,12 +220,16 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
         unavailablePricingLabel.backgroundColor = .clear
         unavailablePricingLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         unavailablePricingLabel.numberOfLines = 0
+        
+        roomStatusLabel.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
+        roomStatusLabel.cornerRadius = 10
+        roomStatusLabel.clipsToBounds = true
     }
     
     private func configureNoRatesLabel() {
         noRatesLabel.isHidden = true
         noRatesLabel.textAlignment = .center
-        noRatesLabel.textColor = .gray
+        noRatesLabel.textColor = .red
         noRatesLabel.font = .systemFont(ofSize: 14, weight: .medium)
         noRatesLabel.numberOfLines = 0
         
@@ -224,6 +237,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
             noRatesLabel.text = "لا توجد أسعار متاحة حالياً"
         } else {
             noRatesLabel.text = "No rates available at the moment"
+           
         }
     }
     
@@ -446,14 +460,16 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         
         // Check if this specific rate has a valid price
         let hasValidPrice = isLocalRate ? (currentRate.localPrice ?? 0) > 0 : currentRate.price > 0
-        
-        if !hasValidPrice {
+
+        if !hasValidPrice{
             // This rate has zero price - disable it
             cell.checkMarkButton.isUserInteractionEnabled = false
             cell.checkMarkButton.alpha = 0.3
             cell.selectRoomsButton.isUserInteractionEnabled = false
+            cell.selectRoomsButton.isEnabled = false
             cell.selectRoomsButton.alpha = 0.3
-            cell.roomPriceLabel.alpha = 0.5
+            cell.roomPriceLabel.alpha = 0.3
+            cell.roomsTitleLabel.alpha = 0.3
             cell.contentView.alpha = 0.7
             
             // Show unavailable message for zero-price rows
@@ -463,18 +479,32 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
                 cell.roomPriceLabel.text = "Price unavailable"
             }
         } else {
-            // This rate has valid price
-            cell.selectRoomsButton.isUserInteractionEnabled = isLoggedIn
-            cell.selectRoomsButton.alpha = isLoggedIn ? 1.0 : 0.5
-            cell.checkMarkButton.isUserInteractionEnabled = isLoggedIn
-            cell.checkMarkButton.alpha = isLoggedIn ? 1.0 : 0.5
-            cell.roomPriceLabel.alpha = 1.0
-            cell.contentView.alpha = 1.0
+            
+            if let status = selectedRoom.room.roomStatus, status.lowercased() != "available" {
+                cell.checkMarkButton.isUserInteractionEnabled = false
+                cell.checkMarkButton.isEnabled = false
+                cell.selectRoomsButton.alpha = 0.3
+                cell.roomPriceLabel.alpha = 0.3
+                cell.roomsTitleLabel.alpha = 0.3
+                cell.selectRoomsButton.isUserInteractionEnabled = false
+                cell.selectRoomsButton.isEnabled = false
+                cell.contentView.alpha = 0.7
+                
+            }else{
+                // This rate has valid price
+                cell.selectRoomsButton.isUserInteractionEnabled = isLoggedIn
+                cell.selectRoomsButton.alpha = isLoggedIn ? 1.0 : 0.5
+                cell.checkMarkButton.isUserInteractionEnabled = isLoggedIn
+                cell.checkMarkButton.alpha = isLoggedIn ? 1.0 : 0.5
+                cell.roomPriceLabel.alpha = 1.0
+                cell.contentView.alpha = 1.0
+                cell.roomsTitleLabel.alpha = 1.0
+                cell.selectRoomsButton.isEnabled = true
+            }
+            
         }
         
         cell.selectRoomsButton.tag = indexPath.row
-        
-        
         cell.configure(with: selectedRoom, ratesForLocal: isLocalRate) { [weak self] selectedQty in
             guard let self = self else { return }
             
@@ -501,6 +531,10 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
             return // Don't allow selection of zero-price rates
         }
         
+        if let status = selectedRoom?.room.roomStatus, status.lowercased() != "available" {
+            return
+        }
+        
         rate.isSelected.toggle()
         
         rate.isLocal = isLocalRate
@@ -522,6 +556,10 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         let hasValidPrice = isLocalRate ? (rate.localPrice ?? 0) > 0 : rate.price > 0
         if !hasValidPrice {
             return // Don't allow selection of zero-price rates
+        }
+        
+        if let status = selectedRoom?.room.roomStatus, status.lowercased() != "available" {
+            return
         }
         
         rate.isSelected.toggle()

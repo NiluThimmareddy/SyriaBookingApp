@@ -127,8 +127,7 @@ class RoomsRatesTVC : UITableViewCell {
         if rooms.isSelected {
             selecteRoomRates.append(rooms)
         }
-        
-        
+
         if !rooms.isSelected {
            // selectedRoom.rates[selectRoomsButton.tag].selectedQuantity = 1
             self.selectedQty = 1
