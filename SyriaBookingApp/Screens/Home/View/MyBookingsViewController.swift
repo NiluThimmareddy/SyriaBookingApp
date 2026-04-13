@@ -1,9 +1,7 @@
 //
 //  MyBookingsViewController.swift
 //  SyriaBookingApp
-//
 //  Created by ToqSoft on 01/08/25.
-//
 
 import UIKit
 import SkeletonView
@@ -53,7 +51,6 @@ class MyBookingsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setupAppNavigationBar()
         setupLanguage()
         
@@ -527,16 +524,11 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
                 self.showAlert(error.userMessage)
             }
         }
-        
-        
-        
+
         bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { [weak self] data in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                 
-                
                 guard let data = data else { return }
-                
                 self.presentedViewController?.dismiss(animated: true) {
                     self.showAlert(title: "Success", message: data.message, onOK: {
                         self.fetchUpdatedBookings()
@@ -548,13 +540,10 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     
     private func fetchUpdatedBookings() {
         guard let user = UserSessionManager.getUser() else { return }
-        
         showSkeleton()
-        
         viewModel.onSuccess = { [weak self] _ in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                 
                 self.hideSkeleton()
                 self.configureSelectedSegment {
                     self.updateUIAfterDataLoad()
@@ -565,12 +554,10 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         viewModel.onError = { [weak self] error in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                 
                 self.hideSkeleton()
                 self.showAlert(error.userMessage)
             }
         }
-        
         viewModel.fetchNotificationUser(userId: user.id, includePast: true)
     }
 }
@@ -579,17 +566,12 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
 extension MyBookingsViewController {
     func setupLanguage() {
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
-        
         myBookigsTitleLabel.text = isArabic ? "حجوزاتي" : "My Bookings"
         myBookingsDescriptionLabel.text = isArabic ? "راجع إقاماتك القادمة والحجوزات المؤرشفة" : "Review your upcoming stays and archived bookings"
-        
         noBookingsLabel.text = isArabic ? "لا توجد حجوزات" : "No Bookings Found"
-        
         messageLabel.text = isArabic ? "يرجى تسجيل الدخول لعرض سجل الحجوزات الخاصة بك" : "Please Login to view your booking history"
-        
         segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming", forSegmentAt: 0)
         segmentControl.setTitle(isArabic ? "الأرشيف" : "Archive", forSegmentAt: 1)
-        
         myBookigsTitleLabel.textAlignment = isArabic ? .center : .center
         myBookingsDescriptionLabel.textAlignment = isArabic ? .center : .center
         noBookingsLabel.textAlignment = isArabic ? .center : .center
@@ -605,8 +587,7 @@ extension String {
         formatter.formatOptions = [.withInternetDateTime]
         if let date = formatter.date(from: self) {
             return date
-        }
-        
+        }        
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter.date(from: self)
     }

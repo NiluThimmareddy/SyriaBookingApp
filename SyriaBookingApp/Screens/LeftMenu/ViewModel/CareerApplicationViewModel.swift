@@ -12,8 +12,6 @@ class CareerApplicationViewModel {
     var onError: ((String) -> Void)?
     
     func SubmitCareerInfo(ApplicantName: String, ApplicantEmail: String, ApplicantPhone: String, ApplicantCity: String, AppliedFor: String, CoverMessage: String, CvFile: String) {
-                
-        
         let params: [String: Any] = [
             "ApplicantName": ApplicantName,
             "ApplicantEmail": ApplicantEmail,

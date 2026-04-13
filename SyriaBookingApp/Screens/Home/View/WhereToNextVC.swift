@@ -95,16 +95,13 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
 
     private func prepareWhereToNextData() {
         let allHotels = HotelDataMaganer.shared.allHotels
-
         let uniqueCities = Array(Set(allHotels.map { normalizedCity($0.city) }))
 
         self.whereToNextCityList = uniqueCities.map { cityName in
             let hotelsInCity = allHotels.filter {
                 normalizedCity($0.city) == cityName
             }
-
             let cityImage = hotelsInCity.first?.images.first ?? ""
-
             return WhereToNextList(
                 image: cityImage,
                 City: cityName,
@@ -115,7 +112,6 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
 
     private func getHotelsForCity(_ cityName: String) -> [Hotel] {
         let normalizedInput = normalizedCity(cityName)
-
         return HotelDataMaganer.shared.allHotels.filter {
             normalizedCity($0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) == normalizedInput
         }
@@ -148,7 +144,6 @@ extension WhereToNextVC {
     private func showSkeleton() {
         guard !isShowingSkeleton else { return }
         skeletonHideWorkItem?.cancel()
-        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
@@ -167,10 +162,8 @@ extension WhereToNextVC {
     
     private func hideSkeleton() {
         skeletonHideWorkItem?.cancel()
-        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
             let elapsedTime = self.skeletonStartTime.map { Date().timeIntervalSince($0) } ?? 0
             let remainingTime = max(0, self.minimumSkeletonTime - elapsedTime)
             
@@ -188,7 +181,6 @@ extension WhereToNextVC {
     
     private func performHideSkeleton() {
         guard isShowingSkeleton else { return }
-        
         self.isShowingSkeleton = false
         self.skeletonHideWorkItem = nil
         self.loginDescriptionLabel.hideSkeleton()
@@ -220,11 +212,9 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
         let hotels = getHotelsForCity(city.City)
         
         cell.configure(with: city, hotels: hotels, language: selectedLanguage)
-        
         cell.onHotelSelected = { [weak self] selectedHotel in
             self?.navigateToHotelDetails(selectedHotel)
         }
-        
         return cell
     }
     
@@ -238,9 +228,7 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !isShowingSkeleton else { return }
-        
         tableView.deselectRow(at: indexPath, animated: true)
-        
         let selectedCity = whereToNextCityList[indexPath.row]
         let cityName = selectedLanguage == .english ? selectedCity.City : selectedCity.Cityar
         
@@ -266,13 +254,10 @@ extension WhereToNextVC: UITableViewDelegate, UITableViewDataSource {
     
     private func navigateToHotelDetails(_ hotel: Hotel) {
         guard !isShowingSkeleton else { return }
-        
         let vc = storyboard?.instantiateViewController(withIdentifier: "HotelDetailsViewController") as! HotelDetailsViewController
         vc.selectedHotel = hotel
         vc.navigationItem.title = "Hotel Details"
-        
         HotelDataMaganer.shared.addRecentlyViewedHotel(id: hotel.id)
-        
         let backItem = UIBarButtonItem()
         backItem.title = ""
         self.navigationItem.backBarButtonItem = backItem
@@ -312,8 +297,7 @@ extension WhereToNextVC {
     func setUpUI() {
         whereToNextTableview.register(UINib(nibName: "WhereToNextListTVC", bundle: nil), forCellReuseIdentifier: "WhereToNextListTVC")
         whereToNextTableview.delegate = self
-        whereToNextTableview.dataSource = self
-        
+        whereToNextTableview.dataSource = self        
         updateLoginViewTexts()
     }
     

@@ -77,13 +77,9 @@ class HowItWorksViewController: UIViewController {
         }
         imageView.applyFullLightBlackGradientOverlay()
         setupSocialMediaView()
-        
         storeOriginalHeights()
-        
         setupInitialLabels()
-        
         configureLabels()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,7 +111,6 @@ class HowItWorksViewController: UIViewController {
         }
 
         followLinksView.addSubview(socialView)
-
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -327,9 +322,7 @@ class HowItWorksViewController: UIViewController {
     
     private func collapseSection(label: UILabel, shortText: String, heightConstraint: NSLayoutConstraint, originalHeight: CGFloat, action: Selector) {
         setupLabelWithReadMore(label: label, shortText: shortText, action: action)
-        
         heightConstraint.constant = originalHeight
-        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }

@@ -352,7 +352,7 @@ extension RecentlyViewedVC {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             guard let self = self else { return }
             
-            if let user = UserSessionManager.getUser() {
+            if UserSessionManager.getUser() != nil {
                 self.viewModel?.fetchRecentlyViewedHotels { [weak self] in
                     DispatchQueue.main.async {
                         self?.handleDataLoaded()
@@ -458,7 +458,6 @@ extension RecentlyViewedVC {
         let clearTitle = lang == .english ? "Clear All" : "مسح الكل"
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: clearTitle, style: .destructive) { [weak self] _ in
             HotelDataMaganer.shared.clearAllRecentlyViewedHotels()
@@ -467,7 +466,6 @@ extension RecentlyViewedVC {
                 self?.navigateToHomePage()
             }
         })
-        
         present(alert, animated: true)
     }
     
@@ -481,7 +479,6 @@ extension RecentlyViewedVC {
         let clearTitle = lang == .english ? "Clear Today's" : "مسح اليوم"
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: clearTitle, style: .destructive) { [weak self] _ in
             HotelDataMaganer.shared.clearTodaysRecentlyViewedHotels()
@@ -505,7 +502,6 @@ extension RecentlyViewedVC {
         let clearTitle = lang == .english ? "Clear Earlier" : "مسح السابق"
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: clearTitle, style: .destructive) { [weak self] _ in
             HotelDataMaganer.shared.clearEarlierRecentlyViewedHotels()
@@ -514,8 +510,7 @@ extension RecentlyViewedVC {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self?.loadRecentlyViewedHotels()
             }
-        })
-        
+        })        
         present(alert, animated: true)
     }
     

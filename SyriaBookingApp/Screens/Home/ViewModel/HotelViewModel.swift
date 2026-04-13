@@ -40,7 +40,6 @@ class HotelViewModel {
                 self.onDataLoaded?()
                 
             case .failure(let error):
-                
                 self.onError?(error)
             }
         }
@@ -64,14 +63,11 @@ class HotelViewModel {
             case .success(let response):
                 completion(response.data)
             case .failure(let error):
-                
                 print("Errot in fetching hotels data...")
                 self.onError?(error)
             }
         }
-        
-    }
-    
+    }    
     
     func fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
         

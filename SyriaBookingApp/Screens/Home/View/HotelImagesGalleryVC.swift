@@ -1,9 +1,7 @@
 //
 //  HotelImagesGalleryVC.swift
 //  SyriaBookingApp
-//
 //  Created by toqsoft on 25/08/25.
-//
 
 import UIKit
 
@@ -12,7 +10,6 @@ class HotelImagesGalleryVC: UIViewController {
     @IBOutlet weak var backview: UIView!
     @IBOutlet weak var hotelImagesCollectionView: UICollectionView!
     @IBOutlet weak var hotelThumbnailCollectionView: UICollectionView!
-    @IBOutlet weak var hotelThumbnailCollectionHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: UIButton!
     
     
@@ -191,7 +188,6 @@ extension HotelImagesGalleryVC: HotelImagesGalleryCVCDelegate {
         }
         
         guard let imageUrlString = imageUrlString else { return }
-        
         if let vc = storyboard?.instantiateViewController(withIdentifier: "ThreeSixtyDegreeImageViewVC") as? ThreeSixtyDegreeImageViewVC {
             vc.imageURLString = imageUrlString
             let backItem = UIBarButtonItem()

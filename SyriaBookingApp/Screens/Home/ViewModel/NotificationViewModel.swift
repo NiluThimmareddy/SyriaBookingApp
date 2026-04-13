@@ -75,15 +75,13 @@ class NotificationViewModel {
             return
         }
         
-        
         APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in            
             guard let self = self else { return }
             switch result {
             case .success(let success):
               print(success)
                 self.onCountSuccess?(success)
-            case .failure(let failure):
-                
+            case .failure(let failure):                
 #if DEBUG
                 print("fetchUserBookings Error :", failure.localizedDescription)
 #endif

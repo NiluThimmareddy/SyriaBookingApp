@@ -16,8 +16,7 @@ class RoomRateTVC : UITableViewCell {
     @IBOutlet weak var amountLabel: UILabel!
     
     override func awakeFromNib() {
-        super.awakeFromNib()
-        
+        super.awakeFromNib()        
     }
     
 }

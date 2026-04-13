@@ -331,13 +331,20 @@ class HotelDetailsViewController : BaseViewController {
             // ✅ Use coordinates
             showMapOptions(lat: lat, lng: lng, hotelName: hotel.name)
             
-        } else if let address = hotel.addressLine1, !address.isEmpty {
+        } else if let addressLine1 = hotel.addressLine1, !addressLine1.isEmpty {
             
+            let addressParts = [
+                hotel.addressLine1,
+                hotel.stateOrProvince ?? "",
+                hotel.country
+            ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+             .filter { !$0.isEmpty }
+
+            let address = addressParts.joined(separator: ", ")
             // ✅ Fallback to address
             showMapOptionsWithAddress(address: address, hotelName: hotel.name)
             
-        } else {
-            
+        } else {            
             showAlert("Location not available")
         }
     }
@@ -502,7 +509,6 @@ class HotelDetailsViewController : BaseViewController {
 extension HotelDetailsViewController : CLLocationManagerDelegate{
     
     func setupLocationanager() {
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -542,9 +548,6 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
         }
         
         if collectionView == hotelImagesCollectionView {
-            //            guard let hotel = selectedHotel else { return 0 }
-            //            let imageCount = hotel.images.count
-            //            return Int(ceil(Double(imageCount) / 5.0))
             return 1
         } else {
             return selectedHotel?.rooms.count ?? 0
@@ -660,16 +663,11 @@ extension HotelDetailsViewController : UICollectionViewDelegate, UICollectionVie
                         self.selectedRates.append(rate)
                     }
                 } else {
-                    
                     self.selectedRates.removeAll { $0.id == rate.id }
-                    
                 }
-                
                 cell.segmentChanged = {
                     self.totalPriceView.isHidden = true
                 }
-                
-                
                 self.updateTotalPrice()
             }
             cell.configure(with: room)
@@ -923,17 +921,13 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotelNameAttributed.append(starAttributed)
         }
         hotelNameLabel.attributedText = hotelNameAttributed
-        
-            
         let addressParts = [
             hotel.addressLine1,
             hotel.stateOrProvince ?? "",
             hotel.country
         ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
          .filter { !$0.isEmpty }
-
         hotelAddressLabel.text = addressParts.joined(separator: ", ")
-//        hotelAddressLabel.text = "\(hotel.addressLine1 ?? ""), \(state), \(hotel.country ?? "")"
         nearByLandMarkLabel.text = hotel.landmarkDescription
         descriptionLabel.text = hotel.description
         
@@ -945,7 +939,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             discountLabel.isHidden = true
             discountImage.isHidden = true
         }
-        
         
         rateAndReviewsLabel.text = "Rate & Reviews \(hotel.averageRating) (\(hotel.reviewCount) reviews)"
         if AppSettings.shared.selectedLanguage == .arabic {
@@ -998,9 +991,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         } else {
             self.rateAndReviewsView.isHidden = false
         }
-            
         mapsImgView.applyWhiteGradientOverlay()
-    
     }
     
     func hideViewAllButton() {
@@ -1017,8 +1008,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             $0.removeFromSuperview()
         }
         
-        guard let amenitiesString = amenitiesString, !amenitiesString.isEmpty else { return }
-        
+        guard let amenitiesString = amenitiesString, !amenitiesString.isEmpty else { return }        
         let amenitiesArray = amenitiesString.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         
         var currentRow = createHorizontalStack()

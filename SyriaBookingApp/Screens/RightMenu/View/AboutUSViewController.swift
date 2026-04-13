@@ -9,7 +9,6 @@ import UIKit
 
 class AboutUSViewController: UIViewController {
 
-   
     @IBOutlet weak var aboutUsTitleLabel: UILabel!
     @IBOutlet weak var redefiningDescriptionLabel: UILabel!
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -19,7 +18,6 @@ class AboutUSViewController: UIViewController {
     @IBOutlet weak var whatWeOfferLabel: UILabel!
     @IBOutlet weak var questionOneLabel: UILabel!
     @IBOutlet weak var questionTwoLabel: UILabel!
-    
     @IBOutlet weak var followLinksView: UIView!
     @IBOutlet weak var aboutUsImageView: UIImageView!
     

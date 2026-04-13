@@ -87,9 +87,7 @@ extension YourNotificationVC {
         viewModel.onSuccess = { [weak self] response in
             DispatchQueue.main.async {
                 self?.hideLoader()
-                
                 self?.viewModel.filteredHistoryArray = response
-                
                 let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
                 
                 if rowCount == 0 {

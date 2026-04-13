@@ -17,10 +17,7 @@ class ProfileViewModel {
         guard var url = APIURL.updateProfile.url?.absoluteString else { return }
         url += "\(userId)"
         
-        
-        
         guard let url =  URL(string: url) else {
-            
             onProfileUpdated?(false, "Invalid URL", nil)
             return
         }

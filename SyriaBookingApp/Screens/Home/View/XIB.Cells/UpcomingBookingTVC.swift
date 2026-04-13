@@ -122,8 +122,9 @@ class UpcomingBookingTVC: UITableViewCell {
             return 0
         }
         
-        let components = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate)
-        return max(components.day ?? 0, 0)
+        let days = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate).day ?? 0
+        
+        return max(days, 1)
     }
     
     private func setupSkeleton() {

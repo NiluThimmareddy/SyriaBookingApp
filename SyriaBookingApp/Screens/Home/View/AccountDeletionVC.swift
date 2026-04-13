@@ -156,8 +156,7 @@ class AccountDeletionVC: UIViewController {
             }
         }
         task.resume()
-    }
-    
+    }    
     
     @IBAction func dismissButtonAction(_ sender: UIButton) {
         self.dismiss(animated: true)

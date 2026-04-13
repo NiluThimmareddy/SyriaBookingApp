@@ -461,7 +461,6 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         print("✏️ Guest edited at index \(index): \(updatedGuest)")
     }
 
-
     func showConfirmationAlert(title: String, message: String, actionTitle: String, isDestructive: Bool = false, confirmed: @escaping () -> Void) {
         let lang = AppSettings.shared.selectedLanguage
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
@@ -477,7 +476,6 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         
         present(alert, animated: true)
     }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

@@ -74,7 +74,6 @@ class ReportAnAppVC: BaseViewController {
         }
         
         var actions: [UIAction] = []
-        
         for title in starOptions {
             let action = UIAction(title: title, handler: { [weak self] _ in
                 let attributedTitle = NSAttributedString(
@@ -91,7 +90,6 @@ class ReportAnAppVC: BaseViewController {
         
         let menuTitle = AppSettings.shared.selectedLanguage == .arabic ? "اختر الموضوع" : "Select Subject"
         let menu = UIMenu(title: menuTitle, children: actions)
-        
         selectTypeButton.showsMenuAsPrimaryAction = true
         selectTypeButton.menu = menu
         
@@ -108,7 +106,6 @@ class ReportAnAppVC: BaseViewController {
     
     @IBAction func submitButtonAction(_ sender: Any) {
         let lang = AppSettings.shared.selectedLanguage
-
         guard let subject = selectTypeButton.titleLabel?.text,
               !subject.isEmpty,
               (lang == .arabic ? subject != "اختر الموضوع" : subject.lowercased() != "select subject") else {
@@ -139,7 +136,6 @@ class ReportAnAppVC: BaseViewController {
         }
         
         // API call
-        
         if comingfrom == .TabBar  || comingfrom == .RightMenu{
             //pass type,subject,message,username,email ans phone from textfield           
             if comingfrom == .RightMenu {
@@ -175,8 +171,7 @@ extension ReportAnAppVC {
             yourNameLabel.text = "اسمك"
             yourEmailLabel.text = "بريدك الإلكتروني"
             phoneNoLabel.text = "رقم الهاتف"
-            submitButton.setTitle("إرسال", for: .normal)
-            
+            submitButton.setTitle("إرسال", for: .normal)            
         } else {
             subjectLabel.text = "Subject"
             typeLabel.text = "Type"
@@ -185,7 +180,6 @@ extension ReportAnAppVC {
             yourEmailLabel.text = "Your Email"
             phoneNoLabel.text = "Phone"
             submitButton.setTitle("Send", for: .normal)
-            
         }
         
         subjectLabel.textAlignment = .left

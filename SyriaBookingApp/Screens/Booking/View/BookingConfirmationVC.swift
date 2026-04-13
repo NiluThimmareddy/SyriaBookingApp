@@ -81,7 +81,6 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         setupHotelImage()
         hotelDetailsView.applyCardStyle()
         setupCornerRadii()
-        
         updateTexts()
     }
     

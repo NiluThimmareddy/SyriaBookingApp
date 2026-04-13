@@ -11,7 +11,6 @@ import UIKit
 class FrequentlyAskedTVCViewControllercopy : UIViewController {
         
     @IBOutlet weak var FrequentlyAskedTVC: UITableView!
-
     @IBOutlet weak var emailUsView: UIView!
     @IBOutlet weak var followUsLinksView: UIView!
     
@@ -30,9 +29,6 @@ class FrequentlyAskedTVCViewControllercopy : UIViewController {
         setupAppNavigationBar()
     }
 
-    @IBAction func dismissButton(_ sender: Any) {
-        self.dismiss(animated: true)
-    }
 }
 
 extension FrequentlyAskedTVCViewControllercopy: UITableViewDelegate, UITableViewDataSource {

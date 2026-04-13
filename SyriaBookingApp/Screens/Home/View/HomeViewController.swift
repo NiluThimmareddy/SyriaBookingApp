@@ -119,7 +119,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     // Add this property to store selected city
     var selectedCityFromDropdown: String?
-    
+    private var currentUser: BookingModel?
     var recommendedHotels: [Hotel] {
         let startIndex = 10
         let endIndex = min(30, viewModel.filteredHotels.count)
@@ -133,6 +133,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupBasicUI()
         setupSkeletonView()
         
@@ -166,6 +167,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        currentUser = UserSessionManager.getUser()
         setupAppNavigationBar()
         sliderCollectionView.reloadData()
         
@@ -173,8 +175,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             showSkeletonOnAllElements()
         }
         
-//        selectedCheckInDate = nil
-//        selectedCheckOutDate = nil
         refreshRecentlyViewedData()
     }
     
@@ -278,7 +278,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     func didSelectDateRange(checkIn: Date?, checkOut: Date?) {
         selectedCheckInDate = checkIn
         selectedCheckOutDate = checkOut
-
+        
         let lang = AppSettings.shared.selectedLanguage
         let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         
@@ -293,11 +293,11 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
                     .foregroundColor: UIColor.label
                 ]
             )
-
+            
             checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
             return
         }
-
+        
         let formatter = DateFormatter()
         formatter.timeZone = .current
         
@@ -309,10 +309,10 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             formatter.locale = Locale(identifier: "ar_SA")
             formatter.dateFormat = "EEE dd MMM" // Arabic dates will automatically use Arabic numerals and month names
         }
-
+        
         let startText = formatter.string(from: checkIn)
         let endText = formatter.string(from: checkOut)
-
+        
         let rawNights = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut).day ?? 0
         let nights = max(rawNights, 1)
         
@@ -338,55 +338,9 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
                 .foregroundColor: UIColor.label
             ]
         )
-
+        
         checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
     }
-//    func didSelectDateRange(checkIn: Date?, checkOut: Date?) {
-//        selectedCheckInDate = checkIn
-//        selectedCheckOutDate = checkOut
-//
-//        let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//        
-//        guard let checkIn, let checkOut else {
-//            
-//            let title = "Check-in date － Check-out date"
-//            
-//            let attributedTitle = NSAttributedString(
-//                string: title,
-//                attributes: [
-//                    .font: font,
-//                    .foregroundColor: UIColor.label
-//                ]
-//            )
-//
-//            checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
-//            return
-//        }
-//
-//        let formatter = DateFormatter()
-//        formatter.locale = .current
-//        formatter.timeZone = .current
-//        formatter.dateFormat = "EEE dd MMM"
-//
-//        let startText = formatter.string(from: checkIn)
-//        let endText = formatter.string(from: checkOut)
-//
-//        let rawNights = Calendar.current.dateComponents([.day], from: checkIn, to: checkOut).day ?? 0
-//        let nights = max(rawNights, 1)
-//
-//        let title = "\(startText) - \(endText) • \(nights) night\(nights > 1 ? "s" : "")"
-//
-//        
-//        let attributedTitle = NSAttributedString(
-//            string: title,
-//            attributes: [
-//                .font: font,
-//                .foregroundColor: UIColor.label
-//            ]
-//        )
-//
-//        checkInCheckOutButton.setAttributedTitle(attributedTitle, for: .normal)
-//    }
     
     @IBAction func searchHotelButtonTapped(_ sender: UIButton) {
         var selectedCity: String?
@@ -405,19 +359,14 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             showAlert(title: title, message: message)
             return
         }
-
+        
         let placeholderKeywords = ["Select City", "اختر مدينة",
-            "Where are you going","إلى أين أنت ذاهب",
-            "Search by city, area, or hotel name","ابحث عن طريق المدينة، المنطقة، أو اسم الفندق"
+                                   "Where are you going","إلى أين أنت ذاهب",
+                                   "Search by city, area, or hotel name","ابحث عن طريق المدينة، المنطقة، أو اسم الفندق"
         ]
         
-//        let normalizedCity = city.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
-//        let isPlaceholder = placeholderKeywords.contains { keyword in
-//            normalizedCity.contains(keyword)
-//        }
-        
         let trimmedCity = city.trimmingCharacters(in: .whitespacesAndNewlines)
-
+        
         let isPlaceholder = placeholderKeywords.contains { keyword in
             trimmedCity.contains(keyword)
         }
@@ -436,10 +385,10 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             .components(separatedBy: "\n")
             .first?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? city
-
-      guard let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
+        
+        guard let vc = storyboard?.instantiateViewController(withIdentifier:"HotelListViewController"
         ) as? HotelListViewController else { return }
-
+        
         
         vc.delegate = self
         vc.comingFrom = .search
@@ -448,16 +397,16 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         // Pass dates if they exist (optional)
         vc.selectedCheckInDate = selectedCheckInDate
         vc.selectedCheckOutDate = selectedCheckOutDate
-       
+        
         vc.navigationItem.title = "Hotel List"
-
+        
         let backItem = UIBarButtonItem()
         backItem.title = ""
         navigationItem.backBarButtonItem = backItem
         navigationController?.navigationBar.tintColor = .white
         navigationController?.pushViewController(vc, animated: true)
     }
-
+    
     // MARK: - IBActions
     @IBAction func recentlySeeMoreButtonAction(_ sender: Any) {
         guard  let controller = storyboard?.instantiateViewController(withIdentifier: "RecentlyViewedVC") as? RecentlyViewedVC else { return }
@@ -538,7 +487,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         
         if let city = selectedCity, city != "Select City" && city != "اختر مدينة" {
             guard  let storyboard = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as? HotelListViewController else { return }
-//            storyboard.viewModel = self.viewModel
+            //            storyboard.viewModel = self.viewModel
             
             let formater = DateFormatter()
             formater.dateStyle = .medium
@@ -565,7 +514,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             let lang = AppSettings.shared.selectedLanguage
             let title = lang == .arabic ? "سيريا بوكينغ" : "SyriaBooking"
             let message = lang == .arabic ? "الرجاء اختيار المدينة" : "Please select city"
-
+            
             showAlert(title: title, message: message)
         }
     }
@@ -574,7 +523,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         guard  let controller = storyboard?.instantiateViewController(withIdentifier: "HotelListViewController") as?  HotelListViewController else { return }
         controller.comingFrom = .filter
         controller.selectedCity = "All"
-//        controller.viewModel = self.viewModel
         controller.shouldSortByRating = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -717,7 +665,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else if collectionView == sliderCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SliderCollectionViewCell", for: indexPath) as! SliderCollectionViewCell
             cell.greetingMessageLabel.isHidden = true
-            if let user = UserSessionManager.getUser() {
+            if let user = currentUser {
                 cell.loginButton.isHidden = true
                 if indexPath.row == 0 {
                     cell.greetingMessageLabel.isHidden = false
@@ -1563,8 +1511,8 @@ extension HomeViewController {
             } else {
                 if let currentTitle = whereAreYouGoingButton.currentTitle,
                    currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
-                   currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
-                   !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
+                    currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
+                    !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
                     
                     let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
                     let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -1579,8 +1527,8 @@ extension HomeViewController {
                 } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
                     let titleString = attributedTitle.string
                     if titleString != "Where are you going?" && titleString != "إلى أين أنت ذاهب؟" &&
-                       titleString != "Select City" && titleString != "اختر مدينة" &&
-                       !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
+                        titleString != "Select City" && titleString != "اختر مدينة" &&
+                        !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
                         
                         let cleanedTitle = titleString.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
                         let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -1678,8 +1626,8 @@ extension HomeViewController {
             } else {
                 if let currentTitle = whereAreYouGoingButton.currentTitle,
                    currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
-                   currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
-                   !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
+                    currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
+                    !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
                     
                     let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
                     let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -1694,8 +1642,8 @@ extension HomeViewController {
                 } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
                     let titleString = attributedTitle.string
                     if titleString != "Where are you going?" && titleString != "إلى أين أنت ذاهب؟" &&
-                       titleString != "Select City" && titleString != "اختر مدينة" &&
-                       !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
+                        titleString != "Select City" && titleString != "اختر مدينة" &&
+                        !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
                         
                         let cleanedTitle = titleString.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
                         let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -1747,212 +1695,6 @@ extension HomeViewController {
         }
     } 
     
-//    @objc func updateTexts() {
-//        if view.sk.isSkeletonActive { return }
-//        
-//        let lang = AppSettings.shared.selectedLanguage
-//        topHotelsCollectionView.reloadData()
-//        propertyTypeCollectionView.reloadData()
-//        recentlyCollectionView.reloadData()
-//        recommendedHotelsCollectionView.reloadData()
-//        
-//        if lang == .english {
-//            let attributes: [NSAttributedString.Key: Any] = [
-//                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
-//            ]
-//            newYearTitleLabel.text = "New Year, New Adventures"
-//            dealOfferLabel.text = "Save 15% or more when you book and stay before 31 December 2025"
-//            handPickedHotelsDescriptionLabel.text = "Experience the finest stays with our handpicked hotels, selected for their exceptional comfort, service, and location."
-//            handpickedHotelsLabel.text = "Handpicked Hotels"
-//            navigationTitleNameLabel.title = "SyriaBooking"
-//            recentlyHeadLineLabel.text = "Recently Viewed"
-//            whereToNextHeadLineLabel.text = "Where to next?"
-//            topHotelHeadLineLabel.text = "Top Hotels"
-//            selectCityButton.setTitle("Select City", for: .normal)
-//            searchButton.setTitle("Search", for: .normal)
-//            checkInButton.setTitle("Check In", for: .normal)
-//            checkOutButton.setTitle("Check Out", for: .normal)
-//            
-//            if let selectedCity = selectedCityFromDropdown {
-//                let cleanedTitle = selectedCity.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                let attributedString = NSAttributedString(
-//                    string: cleanedTitle,
-//                    attributes: [
-//                        .font: font,
-//                        .foregroundColor: UIColor.label
-//                    ]
-//                )
-//                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//            } else {
-//                if let currentTitle = whereAreYouGoingButton.currentTitle,
-//                   currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
-//                   currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
-//                   !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
-//                    
-//                    let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                    let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                    let attributedString = NSAttributedString(
-//                        string: cleanedTitle,
-//                        attributes: [
-//                            .font: font,
-//                            .foregroundColor: UIColor.label
-//                        ]
-//                    )
-//                    whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//                } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
-//                    let titleString = attributedTitle.string
-//                    if titleString != "Where are you going?" && titleString != "إلى أين أنت ذاهب؟" &&
-//                       titleString != "Select City" && titleString != "اختر مدينة" &&
-//                       !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
-//                        
-//                        let cleanedTitle = titleString.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                        let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                        let attributedString = NSAttributedString(
-//                            string: cleanedTitle,
-//                            attributes: [
-//                                .font: font,
-//                                .foregroundColor: UIColor.label
-//                            ]
-//                        )
-//                        whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//                    } else {
-//                        setWhereAreYouGoingButtonWithTitleAndSubtitle()
-//                    }
-//                } else {
-//                    setWhereAreYouGoingButtonWithTitleAndSubtitle()
-//                }
-//            }
-//            
-//            if let dateRange = selectedDateRange {
-//                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                let attributedString = NSAttributedString(
-//                    string: dateRange,
-//                    attributes: [
-//                        .font: font,
-//                        .foregroundColor: UIColor.label
-//                    ]
-//                )
-//                checkInCheckOutButton.setAttributedTitle(attributedString, for: .normal)
-//            } else {
-//                setCheckInCheckOutButtonWithTitleAndSubtitle()
-//            }
-//            
-//            let seeMoreTitle = "See More"
-//            let seeMoreAttributedTitle = NSAttributedString(string: seeMoreTitle, attributes: attributes)
-//            recentlySeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
-//            whereToNextSeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
-//            
-//            let viewAllTitle = "View All"
-//            let viewAllAttributedTitle = NSAttributedString(string: viewAllTitle, attributes: attributes)
-//            viewAllButton.setAttributedTitle(viewAllAttributedTitle, for: .normal)
-//            
-//            let title = "Find early 2025 deals"
-//            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-//            findDealButton.setAttributedTitle(attributedTitle, for: .normal)
-//            
-//            recommendedHotelsTitleLabel.text = "Recommended Hotels"
-//            viewAllRecommendedButton.setTitle("View All", for: .normal)
-//            
-//        } else {
-//            let attributes: [NSAttributedString.Key: Any] = [
-//                .font: UIFont.systemFont(ofSize: 11, weight: .bold)
-//            ]
-//            dealOfferLabel.text = "وفّر 15% أو أكثر عند الحجز والإقامة قبل 31 ديسمبر 2025."
-//            newYearTitleLabel.text = "عام جديد، مغامرات جديدة"
-//            handPickedHotelsDescriptionLabel.text = "ختبر أرقى الإقامات مع فنادقنا المختارة بعناية، والتي تم اختيارها لراحتها الاستثنائية وخدماتها ومواقعها المميزة."
-//            handpickedHotelsLabel.text = "فنادق مختارة بعناية"
-//            navigationTitleNameLabel.title = "سيريا بوكينغ"
-//            recentlyHeadLineLabel.text = "شوهدت مؤخرا"
-//            whereToNextHeadLineLabel.text = "إلى أين بعد؟"
-//            topHotelHeadLineLabel.text = "أفضل الفنادق"
-//            selectCityButton.setTitle("اختر مدينة", for: .normal)
-//            searchButton.setTitle("بحث", for: .normal)
-//            checkInButton.setTitle("تسجيل الوصول", for: .normal)
-//            checkOutButton.setTitle("تسجيل المغادرة", for: .normal)
-//            
-//            if let selectedCity = selectedCityFromDropdown {
-//                let cleanedTitle = selectedCity.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                let attributedString = NSAttributedString(
-//                    string: cleanedTitle,
-//                    attributes: [
-//                        .font: font,
-//                        .foregroundColor: UIColor.label
-//                    ]
-//                )
-//                whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//            } else {
-//                if let currentTitle = whereAreYouGoingButton.currentTitle,
-//                   currentTitle != "Select City" && currentTitle != "اختر مدينة" &&
-//                   currentTitle != "Where are you going?" && currentTitle != "إلى أين أنت ذاهب؟" &&
-//                   !currentTitle.contains("Search by city") && !currentTitle.contains("ابحث عن طريق") {
-//                    
-//                    let cleanedTitle = currentTitle.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                    let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                    let attributedString = NSAttributedString(
-//                        string: cleanedTitle,
-//                        attributes: [
-//                            .font: font,
-//                            .foregroundColor: UIColor.label
-//                        ]
-//                    )
-//                    whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//                } else if let attributedTitle = whereAreYouGoingButton.attributedTitle(for: .normal) {
-//                    let titleString = attributedTitle.string
-//                    if titleString != "Where are you going?" && titleString != "إلى أين أنت ذاهب؟" &&
-//                       titleString != "Select City" && titleString != "اختر مدينة" &&
-//                       !titleString.contains("Search by city") && !titleString.contains("ابحث عن طريق") {
-//                        
-//                        let cleanedTitle = titleString.replacingOccurrences(of: "\\s*\\(\\d+\\)", with: "", options: .regularExpression)
-//                        let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                        let attributedString = NSAttributedString(
-//                            string: cleanedTitle,
-//                            attributes: [
-//                                .font: font,
-//                                .foregroundColor: UIColor.label
-//                            ]
-//                        )
-//                        whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
-//                    } else {
-//                        setWhereAreYouGoingButtonWithTitleAndSubtitle()
-//                    }
-//                } else {
-//                    setWhereAreYouGoingButtonWithTitleAndSubtitle()
-//                }
-//            }
-//            
-//            if let dateRange = selectedDateRange {
-//                let font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//                let attributedString = NSAttributedString(
-//                    string: dateRange,
-//                    attributes: [
-//                        .font: font,
-//                        .foregroundColor: UIColor.label
-//                    ]
-//                )
-//                checkInCheckOutButton.setAttributedTitle(attributedString, for: .normal)
-//            } else {
-//                setCheckInCheckOutButtonWithTitleAndSubtitle()
-//            }
-//            
-//            let seeMoreTitle = "المزيد"
-//            let seeMoreAttributedTitle = NSAttributedString(string: seeMoreTitle, attributes: attributes)
-//            recentlySeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
-//            whereToNextSeeMoreButton.setAttributedTitle(seeMoreAttributedTitle, for: .normal)
-//            
-//            let viewAllTitle = "عرض الكل"
-//            let viewAllAttributedTitle = NSAttributedString(string: viewAllTitle, attributes: attributes)
-//            viewAllButton.setAttributedTitle(viewAllAttributedTitle, for: .normal)
-//            
-//            let title = "ابحث مبكرًا 2025 عن عروض"
-//            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
-//            findDealButton.setAttributedTitle(attributedTitle, for: .normal)
-//            
-//            recommendedHotelsTitleLabel.text = "فنادق موصى بها"
-//            viewAllRecommendedButton.setTitle("عرض جميع", for: .normal)
-//        }
-//    }
     
     private func setWhereAreYouGoingButtonWithTitleAndSubtitle() {
         let lang = AppSettings.shared.selectedLanguage
@@ -1991,7 +1733,7 @@ extension HomeViewController {
         
         whereAreYouGoingButton.setAttributedTitle(attributedString, for: .normal)
     }
-
+    
     private func setCheckInCheckOutButtonWithTitleAndSubtitle() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Check-in date － Check-out date" : "تسجيل الوصول -> تسجيل المغادرة"
@@ -2240,22 +1982,6 @@ extension HomeViewController {
         datePickerContainerView.isHidden = true
     }
     
-//    func startPromotionAutoScroll() {
-//        promotionScrollTimer?.invalidate()
-//        promotionScrollTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
-//            guard let self = self,
-//                  let collectionView = self.promotionsCollectionView,
-//                  self.promotionsList.count > 1 else { return }
-//
-//            self.currentPromotionIndex = (self.currentPromotionIndex + 1) % self.promotionsList.count
-//            let nextIndexPath = IndexPath(item: self.currentPromotionIndex, section: 0)
-//
-//            DispatchQueue.main.async {
-//                collectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
-//            }
-//        }
-//    }
-    
     func startPromotionAutoScroll() {
         promotionScrollTimer?.invalidate()
         
@@ -2279,7 +2005,6 @@ extension HomeViewController {
             }
         }
     }
-
     
     func closeLeftMenu() {
         guard let menuVC = leftMenuVC else { return }

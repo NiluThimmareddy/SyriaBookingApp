@@ -12,9 +12,7 @@ class OtherGuestVC: UIViewController {
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var otherGuestListTV: UITableView!
 
-    var otherGuests: [Guest] = [
-       
-    ]
+    var otherGuests: [Guest] = []
     
     let topNameLbl: UILabel = {
        let label = UILabel()
@@ -49,8 +47,7 @@ class OtherGuestVC: UIViewController {
             topNameLbl.text = "ضيوف آخرون"
         } else {
             topNameLbl.text = "Other Guest"
-        }
-        
+        }        
         navigationItem.titleView = topNameLbl
     }
     

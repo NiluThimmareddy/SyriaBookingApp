@@ -26,7 +26,6 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     var viewModel = HotelViewModel()
     var selectedCity = ""
     var shouldSortByRating: Bool = false
-//    var scrolleView: UIScrollView { HotelListtableView }
     var scrolltoTopHelper : ScrollToTopHelper?
     var scrollToTopButton = UIButton(type: .system)
     var comingFrom : hotelListSource = .tabBar
@@ -54,7 +53,6 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     }
     
     func fetchHotelData() {
-       
         isLoadingData = true
         showSkeletonViews()
         
@@ -76,23 +74,15 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
         }
         
         viewModel.fetchHotels()
-//        if comingFrom == .tabBar || comingFrom == .search {
-//            viewModel.fetchHotels()
-//            
-//        } else
         
         if comingFrom == .filter {
             // If coming from filter, apply filter immediately if data is already loaded
             if !HotelDataMaganer.shared.allHotels.isEmpty {
                 isLoadingData = false
-                
                 applyFilterOnHotels()
                 self.hideAllSkeletons()
-//            } else {
-//                viewModel.fetchHotels()  
             }
         }else{
-//            viewModel.fetchHotels()
             if !HotelDataMaganer.shared.allHotels.isEmpty {
                 isLoadingData = false
                 applyFilterBasedOnOption()
@@ -103,7 +93,6 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
     
     func applyFilterBasedOnOption(){
         let city = self.selectedCity
-        
         if city == "All" {
             viewModel.filteredHotels =  HotelDataMaganer.shared.allHotels
             HotelListtableView.reloadData()
@@ -118,7 +107,6 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
 
     @IBAction func gridButtonAction(_ sender: Any) {
         isGridView.toggle()
-        
         hotelCollectionView.isHidden = !isGridView
         HotelListtableView.isHidden = isGridView
         
@@ -351,8 +339,7 @@ extension HotelListViewController {
     }
     
     private func hideAllSkeletons() {
-        print("Hiding all skeletons...")
-        
+        print("Hiding all skeletons...")        
         HotelListtableView.hideSkeleton()
         hotelCollectionView.hideSkeleton()
         filterButton.hideSkeleton()

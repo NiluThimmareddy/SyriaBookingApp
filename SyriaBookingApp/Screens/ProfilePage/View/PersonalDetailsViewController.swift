@@ -1,9 +1,7 @@
 //
 //  PersonalDetailsViewController.swift
 //  HotelBooking
-//
 //  Created by praveenkumar on 10/07/25.
-//
 
 import UIKit
 
@@ -91,7 +89,6 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
         
         // Update navigation title
         updateNavigationTitle()
-
         
         // Reload table views with new data
         infoTableView.reloadData()
@@ -138,10 +135,6 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     private func roundTopCornerOnly() {
         bottomView.layer.cornerRadius = 40
         bottomView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    }
-
-    func fetchUSerData(){
-       
     }
     
     @IBAction func choosePhotoButton(_ sender: Any) {

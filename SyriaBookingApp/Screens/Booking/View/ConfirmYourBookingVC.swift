@@ -168,12 +168,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         let selectCheckInMessage = lang == .arabic ? "يرجى اختيار تاريخ الوصول." : "Please select a check-in date."
         let selectCheckOutMessage = lang == .arabic ? "يرجى اختيار تاريخ المغادرة." : "Please select a check-out date."
         let enterMobileMessage = lang == .arabic ? "يرجى إدخال رقم الهاتف." : "Please enter a mobile number."
-        
-//        guard let reachability = try? Reachability(), reachability.connection != .unavailable else {
-//            showAlert(noInternetMessage)
-//            return
-//        }
-        
+
         guard let noOfGuestText = numberOfGuestsTF.text,
               !noOfGuestText.isEmpty,
               let noOfGuest = Int(noOfGuestText) else {

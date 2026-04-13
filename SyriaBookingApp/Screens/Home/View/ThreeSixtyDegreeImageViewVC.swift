@@ -9,9 +9,7 @@ import UIKit
 import CTPanoramaView
 
 class ThreeSixtyDegreeImageViewVC: UIViewController {
-
     private var panoramaView: CTPanoramaView!
-
     var imageURLString: String?
 
     override func viewDidLoad() {

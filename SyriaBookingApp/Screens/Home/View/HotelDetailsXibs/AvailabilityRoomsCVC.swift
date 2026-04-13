@@ -506,8 +506,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         
         cell.selectRoomsButton.tag = indexPath.row
         cell.configure(with: selectedRoom, ratesForLocal: isLocalRate) { [weak self] selectedQty in
-            guard let self = self else { return }
-            
+            guard let self = self else { return }            
             self.selectedRoom?.rates[indexPath.row].selectedQuantity = selectedQty
             if let rate = self.selectedRoom?.rates[indexPath.row] {
                 self.onRateSelectionChanged?(rate)

@@ -14,6 +14,13 @@ struct WorkWithUsModel {
     var description : String
 }
 
+struct TestimonialModel: Codable {
+    let message: String
+    let descriptions: String
+    let employeeName: String
+    let jobTitle: String
+}
+
 class CareersViewController: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!

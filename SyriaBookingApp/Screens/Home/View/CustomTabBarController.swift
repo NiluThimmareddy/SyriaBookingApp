@@ -46,27 +46,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         updateSelectionIndicatorPosition()
     }
     
-//    override func overrideTraitCollection(
-//        forChild childViewController: UIViewController
-//    ) -> UITraitCollection? {
-//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-//            return UITraitCollection(horizontalSizeClass: .regular)
-//        }
-//        return super.overrideTraitCollection(forChild: childViewController)
-//    }
-//    
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        
-//        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-//            self.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .regular), forChild: self)
-//        }
-//        
-//        coordinator.animate(alongsideTransition: { _ in
-//            self.updateSelectionIndicatorPosition()
-//        })
-//    }
-    
     private func setUpTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()

@@ -47,15 +47,12 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if comingFrom == .profile {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = reviewsArray?[indexPath.row] {
-                
                 cell.configure(with: reviews, comingFromProfile: true)
             }
             return cell
-            
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "MyReviewsTVC") as! MyReviewsTVC
             if let reviews = selectedHotel?.reviews, indexPath.row < reviews.count {
@@ -64,7 +61,6 @@ extension ViewAllRateAndReviewsVC : UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         }
-        
     }
 }
 
@@ -87,10 +83,6 @@ extension ViewAllRateAndReviewsVC {
             }
         }
         rateAndReviewsTableView.reloadData()
-        
         backView.applyCardStyle()
-        
-        
-    }
-    
+    }    
 }

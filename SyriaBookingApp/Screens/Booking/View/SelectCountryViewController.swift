@@ -52,7 +52,6 @@ class SelectCountryViewController: BaseViewController {
         ])
         filteredList = countryList
     }
-    
 }
 
 extension SelectCountryViewController: UISearchBarDelegate {

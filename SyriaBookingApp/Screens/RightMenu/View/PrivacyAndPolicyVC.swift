@@ -8,7 +8,7 @@
 import UIKit
 
 class PrivacyAndPolicyVC: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var lastUpdateLabel: UILabel!
@@ -173,9 +173,9 @@ class PrivacyAndPolicyVC: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -187,7 +187,7 @@ class PrivacyAndPolicyVC: UIViewController {
     
     @IBAction func emailButtonAction(_ sender: Any) {
     }
-   
+    
     @IBAction func contactSupportButtonAction(_ sender: Any) {
     }
 }

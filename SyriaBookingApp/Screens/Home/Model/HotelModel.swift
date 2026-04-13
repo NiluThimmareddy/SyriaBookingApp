@@ -104,15 +104,7 @@ struct Hotel: Codable {
         self.rooms = try container.decode([RoomElement].self, forKey: .rooms)
         self.discountName = try container.decodeIfPresent(String.self, forKey: .discountName)
     }
-    
-//    init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            nameAR = try container.decodeIfPresent(String.self, forKey: .nameAR)
-//            latitude = try container.decodeIfPresent(String.self, forKey: .latitude)
-//            longitude = try container.decodeIfPresent(String.self, forKey: .longitude)
-//            addressLine1 = try container.decodeIfPresent(String.self, forKey: .addressLine1)
-//        }
+
 }
 enum City: String, Codable {
     case aleppo = "Aleppo"

@@ -60,7 +60,6 @@ class RightMenuViewController: UIViewController, UIViewControllerTransitioningDe
                 "Delete Account"
             ]
         }
-        
         rightMenuTableView.reloadData()
     }
     

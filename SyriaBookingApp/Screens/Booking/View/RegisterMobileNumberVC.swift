@@ -81,7 +81,7 @@ class RegisterMobileNumberVC : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUpUI()
         hideKeyboardWhenTappedAround()
         enterMobileNumberTF.delegate = self
@@ -128,9 +128,7 @@ class RegisterMobileNumberVC : BaseViewController {
         enterMobileNumberTF.layer.cornerRadius = 5
         enterMobileNumberTF.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         enterMobileNumberTF.layer.masksToBounds = true
-//        mobileNumberCountryCodeButton.layer.cornerRadius = 5
         mobileNumberCountryCodeButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-//        mobileNumberCountryCodeButton.layer.masksToBounds = true
     }
     
     // MARK: - Timer Methods
@@ -329,7 +327,6 @@ class RegisterMobileNumberVC : BaseViewController {
                             }
                         }
                     }
-                    
                 } else {
                     self.hideLoader()
                     self.bottomView.isHidden = false
@@ -368,7 +365,6 @@ class RegisterMobileNumberVC : BaseViewController {
                 self.changeLabelStyle(Email: false)
                 self.otpView.isHidden = false
                 self.startResendTimer()
-               
             }
         } else {
             enterEmailTF.layer.borderColor = UIColor.red.cgColor
@@ -376,7 +372,6 @@ class RegisterMobileNumberVC : BaseViewController {
             showAlert(validEmailMessage)
             return
         }
-        
     }
     
     func changeLabelStyle(Email:Bool = true){
@@ -404,8 +399,8 @@ class RegisterMobileNumberVC : BaseViewController {
         viewModel.onError = { error in
             self.hideLoader()
             let errorMessage = lang == .arabic ?
-                "رمز التحقق غير صحيح. يرجى التحقق وإعادة الإدخال." :
-                "Incorrect OTP entered. Please check and re-enter."
+            "رمز التحقق غير صحيح. يرجى التحقق وإعادة الإدخال." :
+            "Incorrect OTP entered. Please check and re-enter."
             self.showAlert(title: "SyriaBooking", message: errorMessage, onOK: {
                 self.otpTF.forEach { textfield in
                     textfield.text = ""
@@ -422,7 +417,6 @@ class RegisterMobileNumberVC : BaseViewController {
         guard let email = enterEmailTF.text else {
             return
         }
-        
         
         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
         
@@ -468,14 +462,12 @@ class RegisterMobileNumberVC : BaseViewController {
         }
         
         let lname = enterLastNameTF.text ?? ""
-        
         guard let email = enterEmailTF.text,!email.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert(enterEmailMessage)
             return
         }
         
         let gendr = ""
-        
         guard let country = enterCountryTF.text, !country.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert(enterCountryMessage)
             return
@@ -585,11 +577,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let resendMessage = lang == .arabic ? "تم إعادة إرسال رمز التحقق إلى بريدك الإلكتروني" : "Verification code has been resent to your email"
         
         if resendTimer == nil || !resendTimer!.isValid {
-//            guard let email = enterEmailTF.text, isValidEmail(email) else {
-//                showAlert(enterEmailMessage)
-//                return
-//            }
-            
             guard let email = enterEmailTF.text,!email.trimmingCharacters(in: .whitespaces).isEmpty, isValidEmail(email) else {
                 showAlert(enterEmailMessage)
                 return
@@ -598,7 +585,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
             self.getEmailOTP(email: email) { otpResponse in
                 self.showAlert(resendMessage)
                 self.startResendTimer()
-              
+                
             }
         }
     }
@@ -648,7 +635,7 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let errorMessage = lang == .arabic ? "حدث خطأ ما: " : "Something went wrong: "
         
         viewModel.onSuccess = {  response in
-           DispatchQueue.main.async{
+            DispatchQueue.main.async{
                 completion(response)
             }
         }
@@ -983,9 +970,9 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
             print("✅ Parsed: \(parsedNumber), valid: \(isValid), possible: \(isPossible)")
             return isValid && isPossible
         } catch let error as NSError {
-            #if DEBUG
+#if DEBUG
             print("❌ Number parsing failed: \(error.localizedDescription)")
-            #endif
+#endif
             return false
         }
     }
@@ -1011,9 +998,9 @@ extension UITabBarController {
             verificationVC.isNewUser = isNewUser
             verificationVC.OptResponse = otpResponse
             verificationVC.mobileNumber = mobileNumber
-            #if DEBUG
+#if DEBUG
             print("******\(mobileNumber)")
-            #endif
+#endif
             verificationVC.guestName = guestName
             verificationVC.guestEmail = guestEmail
             verificationVC.modalPresentationStyle = .overFullScreen

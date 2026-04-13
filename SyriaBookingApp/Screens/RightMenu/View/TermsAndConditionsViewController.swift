@@ -8,7 +8,7 @@
 import UIKit
 
 class TermsAndConditionsViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -72,7 +72,6 @@ class TermsAndConditionsViewController: UIViewController {
         super.viewDidLoad()
         setupSocialMediaView()
         termsAndConditionsImgView.applyFullLightBlackGradientOverlay()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,9 +84,9 @@ class TermsAndConditionsViewController: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -130,8 +129,8 @@ class TermsAndConditionsViewController: UIViewController {
     private func showPhoneNumberForCopy(phoneNumber: String) {
         let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "رقم الهاتف" : "Phone Number"
         let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
-            "هذا الجهاز لا يمكنه إجراء المكالمات. يمكنك نسخ الرقم \(phoneNumber) للاتصال يدوياً." :
-            "This device cannot make phone calls. You can copy the number \(phoneNumber) to call manually."
+        "هذا الجهاز لا يمكنه إجراء المكالمات. يمكنك نسخ الرقم \(phoneNumber) للاتصال يدوياً." :
+        "This device cannot make phone calls. You can copy the number \(phoneNumber) to call manually."
         let copyTitle = AppSettings.shared.selectedLanguage == .arabic ? "نسخ الرقم" : "Copy Number"
         let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
         
@@ -153,8 +152,8 @@ class TermsAndConditionsViewController: UIViewController {
     
     private func showCopySuccessMessage() {
         let message = AppSettings.shared.selectedLanguage == .arabic ?
-            "تم نسخ الرقم بنجاح" :
-            "Number copied successfully"
+        "تم نسخ الرقم بنجاح" :
+        "Number copied successfully"
         
         let alert = UIAlertController(
             title: nil,
@@ -172,8 +171,8 @@ class TermsAndConditionsViewController: UIViewController {
     private func showEmergencyCallConfirmation(for phoneNumber: String, url: URL) {
         let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال طارئ" : "Emergency Call"
         let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
-            "هل تريد الاتصال برقم الطوارئ \(phoneNumber)؟" :
-            "Do you want to call emergency number \(phoneNumber)?"
+        "هل تريد الاتصال برقم الطوارئ \(phoneNumber)؟" :
+        "Do you want to call emergency number \(phoneNumber)?"
         let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
         let callTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال طارئ" : "Emergency Call"
         
@@ -194,8 +193,8 @@ class TermsAndConditionsViewController: UIViewController {
     private func showPhoneCallConfirmation(for phoneNumber: String, url: URL) {
         let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "الاتصال" : "Call"
         let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
-            "هل تريد الاتصال بـ \(phoneNumber)؟" :
-            "Do you want to call \(phoneNumber)?"
+        "هل تريد الاتصال بـ \(phoneNumber)؟" :
+        "Do you want to call \(phoneNumber)?"
         let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
         let callTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال" : "Call"
         
@@ -229,8 +228,8 @@ class TermsAndConditionsViewController: UIViewController {
     private func showPhoneCallError(phoneNumber: String) {
         let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "خطأ في الاتصال" : "Call Error"
         let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
-            "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
-            "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
+        "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
+        "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -277,8 +276,8 @@ class TermsAndConditionsViewController: UIViewController {
     private func showEmailError() {
         let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email"
         let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
-            "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
-            "Mail app is not configured on this device."
+        "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
+        "Mail app is not configured on this device."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -293,7 +292,7 @@ class TermsAndConditionsViewController: UIViewController {
     
     @IBAction func emailIDButtonAction(_ sender: Any) {
         let subject = AppSettings.shared.selectedLanguage == .arabic ?
-            "استفسار حول الشروط والأحكام" : "Terms and Conditions Inquiry"
+        "استفسار حول الشروط والأحكام" : "Terms and Conditions Inquiry"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
     }
     
