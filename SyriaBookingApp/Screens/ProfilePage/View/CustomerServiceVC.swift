@@ -138,6 +138,7 @@ class CustomerServiceVC: UIViewController, UIImagePickerControllerDelegate, UINa
         animationView.play()
         emailLottieView.addSubview(animationView)
     }
+    
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         let keyboardHeight = keyboardFrame.height

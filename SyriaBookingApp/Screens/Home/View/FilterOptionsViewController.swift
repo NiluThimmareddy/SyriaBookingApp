@@ -222,7 +222,9 @@ class FilterOptionsViewController: UIViewController {
         let maxPrice = Float(priceRangeSlider.selectedMaxValue)
 
         let filteredHotels = HotelDataMaganer.shared.allHotels.filter { hotel in
+            
             let type = hotel.type.rawValue.lowercased()
+            print(type)
             let star = String(hotel.starRating)
             let averageRating = Float(hotel.averageRating) ?? 0.0
             let price = parsePrice(hotel.minRoomPrice)

@@ -32,6 +32,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     @IBOutlet weak var noRatesLabel: UILabel!
     @IBOutlet weak var refundTitleButton: UIButton!
     @IBOutlet weak var unavailablePricingLabel: UILabel!
+    @IBOutlet weak var roomStatusLabel : UILabel!
     
     var isLocalRate : Bool = false
     var selectedRoom: RoomElement?
@@ -158,6 +159,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     }
     
     func setUpUI() {
+        backView.applyCardStyle()
         roomRatesTableview.register(UINib(nibName: "RoomsRatesTVC", bundle: nil), forCellReuseIdentifier: "RoomsRatesTVC")
         updateBookNowButtonTitle()
         roomRatesTableview.isScrollEnabled = false
@@ -357,7 +359,13 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
         breakfastLabel.text = breakfastText
         amenitiesLabel.text = aminitiesText
         refundPolicyLabel.text = refundPolicyText
-        
+        if let status = rooms.room.roomStatus {
+            let statusColor = setStatusColor(status: status)
+            roomStatusLabel.textColor = statusColor
+            roomStatusLabel.backgroundColor = statusColor.withAlphaComponent(0.10)
+            roomStatusLabel.text = status
+        }
+ 
         let labelConfigs: [(UILabel, String, String, UIColor)] = [
             (roomSizeLabel, roomsizeText, "Size:", .darkGray),
             (maxGuestsLabel, guestText, "Max Guests:", .darkGray),
@@ -374,6 +382,25 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
                 normalColor: normalColor,
                 highlightColor: .label
             )
+        }
+    }
+    
+    func setStatusColor(status:String) -> UIColor {
+        let statusData = status.lowercased()
+        switch statusData {
+        case "available":
+            return UIColor.systemGreen
+        case "reserved":
+            return UIColor.systemBlue
+        case "undermaintenance":
+            return UIColor.systemOrange
+        case "inactive":
+            return UIColor.systemOrange
+        case "outofservice":
+            return UIColor.systemRed
+        default :
+            return UIColor.clear
+            
         }
     }
     

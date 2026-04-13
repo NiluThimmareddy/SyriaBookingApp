@@ -29,7 +29,7 @@ struct Hotel: Codable {
     let starRating: Int
     let hotelChain: String?
     let addressLine1, addressLine2: String?
-    let stateOrProvince: StateOrProvince?
+    let stateOrProvince: String?
     let postalCode, country, email, primaryPhone: String?
     let checkInTime, checkOutTime, acceptedCurrencies: String?
     let languagesSpoken: LanguagesSpoken
@@ -73,7 +73,7 @@ struct Hotel: Codable {
         self.hotelChain = try container.decodeIfPresent(String.self, forKey: .hotelChain)
         self.addressLine1 = try container.decodeIfPresent(String.self, forKey: .addressLine1)
         self.addressLine2 = try container.decodeIfPresent(String.self, forKey: .addressLine2)
-        self.stateOrProvince = try container.decodeIfPresent(StateOrProvince.self, forKey: .stateOrProvince)
+        self.stateOrProvince = try container.decodeIfPresent(String.self, forKey: .stateOrProvince)
         self.postalCode = try container.decodeIfPresent(String.self, forKey: .postalCode)
         self.country = try container.decodeIfPresent(String.self, forKey: .country)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
@@ -127,7 +127,19 @@ enum City: String, Codable {
 
 enum HotelType: String, Codable {
     case hotel = "Hotel"
+    case resort = "Resort"
     case motel = "Motel"
+    case hostel = "Hostel"
+    case bedAndBreakfast = "Bed and Breakfast"
+    case apartment = "Apartment"
+    case villa = "Villa"
+    case guesthouse = "Guesthouse"
+    case boutique = "Boutique"
+    case lodge = "Lodge"
+    case capsule = "Capsule"
+    case homestay = "Homestay"
+    case camp = "Camp"
+    
     case unknown
     
     init(from decoder: Decoder) throws {
@@ -251,6 +263,25 @@ struct RoomDetails: Codable {
         case id
         case hotelID = "hotelId"
         case roomType, bedType, maxAdults, maxChildren, roomSize, basePrice, roomStatus, refundPolicy, breakfastIncluded, availableRooms, description, amenities, inventory
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.hotelID = try container.decode(String.self, forKey: .hotelID)
+        self.roomType = try container.decode(String.self, forKey: .roomType)
+        self.bedType = try container.decode(String.self, forKey: .bedType)
+        self.maxAdults = try container.decode(Int.self, forKey: .maxAdults)
+        self.maxChildren = try container.decode(Int.self, forKey: .maxChildren)
+        self.roomSize = try container.decodeIfPresent(String.self, forKey: .roomSize)
+        self.basePrice = try container.decode(Double.self, forKey: .basePrice)
+        self.roomStatus = try container.decodeIfPresent(String.self, forKey: .roomStatus)
+        self.refundPolicy = try container.decodeIfPresent(String.self, forKey: .refundPolicy)
+        self.breakfastIncluded = try container.decode(Bool.self, forKey: .breakfastIncluded)
+        self.availableRooms = try container.decode(Int.self, forKey: .availableRooms)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.amenities = try container.decodeIfPresent(String.self, forKey: .amenities)
+        self.inventory = try container.decode(Int.self, forKey: .inventory)
     }
 }
 

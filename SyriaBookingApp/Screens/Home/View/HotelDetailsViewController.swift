@@ -8,6 +8,7 @@
 import UIKit
 import SkeletonView
 import MapKit
+import Lottie
 class HotelDetailsViewController : BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -63,6 +64,7 @@ class HotelDetailsViewController : BaseViewController {
     @IBOutlet weak var addressView: UIView!
     @IBOutlet weak var nearByLandMarkLabel: UILabel!
     @IBOutlet weak var mapsImgView: UIImageView!
+    @IBOutlet weak var mapView: UIView!
     
     var hotelviewModel = HotelViewModel()
     var selectedHotel: Hotel?
@@ -92,6 +94,8 @@ class HotelDetailsViewController : BaseViewController {
             self.showInitialSkeleton()
         }
         setUpUI()
+        setupLocationLottie()
+        setupMapLottie()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,6 +132,47 @@ class HotelDetailsViewController : BaseViewController {
         updateRateAndReviewsTableHeight()
     }
     
+    
+    private func setupLocationLottie() {
+        let animationView = LottieAnimationView(name: "location_bg")
+        animationView.frame = mapView.bounds
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        
+        // Set color override (hex: #003B95)
+        let orangeColor =  UIColor.systemOrange
+        let colorProvider = ColorValueProvider(orangeColor.lottieColorValue)
+        
+        // Keypath to fill color in your animation
+//        animationView.setValueProvider(colorProvider, keypath: AnimationKeypath(keypath: "**.Fill 1.Color"))
+        
+        animationView.setValueProvider(
+            colorProvider,
+            keypath: AnimationKeypath(keypath: "Shape Layer *.Ellipse 1.Fill 1.Color")
+        )
+        
+        animationView.play()
+        mapView.addSubview(animationView)
+    }
+    
+    
+    private func setupMapLottie() {
+        let animationView = LottieAnimationView(name: "map")
+        animationView.frame = mapView.bounds
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        
+        // Set color override (hex: #003B95)
+        let redColor =  UIColor.systemRed
+        let colorProvider = ColorValueProvider(redColor.lottieColorValue)
+         
+        animationView.setValueProvider(
+            colorProvider,
+            keypath: AnimationKeypath(keypath: "marker mask.**.Fill 1.Color")
+        )
+        animationView.play()
+        mapView.addSubview(animationView)
+    }
     // MARK: - IBActions
     @IBAction func segmentControlAction(_ sender: Any) {
     }
@@ -877,7 +922,17 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotelNameAttributed.append(starAttributed)
         }
         hotelNameLabel.attributedText = hotelNameAttributed
-        hotelAddressLabel.text = hotel.addressLine1
+        
+            
+        let addressParts = [
+            hotel.addressLine1,
+            hotel.stateOrProvince ?? "",
+            hotel.country
+        ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+         .filter { !$0.isEmpty }
+
+        hotelAddressLabel.text = addressParts.joined(separator: ", ")
+//        hotelAddressLabel.text = "\(hotel.addressLine1 ?? ""), \(state), \(hotel.country ?? "")"
         nearByLandMarkLabel.text = hotel.landmarkDescription
         descriptionLabel.text = hotel.description
         
@@ -933,7 +988,17 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             object: nil
         )
         
+        exploringtheAreaButton.backgroundColor = UIColor.systemYellow
         setUpLanguage()
+        let reviewCount = self.selectedHotel?.reviews.count ?? 0
+
+        if reviewCount == 0 {
+            self.rateAndReviewsView.isHidden = true
+        } else {
+            self.rateAndReviewsView.isHidden = false
+        }
+            
+        mapsImgView.applyWhiteGradientOverlay()
     }
     
     func hideViewAllButton() {
@@ -1033,8 +1098,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func updateRateAndReviewsTableHeight() {
         rateAndReviewsTableview.layoutIfNeeded()
         let contentHeight = rateAndReviewsTableview.contentSize.height
-        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 50
-        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 60
+        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 60
+        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 70
     }
     
     func updateRateAndReviewsContainerHeight() {
@@ -1046,7 +1111,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         let tableHeight = rateAndReviewsTableview.contentSize.height
         let totalHeight = labelHeight + buttonHeight + padding + tableHeight
         
-        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 50
+        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 60
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
