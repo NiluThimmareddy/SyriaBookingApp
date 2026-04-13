@@ -128,6 +128,7 @@ class HotelListTVC : UITableViewCell {
     @IBOutlet weak var reviewLabel: UILabel!
     @IBOutlet weak var bookMarkImageView: UIImageView!
     @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var discountNameLabel: UILabel!
     
     var seeAvailabilityAction: (() -> Void)?
     
@@ -181,10 +182,11 @@ class HotelListTVC : UITableViewCell {
         
         hotelNameLabel.attributedText = hotelNameAttributed
         distanceLabel.text = model.landmarkDescription
+        discountNameLabel.text = model.discountName
         cityLabel.text = model.localizedCity()
         let price = model.minRoomPrice
         var fullText = ""
-        if AppSettings.shared.selectedLanguage == .arabic{
+        if AppSettings.shared.selectedLanguage == .arabic {
             fullText = "من \(price) / ليلة"
             
         } else {
@@ -230,6 +232,7 @@ class HotelListTVC : UITableViewCell {
         distanceLabel.isSkeletonable = true
         backView.isSkeletonable = true
         rightView.isSkeletonable = true
+        discountNameLabel.isSkeletonable = true
         
         // Configure skeleton appearance for labels
         let skeletonLabels: [UILabel] = [
@@ -238,7 +241,8 @@ class HotelListTVC : UITableViewCell {
             cityLabel,
             priceLabel,
             reviewLabel,
-            distanceLabel
+            distanceLabel,
+            discountNameLabel
         ]
         
         skeletonLabels.forEach { label in
@@ -272,6 +276,7 @@ class HotelListTVC : UITableViewCell {
         priceLabel.text = nil
         reviewLabel.text = nil
         distanceLabel.text = nil
+        discountNameLabel.text = nil
         seeAvailabilityButton.setTitle(nil, for: .normal)
         
         // Hide elements that shouldn't show during skeleton
@@ -291,6 +296,7 @@ class HotelListTVC : UITableViewCell {
         distanceLabel.showAnimatedGradientSkeleton()
         backView.showAnimatedGradientSkeleton()
         rightView.showAnimatedGradientSkeleton()
+        discountNameLabel.showAnimatedGradientSkeleton()
         
         // Show skeleton on button title label
         seeAvailabilityButton.titleLabel?.showAnimatedGradientSkeleton()
@@ -310,7 +316,7 @@ class HotelListTVC : UITableViewCell {
         distanceLabel.hideSkeleton()
         backView.hideSkeleton()
         rightView.hideSkeleton()
-        
+        discountNameLabel.hideSkeleton()
         // Hide skeleton from button title label
         seeAvailabilityButton.titleLabel?.hideSkeleton()
         

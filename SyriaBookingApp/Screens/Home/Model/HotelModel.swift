@@ -50,9 +50,10 @@ struct Hotel: Codable {
     let landmarks: [Landmark]
     let images: [String]
     let rooms: [RoomElement]
+    let discountName : String?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, nameAR, city, cityAR, shortDescription, description, type, starRating, hotelChain, addressLine1, addressLine2, stateOrProvince, postalCode, country, email, primaryPhone, checkInTime, checkOutTime, acceptedCurrencies, languagesSpoken, covidSafetyLevel, discountText,shortDescriptionAR,descriptionAR
+        case id, name, nameAR, city, cityAR, shortDescription, description, type, starRating, hotelChain, addressLine1, addressLine2, stateOrProvince, postalCode, country, email, primaryPhone, checkInTime, checkOutTime, acceptedCurrencies, languagesSpoken, covidSafetyLevel, discountText,shortDescriptionAR,descriptionAR, discountName
         case coverImageURL = "coverImageUrl"
         case facilities, landmarkDescription, averageRating, reviewCount,latitude, longitude , minRoomPrice, amenities, policies
         case coverImageSignedURL = "coverImageSignedUrl"
@@ -101,6 +102,7 @@ struct Hotel: Codable {
         self.landmarks = try container.decode([Landmark].self, forKey: .landmarks)
         self.images = try container.decode([String].self, forKey: .images)
         self.rooms = try container.decode([RoomElement].self, forKey: .rooms)
+        self.discountName = try container.decodeIfPresent(String.self, forKey: .discountName)
     }
     
 //    init(from decoder: Decoder) throws {

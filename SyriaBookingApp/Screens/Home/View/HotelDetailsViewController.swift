@@ -754,6 +754,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         guard let refundVC = storyboard.instantiateViewController(withIdentifier: "RefundPolicyVC") as? RefundPolicyVC else { return }
         refundVC.roomType = room.room.roomType
         refundVC.roomBedType = room.room.bedType
+        refundVC.refundPolicy = room.room.refundPolicy
         refundVC.modalPresentationStyle = .overFullScreen
         self.present(refundVC, animated: true)
     }
@@ -877,7 +878,6 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotelNameAttributed.append(starAttributed)
         }
         hotelNameLabel.attributedText = hotelNameAttributed
-        hotelAddressLabel.text = hotel.addressLine1
         nearByLandMarkLabel.text = hotel.landmarkDescription
         descriptionLabel.text = hotel.description
         
