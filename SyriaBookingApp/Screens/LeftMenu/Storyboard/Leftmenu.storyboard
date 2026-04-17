@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -278,7 +278,7 @@
                                 <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dtk-2Z-r85">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1117"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1127"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tVB-pz-XI6">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="332"/>
@@ -304,12 +304,14 @@ Ease.</string>
                                                     <constraint firstAttribute="bottom" secondItem="QwX-yt-ceJ" secondAttribute="bottom" constant="20" id="Mxw-4L-zBU"/>
                                                     <constraint firstItem="9ae-zf-lyv" firstAttribute="leading" secondItem="tVB-pz-XI6" secondAttribute="leading" id="VlK-q6-RJ6"/>
                                                     <constraint firstAttribute="trailing" secondItem="9ae-zf-lyv" secondAttribute="trailing" id="kzx-KX-Ol7"/>
-                                                    <constraint firstItem="QwX-yt-ceJ" firstAttribute="leading" secondItem="tVB-pz-XI6" secondAttribute="leading" constant="20" id="t7r-YM-hkc"/>
+                                                    <constraint firstItem="QwX-yt-ceJ" firstAttribute="leading" secondItem="tVB-pz-XI6" secondAttribute="leading" constant="20" id="t7r-YM-hkc">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                                                    </constraint>
                                                     <constraint firstAttribute="trailing" secondItem="QwX-yt-ceJ" secondAttribute="trailing" constant="20" id="wvl-yD-de9"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KuW-td-5oF">
-                                                <rect key="frame" x="0.0" y="332" width="393" height="785"/>
+                                                <rect key="frame" x="0.0" y="332" width="393" height="795"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ImX-F1-87W">
                                                         <rect key="frame" x="20" y="20" width="353" height="107"/>
@@ -671,7 +673,7 @@ Ease.</string>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="g4u-ce-x6c" secondAttribute="bottom" id="2A3-ur-0Gd"/>
+                                                    <constraint firstAttribute="bottom" secondItem="g4u-ce-x6c" secondAttribute="bottom" constant="10" id="2A3-ur-0Gd"/>
                                                     <constraint firstItem="Byy-ti-exd" firstAttribute="trailing" secondItem="8fs-j9-02R" secondAttribute="trailing" id="5fn-89-OWf"/>
                                                     <constraint firstItem="Byy-ti-exd" firstAttribute="top" secondItem="8fs-j9-02R" secondAttribute="bottom" constant="20" id="EfY-oM-Y1R"/>
                                                     <constraint firstItem="8fs-j9-02R" firstAttribute="leading" secondItem="ImX-F1-87W" secondAttribute="leading" id="NQk-65-WIF"/>
@@ -777,7 +779,7 @@ Ease.</string>
                                 <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QnF-eA-PlC">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1924.6666666666667"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1934.6666666666667"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t1C-p7-8Es">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="400"/>
@@ -860,7 +862,7 @@ Ease.</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gpm-12-XQB">
-                                                <rect key="frame" x="0.0" y="400.00000000000011" width="393" height="1524.666666666667"/>
+                                                <rect key="frame" x="0.0" y="400.00000000000011" width="393" height="1534.666666666667"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh1-Ha-Hxd">
                                                         <rect key="frame" x="17.666666666666657" y="19.999999999999993" width="358" height="100.33333333333331"/>
@@ -1119,7 +1121,7 @@ Ease.</string>
                                                     <constraint firstItem="53B-7V-ZC3" firstAttribute="top" secondItem="MjN-TI-NTI" secondAttribute="bottom" constant="10" id="Gbm-IG-S5L"/>
                                                     <constraint firstItem="53B-7V-ZC3" firstAttribute="trailing" secondItem="MjN-TI-NTI" secondAttribute="trailing" id="IVu-is-Jp9"/>
                                                     <constraint firstItem="9Xe-66-JDo" firstAttribute="top" secondItem="uC5-AK-RtF" secondAttribute="bottom" constant="30" id="M0l-Nd-ptU"/>
-                                                    <constraint firstAttribute="bottom" secondItem="9Xe-66-JDo" secondAttribute="bottom" id="MZU-g0-jy9"/>
+                                                    <constraint firstAttribute="bottom" secondItem="9Xe-66-JDo" secondAttribute="bottom" constant="10" id="MZU-g0-jy9"/>
                                                     <constraint firstItem="HNt-dK-TP2" firstAttribute="top" secondItem="Nqn-Iv-RBk" secondAttribute="bottom" constant="20" id="QW1-vF-Nv9"/>
                                                     <constraint firstItem="R2w-Sz-SFw" firstAttribute="leading" secondItem="y9A-tA-JIE" secondAttribute="leading" id="Sv9-9X-119"/>
                                                     <constraint firstAttribute="trailing" secondItem="mh1-Ha-Hxd" secondAttribute="trailing" constant="17.5" id="WYr-8s-8Rf"/>
@@ -1249,7 +1251,9 @@ and health guidelines.</string>
                                                     <constraint firstItem="wdh-ZS-Gq0" firstAttribute="leading" secondItem="Aro-0s-VNu" secondAttribute="leading" id="Oie-QB-MoH"/>
                                                     <constraint firstItem="SBF-CD-SRp" firstAttribute="leading" secondItem="eiR-T3-MoG" secondAttribute="leading" id="QWc-HY-XXj"/>
                                                     <constraint firstItem="SBF-CD-SRp" firstAttribute="top" secondItem="eiR-T3-MoG" secondAttribute="bottom" constant="10" id="bFs-8Q-qV0"/>
-                                                    <constraint firstAttribute="height" constant="215" id="gYv-ik-g1K"/>
+                                                    <constraint firstAttribute="height" constant="215" id="gYv-ik-g1K">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="350"/>
+                                                    </constraint>
                                                     <constraint firstItem="eiR-T3-MoG" firstAttribute="leading" secondItem="Aro-0s-VNu" secondAttribute="leading" constant="20" id="jYJ-q9-lU2"/>
                                                     <constraint firstItem="wdh-ZS-Gq0" firstAttribute="top" secondItem="Aro-0s-VNu" secondAttribute="top" id="lOP-4B-Sfb"/>
                                                     <constraint firstItem="SBF-CD-SRp" firstAttribute="trailing" secondItem="eiR-T3-MoG" secondAttribute="trailing" id="rJc-hr-BT9"/>
@@ -1556,7 +1560,9 @@ and health guidelines.</string>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_Sustainability" translatesAutoresizingMaskIntoConstraints="NO" id="TUv-Ds-Uep">
                                                         <rect key="frame" x="20" y="20" width="313" height="190"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="190" id="DwI-7f-Ch6"/>
+                                                            <constraint firstAttribute="height" constant="190" id="DwI-7f-Ch6">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="290"/>
+                                                            </constraint>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1585,7 +1591,9 @@ and health guidelines.</string>
                                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="3A0-F1-Vrg" secondAttribute="bottom" constant="13.33" id="OPO-JG-dGA"/>
                                                     <constraint firstItem="3A0-F1-Vrg" firstAttribute="leading" secondItem="vNf-We-b8H" secondAttribute="leading" id="Qmy-Mr-43T"/>
                                                     <constraint firstAttribute="trailing" secondItem="TUv-Ds-Uep" secondAttribute="trailing" constant="20" id="gtN-GB-RgT"/>
-                                                    <constraint firstAttribute="height" constant="300" id="h5M-O7-Q3H"/>
+                                                    <constraint firstAttribute="height" constant="300" id="h5M-O7-Q3H">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="400"/>
+                                                    </constraint>
                                                     <constraint firstItem="TUv-Ds-Uep" firstAttribute="top" secondItem="xvM-Me-xYh" secondAttribute="top" constant="20" id="qx6-gb-525"/>
                                                     <constraint firstItem="TUv-Ds-Uep" firstAttribute="leading" secondItem="xvM-Me-xYh" secondAttribute="leading" constant="20" id="tfs-b5-qIc"/>
                                                     <constraint firstItem="vNf-We-b8H" firstAttribute="leading" secondItem="TUv-Ds-Uep" secondAttribute="leading" id="xgG-Eb-d4R"/>
@@ -1992,6 +2000,9 @@ and health guidelines.</string>
                                                                         <real key="value" value="5"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <variation key="heightClass=regular-widthClass=regular">
+                                                                    <fontDescription key="fontDescription" name="Kailasa" family="Kailasa" pointSize="16"/>
+                                                                </variation>
                                                             </label>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2605,7 +2616,9 @@ with in Syria</string>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="5cr-H2-bHY" secondAttribute="bottom" constant="20" id="4JF-ix-6Ay"/>
-                                                    <constraint firstAttribute="height" constant="193" id="84k-oy-Im7"/>
+                                                    <constraint firstAttribute="height" constant="193" id="84k-oy-Im7">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="320"/>
+                                                    </constraint>
                                                     <constraint firstAttribute="trailing" secondItem="5cr-H2-bHY" secondAttribute="trailing" constant="30" id="Tcc-hj-9AW"/>
                                                     <constraint firstAttribute="bottom" secondItem="CiD-2n-V3j" secondAttribute="bottom" id="g8U-7X-ryR"/>
                                                     <constraint firstAttribute="trailing" secondItem="CiD-2n-V3j" secondAttribute="trailing" id="ggp-jN-6Vm"/>
@@ -2621,34 +2634,40 @@ with in Syria</string>
                                                         <rect key="frame" x="30" y="20" width="333" height="202.33333333333334"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.shield" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Td1-x3-Tbi">
-                                                                <rect key="frame" x="50" y="5.9999999999999982" width="24" height="22.666666666666664"/>
+                                                                <rect key="frame" x="47.666666666666671" y="4.9999999999999982" width="24" height="22.666666666666664"/>
                                                                 <color key="tintColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" secondItem="Td1-x3-Tbi" secondAttribute="height" id="Epo-sC-0gW"/>
-                                                                    <constraint firstAttribute="height" constant="24" id="f5U-Uo-adq"/>
+                                                                    <constraint firstAttribute="width" secondItem="Td1-x3-Tbi" secondAttribute="height" id="Y5V-M5-k9W"/>
+                                                                    <constraint firstAttribute="height" constant="24" id="dif-sv-cGX"/>
                                                                 </constraints>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Safety Resource Center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycf-IJ-pAV">
-                                                                <rect key="frame" x="79" y="6.3333333333333162" width="244" height="21.666666666666671"/>
+                                                                <rect key="frame" x="76.666666666666686" y="5" width="200" height="21.666666666666668"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="200" id="eDD-8n-2vA"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your safety is our priority." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dsh-ri-5FE">
-                                                                <rect key="frame" x="10" y="38" width="313" height="17"/>
+                                                                <rect key="frame" x="66.666666666666686" y="33" width="200" height="17"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="200" id="oQn-BB-3fE"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8YX-Vo-Xsm">
-                                                                <rect key="frame" x="0.0" y="75" width="333" height="67"/>
+                                                                <rect key="frame" x="0.0" y="70" width="333" height="67"/>
                                                                 <string key="text">At SyriaBooking.sy, your peace of mind is at the heart of everything we do. We provide a safe, secure, and informed travel experience from booking to check-out.</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This Safety Resource Center offers essential guidance to help you travel confidently across Syria." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wv3-er-azA">
-                                                                <rect key="frame" x="0.0" y="152" width="333" height="50.333333333333343"/>
+                                                                <rect key="frame" x="0.0" y="147" width="333" height="50.333333333333343"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -2657,20 +2676,20 @@ with in Syria</string>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="8YX-Vo-Xsm" secondAttribute="trailing" id="0Am-De-u63"/>
-                                                            <constraint firstItem="Ycf-IJ-pAV" firstAttribute="centerY" secondItem="Td1-x3-Tbi" secondAttribute="centerY" id="42T-AW-TMC"/>
                                                             <constraint firstItem="8YX-Vo-Xsm" firstAttribute="leading" secondItem="e4O-7q-wsI" secondAttribute="leading" id="8Oh-nC-3n3"/>
                                                             <constraint firstItem="wv3-er-azA" firstAttribute="leading" secondItem="8YX-Vo-Xsm" secondAttribute="leading" id="Dd8-rt-9qp"/>
-                                                            <constraint firstItem="8YX-Vo-Xsm" firstAttribute="top" secondItem="Dsh-ri-5FE" secondAttribute="bottom" constant="20" id="Ezy-ZP-o4E"/>
+                                                            <constraint firstItem="Td1-x3-Tbi" firstAttribute="centerY" secondItem="Ycf-IJ-pAV" secondAttribute="centerY" id="Hqn-CI-0Lx"/>
                                                             <constraint firstItem="wv3-er-azA" firstAttribute="trailing" secondItem="8YX-Vo-Xsm" secondAttribute="trailing" id="JCi-pt-mhg"/>
-                                                            <constraint firstItem="Ycf-IJ-pAV" firstAttribute="leading" secondItem="Td1-x3-Tbi" secondAttribute="trailing" constant="5" id="KCa-o5-lEy"/>
-                                                            <constraint firstItem="Dsh-ri-5FE" firstAttribute="trailing" secondItem="Ycf-IJ-pAV" secondAttribute="trailing" id="QaF-jt-ixT"/>
+                                                            <constraint firstItem="Dsh-ri-5FE" firstAttribute="centerX" secondItem="Ycf-IJ-pAV" secondAttribute="centerX" constant="-10" id="NPG-OW-HKT"/>
+                                                            <constraint firstItem="8YX-Vo-Xsm" firstAttribute="top" secondItem="Dsh-ri-5FE" secondAttribute="bottom" constant="20" id="U1N-Na-gQJ"/>
+                                                            <constraint firstItem="Ycf-IJ-pAV" firstAttribute="centerX" secondItem="e4O-7q-wsI" secondAttribute="centerX" constant="10" id="ViK-RA-H5f"/>
                                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wv3-er-azA" secondAttribute="bottom" id="WNP-w4-GNq"/>
-                                                            <constraint firstItem="Dsh-ri-5FE" firstAttribute="leading" secondItem="Td1-x3-Tbi" secondAttribute="leading" constant="-40" id="Wmw-KM-J2I"/>
-                                                            <constraint firstItem="Dsh-ri-5FE" firstAttribute="top" secondItem="Ycf-IJ-pAV" secondAttribute="bottom" constant="10" id="X7C-q1-62W"/>
-                                                            <constraint firstItem="Td1-x3-Tbi" firstAttribute="leading" secondItem="e4O-7q-wsI" secondAttribute="leading" constant="50" id="XGH-mk-UyH"/>
-                                                            <constraint firstItem="Td1-x3-Tbi" firstAttribute="top" secondItem="e4O-7q-wsI" secondAttribute="top" constant="5" id="ZCE-bl-Pac"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Ycf-IJ-pAV" secondAttribute="trailing" constant="10" id="bJw-Jn-xF5"/>
-                                                            <constraint firstAttribute="height" constant="202.30000000000001" id="h3w-lA-VZz"/>
+                                                            <constraint firstItem="Dsh-ri-5FE" firstAttribute="top" secondItem="Td1-x3-Tbi" secondAttribute="bottom" constant="5" id="ZTC-F2-wq6"/>
+                                                            <constraint firstItem="Ycf-IJ-pAV" firstAttribute="top" secondItem="e4O-7q-wsI" secondAttribute="top" constant="5" id="Zyn-Qk-CJ1"/>
+                                                            <constraint firstItem="Ycf-IJ-pAV" firstAttribute="leading" secondItem="Td1-x3-Tbi" secondAttribute="trailing" constant="5" id="d1V-6L-AgB"/>
+                                                            <constraint firstAttribute="height" constant="202.30000000000001" id="h3w-lA-VZz">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
+                                                            </constraint>
                                                             <constraint firstItem="wv3-er-azA" firstAttribute="top" secondItem="8YX-Vo-Xsm" secondAttribute="bottom" constant="10" id="hQL-zH-mnR"/>
                                                         </constraints>
                                                     </view>
@@ -2753,7 +2772,9 @@ with in Syria</string>
                                                             </view>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="170" id="RYf-mz-jA1"/>
+                                                            <constraint firstAttribute="height" constant="170" id="RYf-mz-jA1">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="140"/>
+                                                            </constraint>
                                                         </constraints>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H30-E6-qs2">
@@ -3368,11 +3389,11 @@ with in Syria</string>
                                                     <constraint firstItem="mWE-rT-zbc" firstAttribute="centerY" secondItem="N5w-np-rq4" secondAttribute="centerY" id="53U-Tt-rRa"/>
                                                     <constraint firstItem="ugK-wE-ykl" firstAttribute="trailing" secondItem="e6Y-ZE-ONG" secondAttribute="trailing" id="5pM-S5-DH2"/>
                                                     <constraint firstItem="98Z-gz-MCb" firstAttribute="leading" secondItem="Q38-CR-iXA" secondAttribute="leading" id="66U-Es-9Lt">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="200"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="150"/>
                                                     </constraint>
                                                     <constraint firstItem="h1t-sq-CgA" firstAttribute="top" secondItem="DmE-Tn-sow" secondAttribute="bottom" constant="30" id="66n-dt-3Oq"/>
                                                     <constraint firstItem="98Z-gz-MCb" firstAttribute="trailing" secondItem="N1v-uw-npi" secondAttribute="trailing" id="9zU-a2-S7E">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="-200"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="-150"/>
                                                     </constraint>
                                                     <constraint firstItem="Vfp-8Z-ey6" firstAttribute="leading" secondItem="Q38-CR-iXA" secondAttribute="leading" id="Bo8-sV-R7i"/>
                                                     <constraint firstAttribute="trailing" secondItem="e4O-7q-wsI" secondAttribute="trailing" constant="30" id="Dat-cx-ibC"/>
@@ -3408,7 +3429,7 @@ with in Syria</string>
                                                     <constraint firstItem="VRu-oC-tdO" firstAttribute="leading" secondItem="NsD-53-vkb" secondAttribute="leading" id="iCk-sg-0ji"/>
                                                     <constraint firstItem="3iN-Z9-pMN" firstAttribute="leading" secondItem="X36-du-nmx" secondAttribute="trailing" constant="10" id="j2c-wT-pzC"/>
                                                     <constraint firstItem="U04-T0-nLv" firstAttribute="leading" secondItem="h1t-sq-CgA" secondAttribute="leading" id="jDc-YO-CLu">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="200"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="150"/>
                                                     </constraint>
                                                     <constraint firstItem="Q38-CR-iXA" firstAttribute="leading" secondItem="VRu-oC-tdO" secondAttribute="leading" id="jZc-3x-Kgv"/>
                                                     <constraint firstItem="e4O-7q-wsI" firstAttribute="leading" secondItem="jVd-Tm-sWf" secondAttribute="leading" constant="30" id="kb3-A4-0Li"/>
@@ -3418,7 +3439,7 @@ with in Syria</string>
                                                     <constraint firstItem="6Sw-4b-ZpY" firstAttribute="trailing" secondItem="mWE-rT-zbc" secondAttribute="trailing" id="mO9-XK-Qd6"/>
                                                     <constraint firstItem="H30-E6-qs2" firstAttribute="leading" secondItem="X36-du-nmx" secondAttribute="leading" id="nIv-Vp-tGs"/>
                                                     <constraint firstItem="U04-T0-nLv" firstAttribute="trailing" secondItem="h1t-sq-CgA" secondAttribute="trailing" id="pR1-qI-ak8">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="-200"/>
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="-150"/>
                                                     </constraint>
                                                     <constraint firstItem="NsD-53-vkb" firstAttribute="top" secondItem="6Sw-4b-ZpY" secondAttribute="bottom" constant="15" id="peh-fG-5vK"/>
                                                     <constraint firstItem="NsD-53-vkb" firstAttribute="leading" secondItem="N5w-np-rq4" secondAttribute="leading" id="qH7-HI-bEW"/>
@@ -3559,7 +3580,7 @@ with in Syria</string>
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.53333333329999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
             <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3571,7 +3592,7 @@ with in Syria</string>
             <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.53333333329999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

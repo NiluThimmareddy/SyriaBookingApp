@@ -28,8 +28,12 @@ extension UIImageView {
         }.resume()
     }
     
-    func applyWhiteGradientOverlay(){
+    func applyWhiteGradientOverlay() {
+        self.layoutIfNeeded()
+        self.layer.sublayers?.removeAll(where: { $0.name == "whiteGradient" })
+
         let gradientLayer = CAGradientLayer()
+        gradientLayer.name = "whiteGradient"
         gradientLayer.colors = [
             UIColor.white.withAlphaComponent(0.9).cgColor,
             UIColor.white.withAlphaComponent(0.6).cgColor,
@@ -37,9 +41,8 @@ extension UIImageView {
         ]
 
         gradientLayer.locations = [0.0, 0.3, 1.0]
-        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5) // left
-        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)   // right
-
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
         gradientLayer.frame = self.bounds
         self.layer.addSublayer(gradientLayer)
     }

@@ -992,6 +992,9 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             self.rateAndReviewsView.isHidden = false
         }
         mapsImgView.applyWhiteGradientOverlay()
+        mapsImgView.layer.cornerRadius = 5
+        mapsImgView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        mapsImgView.layer.masksToBounds = true
     }
     
     func hideViewAllButton() {

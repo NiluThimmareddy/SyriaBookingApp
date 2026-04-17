@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -64,10 +64,12 @@
                         <constraint firstItem="9Yj-gD-z9d" firstAttribute="leading" secondItem="y0V-fh-6zf" secondAttribute="leading" id="bI2-MD-l1X"/>
                         <constraint firstItem="y0V-fh-6zf" firstAttribute="top" secondItem="sMU-qx-kyD" secondAttribute="top" constant="20" id="fh4-wn-JQs"/>
                         <constraint firstItem="S5r-6v-o1t" firstAttribute="trailing" secondItem="9Yj-gD-z9d" secondAttribute="trailing" id="hg4-i0-0Tn"/>
-                        <constraint firstItem="y0V-fh-6zf" firstAttribute="leading" secondItem="sMU-qx-kyD" secondAttribute="leading" constant="10" id="hxN-Po-MCE"/>
+                        <constraint firstItem="y0V-fh-6zf" firstAttribute="leading" secondItem="sMU-qx-kyD" secondAttribute="leading" constant="10" id="hxN-Po-MCE">
+                            <variation key="heightClass=regular-widthClass=regular" constant="150"/>
+                        </constraint>
                         <constraint firstItem="9Yj-gD-z9d" firstAttribute="trailing" secondItem="y0V-fh-6zf" secondAttribute="trailing" id="mML-Xl-Pg2"/>
                         <constraint firstAttribute="trailing" secondItem="y0V-fh-6zf" secondAttribute="trailing" constant="10" id="mhy-Wr-xJL">
-                            <variation key="heightClass=regular-widthClass=regular" constant="200"/>
+                            <variation key="heightClass=regular-widthClass=regular" constant="150"/>
                         </constraint>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S5r-6v-o1t" secondAttribute="bottom" constant="26.329999999999998" id="vV5-Vp-oWa"/>
                     </constraints>
