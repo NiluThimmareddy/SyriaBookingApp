@@ -16,14 +16,14 @@ class InternetViewController: UIViewController {
     
     var message = ""
     var internetCheckTimer: Timer?
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         startInternetCheck()
-       
+        
     }
-
+    
     func startInternetCheck() {
         internetCheckTimer?.invalidate()
         internetCheckTimer = Timer.scheduledTimer(timeInterval: 2.0,
@@ -37,9 +37,9 @@ class InternetViewController: UIViewController {
     @objc func checkInternet() {
         // Your internet check logic
         if Reachability.isConnectedToNetwork() {
-                   internetCheckTimer?.invalidate()
+            internetCheckTimer?.invalidate()
             self.dismiss(animated: true)
-               }
+        }
         print("Checking internet from InternetViewController...")
     }
     

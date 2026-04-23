@@ -1,12 +1,9 @@
 //
 //  Extension+UIApplication.swift
 //  SyriaBookingApp
-//
 //  Created by toqsoft on 10/12/25.
-//
 
 import UIKit
-
 extension UIApplication {
 
     func topViewController(
@@ -31,7 +28,6 @@ extension UIApplication {
         if let presented = base?.presentedViewController {
             return topViewController(base: presented)
         }
-
         return base
     }
 }

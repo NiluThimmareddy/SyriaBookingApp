@@ -11,7 +11,7 @@ extension Hotel {
         if AppSettings.shared.selectedLanguage == .english {
             return city
         } else {
-            return cityAR ?? city
+            return cityAR
         }
     }
     

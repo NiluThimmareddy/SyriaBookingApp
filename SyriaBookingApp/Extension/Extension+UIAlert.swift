@@ -1,10 +1,7 @@
 //
 //  Extension+UIAlert.swift
 //  SyriaBookingApp
-//
 //  Created by ToqSoft on 05/08/25.
-//
-
 
 import Foundation
 import UIKit
@@ -46,9 +43,7 @@ extension UIViewController{
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-    
 }
-
 
 extension Error {
     var userMessage: String {

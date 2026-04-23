@@ -414,7 +414,6 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
             return UIColor.systemRed
         default :
             return UIColor.clear
-            
         }
     }
     

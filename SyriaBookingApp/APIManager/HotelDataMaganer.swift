@@ -1,13 +1,9 @@
-//
 //  HotelDataMaganer.swift
 //  SyriaBookingApp
-//
 //  Created by ToqSoft on 28/07/25.
-//
 
 import Foundation
-
-class HotelDataMaganer {
+class HotelDataMaganer{
     static let shared = HotelDataMaganer()
     var recentlyViewedHotelIds: [String: Date] = [:]
     
@@ -19,7 +15,6 @@ class HotelDataMaganer {
     }
     
     var allHotels: [Hotel] = []
-    
     func addRecentlyViewedHotel(id: String) {
         // Update the timestamp for this hotel
         recentlyViewedHotelIds[id] = Date()
@@ -75,7 +70,6 @@ class HotelDataMaganer {
                   let date2 = recentlyViewedHotelIds[$1.id] else { return false }
             return date1 > date2
         }
-        
         return sortedHotels
     }
 }

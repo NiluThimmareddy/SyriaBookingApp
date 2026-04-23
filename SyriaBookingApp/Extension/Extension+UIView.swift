@@ -1,9 +1,7 @@
 //
 //  Extension+UIView.swift
 //  SyriaBookingApp
-//
 //  Created by ToqSoft on 02/08/25.
-//
 import Foundation
 import UIKit
 

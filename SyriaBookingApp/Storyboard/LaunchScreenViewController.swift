@@ -1,9 +1,7 @@
-////
-////  LaunchScreenViewController.swift
-////  SyriaBookingApp
-////
-////  Created by ToqSoft on 12/10/25.
-////
+//
+//  LaunchScreenViewController.swift
+//  SyriaBookingApp
+//  Created by ToqSoft on 12/10/25.
 
 import UIKit
 
