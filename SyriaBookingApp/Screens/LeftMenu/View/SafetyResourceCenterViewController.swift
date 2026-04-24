@@ -3,7 +3,6 @@
 //  SyriaBookingApp
 //
 //  Created by Toqsoft on 25/03/26.
-//
 
 import UIKit
 
@@ -56,6 +55,150 @@ class SafetyResourceCenterViewController: UIViewController {
         super.viewDidLoad()
         setupSocialMediaView()
         safetyImageView.applyFullLightBlackGradientOverlay()
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        let bold18Font = UIFont.boldSystemFont(ofSize: 18)
+        let semibold15Font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        
+        if lang == .arabic {
+            // Main Labels
+            redefindingTravelLabel.text = "إعادة تعريف السفر والضيافة في سوريا"
+            safetyResourceCenterTitleLabel.text = "مركز موارد السلامة"
+            yourSafetyIsOurPriorityLabel.text = "سلامتك هي أولويتنا"
+            yourPeaceOfMindLabel.text = "في SyriaBooking.sy، راحة بالك هي في صميم كل ما نقوم به. نحن نوفر تجربة سفر آمنة ومأمونة ومدروسة بدءاً من الحجز وحتى المغادرة."
+            thisSafetyResourceCenterOffersLabel.text = "يقدم مركز موارد السلامة هذا إرشادات أساسية لمساعدتك على السفر بثقة في جميع أنحاء سوريا."
+            
+            // Booking Safety Section
+            bookingSafetyLabel.text = "سلامة الحجز"
+            verifiedHotelsOnlyLabel.text = "✓ فنادق موثقة فقط : جميع العقارات المدرجة على منصتنا تخضع لعملية تحقق صارمة قبل النشر"
+            securePlatformLabel.text = "✓ منصة آمنة : بياناتك محمية باستخدام معايير التشفير وبروتوكولات الخصوصية المعتمدة في الصناعة"
+            noAdvancedPaymentRequiredLabel.text = "✓ لا حاجة للدفع المسبق : مع نظام \"الدفع عند الوصول\"، لا تحتاج إلى إدخال أي تفاصيل دفع عبر الإنترنت"
+            
+            // Hotels Safety Section
+            hotelsSafetyTitleLabel.text = "سلامة الفنادق"
+            weEncourageOurHotelLabel.text = "✓ نحن نشجع شركاءنا من الفنادق على تبني والحفاظ على ممارسات السلامة التالية:"
+            dailyRoomCleaningLabel.text = "✓ التنظيف والتعقيم اليومي للغرف"
+            onSiteAvailabilityLabel.text = "✓ توفير حقائب الإسعافات الأولية في الموقع"
+            emergencyContactNumberLabel.text = "✓ معلومات الاتصال في حالات الطوارئ متاحة بسهولة"
+            trainedStaffForGuestLabel.text = "✓ موظفون مدربون على سلامة النزلاء والاستجابة للطوارئ"
+            healthAndHygieneLabel.text = "✓ بروتوكولات الصحة والنظافة خاصة في المناطق عالية التلامس"
+            lookForTheSafetyCertifiedLabel.text = "✓ ابحث عن شارة \"معتمد للسلامة\" على الفنادق التي تبذل جهداً إضافياً"
+            
+            // Traveler Responsibility Section
+            travelResponsibilityTitleLabel.text = "مسؤولية المسافر:"
+            toEnsureASafetyExperienceLabel.text = "✓ لضمان تجربة آمنة للجميع:"
+            followLocalHealthLabel.text = "✓ اتبع إرشادات الصحة والسلامة والسفر المحلية"
+            respectHotelRulesLabel.text = "✓ احترم قواعد الفندق وتعليمات الموظفين"
+            carryProperIDLanel.text = "✓ احمل هوية ووثائق السفر الصالحة"
+            keepEmergencyNumbersLabel.text = "✓ احتفظ بأرقام الطوارئ في متناول يدك"
+            
+            // Emergency Contacts Button
+            let emergencyTitle = NSAttributedString(
+                string: "جهات الاتصال للطوارئ",
+                attributes: [.font: bold18Font, .foregroundColor: UIColor.white]
+            )
+            emergencyContactsTitleButton.setAttributedTitle(emergencyTitle, for: .normal)
+            
+            // Travel Tips Section
+            travelTipsTitleLabel.text = "نصائح السفر"
+            stickToWellKnownLabel.text = "✓ التزم بالوجهات والمناطق الفندقية المعروفة"
+            avoidTravellingLateAtNightLabel.text = "✓ تجنب السفر في وقت متأخر من الليل في الأماكن غير المألوفة"
+            keepValuablesSecureLabel.text = "✓ حافظ على أمان الأشياء الثمينة وتجنب إظهار مبالغ نقدية كبيرة"
+            useHotelSafesLabel.text = "✓ استخدم خزائن الفندق كلما أمكن ذلك"
+            shareYourTravelItineraryLabel.text = "✓ شارك خط سفرك مع العائلة أو الأصدقاء"
+            
+            // Need More Help Section
+            needMoreHelpTitleLabel.text = "بحاجة إلى مزيد من المساعدة؟"
+            
+            // Support Buttons
+            let callSupportTitle = NSAttributedString(
+                string: "اتصل بالدعم",
+                attributes: [.font: semibold15Font, .foregroundColor: UIColor.lightGray]
+            )
+            callSupportButton.setAttributedTitle(callSupportTitle, for: .normal)
+            
+            let emailSupportTitle = NSAttributedString(
+                string: "الدعم عبر البريد الإلكتروني",
+                attributes: [.font: semibold15Font, .foregroundColor: UIColor.lightGray]
+            )
+            emailSupportButton.setAttributedTitle(emailSupportTitle, for: .normal)
+            
+            // Police, Medical, Emergency buttons
+            policeNumberButton.setTitle("شرطة - 112", for: .normal)
+            medicalNumberButton.setTitle("إسعاف - 110", for: .normal)
+            emergencyEmailButton.setTitle("بريد الطوارئ", for: .normal)
+            
+        } else {
+            // English texts
+            redefindingTravelLabel.text = "Redefining travel and hospitality within Syria"
+            safetyResourceCenterTitleLabel.text = "Safety Resource Center"
+            yourSafetyIsOurPriorityLabel.text = "Your safety is our priority."
+            yourPeaceOfMindLabel.text = "At SyriaBooking.sy, your peace of mind is at the heart of everything we do. We provide a safe, secure, and informed travel experience from booking to check-out."
+            thisSafetyResourceCenterOffersLabel.text = "This Safety Resource Center offers essential guidance to help you travel confidently across Syria."
+            
+            // Booking Safety Section
+            bookingSafetyLabel.text = "Booking Safety"
+            verifiedHotelsOnlyLabel.text = "✓ Verified hotels only : All listed properties on our platform go through a strict verification process before being published"
+            securePlatformLabel.text = "✓ Secure Platform : Your data is protected using industry standards encryption and privacy protocols"
+            noAdvancedPaymentRequiredLabel.text = "✓ No Advance Payment Required : With our \"Pay on Arrival\" system, you don’t need to enter any payment details online."
+            
+            // Hotels Safety Section
+            hotelsSafetyTitleLabel.text = "Hotels Safety"
+            weEncourageOurHotelLabel.text = "✓ We encourage our hotel partners to adopt and maintain the following safety practices:"
+            dailyRoomCleaningLabel.text = "✓ Daily room cleaning and sanitization"
+            onSiteAvailabilityLabel.text = "✓ On-site availability of first aid kits"
+            emergencyContactNumberLabel.text = "✓ Emergency contact information readily available"
+            trainedStaffForGuestLabel.text = "✓ Trained staff for guest safety and emergency response"
+            healthAndHygieneLabel.text = "✓ Health & hygiene protocols especially for high-contact areas"
+            lookForTheSafetyCertifiedLabel.text = "✓ Look for the \"Safety Certified\" badge on hotels that go the extra mile"
+            
+            // Traveler Responsibility Section
+            travelResponsibilityTitleLabel.text = "Traveler Responsibility:"
+            toEnsureASafetyExperienceLabel.text = "✓ To ensure a safe experience for everyone:"
+            followLocalHealthLabel.text = "✓ Follow local health, safety, and travel guidelines"
+            respectHotelRulesLabel.text = "✓ Respect hotel rules and staff instructions"
+            carryProperIDLanel.text = "✓ Carry proper ID and travel documents"
+            keepEmergencyNumbersLabel.text = "✓ Keep emergency numbers accessible"
+            
+            // Emergency Contacts Button
+            let emergencyTitle = NSAttributedString(
+                string: "Emergency Contacts",
+                attributes: [.font: bold18Font, .foregroundColor: UIColor.white]
+            )
+            emergencyContactsTitleButton.setAttributedTitle(emergencyTitle, for: .normal)
+            
+            // Travel Tips Section
+            travelTipsTitleLabel.text = "Travel Tips"
+            stickToWellKnownLabel.text = "✓ Stick to well-known destinations and hotel areas"
+            avoidTravellingLateAtNightLabel.text = "✓ Avoid traveling late at night in unfamiliar locations"
+            keepValuablesSecureLabel.text = "✓ Keep valuables secure and avoid displaying large amounts of cash"
+            useHotelSafesLabel.text = "✓ Use hotel safes whenever possible"
+            shareYourTravelItineraryLabel.text = "✓ Share your travel itinerary with family or friends"
+            
+            // Need More Help Section
+            needMoreHelpTitleLabel.text = "Need More Help?"
+            
+            // Support Buttons
+            let callSupportTitle = NSAttributedString(
+                string: "Call Support",
+                attributes: [.font: semibold15Font, .foregroundColor: UIColor.lightGray]
+            )
+            callSupportButton.setAttributedTitle(callSupportTitle, for: .normal)
+            
+            let emailSupportTitle = NSAttributedString(
+                string: "Email Support",
+                attributes: [.font: semibold15Font, .foregroundColor: UIColor.lightGray]
+            )
+            emailSupportButton.setAttributedTitle(emailSupportTitle, for: .normal)
+            
+            // Police, Medical, Emergency buttons
+            policeNumberButton.setTitle("Police - 112", for: .normal)
+            medicalNumberButton.setTitle("Medical - 110", for: .normal)
+            emergencyEmailButton.setTitle("Emergency Email", for: .normal)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,12 +233,10 @@ class SafetyResourceCenterViewController: UIViewController {
             return
         }
         
-        
         if UIApplication.shared.canOpenURL(url) {
             if isEmergency {
                 UIApplication.shared.open(url, options: [:]) { success in
-                    if success {
-                    } else {
+                    if !success {
                         self.showPhoneCallError(phoneNumber: phoneNumber)
                     }
                 }
@@ -108,12 +249,13 @@ class SafetyResourceCenterViewController: UIViewController {
     }
     
     private func showPhoneCallConfirmation(for phoneNumber: String, url: URL) {
-        let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "الاتصال" : "Call"
-        let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
+        let lang = AppSettings.shared.selectedLanguage
+        let alertTitle = lang == .arabic ? "الاتصال" : "Call"
+        let alertMessage = lang == .arabic ?
             "هل تريد الاتصال بـ \(phoneNumber)؟" :
             "Do you want to call \(phoneNumber)?"
-        let cancelTitle = AppSettings.shared.selectedLanguage == .arabic ? "إلغاء" : "Cancel"
-        let callTitle = AppSettings.shared.selectedLanguage == .arabic ? "اتصال" : "Call"
+        let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
+        let callTitle = lang == .arabic ? "اتصال" : "Call"
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -124,8 +266,7 @@ class SafetyResourceCenterViewController: UIViewController {
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: callTitle, style: .default) { _ in
             UIApplication.shared.open(url, options: [:]) { success in
-                if success {
-                } else {
+                if !success {
                     self.showPhoneCallError(phoneNumber: phoneNumber)
                 }
             }
@@ -135,8 +276,9 @@ class SafetyResourceCenterViewController: UIViewController {
     }
     
     private func showPhoneCallError(phoneNumber: String) {
-        let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "خطأ في الاتصال" : "Call Error"
-        let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
+        let lang = AppSettings.shared.selectedLanguage
+        let alertTitle = lang == .arabic ? "خطأ في الاتصال" : "Call Error"
+        let alertMessage = lang == .arabic ?
             "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
             "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
         
@@ -164,11 +306,10 @@ class SafetyResourceCenterViewController: UIViewController {
             showEmailError()
             return
         }
-                
+        
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:]) { success in
-                if success {
-                } else {
+                if !success {
                     self.showEmailError()
                 }
             }
@@ -178,8 +319,9 @@ class SafetyResourceCenterViewController: UIViewController {
     }
     
     private func showEmailError() {
-        let alertTitle = AppSettings.shared.selectedLanguage == .arabic ? "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email"
-        let alertMessage = AppSettings.shared.selectedLanguage == .arabic ?
+        let lang = AppSettings.shared.selectedLanguage
+        let alertTitle = lang == .arabic ? "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email"
+        let alertMessage = lang == .arabic ?
             "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
             "Mail app is not configured on this device."
         
@@ -203,7 +345,8 @@ class SafetyResourceCenterViewController: UIViewController {
     }
     
     @IBAction func emergencyEmailButtonAction(_ sender: Any) {
-        let subject = AppSettings.shared.selectedLanguage == .arabic ?
+        let lang = AppSettings.shared.selectedLanguage
+        let subject = lang == .arabic ?
             "طلب مساعدة طارئة" : "Emergency Assistance Request"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
     }
@@ -213,8 +356,13 @@ class SafetyResourceCenterViewController: UIViewController {
     }
     
     @IBAction func emailSupportButtonAction(_ sender: Any) {
-        let subject = AppSettings.shared.selectedLanguage == .arabic ?
+        let lang = AppSettings.shared.selectedLanguage
+        let subject = lang == .arabic ?
             "استفسار عن دعم العملاء" : "Customer Support Inquiry"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

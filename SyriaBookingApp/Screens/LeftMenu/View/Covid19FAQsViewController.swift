@@ -173,11 +173,13 @@ extension Covid19FAQsViewController {
         covidImageView.applyFullLightBlackGradientOverlay()
         
         if AppSettings.shared.selectedLanguage == .arabic {
+            frequentlyAskedQuestionsTitleLabel.text = "الأسئلة الشائعة"
             travelSafelyWithSyriaBookingTitleLabel.text = "سافر بأمان مع SyriaBooking.sy"
             travelOnlyIfFeelWelllabel.text = "سافر فقط إذا كنت تشعر بتحسن"
             healthGuidelinesLabel.text = "تابع أحدث الإرشادات الصحية"
             supportLocalBusinessLabel.text = "ادعم الأعمال المحلية من خلال الحجز المسؤول"
         } else {
+            frequentlyAskedQuestionsTitleLabel.text = "Frequently Asked Questions"
             travelSafelyWithSyriaBookingTitleLabel.text = "Travel Safely with SyriaBooking.sy"
             travelOnlyIfFeelWelllabel.text = "Travel only if you feel well"
             healthGuidelinesLabel.text = "Keep up with the latest health guidelines"

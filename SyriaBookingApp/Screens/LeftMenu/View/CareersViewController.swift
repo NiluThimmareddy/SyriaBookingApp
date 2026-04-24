@@ -3,7 +3,6 @@
 //  SyriaBookingApp
 //
 //  Created by Toqsoft on 23/03/26.
-//
 
 import UIKit
 
@@ -51,12 +50,24 @@ class CareersViewController: UIViewController {
     
     var currentIndex = 0
     
-    let workWithUs : [WorkWithUsModel] = [
+    let workWithUs: [WorkWithUsModel] = [
         WorkWithUsModel(imageview: "ic_inovateLocally", iconImgView: "ic_Bulb", title: "Innovate Locally, Impact Nationally", description: "Be part of a pioneering tech company creating real change in the Syrian travel and tourism industry."),
         WorkWithUsModel(imageview: "ic_collabrative", iconImgView: "ic_PersonBorder", title: "Collaborative & Supportive Culture", description: "We value teamwork, open communication, and mutual growth. Your voice matters here."),
         WorkWithUsModel(imageview: "ic_CareerPersonImg", iconImgView: "ic_CareerGrowth", title: "Career Growth Opportunities", description: "We’re growing fast — and so will you. Learn, lead, and take your career to the next level."),
         WorkWithUsModel(imageview: "ic_businessImg", iconImgView: "ic_workPurpose", title: "Work With Purpose", description: "Your work will directly help travelers, support local businesses, and showcase the beauty of Syria to the world.")
     ]
+    
+    // Arabic work with us data
+    let arabicWorkWithUs: [WorkWithUsModel] = [
+        WorkWithUsModel(imageview: "ic_inovateLocally", iconImgView: "ic_Bulb", title: "ابتكر محلياً، أثر وطنياً", description: "كن جزءاً من شركة تقنية رائدة تحدث تغييراً حقيقياً في صناعة السفر والسياحة السورية."),
+        WorkWithUsModel(imageview: "ic_collabrative", iconImgView: "ic_PersonBorder", title: "ثقافة تعاونية وداعمة", description: "نحن نقدر العمل الجماعي، والتواصل المفتوح، والنمو المتبادل. صوتك مهم هنا."),
+        WorkWithUsModel(imageview: "ic_CareerPersonImg", iconImgView: "ic_CareerGrowth", title: "فرص النمو الوظيفي", description: "نحن ننمو بسرعة - وكذلك ستنمو أنت. تعلم، قُد، واصطحب مسيرتك المهنية إلى المستوى التالي."),
+        WorkWithUsModel(imageview: "ic_businessImg", iconImgView: "ic_workPurpose", title: "اعمل بهدف", description: "عملك سيساعد المسافرين مباشرة، ويدعم الأعمال المحلية، ويعرض جمال سوريا للعالم.")
+    ]
+    
+    var currentWorkWithUsData: [WorkWithUsModel] {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicWorkWithUs : workWithUs
+    }
     
     let englishTestimonials: [TestimonialModel] = [
         TestimonialModel(
@@ -119,6 +130,7 @@ class CareersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         whyWorkWithUsCollectionView.register(UINib(nibName: "WhyWorkWithUsCVC", bundle: nil), forCellWithReuseIdentifier: "WhyWorkWithUsCVC")
         if let layout = whyWorkWithUsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
@@ -131,6 +143,70 @@ class CareersViewController: UIViewController {
         }
         careerImageView.applyFullBlackGradientOverlay()
         setupSocialMediaView()
+        
+        updateTexts()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        let bold16Font = UIFont.boldSystemFont(ofSize: 16)
+        
+        if lang == .arabic {
+            // Arabic texts
+            redefineTravelTitleLabel.text = "إعادة تعريف السفر في سوريا"
+            careersAtSyriabokkingTitleLabel.text = "وظائف في سيريا بوكينغ"
+            joinTheTeamLabel.text = "انضم إلى الفريق الذي يقف وراء منصة حجز الفنادق الرائدة في سوريا."
+            atSyriaBokkingsyLabel.text = "في SyriaBooking.sy، نحن في مهمة لتحويل كيفية استكشاف وتجربة سوريا - من خلال جعل السفر أبسط وأذكى وأكثر سهولة للجميع. نحن نبني المنصة الرائدة في البلاد لحجز الفنادق، ونبحث عن أفراد متحمسين لينموا معنا."
+            whetherYouareTechExpertLabel.text = "سواء كنت خبير تقني، أو بطل خدمة عملاء، أو راوي قصص مبدع، أو استراتيجي أعمال - إذا كنت تؤمن بالابتكار والنزاهة والتأثير، فستشعر وكأنك في منزلك هنا."
+            whyWorkWithUsTitleLabel.text = "لماذا تعمل معنا؟"
+            didnotSeeRoleTitleLabel.text = "لم ترَ دوراً مناسباً؟"
+            weAreAlwaysOpenToHearingLabel.text = "نحن دائماً منفتحون لسماع آراء المحترفين المتحمسين. أرسل لنا سيرتك الذاتية على أي حال!"
+            readyToBuildTitleLabel.text = "هل أنت مستعد لبناء مستقبل السفر في سوريا؟"
+            bePartOfSomethingLabel.text = "كن جزءاً من شيء مؤثر. انضم إلى سيريا بوكينغ. السفر يبدأ من هنا."
+            whatOurTeamSaysLabel.text = "ماذا يقول فريقنا!"
+            howToApplyLabel.text = "كيفية التقديم"
+            readyToMakeAnImpactLabel.text = "هل أنت مستعد لإحداث تأثير؟ أرسل سيرتك الذاتية ومجموعة أعمالك إلى فريقنا."
+            
+            // Apply for Job button with bold 16 font
+            let applyButtonTitle = NSAttributedString(
+                string: "تقدم لوظيفة",
+                attributes: [
+                    .font: bold16Font,
+                    .foregroundColor: applyForJobButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            applyForJobButton.setAttributedTitle(applyButtonTitle, for: .normal)
+            
+        } else {
+            // English texts
+            redefineTravelTitleLabel.text = "REDEFINING TRAVEL IN SYRIA"
+            careersAtSyriabokkingTitleLabel.text = "Careers at SyriaBooking.sy"
+            joinTheTeamLabel.text = "Join the team behind Syria’s leading hotel booking platform."
+            atSyriaBokkingsyLabel.text = "At SyriaBooking.sy, we’re on a mission to transform how people explore and experience Syria — by making travel simpler, smarter, and more accessible for everyone. We’re building the country’s go-to platform for hotel bookings, and we’re looking for passionate individuals to grow with us."
+            whetherYouareTechExpertLabel.text = "Whether you’re a tech expert, customer service champion, creative storyteller, or business strategist — if you believe in innovation, integrity, and impact, you’ll feel at home here."
+            whyWorkWithUsTitleLabel.text = "Why Work With Us?"
+            didnotSeeRoleTitleLabel.text = "Didn’t see a role that fits?"
+            weAreAlwaysOpenToHearingLabel.text = "We’re always open to hearing from passionate professionals. Send us your CV anyway!"
+            readyToBuildTitleLabel.text = "Ready to Build the Future of Travel in Syria?"
+            bePartOfSomethingLabel.text = "Be part of something impactful. Join SyriaBooking.sy. Travel Starts Here."
+            whatOurTeamSaysLabel.text = "What Our Team Says!"
+            howToApplyLabel.text = "How to Apply"
+            readyToMakeAnImpactLabel.text = "Ready to make an impact? Send your CV and portfolio to our team."
+            
+            // Apply for Job button with bold 16 font
+            let applyButtonTitle = NSAttributedString(
+                string: "Apply for a Job",
+                attributes: [
+                    .font: bold16Font,
+                    .foregroundColor: applyForJobButton.titleColor(for: .normal) ?? .white
+                ]
+            )
+            applyForJobButton.setAttributedTitle(applyButtonTitle, for: .normal)
+        }
+        
+        // Reload collection views with updated data
+        whyWorkWithUsCollectionView.reloadData()
+        whatOurTeamSaysCollectionView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -245,13 +321,15 @@ class CareersViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension CareersViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == whyWorkWithUsCollectionView {
-            return workWithUs.count
+            return currentWorkWithUsData.count
         } else if collectionView == whatOurTeamSaysCollectionView {
             return testimonials.count
         } else {
@@ -262,7 +340,7 @@ extension CareersViewController : UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == whyWorkWithUsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WhyWorkWithUsCVC", for: indexPath) as! WhyWorkWithUsCVC
-            let whyWorkData = workWithUs[indexPath.row]
+            let whyWorkData = currentWorkWithUsData[indexPath.row]
             cell.imgView.image = UIImage(named: "\(whyWorkData.imageview)")
             cell.iconImgView.image = UIImage(named: "\(whyWorkData.iconImgView)")
             cell.titleLabel.text = whyWorkData.title

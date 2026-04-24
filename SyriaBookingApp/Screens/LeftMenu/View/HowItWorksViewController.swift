@@ -5,7 +5,6 @@
 //  Created by Toqsoft on 24/03/26.
 //
 
-
 import UIKit
 
 class HowItWorksViewController: UIViewController {
@@ -55,20 +54,90 @@ class HowItWorksViewController: UIViewController {
     private var originalReceiveHeight: CGFloat = 107
     private var originalPayHeight: CGFloat = 107
     
-    private let searchFullText = "Use our powerful search engine to explore hotels across Syria. Filter by city, price, star rating, amenities, and guest reviews to find the perfect stay that fits your needs."
-    private let compareFullText = "Browse detailed hotel profiles, real guest photos, amenities, and room types. Compare options and make the best choice based on your travel dates and preferences."
-    private let bookFullText = "Select your room, enter your details, and click \"Book Now\" — that's it! No credit card or advance payment needed. Your reservation will be instantly confirmed via email or SMS."
-    private let receiveFullText = "Once you book, you'll receive a booking confirmation with all your hotel details, directions, and contact information. Your room is reserved and waiting for you."
-    private let payFullText = "Arrive at your hotel, show your booking confirmation, and pay directly at the front desk in cash or by card (as accepted by the hotel). It's simple, secure, and commitment-free."
+    // MARK: - English Texts
+    private let englishSearchFullText = "Use our powerful search engine to explore hotels across Syria. Filter by city, price, star rating, amenities, and guest reviews to find the perfect stay that fits your needs."
+    private let englishCompareFullText = "Browse detailed hotel profiles, real guest photos, amenities, and room types. Compare options and make the best choice based on your travel dates and preferences."
+    private let englishBookFullText = "Select your room, enter your details, and click \"Book Now\" — that's it! No credit card or advance payment needed. Your reservation will be instantly confirmed via email or SMS."
+    private let englishReceiveFullText = "Once you book, you'll receive a booking confirmation with all your hotel details, directions, and contact information. Your room is reserved and waiting for you."
+    private let englishPayFullText = "Arrive at your hotel, show your booking confirmation, and pay directly at the front desk in cash or by card (as accepted by the hotel). It's simple, secure, and commitment-free."
     
-    private let searchShortText = "Use our powerful search engine to "
-    private let compareShortText = "Browse detailed hotel profiles, real guest photos, "
-    private let bookShortText = "Select your room, enter your details, and click "
-    private let receiveShortText = "Once you book, you'll receive a booking "
-    private let payShortText = "Arrive at your hotel, show your booking "
+    private let englishSearchShortText = "Use our powerful search engine to "
+    private let englishCompareShortText = "Browse detailed hotel profiles, real guest photos, "
+    private let englishBookShortText = "Select your room, enter your details, and click "
+    private let englishReceiveShortText = "Once you book, you'll receive a booking "
+    private let englishPayShortText = "Arrive at your hotel, show your booking "
+    
+    // MARK: - Arabic Texts
+    private let arabicSearchFullText = "استخدم محرك البحث القوي الخاص بنا لاستكشاف الفنادق في جميع أنحاء سوريا. قم بالتصفية حسب المدينة، السعر، التقييم بالنجوم، المرافق، وتقييمات النزلاء للعثور على الإقامة المثالية التي تناسب احتياجاتك."
+    private let arabicCompareFullText = "تصفح ملفات الفنادق التفصيلية، صور النزلاء الحقيقية، المرافق، وأنواع الغرف. قارن الخيارات واختر أفضل خيار بناءً على تواريخ سفرك وتفضيلاتك."
+    private let arabicBookFullText = "اختر غرفتك، أدخل تفاصيلك، وانقر على \"احجز الآن\" — هذا كل شيء! لا حاجة لبطاقة ائتمان أو دفع مسبق. سيتم تأكيد حجزك فوراً عبر البريد الإلكتروني أو الرسائل القصيرة."
+    private let arabicReceiveFullText = "بمجرد حجزك، ستتلقى تأكيد الحجز مع جميع تفاصيل الفندق، الاتجاهات، ومعلومات الاتصال. غرفتك محجوزة وفي انتظارك."
+    private let arabicPayFullText = "عند وصولك إلى الفندق، اعرض تأكيد حجزك، وادفع مباشرة في مكتب الاستقبال نقداً أو ببطاقة الائتمان (كما هو مقبول في الفندق). إنه بسيط وآمن وبدون التزامات."
+    
+    private let arabicSearchShortText = "استخدم محرك البحث القوي الخاص بنا لـ "
+    private let arabicCompareShortText = "تصفح ملفات الفنادق التفصيلية، صور النزلاء الحقيقية، "
+    private let arabicBookShortText = "اختر غرفتك، أدخل تفاصيلك، وانقر على "
+    private let arabicReceiveShortText = "بمجرد حجزك، ستتلقى تأكيد "
+    private let arabicPayShortText = "عند وصولك إلى الفندق، اعرض تأكيد "
+    
+    private let englishReadMoreText = "Read More"
+    private let englishShowLessText = "\n\nShow Less"
+    
+    private let arabicReadMoreText = "اقرأ المزيد"
+    private let arabicShowLessText = "\n\nإظهار أقل"
+    
+    // MARK: - Computed Properties
+    private var searchFullText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicSearchFullText : englishSearchFullText
+    }
+    
+    private var compareFullText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicCompareFullText : englishCompareFullText
+    }
+    
+    private var bookFullText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicBookFullText : englishBookFullText
+    }
+    
+    private var receiveFullText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicReceiveFullText : englishReceiveFullText
+    }
+    
+    private var payFullText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicPayFullText : englishPayFullText
+    }
+    
+    private var searchShortText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicSearchShortText : englishSearchShortText
+    }
+    
+    private var compareShortText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicCompareShortText : englishCompareShortText
+    }
+    
+    private var bookShortText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicBookShortText : englishBookShortText
+    }
+    
+    private var receiveShortText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicReceiveShortText : englishReceiveShortText
+    }
+    
+    private var payShortText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicPayShortText : englishPayShortText
+    }
+    
+    private var readMoreText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicReadMoreText : englishReadMoreText
+    }
+    
+    private var showLessText: String {
+        return AppSettings.shared.selectedLanguage == .arabic ? arabicShowLessText : englishShowLessText
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         [searchView, compareView, bookInstantlyView, receiveView, payView].forEach { shadow in
             shadow?.applyCardStyle()
         }
@@ -78,8 +147,56 @@ class HowItWorksViewController: UIViewController {
         imageView.applyFullLightBlackGradientOverlay()
         setupSocialMediaView()
         storeOriginalHeights()
-        setupInitialLabels()
+        
+        // Set initial texts
+        updateTexts()
+        
         configureLabels()
+        setupInitialLabels()
+    }
+    
+    @objc func updateTexts() {
+        let lang = AppSettings.shared.selectedLanguage
+        
+        if lang == .arabic {
+            howItWorksTitleLabel.text = "كيف يعمل – احجز إقامتك في سوريا بكل سهولة"
+            searchForHotelTitleLabel.text = "البحث عن فندق"
+            compareAndChooseLabel.text = "قارن واختر"
+            bookInstantlyLabel.text = "احجز فوراً"
+            receiveConfirmationLabel.text = "استلام التأكيد"
+            payAtHotelLabel.text = "ادفع في الفندق"
+        } else {
+            howItWorksTitleLabel.text = "How It Works – Book Your Stay in Syria with Ease"
+            searchForHotelTitleLabel.text = "Search for Hotel"
+            compareAndChooseLabel.text = "Compare & Choose"
+            bookInstantlyLabel.text = "Book Instantly"
+            receiveConfirmationLabel.text = "Receive Confirmation"
+            payAtHotelLabel.text = "Pay at Hotel"
+        }
+        
+        // Reset expansion states when language changes
+        resetAllSections()
+        
+        // Re-setup initial labels with new language texts
+        setupInitialLabels()
+    }
+    
+    private func resetAllSections() {
+        // Reset expansion flags
+        isSearchExpanded = false
+        isCompareExpanded = false
+        isBookExpanded = false
+        isReceiveExpanded = false
+        isPayExpanded = false
+        
+        // Reset height constraints to original
+        searchViewHeightConstraint.constant = originalSearchHeight
+        compareViewHeightConstraint.constant = originalCompareHeight
+        bookInstantlyHeightConstraint.constant = originalBookHeight
+        receiveViewHeightConstraint.constant = originalReceiveHeight
+        payViewHeightConstraint.constant = originalPayHeight
+        
+        view.layoutIfNeeded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,7 +271,6 @@ class HowItWorksViewController: UIViewController {
     
     private func setupLabelWithReadMore(label: UILabel, shortText: String, action: Selector) {
         let attributedString = NSMutableAttributedString(string: shortText)
-        let readMoreText = "Read More"
         let readMoreAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.label,
             .font: UIFont.systemFont(ofSize: label.font.pointSize, weight: .bold),
@@ -171,7 +287,6 @@ class HowItWorksViewController: UIViewController {
     
     private func setupLabelWithShowLess(label: UILabel, fullText: String, action: Selector) {
         let attributedString = NSMutableAttributedString(string: fullText)
-        let showLessText = "\n\nShow Less"
         let showLessAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.label,
             .font: UIFont.systemFont(ofSize: label.font.pointSize, weight: .bold),
@@ -195,7 +310,7 @@ class HowItWorksViewController: UIViewController {
                 label: useOurPowerFullSearchLabel,
                 fullText: searchFullText,
                 heightConstraint: searchViewHeightConstraint,
-                expandedHeight: 180,
+                expandedHeight: 200,
                 action: #selector(searchShowLessTapped)
             )
         }
@@ -208,7 +323,7 @@ class HowItWorksViewController: UIViewController {
                 label: browseDetailedLabel,
                 fullText: compareFullText,
                 heightConstraint: compareViewHeightConstraint,
-                expandedHeight: 180,
+                expandedHeight: 200,
                 action: #selector(compareShowLessTapped)
             )
         }
@@ -221,7 +336,7 @@ class HowItWorksViewController: UIViewController {
                 label: selectYourRoomLabel,
                 fullText: bookFullText,
                 heightConstraint: bookInstantlyHeightConstraint,
-                expandedHeight: 180,
+                expandedHeight: 200,
                 action: #selector(bookShowLessTapped)
             )
         }
@@ -234,7 +349,7 @@ class HowItWorksViewController: UIViewController {
                 label: onceYouBookLabel,
                 fullText: receiveFullText,
                 heightConstraint: receiveViewHeightConstraint,
-                expandedHeight: 180,
+                expandedHeight: 200,
                 action: #selector(receiveShowLessTapped)
             )
         }
@@ -247,7 +362,7 @@ class HowItWorksViewController: UIViewController {
                 label: arriveAtHotelLabel,
                 fullText: payFullText,
                 heightConstraint: payViewHeightConstraint,
-                expandedHeight: 180,
+                expandedHeight: 200,
                 action: #selector(payShowLessTapped)
             )
         }
