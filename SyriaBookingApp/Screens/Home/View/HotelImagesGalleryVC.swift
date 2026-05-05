@@ -71,7 +71,6 @@ extension HotelImagesGalleryVC: UICollectionViewDelegate, UICollectionViewDataSo
         
         if collectionView == hotelImagesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HotelImagesGalleryCVC", for: indexPath) as! HotelImagesGalleryCVC
-            cell.delegate = self
             downloadImage(from: url) { image in
                 DispatchQueue.main.async {
                     cell.hotelImageView.image = image
@@ -174,26 +173,3 @@ extension HotelImagesGalleryVC {
     }
 }
 
-extension HotelImagesGalleryVC: HotelImagesGalleryCVCDelegate {
-    func didTap360ViewButton(in cell: HotelImagesGalleryCVC) {
-        guard let indexPath = hotelImagesCollectionView.indexPath(for: cell) else { return }
-        
-        let imageUrlString: String?
-        
-        switch galleryType {
-        case .hotel:
-            imageUrlString = selectedHotel?.images[indexPath.row]
-        case .room:
-            imageUrlString = roomImages[indexPath.row]
-        }
-        
-        guard let imageUrlString = imageUrlString else { return }
-        if let vc = storyboard?.instantiateViewController(withIdentifier: "ThreeSixtyDegreeImageViewVC") as? ThreeSixtyDegreeImageViewVC {
-            vc.imageURLString = imageUrlString
-            let backItem = UIBarButtonItem()
-            backItem.title = ""
-            self.navigationItem.backBarButtonItem = backItem
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-}

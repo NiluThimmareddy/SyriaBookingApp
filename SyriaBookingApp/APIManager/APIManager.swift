@@ -63,15 +63,10 @@ class APIManager {
                         completion(.failure(APIError.userNotFound))
                         return
                     }else{
-                        
-
                         completion(.failure(APIError.serverError))
                         return
                     }
                 }
-                
-                
-                
             }  else {
                 completion(.failure(APIError.invalidResponse))
                 return

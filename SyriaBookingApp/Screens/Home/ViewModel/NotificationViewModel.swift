@@ -32,9 +32,9 @@ class NotificationViewModel {
                 self.BookingHistoryArray = success.data
                 self.onSuccess?(success.data)
             case .failure(let failure):
-                #if DEBUG
+#if DEBUG
                 print("fetchNotificationUser :", failure.localizedDescription)
-                #endif
+#endif
                 self.onError?(failure)
             }
         }
@@ -57,9 +57,9 @@ class NotificationViewModel {
                 self.BookingListArray = success.data
                 self.onBookingSuccess?(success.data)
             case .failure(let failure):
-                #if DEBUG
-                    print("fetchUserBookings Error :", failure.localizedDescription)
-                #endif
+#if DEBUG
+                print("fetchUserBookings Error :", failure.localizedDescription)
+#endif
                 self.onError?(failure)
                 
             }
@@ -67,7 +67,7 @@ class NotificationViewModel {
     }
     
     func fetchNotificationCount(userId:String){
-        guard var url = APIURL.notificationCount.url?.absoluteString else { return }        
+        guard var url = APIURL.notificationCount.url?.absoluteString else { return }
         url += "\(userId)"
         
         guard let url = URL(string: url) else{
@@ -75,19 +75,18 @@ class NotificationViewModel {
             return
         }
         
-        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in            
+        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let success):
-              print(success)
+                print(success)
                 self.onCountSuccess?(success)
-            case .failure(let failure):                
+            case .failure(let failure):
 #if DEBUG
                 print("fetchUserBookings Error :", failure.localizedDescription)
 #endif
                 self.onError?(failure)
             }
         }
-        
     }
 }
