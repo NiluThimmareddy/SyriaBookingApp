@@ -104,7 +104,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var scrolltoTopHelper: ScrollToTopHelper?
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
-    var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4"]
+    var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
@@ -169,12 +169,12 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         super.viewWillAppear(animated)
         currentUser = UserSessionManager.getUser()
         setupAppNavigationBar()
-        sliderCollectionView.reloadData()
+       
         
         if viewModel.filteredHotels.isEmpty {
             showSkeletonOnAllElements()
         }
-        
+        sliderCollectionView.reloadData()
         refreshRecentlyViewedData()
     }
     
@@ -665,6 +665,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else if collectionView == sliderCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SliderCollectionViewCell", for: indexPath) as! SliderCollectionViewCell
             cell.greetingMessageLabel.isHidden = true
+            cell.configureButtonTitle()
             if let user = currentUser {
                 cell.loginButton.isHidden = true
                 if indexPath.row == 0 {
@@ -676,6 +677,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 if indexPath.row == 0 {
                     cell.loginButton.isHidden = false
                 } else {
+                    
                     cell.loginButton.isHidden = true
                 }
             }
@@ -1462,7 +1464,7 @@ extension HomeViewController {
         propertyTypeCollectionView.reloadData()
         recentlyCollectionView.reloadData()
         recommendedHotelsCollectionView.reloadData()
-        
+        sliderCollectionView.reloadData()
         if lang == .english {
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 11, weight: .bold)
@@ -1579,6 +1581,7 @@ extension HomeViewController {
             viewAllRecommendedButton.setTitle("View All", for: .normal)
             
         } else {
+            
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 11, weight: .bold)
             ]

@@ -8,7 +8,6 @@ import UIKit
 
 class CubeLayoutAttributes: UICollectionViewLayoutAttributes {
     var cubeAnchorPoint: CGPoint = CGPoint(x: 0.5, y: 0.5)
-    
     override func copy(with zone: NSZone? = nil) -> Any {
         let copy = super.copy(with: zone) as! CubeLayoutAttributes
         copy.cubeAnchorPoint = cubeAnchorPoint

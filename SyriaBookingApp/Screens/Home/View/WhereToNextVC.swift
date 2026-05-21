@@ -28,11 +28,13 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
     private var skeletonHideWorkItem: DispatchWorkItem?
     
     override func viewDidLoad() {
+        selectedLanguage = AppSettings.shared.selectedLanguage
         super.viewDidLoad()
         setUpUI()
         setupSkeleton()
         showSkeletonImmediately()
         loadHotelsData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

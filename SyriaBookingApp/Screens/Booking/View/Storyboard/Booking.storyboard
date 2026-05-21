@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PCx-Pf-BF6">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -1364,6 +1364,9 @@
                                                 <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="16"/>
+                                                </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPy-zZ-m2g">
                                                 <rect key="frame" x="33" y="189.33333333333331" width="327" height="414.99999999999994"/>
@@ -1371,7 +1374,9 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W7B-rM-3Dp">
                                                         <rect key="frame" x="0.0" y="0.0" width="327" height="220"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="220" id="Z7Y-EM-ECs"/>
+                                                            <constraint firstAttribute="height" constant="220" id="Z7Y-EM-ECs">
+                                                                <variation key="heightClass=regular-widthClass=regular" constant="390"/>
+                                                            </constraint>
                                                         </constraints>
                                                     </imageView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="crh-tU-Kwc">
@@ -1624,7 +1629,9 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="327" id="4t6-c8-qHi"/>
+                                                    <constraint firstAttribute="width" constant="327" id="4t6-c8-qHi">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="600"/>
+                                                    </constraint>
                                                     <constraint firstAttribute="trailing" secondItem="crh-tU-Kwc" secondAttribute="trailing" id="HD8-17-xyo"/>
                                                     <constraint firstItem="crh-tU-Kwc" firstAttribute="top" secondItem="W7B-rM-3Dp" secondAttribute="bottom" id="IEj-KF-DJ7"/>
                                                     <constraint firstItem="W7B-rM-3Dp" firstAttribute="top" secondItem="EPy-zZ-m2g" secondAttribute="top" id="Jo9-Xz-xO1"/>
@@ -1636,7 +1643,9 @@
                                                     <constraint firstItem="66o-rV-4jH" firstAttribute="leading" secondItem="EPy-zZ-m2g" secondAttribute="leading" constant="30" id="sEH-5c-IpF"/>
                                                     <constraint firstItem="dnX-dn-9c1" firstAttribute="leading" secondItem="66o-rV-4jH" secondAttribute="leading" id="tl8-72-h0z"/>
                                                     <constraint firstAttribute="trailing" secondItem="W7B-rM-3Dp" secondAttribute="trailing" id="uFW-Nw-uq9"/>
-                                                    <constraint firstAttribute="height" constant="415" id="v5U-Al-dkU"/>
+                                                    <constraint firstAttribute="height" constant="415" id="v5U-Al-dkU">
+                                                        <variation key="heightClass=regular-widthClass=regular" constant="600"/>
+                                                    </constraint>
                                                     <constraint firstItem="crh-tU-Kwc" firstAttribute="top" secondItem="66o-rV-4jH" secondAttribute="bottom" constant="20" id="vka-rm-gfU"/>
                                                     <constraint firstAttribute="trailing" secondItem="hsR-ZJ-OuW" secondAttribute="trailing" constant="30" id="wAw-oe-nng"/>
                                                     <constraint firstItem="W7B-rM-3Dp" firstAttribute="leading" secondItem="EPy-zZ-m2g" secondAttribute="leading" id="yF7-BN-Q1n"/>
@@ -1759,7 +1768,9 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="EPy-zZ-m2g" firstAttribute="top" secondItem="XCF-MS-tsh" secondAttribute="bottom" constant="15" id="1v9-a8-Iw7"/>
+                                            <constraint firstItem="EPy-zZ-m2g" firstAttribute="top" secondItem="XCF-MS-tsh" secondAttribute="bottom" constant="15" id="1v9-a8-Iw7">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="40"/>
+                                            </constraint>
                                             <constraint firstItem="UIo-e5-j6X" firstAttribute="centerX" secondItem="GoW-SS-iuK" secondAttribute="centerX" id="75E-gf-UcE"/>
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="top" secondItem="UIo-e5-j6X" secondAttribute="bottom" constant="15" id="941-Yv-wO4"/>
                                             <constraint firstItem="1NR-T6-J6M" firstAttribute="leading" secondItem="GoW-SS-iuK" secondAttribute="leading" constant="20" id="AMe-HV-cAm"/>
@@ -1768,16 +1779,24 @@
                                             <constraint firstItem="w9F-VV-vhS" firstAttribute="top" secondItem="OpH-MA-mOH" secondAttribute="bottom" constant="20" id="CIS-UN-Tlw"/>
                                             <constraint firstItem="w9F-VV-vhS" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" constant="-10" id="Cfr-N4-eq9"/>
                                             <constraint firstAttribute="bottom" secondItem="w9F-VV-vhS" secondAttribute="bottom" constant="20" id="EHS-TR-084"/>
-                                            <constraint firstItem="OpH-MA-mOH" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="bottom" constant="10" id="Fec-Pd-uwg"/>
-                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="top" secondItem="1NR-T6-J6M" secondAttribute="bottom" constant="10" id="Gyt-6s-u6Q"/>
+                                            <constraint firstItem="OpH-MA-mOH" firstAttribute="top" secondItem="5eV-aK-D7M" secondAttribute="bottom" constant="10" id="Fec-Pd-uwg">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="30"/>
+                                            </constraint>
+                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="top" secondItem="1NR-T6-J6M" secondAttribute="bottom" constant="10" id="Gyt-6s-u6Q">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                                            </constraint>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="top" secondItem="EPy-zZ-m2g" secondAttribute="bottom" constant="15" id="Qd5-W0-Tfh"/>
                                             <constraint firstAttribute="trailing" secondItem="hQX-gx-5f5" secondAttribute="trailing" constant="15" id="RSX-3v-mu4"/>
                                             <constraint firstItem="EPy-zZ-m2g" firstAttribute="centerX" secondItem="GoW-SS-iuK" secondAttribute="centerX" id="Ulk-aQ-1t1"/>
                                             <constraint firstItem="OpH-MA-mOH" firstAttribute="leading" secondItem="5eV-aK-D7M" secondAttribute="leading" id="VA7-2g-Y3K"/>
-                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="-40" id="WhP-dH-ZcF"/>
+                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="-40" id="WhP-dH-ZcF">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="-130"/>
+                                            </constraint>
                                             <constraint firstItem="5eV-aK-D7M" firstAttribute="trailing" secondItem="EPy-zZ-m2g" secondAttribute="trailing" id="ZjQ-s4-IRg"/>
                                             <constraint firstItem="OpH-MA-mOH" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" id="bFL-3k-ktr"/>
-                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="leading" secondItem="1NR-T6-J6M" secondAttribute="leading" constant="40" id="bxw-aT-r6t"/>
+                                            <constraint firstItem="XCF-MS-tsh" firstAttribute="leading" secondItem="1NR-T6-J6M" secondAttribute="leading" constant="40" id="bxw-aT-r6t">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="130"/>
+                                            </constraint>
                                             <constraint firstItem="UIo-e5-j6X" firstAttribute="top" secondItem="GoW-SS-iuK" secondAttribute="top" constant="20" id="dw2-iS-ODg"/>
                                             <constraint firstItem="w9F-VV-vhS" firstAttribute="trailing" secondItem="5eV-aK-D7M" secondAttribute="trailing" constant="10" id="p6F-Sl-FcK"/>
                                             <constraint firstAttribute="trailing" secondItem="1NR-T6-J6M" secondAttribute="trailing" constant="20" id="vpI-dc-nmG"/>
@@ -3447,34 +3466,34 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tintColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

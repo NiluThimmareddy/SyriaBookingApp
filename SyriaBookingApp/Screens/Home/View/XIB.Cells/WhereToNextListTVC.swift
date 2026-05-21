@@ -22,6 +22,7 @@ class WhereToNextListTVC: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectedLanguage = AppSettings.shared.selectedLanguage
         self.isSkeletonable = true
         self.contentView.isSkeletonable = true
         setUpUI()

@@ -518,8 +518,10 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
         let lang = AppSettings.shared.selectedLanguage
         if lang == .arabic {
+            enterMobileNumberTF.placeholder =  "أدخل رقم الهاتف المحمول"
             self.otpMessageLable.text = "للمتابعة، يرجى التحقق من بريدك الإلكتروني. انقر على إرسال الرمز، ثم أدخل الرمز المكون من 6 أرقام الذي أرسلناه إلى بريدك الإلكتروني."
         } else {
+            enterMobileNumberTF.placeholder = "Enter Mobile Numeber"
             self.otpMessageLable.text = "To continue, please verify your email. Click Send code, then enter the 6-digit code we email you."
         }
         self.changeLabelStyle(Email: true)

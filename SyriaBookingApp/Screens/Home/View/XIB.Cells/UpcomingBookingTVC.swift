@@ -36,6 +36,7 @@ class UpcomingBookingTVC: UITableViewCell {
         super.awakeFromNib()
         backView.applyCardStyle()
         setupSkeleton()
+        setButtonTitles()
     }
     
     override func prepareForReuse() {
@@ -63,10 +64,15 @@ class UpcomingBookingTVC: UITableViewCell {
     }
     
     func configure(booking: BookingHistoryModel) {
+        
         currentBooking = booking
+        
+        let lang = AppSettings.shared.selectedLanguage
+        let isArabic = lang == .arabic
+        
         if let imageURL = getHotelImage(for: booking) {
-            hotelImgView.loadImage(from: imageURL) // your image loading method
-        }else{
+            hotelImgView.loadImage(from: imageURL)
+        } else {
             hotelImgView.image = UIImage(named: "HotelPlaceholder")
         }
         
@@ -74,29 +80,47 @@ class UpcomingBookingTVC: UITableViewCell {
         
         let checkInDateStr = booking.checkInUtc.toDayMonthYear()
         let checkOutDateStr = booking.checkOutUtc.toDayMonthYear()
+        
         checkInAndCheckOutDatesLabel.text = "\(checkInDateStr) - \(checkOutDateStr)"
-        let totalNights = calculateTotalNights(checkIn: checkInDateStr, checkOut: checkOutDateStr)
-        let perNightRate = booking.totalAmount // assuming `totalAmount` stores per-night price
+        
+        let totalNights = calculateTotalNights(
+            checkIn: checkInDateStr,
+            checkOut: checkOutDateStr
+        )
+        
+        let perNightRate = booking.totalAmount
         let finalTotal = perNightRate
-        totalPriceLabel.text = String(format: "Total: %.2f", finalTotal)
-        bookedDateLabel.text = "Booked on \(booking.lastUpdatedUtc.toDayMonth())"
-        roomTypeLabel.text = "\(booking.roomType) • \(totalNights) Nights"
+        
+        totalPriceLabel.text = String(
+            format: isArabic ? "الإجمالي: %.2f" : "Total: %.2f",
+            finalTotal
+        )
+        
+        bookedDateLabel.text = isArabic
+        ? "تم الحجز في \(booking.lastUpdatedUtc.toDayMonth())"
+        : "Booked on \(booking.lastUpdatedUtc.toDayMonth())"
+        
+        roomTypeLabel.text = isArabic
+        ? "\(booking.roomType) • \(totalNights) ليالي"
+        : "\(booking.roomType) • \(totalNights) Nights"
+        
         switch booking.status.lowercased() {
+            
         case "pending":
             statusImgView.image = UIImage(systemName: "clock")
-            statusLabel.text = "Pending"
+            statusLabel.text = isArabic ? "قيد الانتظار" : "Pending"
             statusView.backgroundColor = .systemBlue
             cancelButton.isHidden = false
             
         case "cancelled":
             statusImgView.image = UIImage(systemName: "xmark.circle")
-            statusLabel.text = "Cancelled"
+            statusLabel.text = isArabic ? "ملغي" : "Cancelled"
             statusView.backgroundColor = .systemRed
             cancelButton.isHidden = true
             
         case "completed":
             statusImgView.image = UIImage(systemName: "checkmark.circle")
-            statusLabel.text = "Completed"
+            statusLabel.text = isArabic ? "مكتمل" : "Completed"
             statusView.backgroundColor = .systemGreen
             cancelButton.isHidden = true
             
@@ -105,6 +129,30 @@ class UpcomingBookingTVC: UITableViewCell {
             statusLabel.text = booking.status
             statusView.backgroundColor = .darkGray
             cancelButton.isHidden = true
+        }
+    }
+    
+    func setButtonTitles() {
+        
+        let lang = AppSettings.shared.selectedLanguage
+        let isArabic = lang == .arabic
+        
+        let buttonFont = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        
+        let buttons: [(UIButton, String, String)] = [
+            (detailsButton, "Details", "التفاصيل"),
+            (cancelButton, "Cancel", "إلغاء"),
+            (contactSupportButton, "Contact Support", "التواصل مع الدعم")
+        ]
+        
+        buttons.forEach { button, english, arabic in
+            
+            button.configuration?.title = isArabic ? arabic : english
+            
+            button.titleLabel?.font = buttonFont
+            
+            button.configuration?.preferredSymbolConfigurationForImage =
+            UIImage.SymbolConfiguration(scale: .medium)
         }
     }
     

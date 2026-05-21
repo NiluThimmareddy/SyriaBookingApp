@@ -82,48 +82,65 @@ class ArchiveTableViewCell: UITableViewCell {
     }
     
     func configure(booking: BookingHistoryModel) {
+        
         // Hide skeleton first
         hideSkeleton()
         
+        let lang = AppSettings.shared.selectedLanguage
+        let isArabic = lang == .arabic
+        
         // Set actual data
         hotelIdLabel.text = "\(booking.hotelName) ᐧ \(booking.roomType)"
+        
         datesLabel.text = "\(booking.checkInUtc.toDayMonthYear()) - \(booking.checkOutUtc.toDayMonthYear())"
+        
         featureDateLabel.text = booking.lastUpdatedUtc.toDayMonth()
         
         // Calculate total nights between check-in and check-out
         if let checkInDate = booking.checkInUtc.toDate(),
            let checkOutDate = booking.checkOutUtc.toDate() {
-//            let nights = Calendar.current.dateComponents([.day], from: checkInDate, to: checkOutDate).day ?? 0
             
             let calendar = Calendar.current
-
+            
             let start = calendar.startOfDay(for: checkInDate)
             let end = calendar.startOfDay(for: checkOutDate)
-
+            
             let rawNights = calendar.dateComponents([.day], from: start, to: end).day ?? 0
-
+            
             let finalNights = rawNights <= 0 ? 1 : rawNights
             
-            let totalPrice = (Double(booking.totalAmount)) * Double(finalNights)
-            totalAmountLabel.text = "Total: \(String(format: "%.2f", totalPrice))"
+            let totalPrice = Double(booking.totalAmount) * Double(finalNights)
+            
+            totalAmountLabel.text = String(
+                format: isArabic ? "الإجمالي: %.2f" : "Total: %.2f",
+                totalPrice
+            )
+            
         } else {
-            totalAmountLabel.text = "Total: \(booking.totalAmount)"
+            
+            totalAmountLabel.text = isArabic
+            ? "الإجمالي: \(booking.totalAmount)"
+            : "Total: \(booking.totalAmount)"
         }
-
+        
         // Set status style
         switch booking.status.lowercased() {
+            
         case "pending":
             imgView.image = UIImage(systemName: "clock")
-            pendingLabel.text = "Pending"
+            pendingLabel.text = isArabic ? "قيد الانتظار" : "Pending"
             pendingLabel.backgroundColor = .systemBlue
+            
         case "cancelled":
             imgView.image = UIImage(systemName: "xmark.circle")
-            pendingLabel.text = "Cancelled"
+            pendingLabel.text = isArabic ? "ملغي" : "Cancelled"
             pendingLabel.backgroundColor = .systemRed
+            
         case "completed":
             imgView.image = UIImage(systemName: "checkmark.circle")
-            pendingLabel.text = "Completed"
+            pendingLabel.text = isArabic ? "مكتمل" : "Completed"
             pendingLabel.backgroundColor = .systemGreen
+            
         default:
             imgView.image = UIImage(systemName: "house")
             pendingLabel.text = booking.status

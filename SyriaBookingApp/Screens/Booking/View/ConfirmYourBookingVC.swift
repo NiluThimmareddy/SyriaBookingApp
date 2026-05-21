@@ -215,7 +215,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
             confirmationVC.checkInDate = response.checkIn
             confirmationVC.checkOutDate = response.checkOut
             confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
-            confirmationVC.totalPrice = "\(response.totalAmount ?? 0.0)"
+            confirmationVC.totalPrice =    "\(netAmountAfterDiscount )"  //"\(response.totalAmount ?? 0.0)"
             confirmationVC.roomDetails = response.bookingDetails
             confirmationVC.selectedHotel = self.selectedHotel
             confirmationVC.selectedRoom = self.selectedRoom

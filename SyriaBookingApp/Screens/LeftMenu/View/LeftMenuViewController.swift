@@ -65,6 +65,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         super.viewWillAppear(animated)
         self.navigationItem.backButtonTitle = ""
         loadUserDetails()
+       
     }
     
     @IBAction func DismissButtonAction(_ sender: UIButton) {

@@ -1073,13 +1073,14 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             totalHeight += cellHeight
         }
         
-        availabilityRoomsViewHeightConstraint.constant = totalHeight + 100
+        availabilityRoomsViewHeightConstraint.constant = totalHeight + 140
         roomsCollectionViewHeightConstraint.constant = totalHeight
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
+    
     
     func calculateRoomCellHeight(for room: RoomElement) -> CGFloat {
         let baseHeight: CGFloat = 350

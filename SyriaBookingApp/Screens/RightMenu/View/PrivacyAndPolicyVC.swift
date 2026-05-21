@@ -95,6 +95,7 @@ class PrivacyAndPolicyVC: UIViewController {
     @IBOutlet weak var thankyouForVisitingLabel: UILabel!
     @IBOutlet weak var byUsingourWebsiteServicsLabel: UILabel!
     @IBOutlet weak var followLinksView: UIView!
+    @IBOutlet weak var atSyriaBookingSyLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +109,7 @@ class PrivacyAndPolicyVC: UIViewController {
         let semibold16Font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         
         if lang == .arabic {
+            atSyriaBookingSyLabel.text = "في SyriaBooking.sy، نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. يوضح بيان الخصوصية وملفات تعريف الارتباط هذا كيفية جمع معلوماتك الشخصية واستخدامها وتخزينها وحمايتها، بالإضافة إلى كيفية استخدامنا لملفات تعريف الارتباط (Cookies) عند زيارتك أو استخدامك لموقعنا الإلكتروني."
             lastUpdateLabel.text = "آخر تحديث: ١٧ مارس ٢٠٢٥"
             whatInformationWeCollectLabel.text = "ما هي المعلومات التي نجمعها"
             whenYouUseSyriaBookingLabel.text = "عند استخدامك لـ SyriaBooking.sy، قد نجمع الأنواع التالية من المعلومات:"
@@ -188,7 +190,7 @@ class PrivacyAndPolicyVC: UIViewController {
             
         } else {
             lastUpdateLabel.text = "Last update: Mar 17, 2025"
-            
+            atSyriaBookingSyLabel.text = "At SyriaBooking.sy, we respect your privacy and are committed to protecting your personal data. This Privacy & Cookie Statement explains how we collect, use, store, and protect your personal information, and how we use cookies when you visit or use our website."
             whatInformationWeCollectLabel.text = "What Information We Collect"
             whenYouUseSyriaBookingLabel.text = "When you use SyriaBooking.sy, we may collect the following types of information:"
             aPersonalDataLabel.text = "a. Personal Data"
