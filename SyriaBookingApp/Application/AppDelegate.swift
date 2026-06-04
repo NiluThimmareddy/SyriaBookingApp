@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import FirebaseCore
 import Clarity
-@main
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -18,8 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let clarityConfig = ClarityConfig(projectId: "v8ilml24s5")
         ClaritySDK.initialize(config: clarityConfig)
         
+       
         return true
     }
+    
+   
 
     // MARK: UISceneSession Lifecycle
 
@@ -86,5 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    
 }
+
+
 

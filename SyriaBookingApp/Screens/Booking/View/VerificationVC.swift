@@ -222,6 +222,7 @@ extension VerificationVC {
     }
     
     func performNavigationAfterVerification() {
+        SessionManager.shared.startSessionTimer()
         NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
         self.dismiss(animated: true)
     }

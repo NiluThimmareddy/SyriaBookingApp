@@ -13,16 +13,56 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var hasShownAlert = false
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        //        guard let windowScene = (scene as? UIWindowScene) else { return }
-        //        window = UIWindow(windowScene: windowScene)
-        //           window?.rootViewController = CustomTabBarController()// or your initial VC
-        //           window?.makeKeyAndVisible()
-        //
         
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(logoutUser), name: .sessionExpired, object: nil)
+    }
+    
+    @objc func logoutUser(){
+        SessionManager.shared.stopTimer()
+        UserSessionManager.clearUser()
+        NotificationCenter.default.post(
+            name: .didLogoutSuccessfully,
+            object: nil
+        )
+        navigateToHomeTab()
+    }    
+    
+    func navigateToHomeTab() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+        
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+       guard let tabBarVC = storyboard.instantiateViewController(
+            withIdentifier: "CustomTabBarController"
+       ) as? CustomTabBarController else { return }
+        
+        tabBarVC.selectedIndex = 0
+        
+        UIView.transition(with: window,
+                          duration: 0.4,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            window.rootViewController = tabBarVC
+        },
+                          completion: nil)
+        
+        window.makeKeyAndVisible()
+    }
+    
+    func MoveToHomeTab() {
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+            return
+        }
+        
+        window.rootViewController?.dismiss(animated: false) {
+            if let tabBarVC = window.rootViewController as? UITabBarController {
+                tabBarVC.selectedIndex = 0
+            }
+        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

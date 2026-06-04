@@ -20,7 +20,6 @@ class EmailIDView: UIView, MFMailComposeViewControllerDelegate {
     
     @objc func updateTexts() {
         let lang = AppSettings.shared.selectedLanguage
-        
         let buttonFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
         
         if lang == .english {
@@ -44,8 +43,7 @@ class EmailIDView: UIView, MFMailComposeViewControllerDelegate {
                     .font: buttonFont,
                     .foregroundColor: emailUsButton.titleColor(for: .normal) ?? .systemBlue
                 ]
-            )
-            
+            )            
             emailUsButton.setAttributedTitle(attributedTitle, for: .normal)
         }
     }

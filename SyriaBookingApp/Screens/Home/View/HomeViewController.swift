@@ -105,6 +105,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
     var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"]
+    var sliderImagesAr = ["ic_B1", "ic_B2_ar", "ic_B3_ar", "ic_B4_ar","ic_B5_ar"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
@@ -681,7 +682,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     cell.loginButton.isHidden = true
                 }
             }
-            cell.imageView.image = UIImage(named: sliderImages[indexPath.row])
+            
+            if AppSettings.shared.selectedLanguage == .english{
+                cell.imageView.image = UIImage(named: sliderImages[indexPath.row])
+            }else{
+                cell.imageView.image = UIImage(named: sliderImagesAr[indexPath.row])
+            }
             
             cell.loginClicked = {
                 let storyboard = UIStoryboard(name: "Booking", bundle: nil)

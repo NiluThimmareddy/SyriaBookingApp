@@ -1334,14 +1334,35 @@
                                             </mask>
                                         </variation>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4g-V2-EQw">
+                                        <rect key="frame" x="293" y="550" width="80" height="80"/>
+                                        <color key="backgroundColor" red="0.25490196079999999" green="0.50588235290000005" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="80" id="7sC-V5-3eX"/>
+                                            <constraint firstAttribute="width" constant="80" id="KBt-Fv-uvx"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <imageReference key="image" image="ellipsis.bubble.fill" catalog="system" symbolScale="large"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="heavy"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="40"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="I4t-SA-DV4" firstAttribute="height" secondItem="fAq-aW-Nlk" secondAttribute="height" multiplier="4" priority="250" id="AOa-Sy-A4A"/>
                                     <constraint firstItem="I4t-SA-DV4" firstAttribute="top" secondItem="fAq-aW-Nlk" secondAttribute="top" id="AdE-tS-bNa"/>
                                     <constraint firstItem="I4t-SA-DV4" firstAttribute="width" secondItem="fAq-aW-Nlk" secondAttribute="width" id="D7j-Ez-mzO"/>
                                     <constraint firstAttribute="bottom" secondItem="I4t-SA-DV4" secondAttribute="bottom" id="SqA-UI-sJx"/>
+                                    <constraint firstItem="lUW-zD-Rhq" firstAttribute="trailing" secondItem="g4g-V2-EQw" secondAttribute="trailing" constant="20" id="TXb-tC-ZcR"/>
                                     <constraint firstItem="I4t-SA-DV4" firstAttribute="leading" secondItem="fAq-aW-Nlk" secondAttribute="leading" id="Ue8-7o-l9k"/>
                                     <constraint firstAttribute="trailing" secondItem="I4t-SA-DV4" secondAttribute="trailing" id="pTY-c6-N65"/>
+                                    <constraint firstItem="lUW-zD-Rhq" firstAttribute="bottom" secondItem="g4g-V2-EQw" secondAttribute="bottom" constant="50" id="pp5-En-MwA"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="Kyv-WD-yzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="lUW-zD-Rhq"/>
@@ -6062,6 +6083,7 @@ And Try Again.</string>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="document.badge.plus.fill" catalog="system" width="120" height="128"/>
         <image name="earth" width="24" height="24"/>
+        <image name="ellipsis.bubble.fill" catalog="system" width="128" height="110"/>
         <image name="envelope" catalog="system" width="128" height="85"/>
         <image name="exclamationmark.triangle" catalog="system" width="128" height="109"/>
         <image name="house" catalog="system" width="128" height="104"/>
