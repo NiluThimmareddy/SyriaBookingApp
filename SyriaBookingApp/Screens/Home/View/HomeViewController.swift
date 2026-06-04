@@ -105,7 +105,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
     var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"]
-    var sliderImagesAr = ["ic_B1", "ic_B2_ar", "ic_B3_ar", "ic_B4_ar","ic_B5_ar"]
+    var sliderImagesAr =   ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"] // ["ic_B1", "ic_B2_ar", "ic_B3_ar", "ic_B4_ar","ic_B5_ar"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
