@@ -47,15 +47,15 @@ extension UIViewController{
 
 extension Error {
     var userMessage: String {
-        if let apiError = self as? APIError {
+        if let apiError = self as? NetworkError {
             switch apiError {
             case .userNotFound:
-                return "User not found"
+                return "User not found123"
             case .invalidURL:
                 return "Something went wrong. Please try again."
             case .noData:
                 return "No data available."
-            case .serverError:
+            case .serverError(_, _):
                 return "Server error. Please try later."
             case .invalidResponse:
                 return "Invalid response from server."
@@ -63,6 +63,14 @@ extension Error {
                 return "Something went wrong. Please try again."
             case .EnterValidData:
                 return "Enter valid data"
+            case .sessionExpired:
+                return "Session expired please login again"
+                
+        
+            case .unauthorized:
+                return "User not found   ***"
+            case .custom(let message):
+                return message
             }
         }
         return "Something went wrong. Please try again."

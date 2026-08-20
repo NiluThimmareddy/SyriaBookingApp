@@ -1334,24 +1334,28 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4g-V2-EQw">
-                                        <rect key="frame" x="293" y="550" width="80" height="80"/>
-                                        <color key="backgroundColor" red="0.25490196079999999" green="0.50588235290000005" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g4g-V2-EQw">
+                                        <rect key="frame" x="323" y="530" width="50" height="50"/>
+                                        <color key="backgroundColor" red="0.25490196079999999" green="0.50588235290000005" blue="0.25882352939999997" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="80" id="7sC-V5-3eX"/>
-                                            <constraint firstAttribute="width" constant="80" id="KBt-Fv-uvx"/>
+                                            <constraint firstAttribute="width" constant="50" id="KBt-Fv-uvx"/>
+                                            <constraint firstAttribute="width" secondItem="g4g-V2-EQw" secondAttribute="height" multiplier="1:1" id="LfS-j9-d6f"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain">
-                                            <imageReference key="image" image="ellipsis.bubble.fill" catalog="system" symbolScale="large"/>
-                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="heavy"/>
+                                            <imageReference key="image" image="ellipsis.bubble.fill" catalog="system" symbolScale="medium"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="medium"/>
+                                            <color key="baseForegroundColor" systemColor="systemBackgroundColor"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="40"/>
+                                                <real key="value" value="25"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="ChatButton:" destination="kUU-0B-zZQ" eventType="touchUpInside" id="C9T-rA-eCW"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -1362,7 +1366,7 @@
                                     <constraint firstItem="lUW-zD-Rhq" firstAttribute="trailing" secondItem="g4g-V2-EQw" secondAttribute="trailing" constant="20" id="TXb-tC-ZcR"/>
                                     <constraint firstItem="I4t-SA-DV4" firstAttribute="leading" secondItem="fAq-aW-Nlk" secondAttribute="leading" id="Ue8-7o-l9k"/>
                                     <constraint firstAttribute="trailing" secondItem="I4t-SA-DV4" secondAttribute="trailing" id="pTY-c6-N65"/>
-                                    <constraint firstItem="lUW-zD-Rhq" firstAttribute="bottom" secondItem="g4g-V2-EQw" secondAttribute="bottom" constant="50" id="pp5-En-MwA"/>
+                                    <constraint firstItem="lUW-zD-Rhq" firstAttribute="bottom" secondItem="g4g-V2-EQw" secondAttribute="bottom" constant="100" id="pp5-En-MwA"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="Kyv-WD-yzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="lUW-zD-Rhq"/>
@@ -2132,7 +2136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="69m-d5-vuE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="3437"/>
+            <point key="canvasLocation" x="782" y="2779"/>
         </scene>
         <!--Custom Tab Bar Controller-->
         <scene sceneID="nSh-Ln-Nai">
@@ -2778,10 +2782,10 @@
                                                 <rect key="frame" x="20" y="361.66666666666669" width="353" height="120"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z55-LY-lJB">
-                                                        <rect key="frame" x="10" y="10" width="155" height="25"/>
+                                                        <rect key="frame" x="10" y="10" width="165" height="25"/>
                                                         <color key="backgroundColor" red="1" green="0.79215686269999996" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="155" id="B1a-yh-Znv">
+                                                            <constraint firstAttribute="width" constant="165" id="B1a-yh-Znv">
                                                                 <variation key="heightClass=regular-widthClass=regular" constant="220"/>
                                                             </constraint>
                                                             <constraint firstAttribute="height" constant="25" id="tYH-uh-cuC">
@@ -2792,7 +2796,7 @@
                                                         <color key="tintColor" systemColor="labelColor"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" title="Explring the area"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="Explring the area" imagePadding="10">
+                                                        <buttonConfiguration key="configuration" style="plain" title="Exploring the area" imagePadding="10">
                                                             <imageReference key="image" image="pin.fill" catalog="system" symbolScale="small" renderingMode="hierarchical-single">
                                                                 <hierarchicalColors>
                                                                     <color systemColor="systemRedColor"/>

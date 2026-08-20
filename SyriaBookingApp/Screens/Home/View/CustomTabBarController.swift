@@ -171,7 +171,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
 
 extension CustomTabBarController: YourNotificationVCDelegate {
     func yourNotificationDidRequestTabSwitch(to index: Int) {
-        print("Delegate called, switching to tab \(index)")
         self.selectedIndex = index
         updateTabBarSelectionAppearance()
     }

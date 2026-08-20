@@ -145,6 +145,7 @@ extension ViewBookingConfirmationVC {
         
         viewModel.getBookingHistory(userId: user.id, BookingId: bookingId) { response in
             self.bookingHistoryData = response
+            
             self.hotelViewModel.onError = { error in
                 DispatchQueue.main.async {
                     self.hideLoader()

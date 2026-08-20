@@ -161,9 +161,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
                 .font: boldFont,
                 .foregroundColor: UIColor.black
             ], range: nameRange)
-            print("✅ Found name range: \(nameRange)")
-        } else {
-            print("❌ Could not find name '\(name)' in text")
+            
         }
         
         userBookingMessageLabel.attributedText = attributedString
@@ -306,14 +304,10 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
         var checkOutDate: Date?
         
         checkInDate = iso8601Formatter.date(from: checkIn)
-        if checkInDate != nil {
-            print("✅ Parsed checkIn with ISO8601 formatter")
-        }
+      
         
         checkOutDate = iso8601Formatter.date(from: checkOut)
-        if checkOutDate != nil {
-            print("✅ Parsed checkOut with ISO8601 formatter")
-        }
+ 
         
         let possibleFormats = [
             "yyyy-MM-dd'T'HH:mm:ssZ",
@@ -327,7 +321,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
                 inputFormatter.dateFormat = format
                 checkInDate = inputFormatter.date(from: checkIn)
                 if checkInDate != nil {
-                    print("✅ Parsed checkIn with format: \(format)")
+                  
                     break
                 }
             }
@@ -338,7 +332,7 @@ class BookingConfirmationVC: BaseViewController, UITextViewDelegate {
                 inputFormatter.dateFormat = format
                 checkOutDate = inputFormatter.date(from: checkOut)
                 if checkOutDate != nil {
-                    print("✅ Parsed checkOut with format: \(format)")
+                   
                     break
                 }
             }

@@ -2,40 +2,25 @@
 //  SessionManager.swift
 //  SyriaBookingApp
 //
-//  Created by Toqsoft on 04/06/26.
+//  Created by Toqsoft on 17/07/26.
 //
-
 import Foundation
-final class SessionManager{
+
+@MainActor
+final class SessionManager: ObservableObject {
     static let shared = SessionManager()
-    private init() {}
-    private var logoutTimer: Timer?
+    @Published private(set) var isAuthenticated = false
+    @Published var sessionExpiredMessage: String?
     
-    //15 minutes
-    private let timeout: TimeInterval = 15 * 60
-    
-    func startSessionTimer(){
-        resetTimer()
+    func markAuthenticated() {
+        isAuthenticated = true
+        sessionExpiredMessage = nil
     }
-    
-    func resetTimer(){
-        logoutTimer?.invalidate()
-        
-        logoutTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false) { _ in
-            DispatchQueue.main.async{
-                NotificationCenter.default.post(name: .sessionExpired, object: nil)
-            }
-        }
+    func forceLogout() {
+        isAuthenticated = false
+        sessionExpiredMessage =
+        "Your session has expired. Please log in again."
     }
-   
-    func stopTimer(){
-        logoutTimer?.invalidate()
-        logoutTimer = nil
-    }
-    
-    
 }
 
-extension Notification.Name{
-    static let sessionExpired = Notification.Name("sessionExpired")
-}
+

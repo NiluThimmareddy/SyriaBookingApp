@@ -67,6 +67,7 @@ class RegisterMobileNumberVC : BaseViewController {
     var selectedCountryName : String?
     var selectedCountryFlag : String?
     var viewModel = BookingViewModel()
+    var loginViewModel = LoginViewModel(apicalClient: APIClient.shared)
     var registerUserDetails : BookingModel?
     var countryCodeList : [CountryModel] = []
     var maxMobileNumberLength: Int = 10
@@ -78,6 +79,8 @@ class RegisterMobileNumberVC : BaseViewController {
     var resendTimer: Timer?
     var totalTime = 300
     var resendTap: UITapGestureRecognizer?
+    
+    //    private lazy var loginViewModel = LoginViewModel(apiClient: )
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -251,6 +254,7 @@ class RegisterMobileNumberVC : BaseViewController {
     }
     
     @IBAction func continueButtonAction(_ sender: Any) {
+        self.showLoader()
         let lang = AppSettings.shared.selectedLanguage
         let enterMobileMessage = lang == .arabic ? "الرجاء إدخال رقم الهاتف المحمول." : "Please enter a mobile number."
         let selectCountryMessage = lang == .arabic ? "⚠️ الرجاء اختيار البلد." : "⚠️ Please select a country."
@@ -258,89 +262,68 @@ class RegisterMobileNumberVC : BaseViewController {
         let validMobileMessage = lang == .arabic ? "الرجاء إدخال رقم هاتف محمول صحيح. يجب أن يكون \(maxMobileNumberLength) أرقام." : "Please enter a valid mobile number. It should be \(maxMobileNumberLength) digits long."
         let validForCountryMessage = lang == .arabic ? "⚠️ الرجاء إدخال رقم هاتف محمول صحيح لـ \(selectedCountryName ?? "")." : "⚠️ Please enter a valid mobile number for \(selectedCountryName ?? "")."
         
+        guard let countryCode = countryCode else { return }
         guard let mobileNumber = enterMobileNumberTF.text, !mobileNumber.isEmpty else {
             showAlert(enterMobileMessage)
             return
         }
         
-        if mobileNumber == "90000000"{
-            UserSessionManager.saveUser(BookingModel(id: "UP0000", name: "Testing Demo User", mobile: "90000000", address: "address testing", gender: "", email: "testingDemo@gmail.com", country: "Syria", dob: ""))
-            
-            self.dismiss(animated: true) {
-                let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                    tabBarVC.modalPresentationStyle = .fullScreen
-                    UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                    tabBarVC.presentVerificationVC(otpResponse: nil , mobileNumber:"90000000" , guestName:"Testing Demo User", guestEmail: "testingDemo@gmail.com" ,isNewUser:false)
-                }
-            }
-        } else {
-            // Ensure country selected
-            guard let country = selectedCountryName else {
-                showAlert(selectCountryMessage)
-                return
-            }
-            
-            guard let regionCode = countryCodeList.first(where: { $0.name == country })?.country_code else {
-                showAlert(regionNotFoundMessage)
-                return
-            }
-            
-            guard let phonecode = countryCodeList.first(where: {$0.name == country})?.code  else { return }
-            
-            if mobileNumber.count != maxMobileNumberLength {
-                showAlert(validMobileMessage)
-                return
-            }
-            
-            if !validateMobileNumber(mobileNumber, countryCode: regionCode) {
-                showAlert(validForCountryMessage)
-                return
-            }
-            
-            showLoader()
-            
-            countryCode = String(phonecode.dropFirst())
-            guard let countryCode = countryCode else { return }
-            let mobileNumberwithcode = "\(countryCode)\(mobileNumber)"
-            
-            getRegisteredUserDetails(for: mobileNumberwithcode, completion: { [weak self] user in
-                guard let self = self else { return }
-                if let userDetails = user {
-                    
-                    self.getOTP(mobilenumebr: userDetails.mobile, completion:  { otpResponse in
-                        self.dismiss(animated: true) {
-                            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                                tabBarVC.modalPresentationStyle = .fullScreen
-                                UIApplication.shared.windows.first?.rootViewController = tabBarVC
-                                tabBarVC.presentVerificationVC(otpResponse: otpResponse, mobileNumber: userDetails.mobile, guestName: userDetails.name, guestEmail: userDetails.email, isNewUser: false)
-                            }
-                        }
-                    })
-                    self.reloadScreenAfterDismiss = {
-                        self.dismiss(animated: true) {
-                            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-                            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
-                                tabBarVC.modalPresentationStyle = .fullScreen
-                                self.present(tabBarVC, animated: true)
+        let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
+        
+        Task {
+            do {
+                let response = try await loginViewModel.checkMobile(mobileNumberwithCode)
+                
+                if response.data.exists {
+                    let result = try await loginViewModel.sendOtp(mobileNumberwithCode)
+                    DispatchQueue.main.async {
+                        self.hideLoader()
+                        
+                        if let result = result.data {
+                            self.dismiss(animated: true) {
+                                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                                if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                                    
+                                    tabBarVC.modalPresentationStyle = .fullScreen
+                                    UIApplication.shared.windows.first?.rootViewController = tabBarVC
+                                    
+                                    tabBarVC.presentOTPScreen(
+                                        mobile: mobileNumberwithCode,
+                                        email: result.to
+                                        
+                                    )
+                                }
                             }
                         }
                     }
                 } else {
-                    self.hideLoader()
-                    self.bottomView.isHidden = false
-                    EmailView.isHidden = false
-                    otpView.isHidden = true
-                    UserInformationView.isHidden = true
-                    registerButton.isHidden = true
-                    self.sendCodeButton.setTitle(lang == .arabic ? "إرسال الرمز" : "Send Code", for: .normal)
+                    
+                    DispatchQueue.main.async {
+                        self.hideLoader()
+                        self.bottomView.isHidden = false
+                        self.EmailView.isHidden = false
+                        self.otpView.isHidden = true
+                        self.UserInformationView.isHidden = true
+                        self.registerButton.isHidden = true
+                        self.sendCodeButton.setTitle(
+                            lang == .arabic ? "إرسال الرمز" : "Send Code",
+                            for: .normal
+                        )
+                    }
                 }
-            })
+                
+            } catch {
+                DispatchQueue.main.async {
+                    self.hideLoader()
+                    print(error)
+                    self.showAlert(error.localizedDescription)
+                }
+            }
         }
     }
     
     @IBAction func sendCodeButtonAction(_ sender: UIButton) {
+        
         let lang = AppSettings.shared.selectedLanguage
         let enterEmailMessage = lang == .arabic ? "الرجاء إدخال البريد الإلكتروني" : "Please enter email"
         let validEmailMessage = lang == .arabic ? "الرجاء إدخال بريد إلكتروني صحيح" : "Please enter a valid email address"
@@ -352,20 +335,32 @@ class RegisterMobileNumberVC : BaseViewController {
         }
         
         if isValidEmail(email) {
-            print("✅ Valid Email")
+            self.showLoader()
             enterEmailTF.layer.borderColor = UIColor.systemGreen.cgColor
             enterEmailTF.layer.borderWidth = 0.5
-            
-            self.getEmailOTP(email: email) { otpResponse in
-                if lang == .arabic {
-                    self.otpMessageLable.text = "لقد أرسلنا رمز التحقق إلى \(email)"
-                } else {
-                    self.otpMessageLable.text = "We sent verification code to \(email)"
+            Task{
+                do{
+                    let response = try await loginViewModel.sendRegistrationEmailOTP(email: email)
+                    
+                    if response.data != nil {
+                        self.hideLoader()
+                        if lang == .arabic {
+                            self.otpMessageLable.text = "لقد أرسلنا رمز التحقق إلى \(email)"
+                        } else {
+                            self.otpMessageLable.text = "We sent verification code to \(email)"
+                        }
+                        self.changeLabelStyle(Email: false)
+                        self.otpView.isHidden = false
+                        self.startResendTimer()
+                    }
+                }catch{
+                    DispatchQueue.main.async {
+                        self.hideLoader()
+                        self.showAlert(error.localizedDescription)
+                    }
                 }
-                self.changeLabelStyle(Email: false)
-                self.otpView.isHidden = false
-                self.startResendTimer()
             }
+            
         } else {
             enterEmailTF.layer.borderColor = UIColor.red.cgColor
             enterEmailTF.layer.borderWidth = 0.5
@@ -425,24 +420,29 @@ class RegisterMobileNumberVC : BaseViewController {
             return
         }
         
-        self.verifyEmailOTPCode(email: email, otp: otp) { [weak self] UserId in
-            guard let self = self, let UserId = UserId else { return }
-            if lang == .arabic {
-                self.otpMessageLable.text = "تم التحقق من البريد الإلكتروني. يمكنك الآن إكمال النموذج."
-                self.sendCodeButton.setTitle("تم التحقق من البريد الإلكتروني", for: .normal)
-            } else {
-                self.otpMessageLable.text = "Email verified. You can complete the form now."
-                self.sendCodeButton.setTitle("Email Verified", for: .normal)
+        Task{
+            let response = try await loginViewModel.verifyRegistrationEmailOTP(email: email, otp: otp)
+            
+            if let response = response.data {
+                if response.verified {
+                    if lang == .arabic {
+                        self.otpMessageLable.text = "تم التحقق من البريد الإلكتروني. يمكنك الآن إكمال النموذج."
+                        self.sendCodeButton.setTitle("تم التحقق من البريد الإلكتروني", for: .normal)
+                    } else {
+                        self.otpMessageLable.text = "Email verified. You can complete the form now."
+                        self.sendCodeButton.setTitle("Email Verified", for: .normal)
+                    }
+                    self.stopResendTimer()
+                    self.changeLabelStyle(Email: false)
+                    self.UserInformationView.isHidden = false
+                    self.registerButton.isHidden = false
+                    self.otpView.isHidden = true
+                    self.otpViewHeightConstraint.constant = 0
+                    self.userInformationTopConstraint.constant = 0
+                    self.enterEmailTF.isEnabled = false
+                    self.sendCodeButton.isEnabled = false
+                }
             }
-            self.stopResendTimer()
-            self.changeLabelStyle(Email: false)
-            self.UserInformationView.isHidden = false
-            self.registerButton.isHidden = false
-            self.otpView.isHidden = true
-            self.otpViewHeightConstraint.constant = 0
-            self.userInformationTopConstraint.constant = 0
-            self.enterEmailTF.isEnabled = false
-            self.sendCodeButton.isEnabled = false
         }
     }
     
@@ -482,16 +482,79 @@ class RegisterMobileNumberVC : BaseViewController {
         let mobileNumberwithCode = "\(countryCode)\(mobileNumber)"
         
         viewModel.onSuccess = { [weak self] response in
+            
             guard let self = self else { return }
-            UserSessionManager.saveUser(response)
             
             DispatchQueue.main.async {
+                
+                let email = self.enterEmailTF.text ?? ""
+                let verifyEmailMessage = lang == .arabic
+                ? """
+                تم إنشاء حسابك بنجاح.
+                
+                تم إرسال رمز التحقق (OTP) إلى
+                
+                \(email)
+                
+                يرجى التحقق من بريدك الإلكتروني للمتابعة.
+                """
+                : """
+                Your account has been registered successfully.
+                
+                An OTP has been sent to
+                
+                \(email)
+                
+                Please verify your email to continue.
+                """
+                
                 self.showAlert(
                     title: successTitle,
-                    message: successMessage,
+                    message: verifyEmailMessage,
                     type: .success,
+                    OkButtonTitle: "Continue",
                     onOK: {
-                        self.goToHomeTab()
+                        
+                        Task {
+                            
+                            do {
+                                
+                                let response = try await self.loginViewModel.senEmailOtp(
+                                    email: email
+                                )
+                                
+                                if let data = response.data {
+                                    
+                                    await MainActor.run {
+                                        
+                                        self.dismiss(animated: true) {
+                                            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                                            if let tabBarVC = storyboard.instantiateViewController(withIdentifier: "CustomTabBarController") as? UITabBarController {
+                                                
+                                                tabBarVC.modalPresentationStyle = .fullScreen
+                                                UIApplication.shared.windows.first?.rootViewController = tabBarVC
+                                                
+                                                tabBarVC.presentEmailVerificationScreen( email: data.to)
+                                            }
+                                        }
+                                        
+                                    }
+                                }else{
+                                    self.showAlert(response.message)
+                                }
+                                
+                            } catch {
+                                
+                                await MainActor.run {
+                                    
+                                    self.showAlert(
+                                        title: "Error",
+                                        message: error.localizedDescription,
+                                        type: .error
+                                    )
+                                }
+                            }
+                        }
                     }
                 )
             }
@@ -636,26 +699,50 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         let lang = AppSettings.shared.selectedLanguage
         let errorMessage = lang == .arabic ? "حدث خطأ ما: " : "Something went wrong: "
         
-        viewModel.onSuccess = {  response in
-            DispatchQueue.main.async{
-                completion(response)
+        Task{
+            do{
+                let user = try await viewModel.fetchUserByMobile(number)
+                
+                await MainActor.run {
+                    completion(user.data)
+                }
+            }
+            catch let error as NetworkError {
+                await MainActor.run {
+                    if error.userMessage.lowercased() == "user not found"{
+                        self.bottomView.isHidden = false
+                    }else{
+                        self.showAlert("\(errorMessage) \(error.userMessage)")
+                    }
+                    
+                    completion(nil)
+                }
+                
+            } catch {
+                await MainActor.run {
+                    self.showAlert(error.localizedDescription)
+                    completion(nil)
+                }
             }
         }
         
-        viewModel.onError = { error in
-            if error.userMessage.lowercased() == "user not found" {
-                DispatchQueue.main.async {
-                    self.bottomView.isHidden = false
-                    completion(nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.showAlert("\(errorMessage)\(error)")
-                }
-            }
-        }
-        viewModel.FetchUserData(mobile: number)
+        
     }
+    //    
+    //    func checkMobileExistence(mobilenumebr:String, completion: @escaping (Bool) -> Void){
+    //        let lang = AppSettings.shared.selectedLanguage
+    //        self.showLoader()
+    //        viewModel.onSuccess = { response in
+    //            self.hideLoader()
+    //            completion(true)
+    //        }
+    //        
+    //        viewModel.onError = { error in
+    //            self.hideLoader()
+    //        }
+    //        
+    //    
+    //    }
     
     func getOTP(mobilenumebr:String, completion: @escaping (OTPResponseModel) -> Void){
         let lang = AppSettings.shared.selectedLanguage
@@ -927,8 +1014,6 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
         
         // Extract country code (remove + sign)
         countryCode = String(country.code.dropFirst())
-        
-        print("Selected country: \(country.name), code: \(country.code), max length: \(country.max_length)")
     }
     
     func updateMobileNumberCountryCodeFont() {
@@ -965,11 +1050,9 @@ extension RegisterMobileNumberVC : SelectCountryDelegate {
                 let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
                 let indianRule = predicate.evaluate(with: cleanNumber)
                 
-                print("🇮🇳 Indian Rule: \(indianRule)")
                 return isValid && isPossible && indianRule
             }
             
-            print("✅ Parsed: \(parsedNumber), valid: \(isValid), possible: \(isPossible)")
             return isValid && isPossible
         } catch let error as NSError {
 #if DEBUG
@@ -1009,4 +1092,32 @@ extension UITabBarController {
             self.present(verificationVC, animated: true)
         }
     }
+    
+    func presentOTPScreen(mobile: String,email:String){
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        if let verificationVC = storyboard.instantiateViewController(withIdentifier: "VerificationVC") as? VerificationVC {
+            verificationVC.mobileNumber = mobile
+            verificationVC.guestEmail = email
+            verificationVC.flow = .mobileLogin
+            verificationVC.modalPresentationStyle = .overFullScreen
+            self.present(verificationVC, animated: true)
+        }
+    }
+    
+    func presentEmailVerificationScreen(email: String) {
+        let storyboard = UIStoryboard(name: "Booking", bundle: nil)
+        
+        guard let verificationVC = storyboard.instantiateViewController(
+            withIdentifier: "VerificationVC"
+        ) as? VerificationVC else {
+            return
+        }
+        
+        verificationVC.guestEmail = email
+        verificationVC.flow = .emailLogin
+        verificationVC.modalPresentationStyle = .overFullScreen
+        
+        self.present(verificationVC, animated: true)
+    }
+    
 }

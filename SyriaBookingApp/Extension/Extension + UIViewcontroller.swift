@@ -76,18 +76,15 @@ extension UIViewController {
         navigationItem.titleView = containerView
         
         var rightButtons: [UIBarButtonItem] = []
-//        if self is HomeViewController {
-//            let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"),
-//                                               style: .plain,
-//                                               target: self,
-//                                               action: #selector(didTapSearch))
-//            rightButtons.append(searchButton)
-//        }
         
         let badgeButton = BadgeButton(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
         badgeButton.setImage(UIImage(systemName: "bell.fill"), for: .normal)
         badgeButton.addTarget(self, action: #selector(didTapNotification), for: .touchUpInside)
         let notificationButton = UIBarButtonItem(customView: badgeButton)
+        
+        badgeButton.onBadgeTap = { [ weak self] in
+            self?.toggleNotification()
+        }
         
         
         let menuImage = UIImage(systemName: "ellipsis")?.rotate(radians: .pi / 2)
@@ -96,20 +93,19 @@ extension UIViewController {
                                          target: self,
                                          action: #selector(didTapMenu(_:)))
         
-        if let user = UserSessionManager.getUser() {
-            viewModel.onCountSuccess = { data in
-                print("Count: \(data.count)")
-                badgeButton.badge = data.count
+        if UserSessionManager.getUser() != nil  {
+            Task {  @MainActor in
+                do {
+                        let data = try await viewModel.fetchNotificationCount()
+                        badgeButton.badge = data.count
+                    
+                } catch {
+#if DEBUG
+                    print(error)
+#endif
+                }
             }
             
-            viewModel.onError = { error in
-                #if DEBUG
-                print("Notification count error")
-                #endif
-                print(error)
-            }
-            
-            viewModel.fetchNotificationCount(userId: user.id)
             rightButtons.insert(notificationButton, at: 0)
             rightButtons.insert(menuButton, at: 0)
             navigationItem.rightBarButtonItems = rightButtons
@@ -123,25 +119,41 @@ extension UIViewController {
     }
     
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
+        toggleNotification()
+    }
+
+
+    private func toggleNotification() {
+
         if let existingVC = UIViewController.notificationVCReference {
+
             existingVC.dismiss(animated: true) {
                 UIViewController.notificationVCReference = nil
             }
+
         } else {
+
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            guard let notificationVC = storyboard.instantiateViewController(withIdentifier: "YourNotificationVC") as? YourNotificationVC else {
+
+            guard let notificationVC = storyboard.instantiateViewController(
+                withIdentifier: "YourNotificationVC"
+            ) as? YourNotificationVC else {
                 return
             }
+
             notificationVC.modalPresentationStyle = .overCurrentContext
             notificationVC.modalTransitionStyle = .crossDissolve
-            
+
             if let tabBarController = self.tabBarController as? YourNotificationVCDelegate {
                 notificationVC.delegate = tabBarController
+
             } else if let delegateSelf = self as? YourNotificationVCDelegate {
                 notificationVC.delegate = delegateSelf
+
             } else {
                 print("WARNING: No delegate set for YourNotificationVC")
             }
+
             present(notificationVC, animated: true) {
                 UIViewController.notificationVCReference = notificationVC
             }
@@ -475,6 +487,14 @@ extension UIViewController {
     func getHotelImage(for history: BookingHistoryModel) -> String? {
         let hotelDict = Dictionary(uniqueKeysWithValues: HotelDataMaganer.shared.allHotels.map { ($0.id, $0) })
         return hotelDict[history.hotelId]?.coverImageURL
+    }
+    
+    func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE d MMM"
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone.current
+        return formatter.string(from: date)
     }
     
 }

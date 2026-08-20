@@ -85,7 +85,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
         formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "EEE dd MMM"
+        formatter.dateFormat = "EEE d MMM"
 
         if let checkIn = selectedCheckInDate,
            let checkOut = selectedCheckOutDate {
@@ -176,6 +176,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
             return
         }
         
+       
         guard let  checkInDate = selectedCheckInDate else {
             showAlert(selectCheckInMessage)
             return
@@ -183,6 +184,20 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         
         guard let checkOutDate = selectedCheckOutDate else {
             showAlert(selectCheckOutMessage)
+            return
+        }
+        
+        let calendar = Calendar.current
+
+        let checkInDay = calendar.startOfDay(for: checkInDate)
+        let checkOutDay = calendar.startOfDay(for: checkOutDate)
+
+        guard checkOutDay >= checkInDay else {
+            let message = AppSettings.shared.selectedLanguage == .arabic
+                ? "يجب أن يكون تاريخ المغادرة في نفس تاريخ الوصول أو بعده."
+                : "Check-out date must be the same as or after the check-in date."
+
+            showAlert(message)
             return
         }
         
@@ -200,46 +215,52 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         let checkInISO = iso8601String(from: checkInDate)
         let checkOutISO = iso8601String(from: checkOutDate)
         
-        viewModel.onPostBookingSuccess = { [weak self] response in
-            guard let self = self else { return }
-            self.hideLoader()
-            checkInTF.text = ""
-            checkOutTF.text = ""
-            selectedCheckInDate =  nil
-            selectedCheckOutDate = nil
-            guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
-            
-            confirmationVC.guestName = response.guestName
-            confirmationVC.guestEmail = response.guestEmail
-            confirmationVC.guestPhone = response.guestPhone
-            confirmationVC.checkInDate = response.checkIn
-            confirmationVC.checkOutDate = response.checkOut
-            confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
-            confirmationVC.totalPrice =    "\(netAmountAfterDiscount )"  //"\(response.totalAmount ?? 0.0)"
-            confirmationVC.roomDetails = response.bookingDetails
-            confirmationVC.selectedHotel = self.selectedHotel
-            confirmationVC.selectedRoom = self.selectedRoom
-            confirmationVC.selectedRates = self.selectedRates
-            confirmationVC.bookingId = response.id
-            confirmationVC.roomtype = self.selectedRoom?.room.roomType
-            confirmationVC.selectedCurrency = self.bookingTypeLabel.text?.description ?? ""
-            
-            // Dismiss current VC and replace root with BookingConfirmationVC
-            self.dismiss(animated: true) {
-                // Get root window
-                if let window = UIApplication.shared.windows.first {
-                    confirmationVC.modalPresentationStyle = .fullScreen
-                    window.rootViewController = confirmationVC
+        let postDetails = PostBookingRequestEncodable(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
+        
+        Task{ @MainActor in
+            do{
+             let response = try await viewModel.postBookingDetails(postDetails)
+                
+                if let response = response.data {
+                    self.hideLoader()
+                    
+                    checkInTF.text = ""
+                    checkOutTF.text = ""
+                    selectedCheckInDate =  nil
+                    selectedCheckOutDate = nil
+                    guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
+                    
+                    confirmationVC.guestName = response.guestName
+                    confirmationVC.guestEmail = response.guestEmail
+                    confirmationVC.guestPhone = response.guestPhone
+                    confirmationVC.checkInDate = response.checkIn
+                    confirmationVC.checkOutDate = response.checkOut
+                    confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
+                    confirmationVC.totalPrice =    "\(netAmountAfterDiscount )"  //"\(response.totalAmount ?? 0.0)"
+                    confirmationVC.roomDetails = response.bookingDetails
+                    confirmationVC.selectedHotel = self.selectedHotel
+                    confirmationVC.selectedRoom = self.selectedRoom
+                    confirmationVC.selectedRates = self.selectedRates
+                    confirmationVC.bookingId = response.id
+                    confirmationVC.roomtype = self.selectedRoom?.room.roomType
+                    confirmationVC.selectedCurrency = self.bookingTypeLabel.text?.description ?? ""
+                    
+                    // Dismiss current VC and replace root with BookingConfirmationVC
+                    self.dismiss(animated: true) {
+                        // Get root window
+                        if let window = UIApplication.shared.windows.first {
+                            confirmationVC.modalPresentationStyle = .fullScreen
+                            window.rootViewController = confirmationVC
+                        }
+                    }
                 }
+            }catch{
+                self.hideLoader()
+                self.showAlert(error.userMessage)
             }
+            
+            
         }
-        
-        viewModel.onError = { error in
-            self.hideLoader()
-            self.showAlert(error.userMessage)
-        }
-        
-        viewModel.SubmitBookingInfo(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
         
     }
     
@@ -260,11 +281,13 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     func setNextDateInCkechout(checkInDate:Date){
         if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: checkInDate) {
             let formatter = DateFormatter()
-            formatter.dateFormat = "EEE dd MMM" // You can change format as needed
-            formatter.dateStyle = .medium
+            formatter.dateFormat = "EEE d MMM" // You can change format as needed
             let tomorrowDate = formatter.string(from: tomorrow)
-            
-            checkOutTF.text =  tomorrowDate
+           
+            let checkoutDate = Calendar.current.startOfDay(for: checkInDate)
+
+            selectedCheckOutDate = checkoutDate
+            checkOutTF.text =  formatter.string(from: checkoutDate)
         }
     }
     
@@ -283,7 +306,7 @@ extension ConfirmYourBookingVC {
         
         // --- Setup date format ---
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEE dd MMM"
+        formatter.dateFormat = "EEE d MMM"
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         
@@ -433,7 +456,7 @@ extension ConfirmYourBookingVC {
     @objc func doneDatePicker() {
         let selectedDate = datePicker.date
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEE dd MMM"
+        formatter.dateFormat = "EEE d MMM"
         let selectedDateString = formatter.string(from: selectedDate)
         
         switch currentDatePickerMode {
@@ -463,6 +486,7 @@ extension ConfirmYourBookingVC {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+        
     }
     
     @objc func dismissDatePicker() {
@@ -474,20 +498,19 @@ extension ConfirmYourBookingVC {
     
     @objc func dateChanged(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEE dd MMM"
+        formatter.dateFormat = "EEE d MMM"
         
         let selectedDateString = formatter.string(from: sender.date)
-        
+        #if debug
         print("Selected Date: \(selectedDateString)")
+        #endif
         
         switch currentDatePickerMode {
         case .checkIn:
-            print("Setting Check-In Text Field")
             selectedCheckInDate = sender.date
             checkInTF.text = selectedDateString
             setNextDateInCkechout(checkInDate: sender.date)
         case .checkOut:
-            print("Setting Check-Out Text Field")
             selectedCheckOutDate = sender.date
             checkOutTF.text = selectedDateString
             dismissDatePicker()
@@ -503,19 +526,35 @@ extension ConfirmYourBookingVC {
         switch currentDatePickerMode {
         case .checkIn:
             datePicker.minimumDate = today
-            datePicker.date = today
+            
+            if let checkIn = selectedCheckInDate {
+                        datePicker.date = checkIn
+                    } else {
+                        datePicker.date = today
+                    }
+
             
         case .checkOut:
             if let checkIn = selectedCheckInDate {
-                if let nextDayBaseOnCheckin = Calendar.current.date(byAdding: .day, value: 0, to: checkIn) {
-                    datePicker.minimumDate = nextDayBaseOnCheckin
-                }
-            } else {
-                if let tomorrow = Calendar.current.date(byAdding: .day, value: 0, to: today) {
-                    datePicker.minimumDate = tomorrow
-                    datePicker.date = tomorrow
-                }
-            }
+
+                        let minimumCheckoutDate = calendar.startOfDay(for: checkIn)
+
+                        datePicker.minimumDate = minimumCheckoutDate
+
+                        if let checkout = selectedCheckOutDate,
+                           checkout >= minimumCheckoutDate {
+                            datePicker.date = checkout
+                        } else {
+                            selectedCheckOutDate = minimumCheckoutDate
+                            datePicker.date = minimumCheckoutDate
+                            checkOutTF.text = formatDate(minimumCheckoutDate)
+                        }
+
+                    } else {
+
+                        datePicker.minimumDate = today
+                        datePicker.date = today
+                    }
         }
     }
     
@@ -574,3 +613,4 @@ extension ConfirmYourBookingVC: UIGestureRecognizerDelegate {
         return !isTouchInDatePicker
     }
 }
+

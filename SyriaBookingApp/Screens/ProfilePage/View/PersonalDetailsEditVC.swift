@@ -122,10 +122,10 @@ class PersonalDetailsEditVC: BaseViewController {
         tableViewProcess()
         bindViewModel()
         CountryNameViewModel.fetchCountries()
-        print("🔍 Available country labels:")
+        #if DEBUG
         CountryNameViewModel.countries.forEach { print($0.label) }
+        #endif
         let matchedCountry = CountryNameViewModel.countries.first(where: { $0.label == countryViewModel.countries.first?.name })
-        print(matchedCountry ?? "")
         
         // Set initial texts
         updateTexts()
@@ -280,16 +280,17 @@ class PersonalDetailsEditVC: BaseViewController {
     private func bindViewModel() {
         CountryNameViewModel.onDataUpdated = { [weak self] in
             guard let self = self else { return }
-            print("✅ Country list loaded: \(self.CountryNameViewModel.countries.count)")
+            #if DEBUG
             for country in self.CountryNameViewModel.countries {
                 print("🌍 \(country.label)")
             }
 
+            #endif
             if let firstCountryName = self.countryViewModel.countries.first?.name {
                 let matchedCountry = self.CountryNameViewModel.countries.first {
                     $0.label == firstCountryName
                 }
-                print("🎯 Matched country: \(matchedCountry?.label ?? "None")")
+              
             }
 
             self.FlagTV.reloadData()
@@ -298,7 +299,9 @@ class PersonalDetailsEditVC: BaseViewController {
         }
 
         CountryNameViewModel.onError = { error in
+            #if DEBUG
             print("❌ Error: \(error.localizedDescription)")
+            #endif
         }
     }
 
@@ -621,7 +624,7 @@ class PersonalDetailsEditVC: BaseViewController {
                 )
             }
         } else {
-            viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile( profile: updatedProfile)
         
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
@@ -688,7 +691,7 @@ class PersonalDetailsEditVC: BaseViewController {
                 )
             }
         }else{
-            viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile( profile: updatedProfile)
             
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
@@ -758,7 +761,7 @@ class PersonalDetailsEditVC: BaseViewController {
                 )
             }
         }else{
-            viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile(profile: updatedProfile)
 
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
@@ -828,7 +831,7 @@ class PersonalDetailsEditVC: BaseViewController {
                 )
             }
         }else{
-            viewModel.updateProfile(userId: userId, profile: updatedProfile)
+            viewModel.updateProfile( profile: updatedProfile)
 
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
@@ -944,13 +947,11 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             
         } else if tableView == FlagTV {
             let selectedCountry = countryViewModel.countries[indexPath.row]
-            print("Selected Country: \(selectedCountry.name)")
             
             if let matchedCountry = CountryNameViewModel.countries.first(where: { $0.label == selectedCountry.name }) {
                 phoneNumberCountryCodeLbl.text = "+\(matchedCountry.phone)"
                 loadFlagImage(for: selectedCountry.code, into: phoneNumberFlageImage)
             } else {
-                print("No match found in countryList for \(selectedCountry.name)")
                 phoneNumberCountryCodeLbl.text = ""
                 phoneNumberFlageImage.image = UIImage(systemName: "photo")
             }
@@ -961,11 +962,9 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             selectedCountryNameLbl.text = selectedCountry.name
             
             if let matchedCountry = CountryNameViewModel.countries.first(where: { $0.label == selectedCountry.name }) {
-                print("Flag URL: https://flagcdn.com/w40/\(matchedCountry.code).png")
                 loadFlagImage(for: selectedCountry.code, into: selectedCountryImage)
             } else {
                 selectedCountryImage.image = UIImage(systemName: "photo")
-                print("Country not found in CountryNameViewModel for code: \(selectedCountry.code)")
             }
             addressCountryNameTV.isHidden = true
         }

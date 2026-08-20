@@ -260,9 +260,7 @@ class TermsAndConditionsViewController: UIViewController {
             showPhoneCallError(phoneNumber: phoneNumber)
             return
         }
-        
-        print("Attempting to call: \(formattedNumber)")
-        
+                
         if isEmergency {
             showEmergencyCallConfirmation(for: formattedNumber, url: url)
         } else {
@@ -362,9 +360,8 @@ class TermsAndConditionsViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             UIApplication.shared.open(url, options: [:]) { success in
                 if success {
-                    print("Call initiated successfully to: \(phoneNumber)")
+                    print("Call initiated successfully")
                 } else {
-                    print("Failed to initiate call to: \(phoneNumber)")
                     self.showPhoneCallError(phoneNumber: phoneNumber)
                 }
             }
@@ -403,7 +400,6 @@ class TermsAndConditionsViewController: UIViewController {
             return
         }
         
-        print("Attempting to send email to: \(emailAddress)")
         
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:]) { success in

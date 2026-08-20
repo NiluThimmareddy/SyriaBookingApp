@@ -30,6 +30,7 @@ class ReportAnAppVC: BaseViewController {
     var hotelViewModel = HotelViewModel()
     var titleText: String?
     var type = ""
+   
     var hotelID = ""
     var hotelName = ""
     var BookingID = ""
@@ -106,14 +107,19 @@ class ReportAnAppVC: BaseViewController {
     
     @IBAction func submitButtonAction(_ sender: Any) {
         let lang = AppSettings.shared.selectedLanguage
-        guard let subject = selectTypeButton.titleLabel?.text,
-              !subject.isEmpty,
-              (lang == .arabic ? subject != "اختر الموضوع" : subject.lowercased() != "select subject") else {
-            let message = lang == .arabic ? "الرجاء اختيار الموضوع" : "Please select subject"
-            showAlert(message)
-            return
+        if comingfrom != .RightMenu {
+            guard let selectedType = selectTypeButton.titleLabel?.text,
+                  !selectedType.isEmpty,
+                  (lang == .arabic ? selectedType != "اختر الموضوع" : selectedType.lowercased() != "select subject") else {
+                let message = lang == .arabic ? "الرجاء اختيار الموضوع" : "Please select subject"
+                showAlert(message)
+                return
+            }
+            
+            type = selectedType
         }
-
+        
+        
         // Validate message
         guard let message = enterMessageTextView.text,
               !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -141,18 +147,18 @@ class ReportAnAppVC: BaseViewController {
             if comingfrom == .RightMenu {
                 type = "Complaint"
             }
-            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
+            hotelViewModel.submitReporAnApp(type: type, subject: enterSubjectTF.text ?? "", message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
             
         } else if comingfrom == .HotelDetail {
             
-            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
+            hotelViewModel.submitReporAnApp(type: type, subject: enterSubjectTF.text ?? "", message: message, hotelId: "", userName: enterYourNameTF.text ?? "", UserEmail: enterEmailTF.text ?? "", userPhone: enterPhoneNumberTF.text ?? "")
             
         }else if comingfrom == .BookingHistory{
             guard let user = UserSessionManager.getUser() else {
                 return
             }
-            hotelViewModel.submitReporAnApp(type: type, subject: subject, message: message, hotelId: hotelID, userName: user.name, UserEmail: user.email, userPhone: user.mobile
+            hotelViewModel.submitReporAnApp(type: type, subject: enterSubjectTF.text ?? "", message: message, hotelId: hotelID, userName: user.name, UserEmail: user.email, userPhone: user.mobile
             )
         }
     }    

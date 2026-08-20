@@ -21,6 +21,8 @@ final class BadgeButton: UIButton {
         }
     }
     
+    var onBadgeTap: (() -> Void)?
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -59,23 +61,34 @@ final class BadgeButton: UIButton {
         badgeBackgroundView.addSubview(badgeLabel)
         
         NSLayoutConstraint.activate([
-            
             // Safe inside positioning
             badgeBackgroundView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             badgeBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             badgeBackgroundView.heightAnchor.constraint(equalToConstant: 18),
-            
             badgeBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 18),
-            
+           
             badgeLabel.leadingAnchor.constraint(equalTo: badgeBackgroundView.leadingAnchor, constant: 5),
             badgeLabel.trailingAnchor.constraint(equalTo: badgeBackgroundView.trailingAnchor, constant: -5),
             badgeLabel.topAnchor.constraint(equalTo: badgeBackgroundView.topAnchor),
             badgeLabel.bottomAnchor.constraint(equalTo: badgeBackgroundView.bottomAnchor)
         ])
         
+        
+        badgeBackgroundView.isUserInteractionEnabled = true
+
+            let tapGesture = UITapGestureRecognizer(
+                target: self,
+                action: #selector(badgeTapped)
+            )
+        
+        badgeBackgroundView.addGestureRecognizer(tapGesture)
         contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         
         
+    }
+    
+    @objc private func badgeTapped() {
+        onBadgeTap?()
     }
     
     // MARK: - Update Badge

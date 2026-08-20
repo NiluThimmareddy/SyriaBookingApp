@@ -1,5 +1,6 @@
 
 import UIKit
+import SwiftUI
 import SkeletonView
 
 extension NSNotification.Name {
@@ -134,7 +135,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         setupBasicUI()
         setupSkeletonView()
         
@@ -181,6 +182,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        guard !CommentManager.shared.hasStarted else { return }
+       CommentManager.shared.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -220,11 +223,17 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     
     @objc func handleLoginSuccess() {
         showSkeletonOnAllElements()
+        if let user = UserSessionManager.getUser() {
+            currentUser = user
+           
+        }
+        
         loadData()
+        reloadDataOnHomeScreen()
     }
     
     @objc func handleLogout() {
-        print("🚪 Logout received")
+      
         sliderCollectionView.reloadData()
         sliderCollectionView.layoutIfNeeded()
         showSkeletonOnAllElements()
@@ -584,6 +593,16 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         print("Recently CV skeleton active: \(recentlyCollectionView?.sk.isSkeletonActive ?? false)")
         print("Property Type CV skeleton active: \(propertyTypeCollectionView?.sk.isSkeletonActive ?? false)")
         print("View skeleton active: \(view.sk.isSkeletonActive)")
+    }
+    
+    @IBAction func ChatButton(_ sender: UIButton) {
+        let chatbotView = ChatBotView()
+        let hostingController = UIHostingController(rootView: chatbotView)
+        hostingController.modalPresentationStyle = .pageSheet
+        if let sheet = hostingController.sheetPresentationController {
+            sheet.detents = [.large()]
+        }
+        present(hostingController, animated: true)
     }
 }
 
@@ -1176,7 +1195,7 @@ extension HomeViewController {
 
 // MARK: - Main Implementation
 extension HomeViewController {
-    
+
     private func setupBasicUI() {
         searchView.isHidden = true
         searchView.applyCardStyle()

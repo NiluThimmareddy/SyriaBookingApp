@@ -22,10 +22,7 @@ class CareerApplicationViewModel {
             "CvFile": CvFile
         ]
         
-        guard let url = APIURL.Applycareer.url else {
-            self.onError?("Invalid URL")
-            return
-        }
+         let url = APIURL.applyCareer.url 
         
         APIManager.shared.postRequest(urlString: url,body: params,responseType: ReporAnAppModel.self,urlencoded: true) { result in
             DispatchQueue.main.async {

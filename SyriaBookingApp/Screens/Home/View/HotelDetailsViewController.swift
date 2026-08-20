@@ -522,8 +522,9 @@ extension HotelDetailsViewController : CLLocationManagerDelegate{
         
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
-        
+        #if debuge
         print("Latitude: \(latitude), Longitude: \(longitude)")
+        #endif
         
         currentUserLocation = location
         

@@ -266,7 +266,7 @@ extension RightMenuViewController{
                     }
                 )
             }else{
-                profileViewModle.updateProfile(userId: user.id, profile: deleteUser)
+                profileViewModle.updateProfile( profile: deleteUser)
                 profileViewModle.onProfileUpdated = { result, message, bookingModel in
                     if result {
                         //account deleted

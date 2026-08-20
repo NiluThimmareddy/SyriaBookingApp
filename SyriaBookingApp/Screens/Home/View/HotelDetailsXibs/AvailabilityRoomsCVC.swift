@@ -79,7 +79,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     }
     
     @IBAction func segmentControlAction(_ sender: UISegmentedControl) {
-        print("segment changes \(String(describing: sender.tag))")
+       
         switch sender.selectedSegmentIndex {
         case 0:
             self.segmentChanged?()

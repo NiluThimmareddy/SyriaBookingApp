@@ -27,6 +27,10 @@ class YourNotificationVC: BaseViewController {
         setUpUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        fetchUserNotification()
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, !backView.frame.contains(touch.location(in: view)) {
             dismiss(animated: true)
@@ -83,11 +87,25 @@ extension YourNotificationVC {
         
         
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
+ 
+        
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    }
+    
+    func fetchUserNotification(){
         
         viewModel.onSuccess = { [weak self] response in
+            
+            self?.viewModel.filteredHistoryArray = response.filter { data in
+                if let date = data.checkInUtc.toDate() {
+                    return date >= Calendar.current.startOfDay(for: Date())
+                }
+                return false
+            }
+            
             DispatchQueue.main.async {
                 self?.hideLoader()
-                self?.viewModel.filteredHistoryArray = response
+                
                 let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
                 
                 if rowCount == 0 {
@@ -115,12 +133,12 @@ extension YourNotificationVC {
             }
         }
         
-        if let user = UserSessionManager.getUser() {
-            viewModel.fetchNotificationUser(userId: user.id)
+        if UserSessionManager.getUser() != nil {
+            viewModel.fetchNotificationUser()
             
         }
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
+    
     private func updateTableViewHeight() {
         var totalHeight: CGFloat = 0
         let rowCount = min(3, viewModel.filteredHistoryArray.count)

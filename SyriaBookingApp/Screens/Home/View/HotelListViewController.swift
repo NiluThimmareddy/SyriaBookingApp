@@ -42,14 +42,12 @@ class HotelListViewController: BaseViewController, ApplyFilterDelegate, ScrollTo
         super.viewDidLoad()
         setupSkeletonView()
         setUpUI()
+        fetchHotelData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.fetchHotelData()
-        }
     }
     
     func fetchHotelData() {
@@ -411,7 +409,10 @@ extension HotelListViewController : TopHotelsCollectionViewCellDelegate {
         // Apply city filter
         if !selectedCity.isEmpty && selectedCity != "All" && selectedCity != "Select City" {
             filtered = filtered.filter { $0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == selectedCity.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+            #if debug
             print("Filtering by city: \(selectedCity), Found \(filtered.count) hotels")
+            #endif
+                
         }
         
         // Apply rating sort if needed
@@ -434,7 +435,9 @@ extension HotelListViewController : TopHotelsCollectionViewCellDelegate {
     
     private func showEmptyState() {
         // You can add an empty state view here
+        #if DEBUG
         print("No hotels found for city: \(selectedCity)")
+        #endif
     }
     
     //delegate method

@@ -147,7 +147,6 @@ class FilterOptionsViewController: UIViewController {
 
         hotelType = selectedHotelTypes
         updateSeeResultButtonTitleBasedOnFilteredHotels()
-        print("Selected Hotel Types: \(selectedHotelTypes)")
     }
     
     // MARK: - Amenities Selection
@@ -168,7 +167,6 @@ class FilterOptionsViewController: UIViewController {
         
         amenities = selectedAmenities
         updateSeeResultButtonTitleBasedOnFilteredHotels()
-        print("Selected Amenities: \(selectedAmenities)")
     }
     
     // MARK: - Star Rating & Review Score
@@ -188,7 +186,6 @@ class FilterOptionsViewController: UIViewController {
         
         starRating = selectedStarRatings
         updateSeeResultButtonTitleBasedOnFilteredHotels()
-        print("Selected Star Ratings: \(selectedStarRatings)")
     }
     
     @IBAction func reviewScoreButtonAction(_ sender: UIButton) {
@@ -206,7 +203,6 @@ class FilterOptionsViewController: UIViewController {
         
         reviewScore = selectedReviewScores
         updateSeeResultButtonTitleBasedOnFilteredHotels()
-        print("Selected Review Scores: \(selectedReviewScores)")
     }
     
     // MARK: - Filter Logic
@@ -224,7 +220,6 @@ class FilterOptionsViewController: UIViewController {
         let filteredHotels = HotelDataMaganer.shared.allHotels.filter { hotel in
             
             let type = hotel.type.rawValue.lowercased()
-            print(type)
             let star = String(hotel.starRating)
             let averageRating = Float(hotel.averageRating) ?? 0.0
             let price = parsePrice(hotel.minRoomPrice)

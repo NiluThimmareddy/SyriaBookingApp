@@ -371,7 +371,6 @@ class PrivacyAndPolicyVC: UIViewController {
             return
         }
         
-        print("Attempting to call: \(formattedNumber)")
         
         if isEmergency {
             showEmergencyCallConfirmation(for: formattedNumber, url: url)
@@ -474,7 +473,6 @@ class PrivacyAndPolicyVC: UIViewController {
                 if success {
                     print("Call initiated successfully to: \(phoneNumber)")
                 } else {
-                    print("Failed to initiate call to: \(phoneNumber)")
                     self.showPhoneCallError(phoneNumber: phoneNumber)
                 }
             }
@@ -508,24 +506,19 @@ class PrivacyAndPolicyVC: UIViewController {
         }
         
         guard let url = URL(string: emailURLString) else {
-            print("Invalid email URL")
             showEmailError()
             return
         }
-        
-        print("Attempting to send email to: \(emailAddress)")
         
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:]) { success in
                 if success {
                     print("Email app opened successfully")
                 } else {
-                    print("Failed to open email app")
                     self.showEmailError()
                 }
             }
         } else {
-            print("Cannot open email app")
             showEmailError()
         }
     }

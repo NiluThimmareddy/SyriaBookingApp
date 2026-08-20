@@ -1,68 +1,191 @@
+
+//
 //  Constant.swift
 //  SyriaBookingApp
+//
 //  Created by ToqSoft on 25/07/25.
+//
 
 import Foundation
 
-enum APIURL{
-    case BaseURL
-    case HotelURL
-    case BookingURL
-    case PostReview
+enum APIConstants {
+
+    static let baseURL: URL = {
+
+        var dnm : String {
+                return "v}wohjxyvuqk"
+            }
+        
+        var sb : String{
+            return "vfu{itrml|l"
+        }
+
+            var sy : String {
+                return "v}"
+            }
+            
+            var plik : String {
+                return "sygrpk"
+            }
+            
+            var apy : String {
+                return "dtn"
+            }
+            
+            var tg : String {
+                return "vxfml"
+            }
+            
+            var azwest : String {
+                return "d~zxl nl~uwix"
+            }
+            
+            var nt : String {
+                return "qiy"
+            }
+        
+       //MARK: PRODUCTION
+       let decryptedURL =
+        "https://" +
+        URLCrypto.decrypt(sb) +
+        "." +
+        URLCrypto.decrypt(azwest) +
+        "." +
+        URLCrypto.decrypt(nt) +
+        "/" +
+        
+        URLCrypto.decrypt(apy) +
+        "/"
+        
+        //MARK: STAG
+//            let decryptedURL  =
+//                 "https://sbstage2.azurewebsites.net/public-api/api/"
+
+                guard let url = URL(string: decryptedURL) else {
+                    fatalError("❌ Cannot create URL from decrypted API URL")
+                }
+                return url  
+    }()
+    
+    static let headerAPIKey = "X-API-KEY"
+    
+    static let apiKey: String = {
+        guard let value = Bundle.main.object(forInfoDictionaryKey: headerAPIKey) as? String else {
+            fatalError("❌ HOTELBOOKING_API_KEY is missing")
+        }
+        return value
+    }()
+}
+
+enum APIURL {
+
+    case baseURL
+    case hotelURL
+    case bookingURL
+    case postReview
     case fetchHotelReviews
     case postReportAnApp
     case postForOTP
-    case PostForEmailOTP
+    case postForEmailOTP
     case verifyOTP
     case verifyEmailOTP
+    case postForNewUserOTP
+    case verifyNewUserOTP
     case postBooking
     case notification
     case notificationCount
     case updateProfile
-    case Applycareer
-    //Production URL
-    var baseURL: String {
-        return "https://syriabooking.sy/public-api/api/"
-    }
-    
-   //Development URL
-//    var baseURL: String {
-//        return "https://syriabookingstage.azurewebsites.net/public-api/api/"
-//    }
-    
-    var url : URL? {
+    case applyCareer
+    case checkMobile
+
+    var url: URL {
+
         switch self {
-        case .BaseURL:
-            return  URL(string: baseURL)
-        case .HotelURL:
-            return  URL(string: baseURL + "HotelPublic/aggregates/")
-        case .BookingURL:
-            return URL(string: baseURL + "UserPublic")
-        case .PostReview :
-            return URL(string: baseURL + "HotelReviewPublic/")
+        case .baseURL:
+            return APIConstants.baseURL
+
+        case .hotelURL:
+            return APIConstants.baseURL
+                .appendingPathComponent("HotelPublic")
+                .appendingPathComponent("aggregates")
+
+        case .bookingURL:
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+
+        case .postReview:
+            return APIConstants.baseURL
+                .appendingPathComponent("HotelReviewPublic")
+
         case .fetchHotelReviews:
-            return URL(string: baseURL + "/HotelReviewPublic/")
+            return APIConstants.baseURL
+                .appendingPathComponent("HotelReviewPublic")
+
         case .postReportAnApp:
-            return URL(string: baseURL + "/ContactPublic")
+            return APIConstants.baseURL
+                .appendingPathComponent("ContactPublic")
+
         case .postForOTP:
-            return URL(string: baseURL + "UserPublic/send-otp")
-        case .PostForEmailOTP:
-            return URL(string: baseURL + "UserPublic/send-email-otp")
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("send-otp")
+
+        case .postForEmailOTP:
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("send-email-otp")
+
         case .verifyOTP:
-            return URL(string: baseURL + "UserPublic/verify-otp")
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("verify-otp")
+
         case .verifyEmailOTP:
-            return URL(string: baseURL + "UserPublic/verify-email-otp")  
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("verify-email-otp")
+            
+        case .postForNewUserOTP:
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("send-registration-email-otp")
+
+        case .verifyNewUserOTP:
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("verify-registration-email-otp")
+
         case .postBooking:
-            return URL(string: baseURL + "BookingPublic/")
+            return APIConstants.baseURL
+                .appendingPathComponent("BookingPublic")
+
         case .notification:
-            return URL(string: baseURL + "BookingPublic/Notifications-by-user/")
-        case . notificationCount:
-            return URL(string: baseURL + "BookingPublic/Notifications-count-by-user/")
+            return APIConstants.baseURL
+                .appendingPathComponent("BookingPublic")
+                .appendingPathComponent("notifications")
+                .appendingPathComponent("me")
+            
+
+        case .notificationCount:
+            return APIConstants.baseURL
+                .appendingPathComponent("BookingPublic")
+                .appendingPathComponent("notifications-count")
+                .appendingPathComponent("me")
+
         case .updateProfile:
-            return URL(string: baseURL + "UserPublic/")
-        case .Applycareer:
-            return URL(string: baseURL + "CareerPublic/apply/")
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+
+        case .applyCareer:
+            return APIConstants.baseURL
+                .appendingPathComponent("CareerPublic")
+                .appendingPathComponent("apply")
+            
+        case .checkMobile:
+            return APIConstants.baseURL
+                .appendingPathComponent("UserPublic")
+                .appendingPathComponent("check-mobile")
+            
         }
     }
 }
-

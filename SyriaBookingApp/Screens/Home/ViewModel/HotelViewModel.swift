@@ -24,7 +24,7 @@ class HotelViewModel {
     
     func fetchHotels() {
         
-        guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+         let urlstr = APIURL.hotelURL.url.absoluteString
         guard let url = URL(string: urlstr) else {
             print("Invalid hotel URL")
             return
@@ -47,10 +47,10 @@ class HotelViewModel {
     
     func fetchSingleHotels(id: String = "", completion: @escaping (Hotel) -> Void) {
         
-        guard let urlstr = APIURL.HotelURL.url?.absoluteString else { return }
+        let urlstr = APIURL.hotelURL.url.absoluteString
         var str = urlstr
         if !id.isEmpty {
-            str += "\(id)"
+            str += "/\(id)"
         }
         
         guard let url = URL(string: str) else {
@@ -71,7 +71,7 @@ class HotelViewModel {
     
     func fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
         
-        guard let urlstr = APIURL.fetchHotelReviews.url?.absoluteString else { return }
+         let urlstr = APIURL.fetchHotelReviews.url.absoluteString
         let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
         let url = URL(string: getUrl)
         
@@ -143,10 +143,8 @@ class HotelViewModel {
             "reviewText": reviewText
         ]
         
-        guard let url =  APIURL.PostReview.url else {
-            self.onReviewError?("Invalid URL")
-            return
-        }
+         let url =  APIURL.postReview.url
+           
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: ReviewResponse.self) { result in
             DispatchQueue.main.async{
@@ -175,10 +173,7 @@ class HotelViewModel {
             "userPhone": userPhone
         ]
         
-        guard let url =  APIURL.postReportAnApp.url else {
-            self.onReviewError?("Invalid URL")
-            return
-        }
+         let url =  APIURL.postReportAnApp.url 
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: ReporAnAppModel.self) { result in
             DispatchQueue.main.async{

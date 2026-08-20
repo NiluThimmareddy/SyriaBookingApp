@@ -10,6 +10,11 @@ enum comingFromLogin {
     case TabBar
 }
 
+enum loginFlow{
+    case emailLogin
+    case mobileLogin
+}
+
 class VerificationVC : BaseViewController {
     
     @IBOutlet weak var backView: UIView!
@@ -22,13 +27,17 @@ class VerificationVC : BaseViewController {
     @IBOutlet weak var mobileNumberTitleLabel: UILabel!
     @IBOutlet weak var enterOtpTitleLabel: UILabel!
     
+    
     var mobileNumber: String?
     var guestName: String?
     var guestEmail: String?
     var OptResponse : OTPResponseModel?
     var viewModel = BookingViewModel()
+    var loginViewModel = LoginViewModel()
     var comingFrom : comingFromLogin?
     var isNewUser = false
+    var flow : loginFlow = .mobileLogin
+    var reloadScreenAfterDismiss : (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,60 +85,100 @@ class VerificationVC : BaseViewController {
             showAlert(enterOTPMessage)
             return
         }
-        
-        if mobileNumber == "90000000"{
-            if otp == "000000"{
-                self.performNavigationAfterVerification()
-            }else{
-                self.showAlert(
-                    title: errorTitle,
-                    message: otpMismatchMessage,
-                    type: .success,
-                    onOK:{
-                        self.otpTF.forEach { $0.text = "" }
-                    }
-                )
-            }
-        }else{
-            self.verifyOTPCode(mobile: mobileNumber, otp: otp) { [weak self] UserId in
-                guard let self = self, let UserId = UserId else { return }
-                
-                self.viewModel.onSuccess = { response in
-                    UserSessionManager.saveUser(response)
-                    
-                    if self.isNewUser {
-                        DispatchQueue.main.async {
+       
+            Task {
+                do {
+                    switch flow {
+
+                    case .mobileLogin:
+                        let response = try await loginViewModel.verifyOTP(
+                            mobileNumber,
+                            otp: otp
+                        )
+                        
+                        if let data = response.data{
+                            try KeychainTokenStore().saveSession(
+                                token: data.token,
+                                expiresAtUtc: data.expiresAtUtc,
+                                userId: data.userId,
+                                email: guestEmail ?? ""
+                            )
+
+                            let user = try await viewModel.fetchCurrentUser()
+                            
+                            UserSessionManager.saveUser(user.data)
+                            SessionManager.shared.markAuthenticated()
+                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
+                            
+                            await MainActor.run {
+                                
+                                self.performNavigationAfterVerification()
+                            }
+                        }else{
+                            self.showAlert(response.message)
+                        }
+
+                    case .emailLogin:
+
+                        guard let email = guestEmail else { return }
+
+                        let response = try await loginViewModel.verifyEmailOTP(
+                            email: email,
+                            otp: otp
+                        )
+    
+                        if let data = response.data{
+                            
+                            try KeychainTokenStore().saveSession(
+                                token: data.token,
+                                expiresAtUtc: data.expiresAtUtc,
+                                userId: data.userId,
+                                email: guestEmail ?? ""
+                            )
+                            let user = try await viewModel.fetchCurrentUser()
+                            
+                            UserSessionManager.saveUser(user.data)
+                            
+                            SessionManager.shared.markAuthenticated()
+                            
+                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
+                            
+                            self.performNavigationAfterVerification()
+                        }else{
+                            self.showAlert(response.message)
+                        }
+                         
+                       
+                        await MainActor.run {
+
                             self.showAlert(
                                 title: successTitle,
                                 message: registrationSuccessMessage,
                                 type: .success,
                                 onOK: {
-                                    self.dismissVerificationFlow()
+
+                                    
                                     self.performNavigationAfterVerification()
                                 }
                             )
                         }
-                    } else {
-                        self.performNavigationAfterVerification()
                     }
-                }
-                
-                self.viewModel.onError = { error in
-                    DispatchQueue.main.async {
+
+                } catch {
+
+                    await MainActor.run {
+
                         self.showAlert(
                             title: errorTitle,
-                            message: error.userMessage,
-                            type: .success,
-                            onOK:{
+                            message: error.localizedDescription,
+                            type: .error,
+                            onOK: {
                                 self.otpTF.forEach { $0.text = "" }
                             }
                         )
                     }
                 }
-                
-                self.viewModel.FetchUserData(id: UserId.data.userId)
             }
-        }
     }
     
     func verifyOTPCode(mobile:String,otp:String,completion: @escaping (VerifyOTPModel?) -> Void) {
@@ -206,13 +255,13 @@ extension VerificationVC {
     func setUpLanguage() {
         if AppSettings.shared.selectedLanguage == .english {
             verifyAndContinueButton.setTitle("Verify & Continue", for: .normal)
-            messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data.to ?? "your email"). Please enter it below to continue."
+            messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data?.to ?? "your email"). Please enter it below to continue."
             enterYourMobileTitleLabel.text = "Enter Your Mobile Number"
             mobileNumberTitleLabel.text = "Mobile Number"
             enterOtpTitleLabel.text = "Enter OTP"
         } else {
             verifyAndContinueButton.setTitle("تحقق واستمر", for: .normal)
-            messageLabel.text = "عزيزي \(guestName ?? "المستخدم")، تم تسجيل رقم هاتفك. تم إرسال رمز التحقق إلى \(OptResponse?.data.to ?? "بريدك الإلكتروني"). الرجاء إدخاله أدناه للمتابعة."
+            messageLabel.text = "عزيزي \(guestName ?? "المستخدم")، تم تسجيل رقم هاتفك. تم إرسال رمز التحقق إلى \(OptResponse?.data?.to ?? "بريدك الإلكتروني"). الرجاء إدخاله أدناه للمتابعة."
             enterYourMobileTitleLabel.text = "أدخل رقم هاتفك المحمول"
             mobileNumberTitleLabel.text = "رقم الجوال"
             enterOtpTitleLabel.text = "أدخل رمز التحقق"
@@ -222,7 +271,7 @@ extension VerificationVC {
     }
     
     func performNavigationAfterVerification() {
-        SessionManager.shared.startSessionTimer()
+//        SessionManagerForTimer.shared.startSessionTimer()
         NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
         self.dismiss(animated: true)
     }

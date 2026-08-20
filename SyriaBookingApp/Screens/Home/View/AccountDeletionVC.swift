@@ -142,7 +142,7 @@ class AccountDeletionVC: UIViewController {
             
             // Check HTTP response status
             if let httpResponse = response as? HTTPURLResponse {
-                print("Response code: \(httpResponse.statusCode)")
+               
                 
                 DispatchQueue.main.async {
                     if httpResponse.statusCode == 200 {

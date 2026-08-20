@@ -12,10 +12,10 @@ class ProfileViewModel {
     var onProfileUpdated: ((Bool, String?, BookingModel?) -> Void)?
     var onError: ((String) -> Void)?
     
-    func updateProfile(userId: String, profile: BookingModel) {
+    func updateProfile(profile: BookingModel) {
         
-        guard var url = APIURL.updateProfile.url?.absoluteString else { return }
-        url += "\(userId)"
+         var url = APIURL.updateProfile.url.absoluteString
+        url += "me"
         
         guard let url =  URL(string: url) else {
             onProfileUpdated?(false, "Invalid URL", nil)
@@ -32,7 +32,9 @@ class ProfileViewModel {
             "dob": profile.dob
         ]
         
-        APIManager.shared.putRequest(urlString: url, body: body, responseType: ProfileResponse.self) { [weak self] result in
+      
+        
+        APIManager.shared.putRequest(urlString: url, body: body,  responseType: ProfileResponse.self, requiresJWT: true) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):

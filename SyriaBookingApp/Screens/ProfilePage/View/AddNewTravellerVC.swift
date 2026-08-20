@@ -444,7 +444,6 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             gender: genderButton.title(for: .normal) ?? ""
         )
         delegate?.didAddGuest(newGuest)
-        print("✅ Guest added: \(newGuest)")
     }
 
     func editGuest() {
@@ -458,7 +457,6 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         )
         
         delegate?.didEditGuest(updatedGuest, at: index)
-        print("✏️ Guest edited at index \(index): \(updatedGuest)")
     }
 
     func showConfirmationAlert(title: String, message: String, actionTitle: String, isDestructive: Bool = false, confirmed: @escaping () -> Void) {

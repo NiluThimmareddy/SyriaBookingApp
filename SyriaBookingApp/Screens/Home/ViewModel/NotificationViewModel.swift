@@ -15,22 +15,30 @@ class NotificationViewModel {
     var onBookingSuccess : (([BookingDetailsModel])->Void)?
     var onCountSuccess : ((NotificationCountModel) -> Void)?
     
-    func fetchNotificationUser(userId:String,includePast:Bool = false){
-        guard var url = APIURL.notification.url?.absoluteString else { return }
-        
-        url += "\(userId)?includePast=\(includePast)&take=50"
+    private let apiClient: APIClient
+    
+    init(apiClient: APIClient = .shared) {
+        self.apiClient = apiClient
+    }
+    
+    func fetchNotificationUser(includePast:Bool = true){
+        var url = APIURL.notification.url.absoluteString
+        url += "?includePast=\(includePast)&take=50"
         
         guard let url = URL(string: url) else{
-            onError?(APIError.invalidURL)
+            onError?(NetworkError.invalidURL)
             return
         }
         
-        APIManager.shared.fetchData(from: url, modelType: BookingHistoryResponseModel.self) { [weak self] result in
+        APIManager.shared.fetchData(from: url, requiresJWT: true, modelType: BookingHistoryResponseModel.self) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let success):
-                self.BookingHistoryArray = success.data
-                self.onSuccess?(success.data)
+                DispatchQueue.main.async {
+                    self.BookingHistoryArray = success.data
+                    
+                    self.onSuccess?(success.data)
+                }
             case .failure(let failure):
 #if DEBUG
                 print("fetchNotificationUser :", failure.localizedDescription)
@@ -40,53 +48,20 @@ class NotificationViewModel {
         }
     }
     
-    func fetchUserBookings(userId:String,includePast:Bool = false){
-        guard var url = APIURL.notification.url?.absoluteString else { return }
-        
-        url += "\(userId)"
-        
-        guard let url = URL(string: url) else{
-            onError?(APIError.invalidURL)
-            return
-        }
-        
-        APIManager.shared.fetchData(from: url, modelType: BookingDetailsResponseModel.self) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                self.BookingListArray = success.data
-                self.onBookingSuccess?(success.data)
-            case .failure(let failure):
-#if DEBUG
-                print("fetchUserBookings Error :", failure.localizedDescription)
-#endif
-                self.onError?(failure)
-                
-            }
-        }
+    func fetchNotificationCount() async throws -> NotificationCountModel {
+        try await apiClient.send(
+            endpoint: .fetchUserNotificationCount(),
+            responseType: NotificationCountModel.self
+        )
     }
-    
-    func fetchNotificationCount(userId:String){
-        guard var url = APIURL.notificationCount.url?.absoluteString else { return }
-        url += "\(userId)"
-        
-        guard let url = URL(string: url) else{
-            onError?(APIError.invalidURL)
-            return
-        }
-        
-        APIManager.shared.fetchData(from: url, modelType: NotificationCountModel.self) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let success):
-                print(success)
-                self.onCountSuccess?(success)
-            case .failure(let failure):
-#if DEBUG
-                print("fetchUserBookings Error :", failure.localizedDescription)
-#endif
-                self.onError?(failure)
-            }
-        }
+}
+
+extension Endpoint{
+    static func fetchUserNotificationCount() -> Endpoint{
+        Endpoint(
+            path: APIURL.notificationCount.url,
+            method: .get,
+            authentication: .jwt
+        )
     }
 }

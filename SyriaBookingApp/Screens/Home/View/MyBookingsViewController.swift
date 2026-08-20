@@ -57,9 +57,15 @@ class MyBookingsViewController: BaseViewController {
         // Reset to "Upcoming" tab every time user visits MyBookings
         segmentControl.selectedSegmentIndex = 0
         
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         // Refresh UI + fetch bookings
         refreshBookingData()
     }
+    
+    
     
     private func setupTableView() {
         HistoryTableView.delegate = self
@@ -212,13 +218,13 @@ class MyBookingsViewController: BaseViewController {
     private func refreshBookingData() {
         guard presentedViewController == nil else { return }
         
-        if let user = UserSessionManager.getUser() {
+        if UserSessionManager.getUser() != nil {
             showSkeleton() // Show skeleton before API call
             
-            viewModel.onSuccess = { [weak self] _ in
+            viewModel.onSuccess = { [weak self] response in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                     
+                    self.viewModel.filteredHistoryArray = response
                     self.hideSkeleton() // Hide skeleton when data is ready
                     self.configureSelectedSegment {
                         self.updateUIAfterDataLoad()
@@ -237,7 +243,7 @@ class MyBookingsViewController: BaseViewController {
             
             // Add delay to ensure skeleton is visible
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+                self.viewModel.fetchNotificationUser()
             }
             
         } else {
@@ -416,33 +422,6 @@ extension MyBookingsViewController {
         
         if let user = UserSessionManager.getUser() {
             // Show skeleton immediately
-            showSkeleton()
-            
-            viewModel.onSuccess = { [weak self] response in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                     
-                    self.hideSkeleton()
-                    self.selectedSegmentIndex = 0
-                    self.configureSelectedSegment {
-                        self.updateUIAfterDataLoad()
-                    }
-                }
-            }
-            
-            viewModel.onError = { [weak self] error in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                     
-                    self.hideSkeleton()
-                    self.showAlert(error.userMessage)
-                }
-            }
-            
-            // Add delay to ensure skeleton is visible
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.viewModel.fetchNotificationUser(userId: user.id, includePast: true)
-            }
             
             messageLabel.isHidden = true
             segmentControl.isHidden = false
@@ -531,7 +510,9 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
                 guard let data = data else { return }
                 self.presentedViewController?.dismiss(animated: true) {
                     self.showAlert(title: "Success", message: data.message, onOK: {
-                        self.fetchUpdatedBookings()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            self.fetchUpdatedBookings()
+                        }
                     })
                 }
             }
@@ -541,9 +522,10 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
     private func fetchUpdatedBookings() {
         guard let user = UserSessionManager.getUser() else { return }
         showSkeleton()
-        viewModel.onSuccess = { [weak self] _ in
+        viewModel.onSuccess = { [weak self] response in
             guard let self = self else { return }
             DispatchQueue.main.async {
+                self.viewModel.filteredHistoryArray = response
                 self.hideSkeleton()
                 self.configureSelectedSegment {
                     self.updateUIAfterDataLoad()
@@ -558,7 +540,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
                 self.showAlert(error.userMessage)
             }
         }
-        viewModel.fetchNotificationUser(userId: user.id, includePast: true)
+        viewModel.fetchNotificationUser()
     }
 }
 
