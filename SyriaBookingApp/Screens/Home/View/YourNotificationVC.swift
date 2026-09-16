@@ -19,7 +19,6 @@ class YourNotificationVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupLanguage()
     }
     
@@ -57,7 +56,6 @@ extension YourNotificationVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let bookingdetails = viewModel.filteredHistoryArray[indexPath.row]
         guard let viewBookingConfirmationVC = UIStoryboard(name: "Booking", bundle: nil).instantiateViewController(withIdentifier: "ViewBookingConfirmationVC") as? ViewBookingConfirmationVC else {
             return
@@ -85,29 +83,22 @@ extension YourNotificationVC {
         yourNotificationTV.estimatedRowHeight = 60
         yourNotificationTV.rowHeight = UITableView.automaticDimension
         
-        
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
  
-        
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     func fetchUserNotification(){
-        
         viewModel.onSuccess = { [weak self] response in
-            
             self?.viewModel.filteredHistoryArray = response.filter { data in
                 if let date = data.checkInUtc.toDate() {
                     return date >= Calendar.current.startOfDay(for: Date())
                 }
                 return false
             }
-            
             DispatchQueue.main.async {
                 self?.hideLoader()
-                
                 let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
-                
                 if rowCount == 0 {
                     self?.noNotificationsLabel.isHidden = false
                     self?.yourNotificationTV.isHidden = true
@@ -135,7 +126,6 @@ extension YourNotificationVC {
         
         if UserSessionManager.getUser() != nil {
             viewModel.fetchNotificationUser()
-            
         }
     }
     
