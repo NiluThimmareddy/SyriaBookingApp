@@ -126,6 +126,7 @@ struct PostBookingRequestEncodable: Encodable {
     let guestPhone: String
     let guestEmail: String
     let numberOfGuests: Int
+    let GuestNationality : String
     let checkIn: String
     let checkOut: String
     let totalAmount: Double

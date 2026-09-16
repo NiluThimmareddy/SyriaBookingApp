@@ -785,6 +785,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             controller.guestName = user.name
             controller.guestEmail = user.email
             controller.guestMobileNumber = user.mobile
+            controller.guestNationality = user.country
             controller.selectedHotel = self.selectedHotel
             controller.selectedRoom = self.selectedRoom
             controller.selectedRates = self.selectedRates

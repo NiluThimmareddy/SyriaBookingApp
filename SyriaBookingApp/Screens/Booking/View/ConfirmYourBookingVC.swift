@@ -6,7 +6,6 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var guestNameLabel: UILabel!
     @IBOutlet weak var guestEmailLabel: UILabel!
     @IBOutlet weak var guestMobileNumberTF: UITextField!
     @IBOutlet weak var numberOfGuestsTF: UITextField!
@@ -37,9 +36,13 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var totalDiscountAmountLabel: UILabel!
     @IBOutlet weak var netTotalTitleLabel: UILabel!
     @IBOutlet weak var netTotalAmountLabel: UILabel!
+    @IBOutlet weak var nationalityLabel: UILabel!
+    @IBOutlet weak var enterNationalityTF: UITextField!
+    @IBOutlet weak var guestNameTF: UITextField!
     
     var guestName: String?
     var guestEmail: String?
+    var guestNationality : String?
     var guestMobileNumber: String?
     
     var datePickerContainerView: UIView!
@@ -168,7 +171,9 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         let selectCheckInMessage = lang == .arabic ? "يرجى اختيار تاريخ الوصول." : "Please select a check-in date."
         let selectCheckOutMessage = lang == .arabic ? "يرجى اختيار تاريخ المغادرة." : "Please select a check-out date."
         let enterMobileMessage = lang == .arabic ? "يرجى إدخال رقم الهاتف." : "Please enter a mobile number."
-
+        let enterGuestNameMessage = lang == .arabic ? "" : "Plese enter guest name."
+        let nationalityMessage = lang == .arabic ? "" : "Plese enter guest Nationality/Country."
+        
         guard let noOfGuestText = numberOfGuestsTF.text,
               !noOfGuestText.isEmpty,
               let noOfGuest = Int(noOfGuestText) else {
@@ -176,7 +181,20 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
             return
         }
         
-       
+        guard let guestName = guestNameTF.text,
+              !guestName.isEmpty
+               else {
+            showAlert(enterGuestNameMessage)
+            return
+        }
+        
+        guard let guestNationality = enterNationalityTF.text,
+              !guestNationality.isEmpty
+               else {
+            showAlert(nationalityMessage)
+            return
+        }
+        
         guard let  checkInDate = selectedCheckInDate else {
             showAlert(selectCheckInMessage)
             return
@@ -215,7 +233,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
         let checkInISO = iso8601String(from: checkInDate)
         let checkOutISO = iso8601String(from: checkOutDate)
         
-        let postDetails = PostBookingRequestEncodable(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
+        let postDetails = PostBookingRequestEncodable(userId: user.id,hotelId: hotel.id,roomId: selectedRoom.room.id,guestName: guestName ?? "",guestPhone: guestMobileNumber,guestEmail: guestEmail ?? "",numberOfGuests: noOfGuest, GuestNationality: guestNationality,checkIn: checkInISO,checkOut: checkOutISO,totalAmount: totalAmount,bookingDetails: roomRatesDataAPI, bookingType: bookingTypeLabel.text ?? "", totalDiscount: finaltotalDiscountAmount, netTotal: netAmountAfterDiscount)
         
         Task{ @MainActor in
             do{
@@ -233,6 +251,8 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
                     confirmationVC.guestName = response.guestName
                     confirmationVC.guestEmail = response.guestEmail
                     confirmationVC.guestPhone = response.guestPhone
+                    
+                    
                     confirmationVC.checkInDate = response.checkIn
                     confirmationVC.checkOutDate = response.checkOut
                     confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
@@ -300,7 +320,8 @@ extension ConfirmYourBookingVC {
     
     func setUpUI() {
         backView.applyCardStyle()
-        guestNameLabel.text = guestName
+        guestNameTF.text = guestName
+        enterNationalityTF.text = guestNationality
         guestEmailLabel.text = guestEmail
         guestMobileNumberTF.text = guestMobileNumber
         

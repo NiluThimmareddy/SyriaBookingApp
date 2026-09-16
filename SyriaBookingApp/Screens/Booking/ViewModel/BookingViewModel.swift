@@ -326,7 +326,7 @@ class BookingViewModel {
         
         let data = PostBookingRequest
         
-        let request = PostBookingRequestEncodable(userId: data.userId, hotelId: data.hotelId, roomId: data.roomId, guestName: data.guestName, guestPhone: data.guestPhone, guestEmail: data.guestEmail, numberOfGuests: data.numberOfGuests, checkIn: data.checkIn, checkOut: data.checkOut, totalAmount: data.totalAmount, bookingDetails: data.bookingDetails, bookingType: data.bookingType, totalDiscount: data.totalDiscount, netTotal: data.netTotal)
+        let request = PostBookingRequestEncodable(userId: data.userId, hotelId: data.hotelId, roomId: data.roomId, guestName: data.guestName, guestPhone: data.guestPhone, guestEmail: data.guestEmail, numberOfGuests: data.numberOfGuests, GuestNationality: data.GuestNationality, checkIn: data.checkIn, checkOut: data.checkOut, totalAmount: data.totalAmount, bookingDetails: data.bookingDetails, bookingType: data.bookingType, totalDiscount: data.totalDiscount, netTotal: data.netTotal)
         
         return try await apiClient.send(
             endpoint: .postBookingData,

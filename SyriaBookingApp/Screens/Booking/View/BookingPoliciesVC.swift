@@ -28,6 +28,7 @@ class BookingPoliciesVC: UIViewController {
     var guestName: String?
     var guestEmail: String?
     var guestMobileNumber: String?
+    var guestNationality: String?
     var selectedHotel: Hotel?
     var selectedRoom: RoomElement?
     var selectedRates: [Rate] = []
@@ -212,6 +213,7 @@ class BookingPoliciesVC: UIViewController {
         if let confirmBookingVC = storyboard.instantiateViewController(withIdentifier: "ConfirmYourBookingVC") as? ConfirmYourBookingVC {
             confirmBookingVC.guestName = self.guestName
             confirmBookingVC.guestEmail = self.guestEmail
+            confirmBookingVC.guestNationality = self.guestNationality
             confirmBookingVC.guestMobileNumber = self.guestMobileNumber
             confirmBookingVC.selectedHotel = self.selectedHotel
             confirmBookingVC.selectedRoom = self.selectedRoom

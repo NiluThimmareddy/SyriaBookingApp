@@ -45,7 +45,7 @@ enum APIConstants {
             }
         
        //MARK: PRODUCTION
-       let decryptedURL =
+/*       let decryptedURL =
         "https://" +
         URLCrypto.decrypt(sb) +
         "." +
@@ -56,10 +56,18 @@ enum APIConstants {
         
         URLCrypto.decrypt(apy) +
         "/"
+  
+ */
+//        let decryptedURL = "https://sbpublicapi.azurewebsites.net/api"
         
+        let decryptedURL = "https://sbstage2.azurewebsites.net/public-api/api"
+        
+ #if debug
         //MARK: STAG
 //            let decryptedURL  =
 //                 "https://sbstage2.azurewebsites.net/public-api/api/"
+  #endif
+                
 
                 guard let url = URL(string: decryptedURL) else {
                     fatalError("❌ Cannot create URL from decrypted API URL")

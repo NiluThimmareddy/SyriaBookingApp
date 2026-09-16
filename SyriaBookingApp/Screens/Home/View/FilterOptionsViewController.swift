@@ -629,7 +629,10 @@ extension FilterOptionsViewController {
             "lodge": "كوخ",
             "capsule": "كبسولة",
             "homestay": "إقامة منزلية",
-            "Camp": "مخيم"
+            "Camp": "مخيم",
+            "Chalet": "شاليه",
+            "Summer House": "بيت صيفي",
+            "Farm": "مزرعة"
         ]
 
         let reviewScoreTranslations: [String: String] = [
