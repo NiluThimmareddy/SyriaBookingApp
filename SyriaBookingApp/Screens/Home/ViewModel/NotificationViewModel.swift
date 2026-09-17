@@ -48,6 +48,34 @@ class NotificationViewModel {
         }
     }
     
+    
+    func fetchNotificationUserCount(includePast:Bool = true) {
+        var url = APIURL.notification.url.absoluteString
+        url += "?includePast=\(includePast)&take=50"
+        
+        guard let url = URL(string: url) else{
+            onError?(NetworkError.invalidURL)
+            return 
+        }
+        
+        APIManager.shared.fetchData(from: url, requiresJWT: true, modelType: BookingHistoryResponseModel.self) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let success):
+                DispatchQueue.main.async {
+                    self.BookingHistoryArray = success.data
+                    
+                    self.onSuccess?(success.data)
+                }
+            case .failure(let failure):
+#if DEBUG
+                print("fetchNotificationUser :", failure.localizedDescription)
+#endif
+                self.onError?(failure)
+            }
+        }
+    }
+    
     func fetchNotificationCount() async throws -> NotificationCountModel {
         try await apiClient.send(
             endpoint: .fetchUserNotificationCount(),

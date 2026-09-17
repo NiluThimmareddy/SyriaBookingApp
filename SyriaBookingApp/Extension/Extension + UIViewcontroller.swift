@@ -94,18 +94,14 @@ extension UIViewController {
                                          action: #selector(didTapMenu(_:)))
         
         if UserSessionManager.getUser() != nil  {
-            Task {  @MainActor in
-                do {
-                        let data = try await viewModel.fetchNotificationCount()
-                        badgeButton.badge = data.count
-                    
-                } catch {
-#if DEBUG
-                    print(error)
-#endif
-                }
+            viewModel.onSuccess = { count in
+                badgeButton.badge = count.count
             }
             
+            
+            viewModel.fetchNotificationUserCount(includePast: false)
+            // let data = try await viewModel.fetchNotificationCount()
+
             rightButtons.insert(notificationButton, at: 0)
             rightButtons.insert(menuButton, at: 0)
             navigationItem.rightBarButtonItems = rightButtons
