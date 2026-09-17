@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PCx-Pf-BF6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PCx-Pf-BF6">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1582,7 +1582,7 @@
                                                                     <constraint firstItem="VkO-li-dMg" firstAttribute="leading" secondItem="ndz-fg-dPB" secondAttribute="leading" constant="5" id="XVv-4n-fK8"/>
                                                                     <constraint firstAttribute="trailing" secondItem="VkO-li-dMg" secondAttribute="trailing" constant="5" id="Y7u-tk-8h1"/>
                                                                     <constraint firstItem="VkO-li-dMg" firstAttribute="top" secondItem="ndz-fg-dPB" secondAttribute="top" id="d0G-TG-ZVu"/>
-                                                                    <constraint firstAttribute="width" constant="120" id="hbm-rd-G3x"/>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="hbm-rd-G3x"/>
                                                                 </constraints>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1599,6 +1599,7 @@
                                                             <constraint firstAttribute="bottom" secondItem="ndz-fg-dPB" secondAttribute="bottom" constant="20" id="Mph-Ov-43m"/>
                                                             <constraint firstItem="DDn-0U-feA" firstAttribute="top" secondItem="crh-tU-Kwc" secondAttribute="top" constant="5" id="PZF-LG-uwO"/>
                                                             <constraint firstItem="ndz-fg-dPB" firstAttribute="centerY" secondItem="CYA-ht-Yvz" secondAttribute="centerY" id="RmN-nH-5l2"/>
+                                                            <constraint firstItem="ndz-fg-dPB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CYA-ht-Yvz" secondAttribute="trailing" constant="10" id="V5O-bY-hgb"/>
                                                             <constraint firstItem="ndz-fg-dPB" firstAttribute="trailing" secondItem="qpx-qh-HII" secondAttribute="trailing" id="fSq-JP-fu5"/>
                                                             <constraint firstItem="qpx-qh-HII" firstAttribute="leading" secondItem="DDn-0U-feA" secondAttribute="leading" id="gt9-JL-IEx"/>
                                                             <constraint firstItem="qpx-qh-HII" firstAttribute="trailing" secondItem="DDn-0U-feA" secondAttribute="trailing" id="mAA-Nk-yDn"/>

@@ -508,7 +508,7 @@ extension FilterOptionsViewController {
     }
     
     private func setDefaultEnglishTitles() {
-        let defaultHotelTypes = ["All", "Hotel", "Resort", "Motel", "Hostel", "Bed and Breakfast", "Apartment", "Villa", "Guesthouse", "Boutique", "Lodge", "Capsule", "Homestay","Camp"]
+        let defaultHotelTypes = ["All", "Hotel", "Resort", "Motel", "Hostel", "Bed and Breakfast", "Apartment", "Villa", "Guesthouse", "Boutique", "Lodge", "Capsule", "Homestay","Camp","Chalet","Summer House","Farm"]
         for (index, button) in hotelTypesButton.enumerated() {
             if index < defaultHotelTypes.count {
                 button.setTitle(defaultHotelTypes[index], for: .normal)
@@ -629,10 +629,10 @@ extension FilterOptionsViewController {
             "lodge": "كوخ",
             "capsule": "كبسولة",
             "homestay": "إقامة منزلية",
-            "Camp": "مخيم",
-            "Chalet": "شاليه",
-            "Summer House": "بيت صيفي",
-            "Farm": "مزرعة"
+            "camp": "مخيم",
+            "chalet": "شاليه",
+            "summerhouse": "بيت صيفي",
+            "farm": "مزرعة"
         ]
 
         let reviewScoreTranslations: [String: String] = [
