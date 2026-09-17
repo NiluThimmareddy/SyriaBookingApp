@@ -239,7 +239,7 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
             do{
              let response = try await viewModel.postBookingDetails(postDetails)
                 
-                if let response = response.data {
+                if let response = response {
                     self.hideLoader()
                     
                     checkInTF.text = ""
@@ -248,20 +248,20 @@ class ConfirmYourBookingVC : BaseViewController, UITextFieldDelegate {
                     selectedCheckOutDate = nil
                     guard let confirmationVC = self.storyboard?.instantiateViewController(withIdentifier: "BookingConfirmationVC") as? BookingConfirmationVC else { return }
                     
-                    confirmationVC.guestName = response.guestName
-                    confirmationVC.guestEmail = response.guestEmail
-                    confirmationVC.guestPhone = response.guestPhone
+                    confirmationVC.guestName = guestName
+                    confirmationVC.guestEmail = guestEmail
+                    confirmationVC.guestPhone = guestMobileNumber
                     
                     
-                    confirmationVC.checkInDate = response.checkIn
-                    confirmationVC.checkOutDate = response.checkOut
-                    confirmationVC.numberOfGuests = "\(response.numberOfGuests ?? 0)"
+                    confirmationVC.checkInDate = checkInISO
+                    confirmationVC.checkOutDate = checkOutISO
+                    confirmationVC.numberOfGuests = "\(noOfGuest)"
                     confirmationVC.totalPrice =    "\(netAmountAfterDiscount )"  //"\(response.totalAmount ?? 0.0)"
-                    confirmationVC.roomDetails = response.bookingDetails
+                    confirmationVC.roomDetails = roomRatesDataAPI
                     confirmationVC.selectedHotel = self.selectedHotel
                     confirmationVC.selectedRoom = self.selectedRoom
                     confirmationVC.selectedRates = self.selectedRates
-                    confirmationVC.bookingId = response.id
+                    confirmationVC.bookingId = response.requestId
                     confirmationVC.roomtype = self.selectedRoom?.room.roomType
                     confirmationVC.selectedCurrency = self.bookingTypeLabel.text?.description ?? ""
                     

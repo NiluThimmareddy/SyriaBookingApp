@@ -100,6 +100,7 @@ enum APIURL {
     case postForNewUserOTP
     case verifyNewUserOTP
     case postBooking
+    case postBookingQueue
     case notification
     case notificationCount
     case updateProfile
@@ -166,6 +167,12 @@ enum APIURL {
         case .postBooking:
             return APIConstants.baseURL
                 .appendingPathComponent("BookingPublic")
+                
+            
+        case .postBookingQueue:
+            return APIConstants.baseURL
+                .appendingPathComponent("BookingPublic")
+                .appendingPathComponent("queue")
 
         case .notification:
             return APIConstants.baseURL

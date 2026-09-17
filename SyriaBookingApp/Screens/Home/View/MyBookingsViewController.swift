@@ -22,7 +22,7 @@ class MyBookingsViewController: BaseViewController {
     var selectedSegmentIndex: Int = 0
     var isLoginPopupPresented = false
     var comingFrom : String?
-                                       
+    
     // Skeleton state management - UPDATED
     private var isShowingSkeleton = false
     private var minimumSkeletonTime: TimeInterval = 2.0 // Minimum 2 seconds
@@ -56,16 +56,12 @@ class MyBookingsViewController: BaseViewController {
         
         // Reset to "Upcoming" tab every time user visits MyBookings
         segmentControl.selectedSegmentIndex = 0
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         // Refresh UI + fetch bookings
         refreshBookingData()
     }
-    
-    
     
     private func setupTableView() {
         HistoryTableView.delegate = self
@@ -235,7 +231,7 @@ class MyBookingsViewController: BaseViewController {
             viewModel.onError = { [weak self] error in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                     
+                    
                     self.hideSkeleton() // Hide skeleton on error
                     self.showAlert(error.userMessage)
                 }
@@ -499,11 +495,11 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         bookingViewModel.onError = { [weak self] error in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                 
+                
                 self.showAlert(error.userMessage)
             }
         }
-
+        
         bookingViewModel.postCancelBooking(reason: reason, userId: user.id, bookingId: booking.id) { [weak self] data in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -569,7 +565,7 @@ extension String {
         formatter.formatOptions = [.withInternetDateTime]
         if let date = formatter.date(from: self) {
             return date
-        }        
+        }
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter.date(from: self)
     }

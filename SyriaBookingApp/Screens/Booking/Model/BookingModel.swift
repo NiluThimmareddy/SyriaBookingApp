@@ -118,6 +118,11 @@ struct PostBookingResponse: Codable {
     let totalAmount: Double?
 }
 
+struct PostBookingQueueResponse: Codable {
+    let message : String?
+    let requestId : String?
+}
+
 struct PostBookingRequestEncodable: Encodable {
     let userId: String
     let hotelId: String

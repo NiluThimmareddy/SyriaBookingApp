@@ -322,7 +322,7 @@ class BookingViewModel {
         }.resume()
     }
     
-    func postBookingDetails(_ PostBookingRequest: PostBookingRequestEncodable) async throws -> PostBookingWrapper {
+    func postBookingDetails(_ PostBookingRequest: PostBookingRequestEncodable) async throws -> PostBookingQueueResponse? {
         
         let data = PostBookingRequest
         
@@ -331,7 +331,7 @@ class BookingViewModel {
         return try await apiClient.send(
             endpoint: .postBookingData,
             body: request,
-            responseType: PostBookingWrapper.self)
+            responseType: PostBookingQueueResponse.self)
     }
     
 //    func SubmitBookingInfo(userId: String,hotelId: String,roomId: String,guestName: String,guestPhone: String,guestEmail: String,numberOfGuests: Int,checkIn: String,checkOut: String, totalAmount: Double,bookingDetails: String, bookingType: String, totalDiscount: Double, netTotal: Double
@@ -473,7 +473,7 @@ extension Endpoint {
 extension Endpoint {
     static let postBookingData =
         Endpoint(
-            path: APIURL.postBooking.url,
+            path: APIURL.postBookingQueue.url,
             method: .post,
             authentication: .jwt
         )

@@ -50,7 +50,7 @@ extension Error {
         if let apiError = self as? NetworkError {
             switch apiError {
             case .userNotFound:
-                return "User not found123"
+                return "User not found"
             case .invalidURL:
                 return "Something went wrong. Please try again."
             case .noData:

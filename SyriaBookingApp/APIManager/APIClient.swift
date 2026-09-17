@@ -40,6 +40,7 @@ final class APIClient {
 
         if let body {
             request.httpBody = try JSONEncoder().encode(body)
+            
             request.setValue("application/json",
                              forHTTPHeaderField: "Content-Type")
         }
