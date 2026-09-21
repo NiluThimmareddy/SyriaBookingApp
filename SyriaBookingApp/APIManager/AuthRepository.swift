@@ -102,11 +102,13 @@ final class AuthManager {
     func authorize(request: inout URLRequest) throws {
 
         if tokenStore.isTokenExpired() {
+            UserSessionManager.clearUser()
             throw NetworkError.sessionExpired
         }
 
         guard let token = tokenStore.token(),
               !token.isEmpty else {
+            UserSessionManager.clearUser()
             throw NetworkError.sessionExpired
         }
 

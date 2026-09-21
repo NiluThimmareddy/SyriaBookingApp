@@ -202,7 +202,8 @@ final class APIClient {
     private func expireSession() async {
 
         tokenStore.clearSession()
-       
+        UserSessionManager.clearUser()
+        
         await MainActor.run {
             NotificationCenter.default.post(name: .sessionExpired, object: nil)
         }

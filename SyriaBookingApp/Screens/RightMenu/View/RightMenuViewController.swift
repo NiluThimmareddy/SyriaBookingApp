@@ -151,10 +151,13 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             
             showAlert(title: title, message: message, type: .error, OkButtonTitle: okTitle, cancelButtonTitle: cancelTitle, onOK: {
                 UserSessionManager.clearUser()
+            
                 NotificationCenter.default.post(
+                  
                     name: .didLogoutSuccessfully,
                     object: nil
                 )
+                
                 self.navigateToHomeTab()
             })
         case 7:

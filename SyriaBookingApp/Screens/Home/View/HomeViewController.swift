@@ -132,6 +132,8 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         return []
     }
     
+    private let tokenStore = KeychainTokenStore()
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,7 +173,6 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         super.viewWillAppear(animated)
         currentUser = UserSessionManager.getUser()
         setupAppNavigationBar()
-       
         
         if viewModel.filteredHotels.isEmpty {
             showSkeletonOnAllElements()
@@ -227,13 +228,24 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
             currentUser = user
            
         }
+        setupAppNavigationBar()
         
         loadData()
         reloadDataOnHomeScreen()
     }
     
     @objc func handleLogout() {
-      
+        notificationViewModel?.onSuccess = nil
+        notificationViewModel?.onError = nil
+        notificationViewModel?.BookingHistoryArray.removeAll()
+        notificationViewModel?.BookingListArray.removeAll()
+        notificationViewModel?.filteredHistoryArray.removeAll()
+
+        navigationItem.rightBarButtonItems = nil
+        notificationViewModel = nil
+        UserSessionManager.clearUser()
+        navigateToHomeTab()
+        tokenStore.clearSession()
         sliderCollectionView.reloadData()
         sliderCollectionView.layoutIfNeeded()
         showSkeletonOnAllElements()

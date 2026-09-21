@@ -25,8 +25,7 @@ class VerificationVC : BaseViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var enterYourMobileTitleLabel: UILabel!
     @IBOutlet weak var mobileNumberTitleLabel: UILabel!
-    @IBOutlet weak var enterOtpTitleLabel: UILabel!
-    
+    @IBOutlet weak var enterOtpTitleLabel: UILabel!    
     
     var mobileNumber: String?
     var guestName: String?
@@ -75,10 +74,6 @@ class VerificationVC : BaseViewController {
         let successTitle = lang == .arabic ? "نجاح" : "Success"
         let registrationSuccessMessage = lang == .arabic ? "تم تسجيل رقم هاتفك المحمول بنجاح." : "Your mobile number has been Registered successfully."
         
-        guard let mobileNumber = mobileNumber else {
-            return
-        }
-        
         let otp = otpTF.compactMap { $0.text?.trimmingCharacters(in: .whitespaces) }.joined()
         
         guard !otp.isEmpty else {
@@ -91,6 +86,10 @@ class VerificationVC : BaseViewController {
                     switch flow {
 
                     case .mobileLogin:
+                        guard let mobileNumber = mobileNumber else {
+                            return
+                        }
+                        
                         let response = try await loginViewModel.verifyOTP(
                             mobileNumber,
                             otp: otp
@@ -108,7 +107,7 @@ class VerificationVC : BaseViewController {
                             
                             UserSessionManager.saveUser(user.data)
                             SessionManager.shared.markAuthenticated()
-                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
+//                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
                             
                             await MainActor.run {
                                 
@@ -119,16 +118,13 @@ class VerificationVC : BaseViewController {
                         }
 
                     case .emailLogin:
-
                         guard let email = guestEmail else { return }
-
                         let response = try await loginViewModel.verifyEmailOTP(
                             email: email,
                             otp: otp
                         )
     
-                        if let data = response.data{
-                            
+                        if let data = response.data{                            
                             try KeychainTokenStore().saveSession(
                                 token: data.token,
                                 expiresAtUtc: data.expiresAtUtc,
@@ -141,9 +137,11 @@ class VerificationVC : BaseViewController {
                             
                             SessionManager.shared.markAuthenticated()
                             
-                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
+//                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
                             
-                            self.performNavigationAfterVerification()
+                            await MainActor.run {
+                                self.performNavigationAfterVerification()
+                            }
                         }else{
                             self.showAlert(response.message)
                         }
@@ -156,8 +154,6 @@ class VerificationVC : BaseViewController {
                                 message: registrationSuccessMessage,
                                 type: .success,
                                 onOK: {
-
-                                    
                                     self.performNavigationAfterVerification()
                                 }
                             )
@@ -241,7 +237,11 @@ extension VerificationVC : UITextFieldDelegate {
 
 extension VerificationVC {
     func setUpUI() {
-        mobileNumberTF.text = mobileNumber
+        if flow == .emailLogin{
+            mobileNumberTF.text = guestEmail
+        }else{
+            mobileNumberTF.text = mobileNumber
+        }
         for (index, textField) in otpTF.enumerated() {
             textField.delegate = self
             textField.keyboardType = .numberPad
@@ -257,13 +257,21 @@ extension VerificationVC {
             verifyAndContinueButton.setTitle("Verify & Continue", for: .normal)
             messageLabel.text = "Dear \(guestName ?? "User"), your mobile is registered. An OTP has been sent to \(OptResponse?.data?.to ?? "your email"). Please enter it below to continue."
             enterYourMobileTitleLabel.text = "Enter Your Mobile Number"
-            mobileNumberTitleLabel.text = "Mobile Number"
+            if flow == .mobileLogin{
+                mobileNumberTitleLabel.text = "Mobile Number"
+            }else{
+                mobileNumberTitleLabel.text = "Email"
+            }
             enterOtpTitleLabel.text = "Enter OTP"
         } else {
             verifyAndContinueButton.setTitle("تحقق واستمر", for: .normal)
             messageLabel.text = "عزيزي \(guestName ?? "المستخدم")، تم تسجيل رقم هاتفك. تم إرسال رمز التحقق إلى \(OptResponse?.data?.to ?? "بريدك الإلكتروني"). الرجاء إدخاله أدناه للمتابعة."
             enterYourMobileTitleLabel.text = "أدخل رقم هاتفك المحمول"
-            mobileNumberTitleLabel.text = "رقم الجوال"
+            if flow == .mobileLogin {
+                mobileNumberTitleLabel.text = "رقم الجوال"
+            } else {
+                mobileNumberTitleLabel.text = "البريد الإلكتروني"
+            }
             enterOtpTitleLabel.text = "أدخل رمز التحقق"
         }
         enterYourMobileTitleLabel.textAlignment = .center
@@ -271,7 +279,7 @@ extension VerificationVC {
     }
     
     func performNavigationAfterVerification() {
-//        SessionManagerForTimer.shared.startSessionTimer()
+        SessionManagerForTimer.shared.startSessionTimer()
         NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
         self.dismiss(animated: true)
     }

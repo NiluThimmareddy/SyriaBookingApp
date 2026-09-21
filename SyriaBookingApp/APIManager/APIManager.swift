@@ -35,8 +35,7 @@ enum NetworkError: LocalizedError {
         case .EnterValidData:
             return "Enter valid data"
         case .custom(let message):
-            return message
-            
+            return message            
             
         case .sessionExpired:
             return "Session expired pleas Login again"

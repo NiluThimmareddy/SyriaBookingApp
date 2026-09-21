@@ -94,21 +94,25 @@ extension UIViewController {
                                          action: #selector(didTapMenu(_:)))
         
         if UserSessionManager.getUser() != nil  {
-            viewModel.onSuccess = { count in
-                badgeButton.badge = count.count
+            Task{ @MainActor in
+                do{
+                    
+                    let count = try await  viewModel.fetchNotificationCount()
+                    badgeButton.badge = count.count
+                } catch {
+                    
+                }
+                
+                
+                rightButtons.insert(notificationButton, at: 0)
+                rightButtons.insert(menuButton, at: 0)
+                navigationItem.rightBarButtonItems = rightButtons
             }
-            
-            
-            viewModel.fetchNotificationUserCount(includePast: false)
-            // let data = try await viewModel.fetchNotificationCount()
-
-            rightButtons.insert(notificationButton, at: 0)
-            rightButtons.insert(menuButton, at: 0)
-            navigationItem.rightBarButtonItems = rightButtons
-        } else {
-            rightButtons.insert(menuButton, at: 0)
-            navigationItem.rightBarButtonItems = rightButtons
-        }
+            } else {
+                rightButtons.insert(menuButton, at: 0)
+                navigationItem.rightBarButtonItems = rightButtons
+            }
+        
     }
     
     @objc func didTapSearch(_ sender: UIBarButtonItem) {

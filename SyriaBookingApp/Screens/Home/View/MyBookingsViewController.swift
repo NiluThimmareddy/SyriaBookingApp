@@ -215,6 +215,9 @@ class MyBookingsViewController: BaseViewController {
         guard presentedViewController == nil else { return }
         
         if UserSessionManager.getUser() != nil {
+            viewModel.BookingHistoryArray.removeAll()
+            viewModel.BookingListArray.removeAll()
+            viewModel.filteredHistoryArray.removeAll()
             showSkeleton() // Show skeleton before API call
             
             viewModel.onSuccess = { [weak self] response in
@@ -243,6 +246,10 @@ class MyBookingsViewController: BaseViewController {
             }
             
         } else {
+            
+            viewModel.BookingHistoryArray.removeAll()
+            viewModel.BookingListArray.removeAll()
+            viewModel.filteredHistoryArray.removeAll()
             hideSkeleton()
             setupUI()
         }
@@ -520,6 +527,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
         showSkeleton()
         viewModel.onSuccess = { [weak self] response in
             guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 self.viewModel.filteredHistoryArray = response
                 self.hideSkeleton()
