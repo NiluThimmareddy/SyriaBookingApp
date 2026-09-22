@@ -502,7 +502,7 @@ extension ChatBotView{
             }
         }
         
-        notificationVM.fetchNotificationUser()
+        notificationVM.fetchNotificationUsersList(includePast: true)
     }
     
     func handleMyBookings(){

@@ -22,6 +22,15 @@ final class APIClient {
             self.session = session
             self.tokenStore = tokenStore
         }
+    
+    private func debugTokenID() -> String {
+        guard let token = KeychainTokenStore().token(),
+              !token.isEmpty else {
+            return "NO_TOKEN"
+        }
+
+        return String(token.suffix(12))
+    }
 
     // MARK: - Request with Response
 
@@ -32,7 +41,7 @@ final class APIClient {
     ) async throws -> Response {
 
         var request = URLRequest( url:  endpoint.path)
-        
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
         request.httpMethod = endpoint.method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -53,6 +62,10 @@ final class APIClient {
         case .jwt:
             
             do {
+                print("🔐 API:", endpoint.path)
+                       print("👤 User:",
+                             UserSessionManager.getUser()?.id ?? "nil")
+                       print("🔑 Token ID:", debugTokenID())
                     try AuthManager.shared.authorize(request: &request)
                 } catch {
                     await expireSession()
@@ -68,6 +81,7 @@ final class APIClient {
         }
 
         let (data, response) = try await session.data(for: request)
+
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse
@@ -129,7 +143,7 @@ final class APIClient {
     ) async throws {
 
         var request = URLRequest(url: endpoint.path)
-        
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
         request.httpMethod = endpoint.method.rawValue
         request.setValue("application/json",
@@ -199,13 +213,28 @@ final class APIClient {
     // MARK: - Logout
 
     private func expireSession() async {
-
-        tokenStore.clearSession()
+        KeychainTokenStore().clearSession()        
         UserSessionManager.clearUser()
         
         await MainActor.run {
             NotificationCenter.default.post(name: .sessionExpired, object: nil)
         }
+    }
+    
+    // MARK: - User Notifications
+
+    func fetchUserNotificationsList(
+        includePast: Bool = true,
+        take: Int = 50
+    ) async throws -> BookingHistoryResponseModel {
+
+        return try await send(
+            endpoint: .fetchUserNotificationList(
+                includePast: includePast,
+                take: take
+            ),
+            responseType: BookingHistoryResponseModel.self
+        )
     }
 }
 

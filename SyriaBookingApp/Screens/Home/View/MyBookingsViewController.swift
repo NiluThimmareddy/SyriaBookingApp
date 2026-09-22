@@ -224,6 +224,8 @@ class MyBookingsViewController: BaseViewController {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.viewModel.filteredHistoryArray = response
+
+
                     self.hideSkeleton() // Hide skeleton when data is ready
                     self.configureSelectedSegment {
                         self.updateUIAfterDataLoad()
@@ -241,9 +243,9 @@ class MyBookingsViewController: BaseViewController {
             }
             
             // Add delay to ensure skeleton is visible
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.viewModel.fetchNotificationUser()
-            }
+           
+                self.viewModel.fetchNotificationUsersList(includePast: true)
+            
             
         } else {
             
@@ -306,6 +308,7 @@ class MyBookingsViewController: BaseViewController {
     }
     
     func configureSelectedSegment(completion: @escaping ()->Void) {
+
         if selectedSegmentIndex == 0 {
             viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
                 if let date = data.checkInUtc.toDate() {
@@ -530,6 +533,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             
             DispatchQueue.main.async {
                 self.viewModel.filteredHistoryArray = response
+
                 self.hideSkeleton()
                 self.configureSelectedSegment {
                     self.updateUIAfterDataLoad()
@@ -544,7 +548,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
                 self.showAlert(error.userMessage)
             }
         }
-        viewModel.fetchNotificationUser()
+        viewModel.fetchNotificationUsersList(includePast: true)
     }
 }
 

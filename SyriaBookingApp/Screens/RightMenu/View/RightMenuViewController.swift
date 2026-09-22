@@ -151,7 +151,7 @@ extension RightMenuViewController : UITableViewDelegate,UITableViewDataSource{
             
             showAlert(title: title, message: message, type: .error, OkButtonTitle: okTitle, cancelButtonTitle: cancelTitle, onOK: {
                 UserSessionManager.clearUser()
-            
+                KeychainTokenStore().clearSession()
                 NotificationCenter.default.post(
                   
                     name: .didLogoutSuccessfully,

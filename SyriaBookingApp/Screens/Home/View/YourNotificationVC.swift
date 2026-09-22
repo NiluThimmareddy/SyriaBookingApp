@@ -87,32 +87,35 @@ extension YourNotificationVC {
  
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
-    
+
     func fetchUserNotification(){
         viewModel.onSuccess = { [weak self] response in
-            self?.viewModel.filteredHistoryArray = response.filter { data in
+            guard let self = self else { return }
+            
+            self.viewModel.filteredHistoryArray = response.filter { data in
                 if let date = data.checkInUtc.toDate() {
                     return date >= Calendar.current.startOfDay(for: Date())
                 }
                 return false
             }
             DispatchQueue.main.async {
-                self?.hideLoader()
-                let rowCount = self?.viewModel.filteredHistoryArray.count ?? 0
+                self.hideLoader()
+                let rowCount = self.viewModel.filteredHistoryArray.count ?? 0
+
                 if rowCount == 0 {
-                    self?.noNotificationsLabel.isHidden = false
-                    self?.yourNotificationTV.isHidden = true
+                    self.noNotificationsLabel.isHidden = false
+                    self.yourNotificationTV.isHidden = true
                     if AppSettings.shared.selectedLanguage == .arabic {
-                        self?.noNotificationsLabel.text = "لا توجد حجوزات قادمة"
+                        self.noNotificationsLabel.text = "لا توجد حجوزات قادمة"
                     } else {
-                        self?.noNotificationsLabel.text = "No Upcoming bookings found"
+                        self.noNotificationsLabel.text = "No Upcoming bookings found"
                     }
-                    self?.backViewHeightConstraint.constant = 100
+                    self.backViewHeightConstraint.constant = 100
                 } else {
-                    self?.noNotificationsLabel.isHidden = true
-                    self?.yourNotificationTV.isHidden = false
-                    self?.yourNotificationTV.reloadData()
-                    self?.updateTableViewHeight()
+                    self.noNotificationsLabel.isHidden = true
+                    self.yourNotificationTV.isHidden = false
+                    self.yourNotificationTV.reloadData()
+                    self.updateTableViewHeight()
                 }
             }
         }
@@ -124,9 +127,9 @@ extension YourNotificationVC {
             }
         }
         
-        if UserSessionManager.getUser() != nil {
-            viewModel.fetchNotificationUser()
-        }
+//        if UserSessionManager.getUser() != nil {
+            viewModel.fetchNotificationUsersList(includePast: false)
+//        }
     }
     
     private func updateTableViewHeight() {

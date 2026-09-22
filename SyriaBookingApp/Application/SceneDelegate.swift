@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc func logoutUser(){
         SessionManagerForTimer.shared.stopTimer()
         UserSessionManager.clearUser()
+        KeychainTokenStore().clearSession()
         NotificationCenter.default.post(
             name: .didLogoutSuccessfully,
             object: nil

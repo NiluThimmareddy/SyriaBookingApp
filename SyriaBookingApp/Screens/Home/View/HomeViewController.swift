@@ -235,17 +235,14 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     }
     
     @objc func handleLogout() {
-        notificationViewModel?.onSuccess = nil
-        notificationViewModel?.onError = nil
-        notificationViewModel?.BookingHistoryArray.removeAll()
-        notificationViewModel?.BookingListArray.removeAll()
-        notificationViewModel?.filteredHistoryArray.removeAll()
-
+        notificationViewModel?.clearNotificationData()
+        
         navigationItem.rightBarButtonItems = nil
         notificationViewModel = nil
+        KeychainTokenStore().clearSession()
         UserSessionManager.clearUser()
         navigateToHomeTab()
-        tokenStore.clearSession()
+       
         sliderCollectionView.reloadData()
         sliderCollectionView.layoutIfNeeded()
         showSkeletonOnAllElements()
