@@ -168,12 +168,6 @@ class APIManager {
                 let decoded = try JSONDecoder().decode(responseType, from: data)
                 completion(.success(decoded))
             } catch {
-                print("❌ Decoding Error:", error)
-
-                   if let json = String(data: data, encoding: .utf8) {
-                       print("📦 Response JSON:")
-                       print(json)
-                   }
                 completion(.failure(error))
             }
         }.resume()

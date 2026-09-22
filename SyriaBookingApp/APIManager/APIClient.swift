@@ -22,15 +22,7 @@ final class APIClient {
             self.session = session
             self.tokenStore = tokenStore
         }
-    
-    private func debugTokenID() -> String {
-        guard let token = KeychainTokenStore().token(),
-              !token.isEmpty else {
-            return "NO_TOKEN"
-        }
 
-        return String(token.suffix(12))
-    }
 
     // MARK: - Request with Response
 
@@ -62,10 +54,6 @@ final class APIClient {
         case .jwt:
             
             do {
-                print("🔐 API:", endpoint.path)
-                       print("👤 User:",
-                             UserSessionManager.getUser()?.id ?? "nil")
-                       print("🔑 Token ID:", debugTokenID())
                     try AuthManager.shared.authorize(request: &request)
                 } catch {
                     await expireSession()
