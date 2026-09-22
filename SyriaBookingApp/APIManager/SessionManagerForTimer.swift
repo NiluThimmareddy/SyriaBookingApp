@@ -9,8 +9,8 @@ final class SessionManagerForTimer{
     private init() {}
     private var logoutTimer: Timer?
     
-    //15 minutes
-    private let timeout: TimeInterval = 1 * 60
+    //30 minutes
+    private let timeout: TimeInterval = 30 * 60
     
     func startSessionTimer(){
         resetTimer()

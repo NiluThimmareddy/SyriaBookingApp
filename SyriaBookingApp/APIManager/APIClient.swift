@@ -23,7 +23,6 @@ final class APIClient {
             self.tokenStore = tokenStore
         }
 
-      
     // MARK: - Request with Response
 
     func send<Response: Decodable, Body: Encodable>(

@@ -58,6 +58,5 @@ class UserSessionManager {
     // MARK: Logout
     static func clearUser() {
         UserDefaults.standard.removeObject(forKey: userKey)
-
     }
 }

@@ -534,7 +534,7 @@ class RegisterMobileNumberVC : BaseViewController {
                                                 tabBarVC.modalPresentationStyle = .fullScreen
                                                 UIApplication.shared.windows.first?.rootViewController = tabBarVC
                                                 
-                                                tabBarVC.presentEmailVerificationScreen( email: data.to)
+                                                tabBarVC.presentEmailVerificationScreen( email: email)
                                             }
                                         }
                                         

@@ -110,7 +110,6 @@ class VerificationVC : BaseViewController {
 //                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
                             
                             await MainActor.run {
-                                
                                 self.performNavigationAfterVerification()
                             }
                         }else{
@@ -143,6 +142,7 @@ class VerificationVC : BaseViewController {
                                 self.performNavigationAfterVerification()
                             }
                         }else{
+                            
                             self.showAlert(response.message)
                         }
                          
