@@ -60,7 +60,7 @@ enum APIConstants {
  */
 //        let decryptedURL = "https://sbpublicapi.azurewebsites.net/api"
         
-        let decryptedURL = "https://sbstage2.azurewebsites.net/public-api/api"
+        let decryptedURL = "https://sbpublicapi.azurewebsites.net/api"
         
  #if debug
         //MARK: STAG
