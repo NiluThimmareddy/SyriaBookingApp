@@ -45,30 +45,17 @@ enum APIConstants {
             }
         
        //MARK: PRODUCTION
-/*       let decryptedURL =
-        "https://" +
-        URLCrypto.decrypt(sb) +
-        "." +
-        URLCrypto.decrypt(azwest) +
-        "." +
-        URLCrypto.decrypt(nt) +
-        "/" +
-        
-        URLCrypto.decrypt(apy) +
-        "/"
-  
- */
-//        let decryptedURL = "https://sbpublicapi.azurewebsites.net/api"
-        
-        let decryptedURL = "https://sbpublicapi.azurewebsites.net/api"
-        
- #if debug
-        //MARK: STAG
-//            let decryptedURL  =
-//                 "https://sbstage2.azurewebsites.net/public-api/api/"
-  #endif
-                
-
+//       let decryptedURL =
+//        "https://" +
+//        URLCrypto.decrypt(sb) +
+//        "." +
+//        URLCrypto.decrypt(azwest) +
+//        "." +
+//        URLCrypto.decrypt(nt) +
+//        "/" +
+//        URLCrypto.decrypt(apy)
+       
+        let decryptedURL =   "https://sbstage2.azurewebsites.net/public-api/api"
                 guard let url = URL(string: decryptedURL) else {
                     fatalError("❌ Cannot create URL from decrypted API URL")
                 }
