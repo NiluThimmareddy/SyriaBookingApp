@@ -30,7 +30,6 @@ class SliderCollectionViewCell: UICollectionViewCell {
     
     func configureButtonTitle() {
         
-//        let hasSignedUp = UserSessionManager.hasEverSignedUp()
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
         
         let title = isArabic

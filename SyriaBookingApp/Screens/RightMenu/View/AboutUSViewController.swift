@@ -6,7 +6,7 @@
 import UIKit
 
 class AboutUSViewController: UIViewController {
-
+    
     @IBOutlet weak var aboutUsTitleLabel: UILabel!
     @IBOutlet weak var redefiningDescriptionLabel: UILabel!
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -117,9 +117,9 @@ class AboutUSViewController: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -128,5 +128,5 @@ class AboutUSViewController: UIViewController {
             socialView.trailingAnchor.constraint(equalTo: followLinksView.trailingAnchor)
         ])
     }
-
+    
 }

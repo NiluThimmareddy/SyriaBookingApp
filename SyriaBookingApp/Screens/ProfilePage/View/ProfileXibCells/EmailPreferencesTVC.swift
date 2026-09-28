@@ -29,16 +29,9 @@ class EmailPreferencesTVC: UITableViewCell {
         backView.clipsToBounds = true
     }
 
-
-    
     func fontText(){
         title.font = UIFont.poppinsBold(14)
         contentLbl.font = UIFont.poppinsMedium(14)
-    }
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-       
     }
     
     @IBAction func swictchButton(_ sender: Any) {

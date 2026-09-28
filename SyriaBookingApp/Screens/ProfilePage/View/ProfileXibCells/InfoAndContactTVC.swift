@@ -12,6 +12,7 @@ class InfoAndContactTVC: UITableViewCell {
     @IBOutlet weak var contentLbl: UILabel!
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var backView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         fontText()
@@ -29,11 +30,6 @@ class InfoAndContactTVC: UITableViewCell {
         backView.layer.cornerRadius = backView.frame.size.height / 2
         backView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         backView.clipsToBounds = true
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
     }
     
 }

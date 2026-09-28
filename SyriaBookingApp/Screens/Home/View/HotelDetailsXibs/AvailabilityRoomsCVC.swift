@@ -79,7 +79,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
     }
     
     @IBAction func segmentControlAction(_ sender: UISegmentedControl) {
-       
+        
         switch sender.selectedSegmentIndex {
         case 0:
             self.segmentChanged?()
@@ -237,7 +237,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
             noRatesLabel.text = "لا توجد أسعار متاحة حالياً"
         } else {
             noRatesLabel.text = "No rates available at the moment"
-           
+            
         }
     }
     
@@ -379,7 +379,7 @@ class AvailabilityRoomsCVC : UICollectionViewCell, UIViewControllerTransitioning
             roomStatusLabel.backgroundColor = statusColor.withAlphaComponent(0.10)
             roomStatusLabel.text = status
         }
- 
+        
         let labelConfigs: [(UILabel, String, String, UIColor)] = [
             (roomSizeLabel, roomsizeText, "Size:", .darkGray),
             (maxGuestsLabel, guestText, "Max Guests:", .darkGray),
@@ -453,13 +453,13 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         
         cell.checkMarkButton.tag = indexPath.row
         cell.checkMarkButton.addTarget(self, action: #selector(checkMarkTapped(_:)), for: .touchUpInside)
-
+        
         let isLoggedIn = UserSessionManager.getUser() != nil
         let currentRate = selectedRoom.rates[indexPath.row]
         
         // Check if this specific rate has a valid price
         let hasValidPrice = isLocalRate ? (currentRate.localPrice ?? 0) > 0 : currentRate.price > 0
-
+        
         if !hasValidPrice{
             // This rate has zero price - disable it
             cell.checkMarkButton.isUserInteractionEnabled = false
@@ -538,7 +538,7 @@ extension AvailabilityRoomsCVC : UITableViewDelegate, UITableViewDataSource {
         rate.isLocal = isLocalRate
         selectedRoom?.rates[row] = rate
         onRateSelectionChanged?(rate)
-    
+        
         roomRatesTableview.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
     }
     

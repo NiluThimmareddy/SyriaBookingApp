@@ -9,7 +9,7 @@
 import UIKit
 
 class FrequentlyAskedTVCViewControllercopy : UIViewController {
-        
+    
     @IBOutlet weak var FrequentlyAskedTVC: UITableView!
     @IBOutlet weak var emailUsView: UIView!
     @IBOutlet weak var followUsLinksView: UIView!
@@ -28,7 +28,7 @@ class FrequentlyAskedTVCViewControllercopy : UIViewController {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
     }
-
+    
 }
 
 extension FrequentlyAskedTVCViewControllercopy: UITableViewDelegate, UITableViewDataSource {
@@ -52,7 +52,7 @@ extension FrequentlyAskedTVCViewControllercopy: UITableViewDelegate, UITableView
             cell.contentView.layer.cornerRadius = 10
         } else {
             cell.contentView.layer.cornerRadius = 6
-                 cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.06)
+            cell.contentView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.06)
         }
         
         return cell
@@ -89,7 +89,7 @@ extension FrequentlyAskedTVCViewControllercopy: UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 10 // spacing
     }
-
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .clear
@@ -113,9 +113,9 @@ extension FrequentlyAskedTVCViewControllercopy {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followUsLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followUsLinksView.topAnchor),
@@ -130,10 +130,10 @@ extension FrequentlyAskedTVCViewControllercopy {
         guard let emailView = nib.instantiate(withOwner: nil, options: nil).first as? EmailIDView else {
             return
         }
-
+        
         emailUsView.addSubview(emailView)
         emailView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             emailView.topAnchor.constraint(equalTo: emailUsView.topAnchor),
             emailView.bottomAnchor.constraint(equalTo: emailUsView.bottomAnchor),

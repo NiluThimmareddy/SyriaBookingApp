@@ -84,10 +84,10 @@ extension YourNotificationVC {
         yourNotificationTV.rowHeight = UITableView.automaticDimension
         
         UserDefaults.standard.set(true, forKey: "hasViewedNotifications")
- 
+        
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
-
+    
     func fetchUserNotification(){
         viewModel.onSuccess = { [weak self] response in
             guard let self = self else { return }
@@ -101,7 +101,7 @@ extension YourNotificationVC {
             DispatchQueue.main.async {
                 self.hideLoader()
                 let rowCount = self.viewModel.filteredHistoryArray.count ?? 0
-
+                
                 if rowCount == 0 {
                     self.noNotificationsLabel.isHidden = false
                     self.yourNotificationTV.isHidden = true
@@ -127,9 +127,7 @@ extension YourNotificationVC {
             }
         }
         
-//        if UserSessionManager.getUser() != nil {
-            viewModel.fetchNotificationUsersList(includePast: false)
-//        }
+        viewModel.fetchNotificationUsersList(includePast: false)
     }
     
     private func updateTableViewHeight() {

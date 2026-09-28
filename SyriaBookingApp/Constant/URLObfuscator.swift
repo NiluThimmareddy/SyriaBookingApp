@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 final class URLCrypto {
     private static let minASCII = 32
     private static let maxASCII = 126

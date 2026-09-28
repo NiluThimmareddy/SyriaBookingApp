@@ -12,6 +12,7 @@ protocol UserFeedBackListTVCDelegate: AnyObject{
 }
 
 class UserFeedBackListTVC: UITableViewCell {
+    
     @IBOutlet weak var starBackView: UIView!
     @IBOutlet weak var startFiveImage: UIImageView!
     @IBOutlet weak var startFourImage: UIImageView!
@@ -57,11 +58,6 @@ class UserFeedBackListTVC: UITableViewCell {
                 star?.image = UIImage(systemName: "star")
             }
         }
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
     }
     
     @IBAction func completeButton(_ sender: Any) {

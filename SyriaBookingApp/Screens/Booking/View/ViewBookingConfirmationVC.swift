@@ -302,20 +302,6 @@ extension ViewBookingConfirmationVC {
         }
     }
     
-//    func savePDFToDocuments() {
-//        let pdfData = createPDF()
-//        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//        let pdfURL = documentsURL.appendingPathComponent("BookingConfirmation.pdf")
-//        
-//        do {
-//            try pdfData.write(to: pdfURL)
-//            
-//            print("PDF saved to: \(pdfURL)")
-//        } catch {
-//            print("Could not save PDF file: \(error)")
-//        }
-//    }
-    
     func savePDFToDocuments() {
         let pdfData = createPDF()
         

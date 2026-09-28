@@ -79,9 +79,7 @@ class RegisterMobileNumberVC : BaseViewController {
     var resendTimer: Timer?
     var totalTime = 300
     var resendTap: UITapGestureRecognizer?
-    
-    //    private lazy var loginViewModel = LoginViewModel(apiClient: )
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -728,21 +726,6 @@ extension RegisterMobileNumberVC : UITextFieldDelegate {
         
         
     }
-    //    
-    //    func checkMobileExistence(mobilenumebr:String, completion: @escaping (Bool) -> Void){
-    //        let lang = AppSettings.shared.selectedLanguage
-    //        self.showLoader()
-    //        viewModel.onSuccess = { response in
-    //            self.hideLoader()
-    //            completion(true)
-    //        }
-    //        
-    //        viewModel.onError = { error in
-    //            self.hideLoader()
-    //        }
-    //        
-    //    
-    //    }
     
     func getOTP(mobilenumebr:String, completion: @escaping (OTPResponseModel) -> Void){
         let lang = AppSettings.shared.selectedLanguage

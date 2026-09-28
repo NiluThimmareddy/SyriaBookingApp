@@ -7,7 +7,7 @@
 import UIKit
 
 class SustainabilityViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -120,15 +120,15 @@ class SustainabilityViewController: UIViewController {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
     }
-
+    
     private func setupSocialMediaView() {
         let nib = UINib(nibName: "SocialMedia", bundle: nil)
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),

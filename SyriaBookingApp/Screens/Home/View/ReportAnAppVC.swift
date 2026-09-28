@@ -30,7 +30,7 @@ class ReportAnAppVC: BaseViewController {
     var hotelViewModel = HotelViewModel()
     var titleText: String?
     var type = ""
-   
+    
     var hotelID = ""
     var hotelName = ""
     var BookingID = ""
@@ -118,8 +118,6 @@ class ReportAnAppVC: BaseViewController {
             
             type = selectedType
         }
-        
-        
         // Validate message
         guard let message = enterMessageTextView.text,
               !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -143,7 +141,7 @@ class ReportAnAppVC: BaseViewController {
         
         // API call
         if comingfrom == .TabBar  || comingfrom == .RightMenu{
-            //pass type,subject,message,username,email ans phone from textfield           
+            //pass type,subject,message,username,email ans phone from textfield
             if comingfrom == .RightMenu {
                 type = "Complaint"
             }
@@ -161,7 +159,7 @@ class ReportAnAppVC: BaseViewController {
             hotelViewModel.submitReporAnApp(type: type, subject: enterSubjectTF.text ?? "", message: message, hotelId: hotelID, userName: user.name, UserEmail: user.email, userPhone: user.mobile
             )
         }
-    }    
+    }
     
     @IBAction func dismissButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -177,7 +175,7 @@ extension ReportAnAppVC {
             yourNameLabel.text = "اسمك"
             yourEmailLabel.text = "بريدك الإلكتروني"
             phoneNoLabel.text = "رقم الهاتف"
-            submitButton.setTitle("إرسال", for: .normal)            
+            submitButton.setTitle("إرسال", for: .normal)
         } else {
             subjectLabel.text = "Subject"
             typeLabel.text = "Type"

@@ -28,12 +28,6 @@ class OtherGuestListTVC: UITableViewCell {
         backView.layer.borderColor = UIColor.lightGray.cgColor
         nameLbl.font = UIFont.poppinsMedium(14)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-       
-    }
     
     @IBAction func deleteButton(_ sender: Any) {
         delegate?.didTapDeleteButton(in: self)

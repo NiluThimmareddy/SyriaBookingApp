@@ -14,7 +14,7 @@ class ProfileViewModel {
     
     func updateProfile(profile: BookingModel) {
         
-         var url = APIURL.updateProfile.url.absoluteString
+        var url = APIURL.updateProfile.url.absoluteString
         url += "me"
         
         guard let url =  URL(string: url) else {
@@ -32,7 +32,7 @@ class ProfileViewModel {
             "dob": profile.dob
         ]
         
-      
+        
         
         APIManager.shared.putRequest(urlString: url, body: body,  responseType: ProfileResponse.self, requiresJWT: true) { [weak self] result in
             DispatchQueue.main.async {

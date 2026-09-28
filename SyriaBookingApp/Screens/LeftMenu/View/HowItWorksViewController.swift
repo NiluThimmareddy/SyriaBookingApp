@@ -8,7 +8,7 @@
 import UIKit
 
 class HowItWorksViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -226,7 +226,7 @@ class HowItWorksViewController: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

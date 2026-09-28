@@ -10,7 +10,6 @@ import Foundation
 class CountryListViewModel {
     
     var countries: [Country] = []
-    
     var onDataUpdated: (() -> Void)?
     var onError: ((Error) -> Void)?
     

@@ -16,7 +16,7 @@ final class LoginViewModel{
     
     func checkMobile(_ mobile: String) async throws -> CheckMobileResponse {
         
-     let request = CheckMobileRequest(mobile: mobile)
+        let request = CheckMobileRequest(mobile: mobile)
         
         return try await apicalClient.send(
             endpoint: .checkMobile,
@@ -47,13 +47,13 @@ final class LoginViewModel{
     
     func sendRegistrationEmailOTP( email : String) async throws -> OTPResponseModel{
         let request = sendRegestrationEmailOTPRequest(email: email)
-           
-           return try await apicalClient.send(
-               endpoint: .sendNewUserOTP,
-               body: request,
-               responseType: OTPResponseModel.self
-           )
-       }
+        
+        return try await apicalClient.send(
+            endpoint: .sendNewUserOTP,
+            body: request,
+            responseType: OTPResponseModel.self
+        )
+    }
     
     func verifyRegistrationEmailOTP( email : String, otp: String) async throws -> VerifyRegistrationEmailOTPResponse{
         let request = VerifyEmailOtpRequest(email: email, code: otp)
@@ -72,7 +72,7 @@ final class LoginViewModel{
             endpoint: .sendEmailOTP,
             body: request,
             responseType: OTPResponseModel.self
-            )
+        )
     }
     
     func verifyEmailOTP( email : String, otp: String) async throws -> VerifyLoginResponse{

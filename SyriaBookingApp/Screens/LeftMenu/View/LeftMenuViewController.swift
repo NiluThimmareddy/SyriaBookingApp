@@ -65,7 +65,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
         super.viewWillAppear(animated)
         self.navigationItem.backButtonTitle = ""
         loadUserDetails()
-       
+        
     }
     
     @IBAction func DismissButtonAction(_ sender: UIButton) {
@@ -86,7 +86,7 @@ class LeftMenuViewController: UIViewController, UIViewControllerTransitioningDel
     }
     
     @IBAction func rightArrowButtonAction(_ sender: Any) {
-       guard let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as? ProfilePageVC else { return }
+        guard let storyboard = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfilePageVC") as? ProfilePageVC else { return }
         self.navigationController?.pushViewController(storyboard, animated: true)
     }
     

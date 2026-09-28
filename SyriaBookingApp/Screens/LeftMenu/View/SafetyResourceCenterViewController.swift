@@ -7,7 +7,7 @@
 import UIKit
 
 class SafetyResourceCenterViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -211,9 +211,9 @@ class SafetyResourceCenterViewController: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followUsLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followUsLinksView.topAnchor),
@@ -252,8 +252,8 @@ class SafetyResourceCenterViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "الاتصال" : "Call"
         let alertMessage = lang == .arabic ?
-            "هل تريد الاتصال بـ \(phoneNumber)؟" :
-            "Do you want to call \(phoneNumber)?"
+        "هل تريد الاتصال بـ \(phoneNumber)؟" :
+        "Do you want to call \(phoneNumber)?"
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
         let callTitle = lang == .arabic ? "اتصال" : "Call"
         
@@ -279,8 +279,8 @@ class SafetyResourceCenterViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "خطأ في الاتصال" : "Call Error"
         let alertMessage = lang == .arabic ?
-            "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
-            "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
+        "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
+        "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -322,8 +322,8 @@ class SafetyResourceCenterViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email"
         let alertMessage = lang == .arabic ?
-            "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
-            "Mail app is not configured on this device."
+        "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
+        "Mail app is not configured on this device."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -347,7 +347,7 @@ class SafetyResourceCenterViewController: UIViewController {
     @IBAction func emergencyEmailButtonAction(_ sender: Any) {
         let lang = AppSettings.shared.selectedLanguage
         let subject = lang == .arabic ?
-            "طلب مساعدة طارئة" : "Emergency Assistance Request"
+        "طلب مساعدة طارئة" : "Emergency Assistance Request"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
     }
     
@@ -358,7 +358,7 @@ class SafetyResourceCenterViewController: UIViewController {
     @IBAction func emailSupportButtonAction(_ sender: Any) {
         let lang = AppSettings.shared.selectedLanguage
         let subject = lang == .arabic ?
-            "استفسار عن دعم العملاء" : "Customer Support Inquiry"
+        "استفسار عن دعم العملاء" : "Customer Support Inquiry"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
     }
     

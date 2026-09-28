@@ -53,7 +53,7 @@ class ProfilePageVC: BaseViewController {
                 ProfileOption(listData: "تفضيلات البريد الإلكتروني", imageName: "envelope.fill")
             ]
         ),
-
+        
     ]
     
     let arabicManageAccountsData = [
@@ -404,7 +404,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
             let reviewsArray  =  hasReviews()
             if  !reviewsArray.isEmpty {
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
-               guard let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as? ViewAllRateAndReviewsVC  else { return  }
+                guard let viewAllVC = storyboard.instantiateViewController(withIdentifier: "ViewAllRateAndReviewsVC") as? ViewAllRateAndReviewsVC  else { return  }
                 viewAllVC.reviewsArray = reviewsArray
                 viewAllVC.comingFrom = .profile
                 viewAllVC.modalPresentationStyle = .fullScreen
@@ -418,7 +418,7 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     func hasReviews() -> [Review] {
         var reviewsArray = [Review]()
         if let username = UserSessionManager.getUser() {
-               reviewsArray = HotelDataMaganer.shared.allHotels.flatMap { $0.reviews }
+            reviewsArray = HotelDataMaganer.shared.allHotels.flatMap { $0.reviews }
                 .filter {
                     $0.reviewerName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ==
                     username.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -426,13 +426,13 @@ extension ProfilePageVC: UICollectionViewDelegate, UICollectionViewDataSource, U
         }
         return reviewsArray
     }
-
+    
     func showNoReviewsAlert() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .arabic ? "لا توجد تقييمات" : "No Reviews Found"
         let message = lang == .arabic ?
-            "يبدو أنك لم تكتب أي تقييمات بعد. التقييمات التي تكتبها ستساعد المسافرين الآخرين على اتخاذ قرارات أفضل." :
-            "It looks like you haven't written any reviews yet. Reviews you write will help other travelers make better decisions."
+        "يبدو أنك لم تكتب أي تقييمات بعد. التقييمات التي تكتبها ستساعد المسافرين الآخرين على اتخاذ قرارات أفضل." :
+        "It looks like you haven't written any reviews yet. Reviews you write will help other travelers make better decisions."
         let okTitle = lang == .arabic ? "حسناً" : "OK"
         
         let alert = UIAlertController(

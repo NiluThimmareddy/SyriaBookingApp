@@ -8,7 +8,7 @@
 import UIKit
 
 class Covid19FAQsViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var topView: UIView!
@@ -111,7 +111,7 @@ class Covid19FAQsViewController: UIViewController {
         super.viewWillAppear(animated)
         setupAppNavigationBar()
     }
-
+    
 }
 
 extension Covid19FAQsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -194,9 +194,9 @@ extension Covid19FAQsViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -211,10 +211,10 @@ extension Covid19FAQsViewController {
         guard let emailUSView = nib.instantiate(withOwner: nil, options: nil).first as? EmailIDView else {
             return
         }
-
+        
         emailView.addSubview(emailUSView)
         emailView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             emailUSView.topAnchor.constraint(equalTo: emailView.topAnchor),
             emailUSView.bottomAnchor.constraint(equalTo: emailView.bottomAnchor),

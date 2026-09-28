@@ -106,7 +106,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     var promotionsList: [Hotel] = []
     var selectedLanguage: Languages = .english
     var sliderImages = ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"]
-    var sliderImagesAr =   ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"] // ["ic_B1", "ic_B2_ar", "ic_B3_ar", "ic_B4_ar","ic_B5_ar"]
+    var sliderImagesAr =   ["ic_B1", "ic_B2", "ic_B3", "ic_B4","ic_B5"]
     var sliderAutoScrollTimer: Timer?
     var sliderCurrentIndex = 0
     var isUserInteracting = false
@@ -137,7 +137,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         setupBasicUI()
         setupSkeletonView()
         
@@ -184,7 +184,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard !CommentManager.shared.hasStarted else { return }
-       CommentManager.shared.start()
+        CommentManager.shared.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -226,7 +226,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         showSkeletonOnAllElements()
         if let user = UserSessionManager.getUser() {
             currentUser = user
-           
+            
         }
         setupAppNavigationBar()
         
@@ -242,7 +242,7 @@ class HomeViewController: BaseViewController, UIViewControllerTransitioningDeleg
         KeychainTokenStore().clearSession()
         UserSessionManager.clearUser()
         navigateToHomeTab()
-       
+        
         sliderCollectionView.reloadData()
         sliderCollectionView.layoutIfNeeded()
         showSkeletonOnAllElements()
@@ -1204,7 +1204,7 @@ extension HomeViewController {
 
 // MARK: - Main Implementation
 extension HomeViewController {
-
+    
     private func setupBasicUI() {
         searchView.isHidden = true
         searchView.applyCardStyle()
@@ -1730,7 +1730,7 @@ extension HomeViewController {
             recommendedHotelsTitleLabel.text = "فنادق موصى بها"
             viewAllRecommendedButton.setTitle("عرض جميع", for: .normal)
         }
-    } 
+    }
     
     
     private func setWhereAreYouGoingButtonWithTitleAndSubtitle() {

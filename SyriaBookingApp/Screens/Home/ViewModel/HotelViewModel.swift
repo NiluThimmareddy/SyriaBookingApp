@@ -24,7 +24,7 @@ class HotelViewModel {
     
     func fetchHotels() {
         
-         let urlstr = APIURL.hotelURL.url.absoluteString
+        let urlstr = APIURL.hotelURL.url.absoluteString
         guard let url = URL(string: urlstr) else {
             print("Invalid hotel URL")
             return
@@ -71,7 +71,7 @@ class HotelViewModel {
     
     func fetchReviewsOfHotel(hotelId:String,reviewId:String = ""){
         
-         let urlstr = APIURL.fetchHotelReviews.url.absoluteString
+        let urlstr = APIURL.fetchHotelReviews.url.absoluteString
         let getUrl = urlstr + "/\(hotelId)/\(reviewId)"
         let url = URL(string: getUrl)
         
@@ -143,14 +143,14 @@ class HotelViewModel {
             "reviewText": reviewText
         ]
         
-         let url =  APIURL.postReview.url
-           
+        let url =  APIURL.postReview.url
+        
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: ReviewResponse.self) { result in
             DispatchQueue.main.async{
                 switch result {
                 case .success(let response):
-                   
+                    
                     self.onSuccess?(response.data)
                 case .failure(let failure):
                     self.onReviewError?(failure.localizedDescription)
@@ -173,7 +173,7 @@ class HotelViewModel {
             "userPhone": userPhone
         ]
         
-         let url =  APIURL.postReportAnApp.url 
+        let url =  APIURL.postReportAnApp.url 
         
         APIManager.shared.postRequest(urlString: url , body: params, responseType: ReporAnAppModel.self) { result in
             DispatchQueue.main.async{

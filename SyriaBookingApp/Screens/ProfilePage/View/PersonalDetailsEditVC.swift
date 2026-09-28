@@ -15,7 +15,7 @@ protocol PersonalDetailsEditVCDelegate: AnyObject {
 }
 
 class PersonalDetailsEditVC: BaseViewController {
-
+    
     @IBOutlet weak var addressCountryNameTV: UITableView!
     @IBOutlet weak var FlagTV: UITableView!
     @IBOutlet weak var dobBackView: UIView!
@@ -122,9 +122,9 @@ class PersonalDetailsEditVC: BaseViewController {
         tableViewProcess()
         bindViewModel()
         CountryNameViewModel.fetchCountries()
-        #if DEBUG
+#if DEBUG
         CountryNameViewModel.countries.forEach { print($0.label) }
-        #endif
+#endif
         let matchedCountry = CountryNameViewModel.countries.first(where: { $0.label == countryViewModel.countries.first?.name })
         
         // Set initial texts
@@ -280,31 +280,31 @@ class PersonalDetailsEditVC: BaseViewController {
     private func bindViewModel() {
         CountryNameViewModel.onDataUpdated = { [weak self] in
             guard let self = self else { return }
-            #if DEBUG
+#if DEBUG
             for country in self.CountryNameViewModel.countries {
                 print("🌍 \(country.label)")
             }
-
-            #endif
+            
+#endif
             if let firstCountryName = self.countryViewModel.countries.first?.name {
                 let matchedCountry = self.CountryNameViewModel.countries.first {
                     $0.label == firstCountryName
                 }
-              
+                
             }
-
+            
             self.FlagTV.reloadData()
             self.addressCountryNameTV.reloadData()
             self.flagProcess()
         }
-
+        
         CountryNameViewModel.onError = { error in
-            #if DEBUG
+#if DEBUG
             print("❌ Error: \(error.localizedDescription)")
-            #endif
+#endif
         }
     }
-
+    
     
     func applyCornerRadius(){
         closeButton.alpha =  0.3
@@ -386,7 +386,7 @@ class PersonalDetailsEditVC: BaseViewController {
             phoneNumberErrorMessage.isHidden = false
             return
         }
-
+        
         if number.count < 10 {
             phoneNumberErrorMessage.text = lang == .arabic ? "يجب أن يتكون رقم الهاتف من 10 أرقام على الأقل" : "Phone number must be at least 10 digits"
             phoneNumberErrorMessage.isHidden = false
@@ -468,7 +468,7 @@ class PersonalDetailsEditVC: BaseViewController {
     
     func flagProcess() {
         let countryName = selectedCountryNameLbl.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() ?? ""
-
+        
         guard let countryCode = CountryCodeManager.shared.nameToCode[countryName] else {
             selectedCountryImage.image = UIImage(systemName: "photo")
             phoneNumberFlageImage.image = UIImage(systemName: "photo")
@@ -480,7 +480,7 @@ class PersonalDetailsEditVC: BaseViewController {
             phoneNumberFlageImage.image = UIImage(systemName: "photo")
             return
         }
-
+        
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url),
                let image = UIImage(data: data) {
@@ -534,7 +534,7 @@ class PersonalDetailsEditVC: BaseViewController {
         backView.layer.maskedCorners = [.layerMinXMinYCorner]
         backView.clipsToBounds = true
     }
-   
+    
     private func emailRoundLeftSideCorners() {
         emailBacView.layer.cornerRadius = 50
         emailBacView.layer.maskedCorners = [.layerMinXMinYCorner]
@@ -573,20 +573,20 @@ class PersonalDetailsEditVC: BaseViewController {
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             self.view.window?.layer.add(transition, forKey: kCATransition)
             self.dismiss(animated: false) {
-               
+                
             }
         }
     }
-
+    
     @IBAction func closeButton(_ sender: Any) {
         let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-
-            view.window?.layer.add(transition, forKey: kCATransition)
-            dismiss(animated: false)
+        transition.duration = 0.3
+        transition.type = .push
+        transition.subtype = .fromLeft
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        
+        view.window?.layer.add(transition, forKey: kCATransition)
+        dismiss(animated: false)
     }
     
     @IBAction func emailSaveButton(_ sender: Any) {
@@ -625,7 +625,7 @@ class PersonalDetailsEditVC: BaseViewController {
             }
         } else {
             viewModel.updateProfile( profile: updatedProfile)
-        
+            
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
@@ -659,13 +659,13 @@ class PersonalDetailsEditVC: BaseViewController {
         let firstName = firstNameTF.text ?? ""
         let lastName = lastName.text ?? ""
         guard let userId = personalData?.id else { return }
-
+        
         let lang = AppSettings.shared.selectedLanguage
         let successTitle = lang == .arabic ? "نجاح" : "Success"
         let failTitle = lang == .arabic ? "فشل" : "Fail"
         let successMessage = lang == .arabic ? "تم تحديث اسمك بنجاح." : "Your name has been updated successfully."
         let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
-
+        
         let updatedProfile = BookingModel(
             id: userId,
             name: "\(firstName) \(lastName)",
@@ -729,13 +729,13 @@ class PersonalDetailsEditVC: BaseViewController {
     @IBAction func addressSaveButton(_ sender: Any) {
         let address = adressTF.text ?? ""
         guard let userId = personalData?.id else { return }
-
+        
         let lang = AppSettings.shared.selectedLanguage
         let successTitle = lang == .arabic ? "نجاح" : "Success"
         let failTitle = lang == .arabic ? "فشل" : "Fail"
         let successMessage = lang == .arabic ? "تم تحديث عنوانك بنجاح." : "Your address has been updated successfully."
         let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
-
+        
         let updatedProfile = BookingModel(
             id: userId,
             name: personalData?.name ?? "",
@@ -762,7 +762,7 @@ class PersonalDetailsEditVC: BaseViewController {
             }
         }else{
             viewModel.updateProfile(profile: updatedProfile)
-
+            
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
@@ -799,13 +799,13 @@ class PersonalDetailsEditVC: BaseViewController {
     @IBAction func phoneNumberSaveButton(_ sender: Any) {
         guard let phone = phoneNumberTypeTF.text, !phone.isEmpty else { return }
         guard let userId = personalData?.id else { return }
-
+        
         let lang = AppSettings.shared.selectedLanguage
         let successTitle = lang == .arabic ? "نجاح" : "Success"
         let failTitle = lang == .arabic ? "فشل" : "Fail"
         let successMessage = lang == .arabic ? "تم تحديث رقم هاتفك بنجاح." : "Your mobile number has been updated successfully."
         let failMessage = lang == .arabic ? "حدث خطأ ما" : "Something went wrong"
-
+        
         let updatedProfile = BookingModel(
             id: userId,
             name: personalData?.name ?? "",
@@ -816,7 +816,7 @@ class PersonalDetailsEditVC: BaseViewController {
             country: personalData?.country ?? "",
             dob: personalData?.dob ?? ""
         )
-
+        
         if personalData?.mobile == "90000000"{
             DispatchQueue.main.async {
                 self.showAlert(
@@ -832,7 +832,7 @@ class PersonalDetailsEditVC: BaseViewController {
             }
         }else{
             viewModel.updateProfile( profile: updatedProfile)
-
+            
             viewModel.onProfileUpdated = { success, message, profile in
                 if success {
                     DispatchQueue.main.async {
@@ -903,7 +903,7 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
         }
         return 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == genderTV {
@@ -934,10 +934,10 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             loadFlagImage(for: country.code, into: cell.flagImage, at: indexPath, in: tableView)
             return cell
         }
-
+        
         return UITableViewCell()
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if tableView == genderTV {
@@ -969,7 +969,7 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
             addressCountryNameTV.isHidden = true
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == genderTV || tableView == FlagTV {
             return 40
@@ -978,14 +978,14 @@ extension PersonalDetailsEditVC: UITableViewDelegate, UITableViewDataSource {
         }
         return 50
     }
-
+    
     func loadFlagImage(for countryCode: String, into imageView: UIImageView, at indexPath: IndexPath? = nil, in tableView: UITableView? = nil) {
         let urlString = "https://flagcdn.com/w40/\(countryCode.lowercased()).png"
         guard let url = URL(string: urlString) else {
             imageView.image = UIImage(systemName: "photo")
             return
         }
-
+        
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 DispatchQueue.main.async {
