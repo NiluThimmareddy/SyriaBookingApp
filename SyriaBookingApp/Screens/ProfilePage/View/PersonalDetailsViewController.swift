@@ -6,7 +6,7 @@
 import UIKit
 
 class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
-
+    
     @IBOutlet weak var contactDetailsTitle: UILabel!
     @IBOutlet weak var contactTableView: UITableView!
     @IBOutlet weak var infoTableView: UITableView!
@@ -21,12 +21,12 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
     @IBOutlet weak var bottomView: UIView!
     
     let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.poppinsBold(16)
+        label.textAlignment = .center
+        return label
+    }()
     
     // English data
     var englishInfoDataTitle = ["Name"]
@@ -70,7 +70,7 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
         infoTableView.register(UINib(nibName: "InfoAndContactTVC", bundle: nil), forCellReuseIdentifier: "InfoAndContactTVC")
         infoTableBackView.layer.cornerRadius = 10
         contactTableBackView.layer.cornerRadius = 10
-
+        
     }
     
     @objc func updateTexts() {
@@ -154,7 +154,7 @@ class PersonalDetailsViewController: UIViewController, UIImagePickerControllerDe
             profileImage.image = originalImage
         }
     }
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
@@ -176,11 +176,11 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InfoAndContactTVC") as! InfoAndContactTVC
         let data = personalData
-
+        
         if tableView == infoTableView {
             let dataTitle = infoDataTitle[indexPath.row]
             cell.titleLbl.text = dataTitle
-
+            
             switch indexPath.row {
             case 0:
                 cell.contentLbl.text = data?.name ?? ""
@@ -191,11 +191,11 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
             default:
                 cell.contentLbl.text = data?.mobile ?? ""
             }
-
+            
         } else {
             let dataTitle = contactDataTitle[indexPath.row]
             cell.titleLbl.text = dataTitle
-
+            
             switch indexPath.row {
             case 0:
                 cell.contentLbl.text = data?.email
@@ -207,7 +207,7 @@ extension PersonalDetailsViewController: UITableViewDelegate, UITableViewDataSou
                 cell.contentLbl.text = ""
             }
         }
-
+        
         return cell
     }
     
@@ -324,17 +324,17 @@ extension PersonalDetailsViewController: PersonalDetailsEditVCDelegate {
     func didUpdateName(firstName: String, lastName: String) {
         infoTableView.reloadData()
     }
-
+    
     func didUpdateEmail(_ email: String) {
         personalData?.email = email
         contactTableView.reloadData()
     }
-
+    
     func didUpdatePhoneNumber(_ phoneNumber: String, countryCode: String) {
         personalData?.mobile = "\(countryCode) \(phoneNumber)"
         contactTableView.reloadData()
     }
-
+    
     func didUpdateAddress(street: String, city: String, postCode: String, country: String) {
         personalData?.country = country
         personalData?.address = street

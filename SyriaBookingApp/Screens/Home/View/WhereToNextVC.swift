@@ -94,11 +94,11 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
         self.prepareWhereToNextData()
         self.hideSkeleton()
     }
-
+    
     private func prepareWhereToNextData() {
         let allHotels = HotelDataMaganer.shared.allHotels
         let uniqueCities = Array(Set(allHotels.map { normalizedCity($0.city) }))
-
+        
         self.whereToNextCityList = uniqueCities.map { cityName in
             let hotelsInCity = allHotels.filter {
                 normalizedCity($0.city) == cityName
@@ -111,14 +111,14 @@ class WhereToNextVC: BaseViewController, UIViewControllerTransitioningDelegate {
             )
         }
     }
-
+    
     private func getHotelsForCity(_ cityName: String) -> [Hotel] {
         let normalizedInput = normalizedCity(cityName)
         return HotelDataMaganer.shared.allHotels.filter {
             normalizedCity($0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) == normalizedInput
         }
     }
-
+    
     private func normalizedCity(_ city: String) -> String {
         return city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
@@ -299,7 +299,7 @@ extension WhereToNextVC {
     func setUpUI() {
         whereToNextTableview.register(UINib(nibName: "WhereToNextListTVC", bundle: nil), forCellReuseIdentifier: "WhereToNextListTVC")
         whereToNextTableview.delegate = self
-        whereToNextTableview.dataSource = self        
+        whereToNextTableview.dataSource = self
         updateLoginViewTexts()
     }
     

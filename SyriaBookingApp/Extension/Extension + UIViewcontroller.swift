@@ -499,7 +499,6 @@ extension UIViewController {
     
 }
 
-
 extension UITableViewCell {
     func colorFromName(_ name: String) -> UIColor {
         let colors: [UIColor] = [

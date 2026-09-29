@@ -12,7 +12,6 @@ class BookingViewModel {
     var onSuccess: ((BookingModel) -> Void)?
     var onPostBookingSuccess : ((PostBookingResponse) -> Void)?
     var onHistorySuccess : ((BookingHistoryDataModel) -> Void)?
-    //    var onError: ((String) -> Void)?
     var onError: ((Error) -> Void)?
     var onVerifyOTPSucess : ((VerifyOTPModel) -> Void)?
     var onEmailVerifyOTPSuccess : ((VerifyEmailOTPModel) -> Void)?
@@ -88,8 +87,6 @@ class BookingViewModel {
     func fetchOTP(mobileNumber:String){
         
         let urlstr = APIURL.postForOTP.url.absoluteString
-        //        let getUrl = urlstr + "\(mobileNumber)"
-        
         let url = URL(string: urlstr)
         
         guard let url = url else{
@@ -148,11 +145,7 @@ class BookingViewModel {
     }
     
     func fetchEmailOTP(email:String){
-        
-        //            let urlstr = APIURL.postForNewUserOTP.url.absoluteString
-        
         let urlstr = APIURL.postForNewUserOTP.url.absoluteString
-        
         let url = URL(string: urlstr)
         
         guard let url = url else{
@@ -334,49 +327,6 @@ class BookingViewModel {
             responseType: PostBookingQueueResponse.self)
     }
     
-//    func SubmitBookingInfo(userId: String,hotelId: String,roomId: String,guestName: String,guestPhone: String,guestEmail: String,numberOfGuests: Int,checkIn: String,checkOut: String, totalAmount: Double,bookingDetails: String, bookingType: String, totalDiscount: Double, netTotal: Double
-//    ) {
-//        let params: [String: Any] = [
-//            "userId": userId,
-//            "hotelId": hotelId,
-//            "roomId": roomId,
-//            "guestName": guestName,
-//            "guestPhone": guestPhone,
-//            "guestEmail": guestEmail,
-//            "numberOfGuests": numberOfGuests,
-//            "checkIn": checkIn,
-//            "checkOut": checkOut,
-//            "totalAmount": totalAmount,
-//            "bookingDetails": bookingDetails,
-//            "bookingType": bookingType,
-//            "totalDiscount": totalDiscount,
-//            "netTotal": netTotal
-//        ]
-//        
-//        print("📤 Request body:", params)
-//        
-//        let url = APIURL.postBooking.url
-//        
-//        APIManager.shared.postRequest(urlString: url, body: params, responseType: PostBookingWrapper.self) { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let wrapper):
-//                    if let booking = wrapper.data {
-//                        print("✅ Parsed Booking:", booking)
-//                        self.onPostBookingSuccess?(booking)
-//                    } else {
-//                        print("⚠️ Wrapper received but no booking data")
-//                    }
-//                case .failure(let error):
-//#if DEBUG
-//                    print("❌ Decoding error:", error.localizedDescription)
-//#endif
-//                    self.onError?(NetworkError.decodingFailed)
-//                }
-//            }
-//        }
-//    }
-    
     func getBookingHistory(userId:String,BookingId:String, requiresJWT: Bool = false, completion: @escaping (BookingHistoryDataModel) -> Void){
         let urlstr = APIURL.postBooking.url.absoluteString
         var getUrl = ""
@@ -472,13 +422,13 @@ extension Endpoint {
 
 extension Endpoint {
     static let postBookingData =
-        Endpoint(
-            path: APIURL.postBookingQueue.url,
-            method: .post,
-            authentication: .jwt
-        )
-    }
-    
+    Endpoint(
+        path: APIURL.postBookingQueue.url,
+        method: .post,
+        authentication: .jwt
+    )
+}
+
 
 
 

@@ -14,7 +14,7 @@ final class CommentManager {
     
     private init() {}
     
-    func start() {        
+    func start() {
         guard !hasStarted else { return }
         hasStarted = true
         checkAPI()
@@ -64,7 +64,7 @@ final class CommentManager {
                 }
                 
             case .failure(_):
-               print("Error...")
+                print("Error...")
             }
         }
     }

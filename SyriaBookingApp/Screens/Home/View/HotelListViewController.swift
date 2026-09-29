@@ -409,10 +409,6 @@ extension HotelListViewController : TopHotelsCollectionViewCellDelegate {
         // Apply city filter
         if !selectedCity.isEmpty && selectedCity != "All" && selectedCity != "Select City" {
             filtered = filtered.filter { $0.city.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == selectedCity.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
-            #if debug
-            print("Filtering by city: \(selectedCity), Found \(filtered.count) hotels")
-            #endif
-                
         }
         
         // Apply rating sort if needed

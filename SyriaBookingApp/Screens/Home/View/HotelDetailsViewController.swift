@@ -9,6 +9,7 @@ import UIKit
 import SkeletonView
 import MapKit
 import Lottie
+
 class HotelDetailsViewController : BaseViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -104,7 +105,6 @@ class HotelDetailsViewController : BaseViewController {
         showInitialSkeleton()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            //            self.setUpUI()
             self.roomsAvailabilityCollectionView.reloadData()
             self.setupAppNavigationBar()
             
@@ -143,9 +143,6 @@ class HotelDetailsViewController : BaseViewController {
         let orangeColor =  UIColor.systemOrange
         let colorProvider = ColorValueProvider(orangeColor.lottieColorValue)
         
-        // Keypath to fill color in your animation
-//        animationView.setValueProvider(colorProvider, keypath: AnimationKeypath(keypath: "**.Fill 1.Color"))
-        
         animationView.setValueProvider(
             colorProvider,
             keypath: AnimationKeypath(keypath: "Shape Layer *.Ellipse 1.Fill 1.Color")
@@ -165,7 +162,7 @@ class HotelDetailsViewController : BaseViewController {
         // Set color override (hex: #003B95)
         let redColor =  UIColor.systemRed
         let colorProvider = ColorValueProvider(redColor.lottieColorValue)
-         
+        
         animationView.setValueProvider(
             colorProvider,
             keypath: AnimationKeypath(keypath: "marker mask.**.Fill 1.Color")
@@ -262,6 +259,10 @@ class HotelDetailsViewController : BaseViewController {
                 self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id, reviewId: review.id)
                 
                 self.hotelviewModel.onSuccess = { [weak self] response in
+                    DispatchQueue.main.async {
+                        self?.reviewTextView.text = ""
+                        self?.selectratingButton.titleLabel?.text = ""
+                    }
                 }
             })
         }
@@ -338,8 +339,8 @@ class HotelDetailsViewController : BaseViewController {
                 hotel.stateOrProvince ?? "",
                 hotel.country
             ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
-             .filter { !$0.isEmpty }
-
+                .filter { !$0.isEmpty }
+            
             let address = addressParts.joined(separator: ", ")
             // ✅ Fallback to address
             showMapOptionsWithAddress(address: address, hotelName: hotel.name)
@@ -522,9 +523,9 @@ extension HotelDetailsViewController : CLLocationManagerDelegate{
         
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
-        #if debuge
+#if debuge
         print("Latitude: \(latitude), Longitude: \(longitude)")
-        #endif
+#endif
         
         currentUserLocation = location
         
@@ -928,7 +929,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
             hotel.stateOrProvince ?? "",
             hotel.country
         ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
-         .filter { !$0.isEmpty }
+            .filter { !$0.isEmpty }
         hotelAddressLabel.text = addressParts.joined(separator: ", ")
         nearByLandMarkLabel.text = hotel.landmarkDescription
         descriptionLabel.text = hotel.description
@@ -987,7 +988,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         exploringtheAreaButton.backgroundColor = UIColor.systemYellow
         setUpLanguage()
         let reviewCount = self.selectedHotel?.reviews.count ?? 0
-
+        
         if reviewCount == 0 {
             self.rateAndReviewsView.isHidden = true
         } else {

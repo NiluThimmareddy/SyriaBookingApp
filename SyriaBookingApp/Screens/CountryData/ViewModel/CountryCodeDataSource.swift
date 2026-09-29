@@ -25,7 +25,7 @@ class CountryCodeDataSourceViewModel {
             
             if let error = error {
                 DispatchQueue.main.async {
-                   
+                    
                     self.onError?(error)
                 }
                 return
@@ -42,21 +42,20 @@ class CountryCodeDataSourceViewModel {
             do {
                 let decodedCountries = try JSONDecoder().decode([CountryCodeDataSource].self, from: data)
                 DispatchQueue.main.async {
-                 
+                    
                     self.countries = decodedCountries
                     self.onDataUpdated?()
                 }
             } catch {
                 DispatchQueue.main.async {
-                   
+                    
                     if let jsonString = String(data: data, encoding: .utf8) {
-                     
+                        
                     }
                     self.onError?(error)
                 }
             }
         }
-        
         task.resume()
     }
 }

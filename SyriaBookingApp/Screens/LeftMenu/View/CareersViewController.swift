@@ -21,7 +21,7 @@ struct TestimonialModel: Codable {
 }
 
 class CareersViewController: UIViewController {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var insideScrollView: UIView!
     @IBOutlet weak var redefineTravelTitleLabel: UILabel!
@@ -219,9 +219,9 @@ class CareersViewController: UIViewController {
         guard let socialView = nib.instantiate(withOwner: nil, options: nil).first as? SocialMediaView else {
             return
         }
-
+        
         followLinksView.addSubview(socialView)
-
+        
         socialView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             socialView.topAnchor.constraint(equalTo: followLinksView.topAnchor),
@@ -274,20 +274,20 @@ class CareersViewController: UIViewController {
             }
         }
     }
-
+    
     private func createEmailURL(to: String, subject: String, body: String) -> URL? {
         let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let urlString = "mailto:\(to)?subject=\(subjectEncoded)&body=\(bodyEncoded)"
         return URL(string: urlString)
     }
-
+    
     private func showEmailNotConfiguredAlert() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Email Not Available" : "البريد الإلكتروني غير متاح"
         let message = lang == .english ?
-            "There is no email client configured on this device. You can manually send your application to: careers@syriabooking.sy" :
-            "لا يوجد عميل بريد إلكتروني مهيأ على هذا الجهاز. يمكنك إرسال طلبك يدوياً إلى: careers@syriabooking.sy"
+        "There is no email client configured on this device. You can manually send your application to: careers@syriabooking.sy" :
+        "لا يوجد عميل بريد إلكتروني مهيأ على هذا الجهاز. يمكنك إرسال طلبك يدوياً إلى: careers@syriabooking.sy"
         
         let alert = UIAlertController(
             title: title,
@@ -306,7 +306,7 @@ class CareersViewController: UIViewController {
         
         present(alert, animated: true)
     }
-
+    
     private func showCopiedAlert() {
         let lang = AppSettings.shared.selectedLanguage
         let title = lang == .english ? "Copied!" : "تم النسخ!"

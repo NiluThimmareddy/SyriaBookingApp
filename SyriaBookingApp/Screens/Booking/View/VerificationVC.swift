@@ -107,8 +107,6 @@ class VerificationVC : BaseViewController {
                             
                             UserSessionManager.saveUser(user.data)
                             SessionManager.shared.markAuthenticated()
-//                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
-                            
                             await MainActor.run {
                                 self.performNavigationAfterVerification()
                             }
@@ -135,9 +133,7 @@ class VerificationVC : BaseViewController {
                             UserSessionManager.saveUser(user.data)
                             
                             SessionManager.shared.markAuthenticated()
-                            
-//                            NotificationCenter.default.post(name: .didLoginSuccessfully, object: nil)
-                            
+                                                        
                             await MainActor.run {
                                 self.performNavigationAfterVerification()
                             }

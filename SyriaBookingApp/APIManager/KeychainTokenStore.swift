@@ -60,14 +60,6 @@ final class KeychainTokenStore {
         return Date() >= expiry.addingTimeInterval(-30)
     }
     
-//    func isTokenExpired() -> Bool {
-//        guard  let value = expiresAtUtc(),
-//            let expiry = ISO8601DateFormatter().date(from: value) else{
-//            return true
-//        }
-//        return Date() >= expiry.addingTimeInterval(-30)
-//    }
-    
     func hasValidSession() -> Bool {
         guard let token = token(), !token.isEmpty else {
             return false

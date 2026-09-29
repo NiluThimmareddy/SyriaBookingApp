@@ -260,7 +260,7 @@ class TermsAndConditionsViewController: UIViewController {
             showPhoneCallError(phoneNumber: phoneNumber)
             return
         }
-                
+        
         if isEmergency {
             showEmergencyCallConfirmation(for: formattedNumber, url: url)
         } else {
@@ -272,8 +272,8 @@ class TermsAndConditionsViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "رقم الهاتف" : "Phone Number"
         let alertMessage = lang == .arabic ?
-            "هذا الجهاز لا يمكنه إجراء المكالمات. يمكنك نسخ الرقم \(phoneNumber) للاتصال يدوياً." :
-            "This device cannot make phone calls. You can copy the number \(phoneNumber) to call manually."
+        "هذا الجهاز لا يمكنه إجراء المكالمات. يمكنك نسخ الرقم \(phoneNumber) للاتصال يدوياً." :
+        "This device cannot make phone calls. You can copy the number \(phoneNumber) to call manually."
         let copyTitle = lang == .arabic ? "نسخ الرقم" : "Copy Number"
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
         
@@ -314,8 +314,8 @@ class TermsAndConditionsViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "اتصال طارئ" : "Emergency Call"
         let alertMessage = lang == .arabic ?
-            "هل تريد الاتصال برقم الطوارئ \(phoneNumber)؟" :
-            "Do you want to call emergency number \(phoneNumber)?"
+        "هل تريد الاتصال برقم الطوارئ \(phoneNumber)؟" :
+        "Do you want to call emergency number \(phoneNumber)?"
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
         let callTitle = lang == .arabic ? "اتصال طارئ" : "Emergency Call"
         
@@ -337,8 +337,8 @@ class TermsAndConditionsViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "الاتصال" : "Call"
         let alertMessage = lang == .arabic ?
-            "هل تريد الاتصال بـ \(phoneNumber)؟" :
-            "Do you want to call \(phoneNumber)?"
+        "هل تريد الاتصال بـ \(phoneNumber)؟" :
+        "Do you want to call \(phoneNumber)?"
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
         let callTitle = lang == .arabic ? "اتصال" : "Call"
         
@@ -372,8 +372,8 @@ class TermsAndConditionsViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "خطأ في الاتصال" : "Call Error"
         let alertMessage = lang == .arabic ?
-            "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
-            "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
+        "لا يمكن إجراء المكالمة إلى \(phoneNumber). تأكد من أن جهازك يمكنه إجراء المكالمات." :
+        "Cannot make call to \(phoneNumber). Please ensure your device can make phone calls."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -420,8 +420,8 @@ class TermsAndConditionsViewController: UIViewController {
         let lang = AppSettings.shared.selectedLanguage
         let alertTitle = lang == .arabic ? "لا يمكن إرسال بريد إلكتروني" : "Cannot Send Email"
         let alertMessage = lang == .arabic ?
-            "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
-            "Mail app is not configured on this device."
+        "تطبيق البريد الإلكتروني غير مثبت على هذا الجهاز أو لم يتم تكوينه." :
+        "Mail app is not configured on this device."
         
         let alert = UIAlertController(
             title: alertTitle,
@@ -437,7 +437,7 @@ class TermsAndConditionsViewController: UIViewController {
     @IBAction func emailIDButtonAction(_ sender: Any) {
         let lang = AppSettings.shared.selectedLanguage
         let subject = lang == .arabic ?
-            "استفسار حول الشروط والأحكام" : "Terms and Conditions Inquiry"
+        "استفسار حول الشروط والأحكام" : "Terms and Conditions Inquiry"
         sendEmail(to: "info@syriabooking.sy", subject: subject)
     }
     

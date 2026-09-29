@@ -144,18 +144,11 @@ class MyBookingsViewController: BaseViewController {
         let upcomingTitle = segmentControl.titleForSegment(at: 0) ?? ""
         let archiveTitle = segmentControl.titleForSegment(at: 1) ?? ""
         
-        // Set empty titles during skeleton
-//        segmentControl.setTitle("", forSegmentAt: 0)
-//        segmentControl.setTitle("", forSegmentAt: 1)
-        
         // Show skeleton on segment control
         segmentControl.showAnimatedGradientSkeleton()
-        
         // Restore titles after skeleton (stored for later use)
         DispatchQueue.main.asyncAfter(deadline: .now() + minimumSkeletonTime) {
             if self.isShowingSkeleton {
-//                self.segmentControl.setTitle(upcomingTitle, forSegmentAt: 0)
-//                self.segmentControl.setTitle(archiveTitle, forSegmentAt: 1)
             }
         }
     }
@@ -164,13 +157,9 @@ class MyBookingsViewController: BaseViewController {
         let isArabic = AppSettings.shared.selectedLanguage == .arabic
         let upcomingTitle = isArabic ? "القادمة" : "Upcoming"
         let archiveTitle = isArabic ? "الأرشيف" : "Archive"
-        
-//        segmentControl.setTitle(upcomingTitle, forSegmentAt: 0)
-//        segmentControl.setTitle(archiveTitle, forSegmentAt: 1)
     }
     
     private func hideSkeleton() {
-        // Cancel any pending hide operations
         skeletonHideWorkItem?.cancel()
         
         DispatchQueue.main.async { [weak self] in
@@ -214,17 +203,11 @@ class MyBookingsViewController: BaseViewController {
     func setSegmentArchiveCount(segment0Count: Int, segment1Count : Int) {
         DispatchQueue.main.async {
             let isArabic = AppSettings.shared.selectedLanguage == .arabic
-//            self.segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming (\(segment0Count))", forSegmentAt: 0)
-//            self.segmentControl.setTitle(isArabic ? "الأرشيف" : "Archive (\(segment1Count))", forSegmentAt: 1)
-            
             self.segmentControl.setTitle(
-                isArabic ? "القادمة (\(segment0Count))" : "Upcoming (\(segment0Count))",
-                forSegmentAt: 0
+                isArabic ? "القادمة (\(segment0Count))" : "Upcoming (\(segment0Count))",forSegmentAt: 0
             )
-
             self.segmentControl.setTitle(
-                isArabic ? "الأرشيف (\(segment1Count))" : "Archive (\(segment1Count))",
-                forSegmentAt: 1
+                isArabic ? "الأرشيف (\(segment1Count))" : "Archive (\(segment1Count))",forSegmentAt: 1
             )
         }
     }
@@ -242,8 +225,6 @@ class MyBookingsViewController: BaseViewController {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.viewModel.filteredHistoryArray = response
-
-
                     self.hideSkeleton() // Hide skeleton when data is ready
                     self.configureSelectedSegment {
                         
@@ -255,19 +236,13 @@ class MyBookingsViewController: BaseViewController {
             viewModel.onError = { [weak self] error in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    
                     self.hideSkeleton() // Hide skeleton on error
                     self.showAlert(error.userMessage)
                 }
             }
-            
             // Add delay to ensure skeleton is visible
-           
-                self.viewModel.fetchNotificationUsersList(includePast: true)
-            
-            
+            self.viewModel.fetchNotificationUsersList(includePast: true)
         } else {
-            
             viewModel.BookingHistoryArray.removeAll()
             viewModel.BookingListArray.removeAll()
             viewModel.filteredHistoryArray.removeAll()
@@ -338,14 +313,14 @@ class MyBookingsViewController: BaseViewController {
                 
                 return false
             }
-             segment0Count = viewModel.filteredHistoryArray.count
+            segment0Count = viewModel.filteredHistoryArray.count
             segment1Count = viewModel.BookingHistoryArray.count - viewModel.filteredHistoryArray.count
         } else {
             viewModel.filteredHistoryArray = viewModel.BookingHistoryArray.filter { data in
                 if let date = data.checkInUtc.toDate() {
                     return date < Calendar.current.startOfDay(for: Date())
                 }
-               
+                
                 return false
             }
             segment0Count = viewModel.BookingHistoryArray.count - viewModel.filteredHistoryArray.count
@@ -458,7 +433,6 @@ extension MyBookingsViewController {
         
         if let user = UserSessionManager.getUser() {
             // Show skeleton immediately
-            
             messageLabel.isHidden = true
             segmentControl.isHidden = false
             HistoryTableView.isHidden = false
@@ -563,7 +537,7 @@ extension MyBookingsViewController: MyBookingCellDelegate, CancelBookingDelegate
             
             DispatchQueue.main.async {
                 self.viewModel.filteredHistoryArray = response
-
+                
                 self.hideSkeleton()
                 self.configureSelectedSegment {
                     
@@ -591,8 +565,6 @@ extension MyBookingsViewController {
         myBookingsDescriptionLabel.text = isArabic ? "راجع إقاماتك القادمة والحجوزات المؤرشفة" : "Review your upcoming stays and archived bookings"
         noBookingsLabel.text = isArabic ? "لا توجد حجوزات" : "No Bookings Found"
         messageLabel.text = isArabic ? "يرجى تسجيل الدخول لعرض سجل الحجوزات الخاصة بك" : "Please Login to view your booking history"
-//        segmentControl.setTitle(isArabic ? "القادمة" : "Upcoming", forSegmentAt: 0)
-//        segmentControl.setTitle(isArabic ? "الأرشيف" : "Archive", forSegmentAt: 1)
         myBookigsTitleLabel.textAlignment = isArabic ? .center : .center
         myBookingsDescriptionLabel.textAlignment = isArabic ? .center : .center
         noBookingsLabel.textAlignment = isArabic ? .center : .center

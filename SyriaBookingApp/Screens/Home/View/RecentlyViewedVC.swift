@@ -510,7 +510,7 @@ extension RecentlyViewedVC {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self?.loadRecentlyViewedHotels()
             }
-        })        
+        })
         present(alert, animated: true)
     }
     

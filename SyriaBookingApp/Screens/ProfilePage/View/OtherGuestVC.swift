@@ -8,19 +8,19 @@
 import UIKit
 
 class OtherGuestVC: UIViewController {
-
+    
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var otherGuestListTV: UITableView!
-
+    
     var otherGuests: [Guest] = []
     
     let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.poppinsBold(16)
+        label.textAlignment = .center
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class OtherGuestVC: UIViewController {
         // Ensure title is updated when view appears
         updateTexts()
     }
-
+    
     @IBAction func plusButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         guard let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC") as? AddNewTravellerVC  else { return}
@@ -99,7 +99,7 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
     
     func didTapEditButton(in cell: OtherGuestListTVC) {
         guard let indexPath = otherGuestListTV.indexPath(for: cell) else { return }
-
+        
         let guest = otherGuests[indexPath.row]
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         guard let vc = storyboard.instantiateViewController(identifier: "AddNewTravellerVC")as? AddNewTravellerVC  else { return }
@@ -114,19 +114,19 @@ extension OtherGuestVC: UITableViewDelegate, UITableViewDataSource, OtherGuestLi
 extension OtherGuestVC: AddNewTravellerDelegate {
     func didTapDeleteButton(in cell: OtherGuestListTVC) {
         guard let indexPath = otherGuestListTV.indexPath(for: cell) else { return }
-
+        
         let guest = otherGuests[indexPath.row]
         let lang = AppSettings.shared.selectedLanguage
         
         let title = lang == .arabic ? "حذف الضيف" : "Delete Guest"
         let message = lang == .arabic ?
-            "هل أنت متأكد أنك تريد حذف \(guest.firstName) \(guest.lastName)؟" :
-            "Are you sure you want to delete \(guest.firstName) \(guest.lastName)?"
+        "هل أنت متأكد أنك تريد حذف \(guest.firstName) \(guest.lastName)؟" :
+        "Are you sure you want to delete \(guest.firstName) \(guest.lastName)?"
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
         let deleteTitle = lang == .arabic ? "حذف" : "Delete"
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
+        
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: deleteTitle, style: .destructive, handler: { _ in
             self.otherGuests.remove(at: indexPath.row)
@@ -135,12 +135,12 @@ extension OtherGuestVC: AddNewTravellerDelegate {
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     func didEditGuest(_ guest: Guest, at index: Int) {
         otherGuests[index] = guest
         otherGuestListTV.reloadData()
     }
-
+    
     func didAddGuest(_ guest: Guest) {
         otherGuests.append(guest)
         otherGuestListTV.reloadData()

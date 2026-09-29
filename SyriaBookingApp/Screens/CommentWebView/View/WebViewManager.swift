@@ -10,9 +10,7 @@ import UIKit
 final class WebViewManager {
 
     static let shared = WebViewManager()
-
     private init() {}
-
     private(set) var isShowing = false
 
     func show(html: String,

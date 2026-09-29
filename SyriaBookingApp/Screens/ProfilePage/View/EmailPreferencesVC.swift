@@ -37,12 +37,12 @@ class EmailPreferencesVC: UIViewController {
     }
     
     let topNameLbl: UILabel = {
-       let label = UILabel()
-       label.textColor = .white
-       label.font = UIFont.poppinsBold(16)
-       label.textAlignment = .center
-       return label
-   }()
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.poppinsBold(16)
+        label.textAlignment = .center
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +101,7 @@ class EmailPreferencesVC: UIViewController {
         unsubscribeTitle.font = UIFont.poppinsBold(14)
         youLlStillContent.font = UIFont.poppinsMedium(12)
     }
-
+    
     @IBAction func checkBox(_ sender: Any) {
         isChecked.toggle()
         let imageName = isChecked ? "square-check" : "square"

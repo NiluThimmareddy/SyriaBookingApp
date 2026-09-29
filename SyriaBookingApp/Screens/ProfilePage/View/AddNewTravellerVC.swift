@@ -13,8 +13,7 @@ protocol AddNewTravellerDelegate: AnyObject {
 }
 
 class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
-
-   
+    
     @IBOutlet weak var scrollViewScroll: UIScrollView!
     @IBOutlet weak var confirmTextLbl: UILabel!
     @IBOutlet weak var addNewTravellerButton: UIButton!
@@ -56,7 +55,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
     var otherGuestsEdit: Guest?
     var otherGuestsDelete: Guest?
     private var isChecked = false
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -204,17 +203,17 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             scrollViewScroll.scrollIndicatorInsets = scrollViewScroll.contentInset
         }
     }
-
+    
     @objc func keyboardWillHide(notification: NSNotification) {
         scrollViewScroll.contentInset = .zero
         scrollViewScroll.scrollIndicatorInsets = .zero
     }
-
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         let textFieldFrame = textField.convert(textField.bounds, to: scrollViewScroll)
         scrollViewScroll.scrollRectToVisible(textFieldFrame.insetBy(dx: 0, dy: -10), animated: true)
     }
-
+    
     func applyBorder(){
         firstNameTF.layer.cornerRadius = 5
         firstNameTF.layer.borderWidth = 1
@@ -282,7 +281,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             addNewTravellerButton.backgroundColor =  .red
         }
     }
-   
+    
     func buttonBoldText(){
         let lang = AppSettings.shared.selectedLanguage
         
@@ -388,7 +387,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             showAlert(title: alertTitle, message: confirmMessage)
             return
         }
-
+        
         guard let firstName = firstNameTF.text, !firstName.isEmpty,
               let lastName = lastNameTF.text, !lastName.isEmpty,
               let dob = dobButton.title(for: .normal),
@@ -399,12 +398,12 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             showAlert(title: missingInfoTitle, message: missingMessage)
             return
         }
-
+        
         switch selectedOption {
         case .add:
             addGuest()
             dismiss(animated: true)
-
+            
         case .edit:
             let editTitle = lang == .arabic ? "تعديل الضيف" : "Edit Guest"
             let editMessage = lang == .arabic ? "هل أنت متأكد أنك تريد تحديث هذا المسافر؟" : "Are you sure you want to update this traveller?"
@@ -420,7 +419,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
+    
     
     @IBAction func addNewTravellerButton(_ sender: Any) {
         agreeDocument()
@@ -435,7 +434,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-
+    
     func addGuest() {
         let newGuest = Guest(
             firstName: firstNameTF.text ?? "",
@@ -445,7 +444,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         )
         delegate?.didAddGuest(newGuest)
     }
-
+    
     func editGuest() {
         guard let index = guestIndex else { return }
         
@@ -458,7 +457,7 @@ class AddNewTravellerVC: UIViewController, UITextFieldDelegate {
         
         delegate?.didEditGuest(updatedGuest, at: index)
     }
-
+    
     func showConfirmationAlert(title: String, message: String, actionTitle: String, isDestructive: Bool = false, confirmed: @escaping () -> Void) {
         let lang = AppSettings.shared.selectedLanguage
         let cancelTitle = lang == .arabic ? "إلغاء" : "Cancel"
@@ -499,7 +498,7 @@ extension AddNewTravellerVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = genderData[indexPath.row]
         genderButton.setTitle(data, for: .normal)
-      
+        
         let ok = NSAttributedString(
             string: data,
             attributes: [.font: UIFont.poppinsMedium(14), .foregroundColor: UIColor.black]
