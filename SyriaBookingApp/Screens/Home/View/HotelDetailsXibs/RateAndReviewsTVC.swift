@@ -46,11 +46,10 @@ class RateAndReviewsTVC : UITableViewCell {
             
             // Apply random color
             personImageView.tintColor = colorFromName(review.reviewerName)
-            
-            reviewDateLabel.text = formattedDate(from: review.createdOn)
-            starRatings.rating = Double(review.rating)
-            reviewTextLabel.text = review.reviewText
         }
+        reviewDateLabel.text = formattedDate(from: review.createdOn)
+        starRatings.rating = Double(review.rating)
+        reviewTextLabel.text = review.reviewText
     }
     
     private func formattedDate(from isoString: String) -> String {

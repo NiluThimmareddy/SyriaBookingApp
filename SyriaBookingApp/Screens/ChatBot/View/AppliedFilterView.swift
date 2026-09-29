@@ -17,9 +17,9 @@ struct FilterSummaryItem: Identifiable {
 
 struct AppliedFilterView: View {
     
-    @State var Data = [
-        
-    ]
+//    @State var Data = [
+//        
+//    ]
     var body: some View {
         VStack(spacing: 10) {
             HStack{

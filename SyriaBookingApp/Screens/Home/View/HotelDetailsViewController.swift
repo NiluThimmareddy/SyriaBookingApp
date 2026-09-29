@@ -295,15 +295,16 @@ class HotelDetailsViewController : BaseViewController {
             let tableHeight = rateAndReviewsTableview.contentSize.height
             let totalHeight = labelHeight + buttonHeight + padding + tableHeight
             rateAndReviewsContainerHeightConstraint.constant = totalHeight
-            
+            hideViewAllButton()
         } else {
-            let labelHeight: CGFloat = 18
+            let labelHeight: CGFloat = 30
             let buttonHeight: CGFloat = 25
             let padding: CGFloat = 10
             
             let totalHeight = labelHeight + buttonHeight + padding
             rateAndReviewsContainerHeightConstraint.constant = totalHeight
             rateAndReviewsTableview.isHidden = true
+            viewAllButton.isHidden = true
         }
         
         UIView.animate(withDuration: 0.3) {
@@ -1097,12 +1098,12 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func updateRateAndReviewsTableHeight() {
         rateAndReviewsTableview.layoutIfNeeded()
         let contentHeight = rateAndReviewsTableview.contentSize.height
-        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 60
-        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 70
+        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 120
+        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 120
     }
     
     func updateRateAndReviewsContainerHeight() {
-        let labelHeight: CGFloat = 18
+        let labelHeight: CGFloat = 30
         let buttonHeight: CGFloat = 25
         let padding: CGFloat = 20
         
@@ -1110,7 +1111,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         let tableHeight = rateAndReviewsTableview.contentSize.height
         let totalHeight = labelHeight + buttonHeight + padding + tableHeight
         
-        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 60
+        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 120
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
