@@ -259,6 +259,10 @@ class HotelDetailsViewController : BaseViewController {
                 self.hotelviewModel.fetchReviewsOfHotel(hotelId: selectedHotel.id, reviewId: review.id)
                 
                 self.hotelviewModel.onSuccess = { [weak self] response in
+                    DispatchQueue.main.async {
+                        self?.reviewTextView.text = ""
+                        self?.selectratingButton.titleLabel?.text = ""
+                    }
                 }
             })
         }
