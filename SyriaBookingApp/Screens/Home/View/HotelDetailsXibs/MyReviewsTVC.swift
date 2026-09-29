@@ -66,10 +66,7 @@ class MyReviewsTVC: UITableViewCell {
         ratingsView.rating = Double(review.rating)
         reviewDescriptionLabel.text = review.reviewText
     }
-    
-    
-    
-    
+
     func getHotelImage(for history: Review) -> (String?,String?) {
         let hotelDict = Dictionary(uniqueKeysWithValues: HotelDataMaganer.shared.allHotels.map { ($0.id, $0) })
         return (hotelDict[history.hotelID]?.coverImageURL, hotelDict[history.hotelID]?.name)
