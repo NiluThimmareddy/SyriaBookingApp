@@ -1098,8 +1098,8 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
     func updateRateAndReviewsTableHeight() {
         rateAndReviewsTableview.layoutIfNeeded()
         let contentHeight = rateAndReviewsTableview.contentSize.height
-        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 120
-        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 120
+        rateAndReviewsTableviewHeightConstraint.constant = contentHeight + 60
+        rateAndReviewsContainerHeightConstraint.constant = contentHeight + 60
     }
     
     func updateRateAndReviewsContainerHeight() {
@@ -1111,7 +1111,7 @@ extension HotelDetailsViewController : AvailabilityRoomsCVCDelegate, UIViewContr
         let tableHeight = rateAndReviewsTableview.contentSize.height
         let totalHeight = labelHeight + buttonHeight + padding + tableHeight
         
-        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 120
+        rateAndReviewsContainerHeightConstraint.constant = totalHeight + 60
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
