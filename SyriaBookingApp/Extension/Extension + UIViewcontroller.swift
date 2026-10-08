@@ -108,10 +108,10 @@ extension UIViewController {
                 rightButtons.insert(menuButton, at: 0)
                 navigationItem.rightBarButtonItems = rightButtons
             }
-            } else {
-                rightButtons.insert(menuButton, at: 0)
-                navigationItem.rightBarButtonItems = rightButtons
-            }
+        } else {
+            rightButtons.insert(menuButton, at: 0)
+            navigationItem.rightBarButtonItems = rightButtons
+        }
         
     }
     
@@ -121,39 +121,39 @@ extension UIViewController {
     @objc func didTapNotification(_ sender: UIBarButtonItem) {
         toggleNotification()
     }
-
-
+    
+    
     private func toggleNotification() {
-
+        
         if let existingVC = UIViewController.notificationVCReference {
-
+            
             existingVC.dismiss(animated: true) {
                 UIViewController.notificationVCReference = nil
             }
-
+            
         } else {
-
+            
             let storyboard = UIStoryboard(name: "Home", bundle: nil)
-
+            
             guard let notificationVC = storyboard.instantiateViewController(
                 withIdentifier: "YourNotificationVC"
             ) as? YourNotificationVC else {
                 return
             }
-
+            
             notificationVC.modalPresentationStyle = .overCurrentContext
             notificationVC.modalTransitionStyle = .crossDissolve
-
+            
             if let tabBarController = self.tabBarController as? YourNotificationVCDelegate {
                 notificationVC.delegate = tabBarController
-
+                
             } else if let delegateSelf = self as? YourNotificationVCDelegate {
                 notificationVC.delegate = delegateSelf
-
+                
             } else {
                 print("WARNING: No delegate set for YourNotificationVC")
             }
-
+            
             present(notificationVC, animated: true) {
                 UIViewController.notificationVCReference = notificationVC
             }
@@ -364,7 +364,7 @@ extension UIViewController {
                 // Case: RegisterMobileNumberVC inside Navigation
                 nav.dismiss(animated: true) {
                     reload?()
-                    registerVC.reloadScreenAfterDismiss?() 
+                    registerVC.reloadScreenAfterDismiss?()
                 }
             } else {
                 // Case: RegisterMobileNumberVC shown as popup
@@ -382,9 +382,9 @@ extension UIViewController {
               let window = windowScene.windows.first else { return }
         
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
-       guard let tabBarVC = storyboard.instantiateViewController(
+        guard let tabBarVC = storyboard.instantiateViewController(
             withIdentifier: "CustomTabBarController"
-       ) as? CustomTabBarController else { return }
+        ) as? CustomTabBarController else { return }
         
         tabBarVC.selectedIndex = 0
         
@@ -469,7 +469,7 @@ extension UIViewController {
         controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true)
     }
-
+    
     func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
@@ -497,6 +497,49 @@ extension UIViewController {
         return formatter.string(from: date)
     }
     
+    
+    func containsMaliciousCode(_ text: String) -> Bool {
+        let patterns = [
+            // PHP
+            #"(?i)<\?php"#,
+            #"(?i)<php"#,
+            #"(?i)<\?="#,
+            #"(?i)\?>"#,
+
+            // HTML / dangerous tags
+            #"(?i)<\s*(script|iframe|object|embed|form|input|img|style)\b"#,
+            #"(?i)</\s*(script|iframe|object|embed|form|input|img|style)\b"#,
+
+            // JavaScript
+            #"(?i)javascript\s*:"#,
+            #"(?i)vbscript\s*:"#,
+            #"(?i)\bon(click|load|error|mouseover|focus|blur)\s*="#,
+            #"(?i)\b(alert|prompt|confirm)\s*\("#,
+
+            // .NET / C#
+            #"(?i)\busing\s+System\b"#,
+            #"(?i)\bnamespace\s+\w+"#,
+            #"(?i)\b(public|private|protected)\s+(class|void|string|int|static)\b"#,
+            #"(?i)\bSystem\.\w+"#,
+            #"(?i)\bConsole\.Write(Line)?\s*\("#,
+
+            // SQL
+            #"(?i)\bSELECT\s+.+\s+FROM\b"#,
+            #"(?i)\bINSERT\s+INTO\b"#,
+            #"(?i)\bUPDATE\s+\w+\s+SET\b"#,
+            #"(?i)\bDELETE\s+FROM\b"#,
+
+            // Other script syntax
+            #"(?i)<%.*%>"#,
+            #"(?i)eval\s*\("#,
+            #"(?i)document\.cookie"#,
+            #"(?i)document\.write"#
+        ]
+
+        return patterns.contains {
+            text.range(of: $0, options: .regularExpression) != nil
+        }
+    }
 }
 
 extension UITableViewCell {
@@ -515,5 +558,50 @@ extension UITableViewCell {
         
         let index = abs(name.hashValue) % colors.count
         return colors[index]
+    }    
+    
+    
+    func containsMaliciousCode(_ text: String) -> Bool {
+        let patterns = [
+            // PHP
+            #"(?i)<\?php"#,
+            #"(?i)<php"#,
+            #"(?i)<\?="#,
+            #"(?i)\?>"#,
+
+            // HTML / dangerous tags
+            #"(?i)<\s*(script|iframe|object|embed|form|input|img|style)\b"#,
+            #"(?i)</\s*(script|iframe|object|embed|form|input|img|style)\b"#,
+
+            // JavaScript
+            #"(?i)javascript\s*:"#,
+            #"(?i)vbscript\s*:"#,
+            #"(?i)\bon(click|load|error|mouseover|focus|blur)\s*="#,
+            #"(?i)\b(alert|prompt|confirm)\s*\("#,
+
+            // .NET / C#
+            #"(?i)\busing\s+System\b"#,
+            #"(?i)\bnamespace\s+\w+"#,
+            #"(?i)\b(public|private|protected)\s+(class|void|string|int|static)\b"#,
+            #"(?i)\bSystem\.\w+"#,
+            #"(?i)\bConsole\.Write(Line)?\s*\("#,
+
+            // SQL
+            #"(?i)\bSELECT\s+.+\s+FROM\b"#,
+            #"(?i)\bINSERT\s+INTO\b"#,
+            #"(?i)\bUPDATE\s+\w+\s+SET\b"#,
+            #"(?i)\bDELETE\s+FROM\b"#,
+
+            // Other script syntax
+            #"(?i)<%.*%>"#,
+            #"(?i)eval\s*\("#,
+            #"(?i)document\.cookie"#,
+            #"(?i)document\.write"#
+        ]
+
+        return patterns.contains {
+            text.range(of: $0, options: .regularExpression) != nil
+        }
     }
+
 }

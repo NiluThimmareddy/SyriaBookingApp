@@ -237,14 +237,38 @@ class HotelDetailsViewController : BaseViewController {
             return
         }
         
-        guard selectratingButton.titleLabel?.text != nil else {
-            let message = lang == .arabic ? "الرجاء اختيار التقييم" : "Please select Rating"
+//        guard selectratingButton.titleLabel?.text != nil else {
+//            let message = lang == .arabic ? "الرجاء اختيار التقييم" : "Please select Rating"
+//            showAlert(message)
+//            return
+//        }
+        
+        guard selectratingButton.tag > 0 else {
+            let message = lang == .arabic
+                ? "الرجاء اختيار التقييم"
+                : "Please select rating"
             showAlert(message)
             return
         }
         
         guard let reviewText = reviewTextView.text, !reviewText.isEmpty else {
             let message = lang == .arabic ? "الرجاء إدخال التقييم" : "Please enter review"
+            showAlert(message)
+            return
+        }
+        
+//        if containsMaliciousCode(name) {
+//            let message = lang == .arabic
+//                ? "الرجاء إدخال اسم صالح"
+//                : "Please enter a valid name."
+//            showAlert(message)
+//            return
+//        }
+
+        if containsMaliciousCode(reviewText) {
+            let message = lang == .arabic
+                ? "الرجاء إدخال تقييم صالح"
+                : "Please enter a valid review."
             showAlert(message)
             return
         }
@@ -260,6 +284,8 @@ class HotelDetailsViewController : BaseViewController {
                 
                 self.hotelviewModel.onSuccess = { [weak self] response in
                     DispatchQueue.main.async {
+                        self?.addReviewViewHeightConstraint.constant = 0
+                        self?.addReviewView.isHidden = true
                         self?.reviewTextView.text = ""
                         self?.selectratingButton.titleLabel?.text = ""
                     }
@@ -1551,6 +1577,8 @@ extension HotelDetailsViewController {
             placeholderViews.forEach { $0.removeFromSuperview() }
         }
     }
+    
+    
 }
 
 class CenteredPresentationController: UIPresentationController {

@@ -33,24 +33,52 @@ class RateAndReviewsTVC : UITableViewCell {
     }
     
     func configure(with review: Review) {
+        
+        // Ignore malicious/code-like reviewer names or reviews
+        if containsMaliciousCode(review.reviewerName) ||
+           containsMaliciousCode(review.reviewText ?? "") {
+            self.isHidden = true
+            return
+        }
+
+        self.isHidden = false
+
         reviewerNameLabel.text = review.reviewerName
-     
+
         if let firstChar = review.reviewerName.first,
            firstChar.isLetter {
-            
+
             let letter = String(firstChar).lowercased()
             let imageName = "\(letter).circle.fill"
-            
-            let image = UIImage(systemName: imageName)
-            personImageView.image = image
-            
-            // Apply random color
+
+            personImageView.image = UIImage(systemName: imageName)
             personImageView.tintColor = colorFromName(review.reviewerName)
         }
+
         reviewDateLabel.text = formattedDate(from: review.createdOn)
         starRatings.rating = Double(review.rating)
         reviewTextLabel.text = review.reviewText
     }
+    
+//    func configure(with review: Review) {
+//        reviewerNameLabel.text = review.reviewerName
+//     
+//        if let firstChar = review.reviewerName.first,
+//           firstChar.isLetter {
+//            
+//            let letter = String(firstChar).lowercased()
+//            let imageName = "\(letter).circle.fill"
+//            
+//            let image = UIImage(systemName: imageName)
+//            personImageView.image = image
+//            
+//            // Apply random color
+//            personImageView.tintColor = colorFromName(review.reviewerName)
+//        }
+//        reviewDateLabel.text = formattedDate(from: review.createdOn)
+//        starRatings.rating = Double(review.rating)
+//        reviewTextLabel.text = review.reviewText
+//    }
     
     private func formattedDate(from isoString: String) -> String {
         let isoFormatter = ISO8601DateFormatter()
